@@ -27,7 +27,7 @@
       </li>
 
       <li class="nav-item">
-           <a class="nav-link" href="/enter"> <button class="btn btn-info">Войти</button></a>
+           <a class="nav-link" href="/login"> <button class="btn btn-info">Войти</button></a>
       </li>
       <li class="nav-item">
            <a class="nav-link" href="/register"> <button class="btn btn-warning">Зарегестрироваться</button></a>

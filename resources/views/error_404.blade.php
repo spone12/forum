@@ -1,4 +1,4 @@
-@extends('layout.template')
+@extends('layouts.app')
 
 @section('title-block')Страница не найдена@endsection
 
