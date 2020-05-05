@@ -1,8 +1,7 @@
 @extends('layouts.app')
-
 @section('title-block')Страница не найдена@endsection
-
 @section('content')
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col">

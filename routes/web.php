@@ -11,27 +11,20 @@
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
     return view('home');
 });
 
-/*Route::get('/login', function () {
-    return view('auth.login');
-});*/
-
-//Route::get('/login', 'SessionController@create');
-
-/*Route::get('/register', function () {
-    return view('auth.register');
-});*/
-
-//Route::get('/register', 'RegistrationController@create');
-
-Route::get('/footer', function () {
-    return view('footer');
-});
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/about', function () {
+    return view('about');
+});
 
+/*Route::get('profile', function () {
+    // зайти могут только зарегестрированные
+    
+})->middleware('auth');*/
