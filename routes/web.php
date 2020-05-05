@@ -16,11 +16,11 @@ Route::get('/', function () {
 });
 
 Route::get('/enter', function () {
-    return view('enter');
+    return view('auth.enter');
 });
 
 Route::get('/register', function () {
-    return view('register');
+    return view('auth.register');
 });
 
 Route::get('/footer', function () {

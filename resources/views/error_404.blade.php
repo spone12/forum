@@ -3,6 +3,16 @@
 @section('title-block')Страница не найдена@endsection
 
 @section('content')
-    <h1>Запрашиваемой страницы не существует</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+            Запрашиваемой страницы не существует
+            </div>
+           
+        </div>
+        <div class="row justify-content-center">
+            <div class="col">404</div>
+        </div>
+    </div>
 @endsection
 
