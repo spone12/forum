@@ -24,6 +24,11 @@ Route::get('/about', function () {
     return view('about');
 });
 
+Route::post('/search', 'SearchController@getDataSearch')->name('search');
+/*Route::post('/search', function () {
+    return view('search');
+});*/
+
 /*Route::get('profile', function () {
     // зайти могут только зарегестрированные
     

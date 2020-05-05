@@ -1,0 +1,25 @@
+.fix_nav
+{
+    position: fixed !important;
+    z-index: 999;
+    width: 100%;
+    opacity: .98;
+}
+
+.fix_main 
+{
+    position: relative;
+    top: 50px;
+}
+
+.c
+{
+    text-align:center;
+}
+
+.no_mark
+{
+    list-style-type: none;
+}
+
+.no_mark:last-child{margin-left:5px;}
