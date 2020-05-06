@@ -26,7 +26,8 @@ Route::get('/about', function () {
 
 Route::post('/search', 'SearchController@getDataSearch')->name('search');
 
-Route::match(array('GET','POST'),'/notation', 'NotationController@Notation')->middleware('auth');
+Route::get('/notation', 'NotationController@Notation')->middleware('auth');
+Route::post('/notation', 'NotationController@AjaxReq')->middleware('auth');
 /*Route::post('/search', function () {
     return view('search');
 });*/
