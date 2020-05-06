@@ -2,6 +2,9 @@
 @section('title-block')Новость@endsection
 @section('content')
     
+   <?=var_dump($cheese);?>
+
+    {{ $cheese['dd'] }}
     <div class='container'>
         <div class='row justify-content-center'>
             <div class="col-md-10">

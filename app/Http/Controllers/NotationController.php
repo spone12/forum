@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\NotationModel;
 
 class NotationController extends Controller
 {
@@ -13,6 +14,7 @@ class NotationController extends Controller
 
     public function Notation(Request $search)
     {
-        return view('menu.notation');
+        
+        return view('menu.notation',    ['cheese' => NotationModel::ins_notation()]);
     }
 }
