@@ -14,11 +14,18 @@
 
                         @auth
                         <div class='col-3 col-sm-1 align-self-end'>
-                            <img class='marker' width=20 title='Добавить запись' alt='Добавить запись' src="{{ asset('img/icons/add.png') }}">
+                            
+                                <img id='notation_add' name='notation_add' onclick="event.preventDefault();
+                                 document.getElementById('notation-form').submit();" class='marker' width=20 title='Добавить запись' alt='Добавить запись' src="{{ asset('img/icons/add.png') }}">
+                           
+                            
+                                <img id="notation_edit" class='marker' width=20 title='Редактировать запись' alt='Редактировать запись' src="{{ asset('img/icons/edit.png') }}">
                         
-                            <img class='marker' width=20 title='Редактировать запись' alt='Редактировать запись' src="{{ asset('img/icons/edit.png') }}">
-                       
-                            <img class='marker' width=20 title='Удалить запись' alt='Удалить запись' src="{{ asset('img/icons/delete.png') }}">
+                                <img id="notation_delete" class='marker' width=20 title='Удалить запись' alt='Удалить запись' src="{{ asset('img/icons/delete.png') }}">
+
+                            <form id="notation-form" action="/notation" method="POST" style="display: none;">
+                             {{ csrf_field() }}
+                            </form>    
                         </div>
                         @endauth
                     </div>
@@ -71,3 +78,39 @@
 
     </div>
 @endsection
+
+
+<script>
+$(function() 
+{
+    $('#notation_add').on('click',function()
+    {
+    
+    $.ajax(
+    {
+        url: '/notation',
+        type: "POST",
+        data: {notation: 'notation_add'},
+        
+        headers: {
+        
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        
+        },
+        
+        success: function (data) {
+            alert('ff');
+        },
+        
+        error: function (msg) {
+        
+        alert('Ошибка');
+        
+        }
+        
+    });
+    
+    });
+    
+})
+</script>    
