@@ -11,15 +11,18 @@
                         <div class='col-9 align-self-start'>
                             <strong>khjkhkhjkhjkhkj</strong>
                         </div>
+
+                        @auth
                         <div class='col-1 align-self-end'>
-                            <img width=20 title='Добавить запись' alt='Добавить запись' src="{{ asset('img/icons/add.png') }}">
+                            <img class='marker' width=20 title='Добавить запись' alt='Добавить запись' src="{{ asset('img/icons/add.png') }}">
                         </div>
                         <div class='col-1 align-self-end'>
-                            <img width=20 title='Редактировать запись' alt='Редактировать запись' src="{{ asset('img/icons/edit.png') }}">
+                            <img class='marker' width=20 title='Редактировать запись' alt='Редактировать запись' src="{{ asset('img/icons/edit.png') }}">
                         </div>
                         <div class='col-1 align-self-end'>
-                            <img width=20 title='Удалить запись' alt='Удалить запись' src="{{ asset('img/icons/delete.png') }}">
+                            <img class='marker' width=20 title='Удалить запись' alt='Удалить запись' src="{{ asset('img/icons/delete.png') }}">
                         </div>
+                        @endauth
                     </div>
                 </div>
 

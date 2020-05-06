@@ -29,7 +29,7 @@ Route::post('/search', 'SearchController@getDataSearch')->name('search');
     return view('search');
 });*/
 
-/*Route::get('profile', function () {
+Route::get('/profile', function () {
     // зайти могут только зарегестрированные
-    
-})->middleware('auth');*/
+    return view('menu.profile');
+})->middleware('auth');

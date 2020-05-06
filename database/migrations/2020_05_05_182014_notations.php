@@ -15,13 +15,19 @@ class Notations extends Migration
     {
         Schema::create('notations', function (Blueprint $table) {
             $table->Increments('notation_id');
-            $table->integer('id_user');
+            $table->integer('id_user')->comment('id пользователя, который добавил тему');
+            $table->smallInteger('category')->comment('Категория темы');
             $table->string('name_notation', 150)->unique();
+            $table->text('text_notation')->comment('Текст нотации');
             $table->timestamp('notation_add_date')->nullable();
             $table->timestamp('notation_edit_date')->nullable();
 
         });
     }
+
+    //DB::statement("ALTER TABLE `notations` ADD FOREIGN KEY (`notation_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;");
+
+
 
     /**
      * Reverse the migrations.
