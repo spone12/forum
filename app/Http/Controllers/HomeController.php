@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+//namespace App\Http\Model;
 
 use Illuminate\Http\Request;
+use App\Http\Model\HomeModel;
+//use App\HomeModel;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+       $data = HomeModel::take_notations();
+
+        return view('home', ['notations' => $data]);
     }
 }

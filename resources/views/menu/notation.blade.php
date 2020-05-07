@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('title-block')Новость@endsection
 @section('content')
-    
+<script src="{{ asset('resource/js/notation.js') }}"></script>
+
+
     <div class='container'>
         <div class='row justify-content-center'>
             <div class="col-md-10">
@@ -31,40 +33,6 @@
          </div>
         </div>
     </div>
-
-    <script>
-
-
-    function add_notation()
-    {
-        $.ajax(
-        {
-            url: '/notation',
-            type: "POST",
-            data: {
-                    name_tema: $('#name_tema').val(), 
-                    text_notation: $('#text_notation').val(),
-                    method: 'add'
-                  },
-            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-            success: function (data) 
-            {
-                console.log(data.success);
-            },
-            
-            error: function (msg) {
-            
-                console.log(msg);
-            
-            }
-            
-        });
-    }
-       
-    
-
-</script>    
-
 
 @endsection
 

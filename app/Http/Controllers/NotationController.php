@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\NotationModel;
+use App\Http\Model\NotationModel;
 
 class NotationController extends Controller
 {

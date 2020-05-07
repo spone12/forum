@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Http\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +12,6 @@ class NotationModel extends Model
     protected static function ins_notation(Array $data_notation)
     {
         $user = Auth::user()->id;
-        $ins  = 0;
 
        $ins =  
        DB::table('notations')->insert(
