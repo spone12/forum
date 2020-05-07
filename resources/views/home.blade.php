@@ -2,10 +2,6 @@
 @section('title-block')Главная страница@endsection
 @section('content')
 
-
-   <? echo '<pre>'; print_r(auth::getSession()); echo '<pre>';?>
-    
-
 @auth
 <div class="container">
     <div class="row justify-content-end">

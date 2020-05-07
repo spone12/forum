@@ -30,3 +30,25 @@
     border-radius: 4px;
     color:white;
 }
+
+.page_avatar
+{
+    vertical-align: top;
+    border-radius: 2px;
+    max-width: 200px;
+    width: 200px;
+    /*border-radius: 50%;*/
+}
+
+.profile_info 
+{
+    color: #828282;
+    font-family: sans-serif;
+    font-style:  italic;
+}
+.t_a{text-align: center;}
+.profile_bg
+{
+    background: #fffaf0;
+    border-radius: 10px;
+}

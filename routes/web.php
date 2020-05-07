@@ -24,11 +24,6 @@ Route::post('/search', 'SearchController@getDataSearch')->name('search');
 
 Route::get('/notation', 'NotationController@Notation')->middleware('auth');
 Route::post('/notation', 'NotationController@AjaxReq')->middleware('auth');
-/*Route::post('/search', function () {
-    return view('search');
-});*/
 
-Route::get('/profile', function () {
-    // зайти могут только зарегестрированные
-    return view('menu.profile');
-})->middleware('auth');
+// зайти могут только зарегестрированные
+Route::get('/profile', 'ProfileController@view_profile')->middleware('auth');
