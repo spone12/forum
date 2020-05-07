@@ -24,3 +24,9 @@
 
 .no_mark:last-child{margin-left:5px;}
 .marker{cursor: pointer;}
+.menu_user:hover
+{
+    background: #ae3232;
+    border-radius: 4px;
+    color:white;
+}

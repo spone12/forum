@@ -2,6 +2,11 @@
 @section('title-block')Главная страница@endsection
 @section('content')
 
+
+   <? echo '<pre>'; print_r(auth::getSession()); echo '<pre>';?>
+    
+
+@auth
 <div class="container">
     <div class="row justify-content-end">
         <div>  <img id='notation_add' name='notation_add' onclick="event.preventDefault();
@@ -11,6 +16,7 @@
                              {{ csrf_field() }}
     </form>    
 </div>
+@endauth
 
 @foreach ($notations as $v)
 
