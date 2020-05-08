@@ -27,15 +27,6 @@
                             <a class='a_header' href='notation/view/{{$v->notation_id}}'>{{$v->name_notation}}</a>
                             </strong>
                         </div>
-                       
-                        @auth
-                        <div class='col-3 col-sm-1 align-self-end'>
-                            
-                                <img id="notation_edit" class='marker' width=20 title='Редактировать запись' alt='Редактировать запись' src="{{ asset('img/icons/edit.png') }}">
-                        
-                                <img id="notation_delete" class='marker' width=20 title='Удалить запись' alt='Удалить запись' src="{{ asset('img/icons/delete.png') }}">
-                        </div>
-                        @endauth
                     </div>
                     <div class='row justify-content-start'>
                      <div class='col-4 col-sm-2 add_notation_who'>Добавил:</div>
@@ -46,7 +37,7 @@
                 </div>
 
                 <div class="card-body">
-                   <div>{{$v->text_notation}}</div>
+                   <div>&emsp;{{$v->text_notation}}</div>
                 </div>
             </div>
         </div>

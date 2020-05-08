@@ -15,6 +15,17 @@ class HomeModel extends Model
                               'notations.name_notation', 'notations.text_notation',
                               'users.name')
                      ->orderByRaw('notation_add_date')->get();
+        
+        if($notations)
+        {
+            foreach($notations as $k => $v)
+            {
+                if(strlen($v->text_notation) >= 250)
+                 $notations[$k]->text_notation = substr($v->text_notation ,0, 250) . ' ...';
+            }
+           
+        }
+        else $notations = 0;
 
         return $notations;
     } 

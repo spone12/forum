@@ -8,9 +8,17 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row no-gutters">
-                        <div class='col-12 align-self-start'>
+                        <div class='col-10 align-self-start'>
                             <strong class='notation_tema'>  {{ $view[0]->name_notation}}</strong>
                         </div>
+                        @auth
+                            <div class='col-2 align-self-end'>
+
+                                <img id="notation_edit" class='marker' width=20 title='Редактировать запись' alt='Редактировать запись' src="{{ asset('img/icons/edit.png') }}">
+                                
+                                <img id="notation_delete" class='marker' width=20 title='Удалить запись' alt='Удалить запись' src="{{ asset('img/icons/delete.png') }}">
+                            </div>
+                        @endauth
                     </div>
                     <div class='row justify-content-start'>
                      <div class='col-4 col-sm-3 add_notation_who'>Добавил:</div>
@@ -24,7 +32,7 @@
                 </div>
                 <div class="card-body">
                     <div class='row justify-content-center'>
-                        <div  class='col-10' style='white-space:normal;'>
+                        <div  class='col-10'>
                            &emsp; {!! $view[0]->text_notation!!}
                         </div>    
                     </div>
