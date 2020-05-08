@@ -2,7 +2,7 @@
 @section('title-block')Новость@endsection
 @section('content')
 <script src="{{ asset('resource/js/notation.js') }}"></script>
-
+    {{<?=var_dump($view);?>}}
 
     <div class='container'>
         <div class='row justify-content-center'>

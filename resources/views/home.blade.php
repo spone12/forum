@@ -23,7 +23,9 @@
                 <div class="card-header">
                     <div class="row no-gutters">
                         <div class='col-9 col-sm-11 align-self-start'>
-                            <strong class='notation_tema'>{{$v->name_notation}}</strong>
+                            <strong class='notation_tema'>
+                            <a class='a_header' href='notation/view/{{$v->notation_id}}'>{{$v->name_notation}}</a>
+                            </strong>
                         </div>
                        
                         @auth
@@ -38,7 +40,7 @@
                     <div class='row justify-content-start'>
                      <div class='col-4 col-sm-2 add_notation_who'>Добавил:</div>
                      <div class='col-5 col-sm-3 add_notation_who'>
-                        <a href='/profile/{{$v->notation_id}}' title='Перейти в профиль'>{{$v->name}}</a>
+                        <a href='/profile/{{$v->id_user}}' title='Перейти в профиль'>{{$v->name}}</a>
                      </div>
                     </div>
                 </div>

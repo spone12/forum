@@ -26,11 +26,27 @@ class NotationModel extends Model
             );
         }
         else $ins = false;
-       /* $ins = DB::insert('INSERT INTO notations (id_user, name_notation,text_notation) 
-                            VALUES (?, ?, ?)', [$user, $data_notation['name_tema'],$data_notation['text_notation']]);*/
-        //return array('dd' => 'ffds');
+
         return $ins;
         //return $ins;
+    }
+
+    protected function view_notation(int $notation_id)
+    {
+        if (Auth::check()) 
+        {
+
+            $notation = DB::table('notations')
+            ->join('users', 'users.id', '=', 'notations.id_user')
+            ->select('notations.notation_id', 'notations.id_user',
+                    'notations.name_notation', 'notations.text_notation',
+                    'users.name')
+            ->where('notations.notation_id', '=', $notation_id)->get();
+
+            if($notation)
+                return $notation;
+            else return 0;    
+        }
     }
 
     protected function del_notation()

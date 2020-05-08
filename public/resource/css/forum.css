@@ -62,3 +62,13 @@
     font-size: larger;
     margin-left: 5px;
 }
+
+.a_header
+{
+    text-decoration: none !important;
+    color: black;
+}
+.a_header:hover
+{
+    color: #b03535;
+}
