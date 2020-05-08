@@ -16,11 +16,11 @@ class NotationModel extends Model
             $user = Auth::user()->id;
 
         
-        $ins =  
-        DB::table('notations')->insert(
+            $ins =  
+            DB::table('notations')->insert(
                 array('id_user' => $user, 
-                    'name_notation' =>  $data_notation['name_tema'], 
-                    'text_notation' => $data_notation['text_notation'],
+                    'name_notation' =>  trim($data_notation['name_tema']), 
+                    'text_notation' =>  trim($data_notation['text_notation']),
                     'notation_add_date' =>  date("d.m.y H:i:s"),
                     'notation_edit_date' => date("d.m.y H:i:s"))
             );
@@ -40,11 +40,15 @@ class NotationModel extends Model
             ->join('users', 'users.id', '=', 'notations.id_user')
             ->select('notations.notation_id', 'notations.id_user',
                     'notations.name_notation', 'notations.text_notation',
-                    'users.name')
+                    'users.name','notations.notation_add_date')
             ->where('notations.notation_id', '=', $notation_id)->get();
 
             if($notation)
+            {
+                $notation[0]->text_notation = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $notation[0]->text_notation);
+               // PHP_EOL
                 return $notation;
+            }
             else return 0;    
         }
     }

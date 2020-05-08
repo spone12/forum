@@ -25,7 +25,7 @@ class NotationController extends Controller
     {
         $view = NotationModel::view_notation($notation_id);
 
-        return view('menu.notation', ['view' => $view]);
+        return view('menu.notation_view_edit', ['view' => $view]);
     }
 
     public function Notation(Request $request)
