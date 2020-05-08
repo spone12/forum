@@ -22,10 +22,10 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row no-gutters">
-                        <div class='col-9 col-sm-11  align-self-start'>
-                            <strong>{{$v->name_notation}}</strong>
+                        <div class='col-9 col-sm-11 align-self-start'>
+                            <strong class='notation_tema'>{{$v->name_notation}}</strong>
                         </div>
-
+                       
                         @auth
                         <div class='col-3 col-sm-1 align-self-end'>
                             
@@ -34,6 +34,12 @@
                                 <img id="notation_delete" class='marker' width=20 title='Удалить запись' alt='Удалить запись' src="{{ asset('img/icons/delete.png') }}">
                         </div>
                         @endauth
+                    </div>
+                    <div class='row'>
+                     <div class='col-4 col-sm-2 add_notation_who'>Добавил:</div>
+                     <div class='col-5 col-sm-3 add_notation_who'>
+                        <a href='#' title='name_user'>DDDFFG</a>
+                     </div>
                     </div>
                 </div>
 

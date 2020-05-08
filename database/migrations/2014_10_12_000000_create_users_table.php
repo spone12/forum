@@ -21,10 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->smallInteger('gender')->default(1)->comment('Пол');
             $table->text('avatar')->nullable();
-            $table->timestamp('date_registration')->nullable();
-            $table->timestamp('date_change_profile')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('date_change_profile')->nullable();
             $table->ipAddress('ip_user');
             $table->text('browser_user');
         });

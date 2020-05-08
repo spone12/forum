@@ -9,6 +9,8 @@ class ProfileController extends Controller
 {
     public function view_profile(Request $request)
     {
-        return view('menu.profile');
+        $data_user = ProfileModel::get_data_user();
+
+        return view('menu.profile', ['data_user' => $data_user]);
     }
 }

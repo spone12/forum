@@ -8,5 +8,29 @@ use Illuminate\Support\Facades\DB;
 
 class ProfileModel extends Model
 {
-    //
+    protected static function get_data_user()
+    {
+        if (Auth::check()) 
+        {
+            $user = Auth::user()->id;
+
+            $data = DB::table('users')
+                        ->select('name','email','gender', 'avatar',
+                                'created_at')
+                        ->where('id', '=', $user)
+                        ->first();
+
+            if($data)
+            {
+                $data->gender == 1 ?  $data->gender = 'Мужской':  $data->gender = 'Женский';
+                if(is_null($data->avatar))
+                {
+                    $data->avatar = 'img/avatar/no_avatar.png';
+                }
+            }
+        }
+        else $data = 0;
+
+        return $data;
+    }
 }
