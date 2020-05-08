@@ -15,14 +15,13 @@ class NotationModel extends Model
         {
             $user = Auth::user()->id;
 
-        
             $ins =  
             DB::table('notations')->insert(
                 array('id_user' => $user, 
                     'name_notation' =>  trim(addslashes($data_notation['name_tema'])), 
                     'text_notation' =>  trim(addslashes($data_notation['text_notation'])),
-                    'notation_add_date' =>  date("d.m.y H:i:s"),
-                    'notation_edit_date' => date("d.m.y H:i:s"))
+                    'notation_add_date' =>  date('Y-m-d H:i:s'),
+                    'notation_edit_date' => date('Y-m-d H:i:s'))
             );
         }
         else $ins = false;
@@ -40,13 +39,16 @@ class NotationModel extends Model
             ->join('users', 'users.id', '=', 'notations.id_user')
             ->select('notations.notation_id', 'notations.id_user',
                     'notations.name_notation', 'notations.text_notation',
-                    'users.name','notations.notation_add_date')
+                    'users.name', 'users.avatar','notations.notation_add_date')
             ->where('notations.notation_id', '=', $notation_id)->get();
 
             if($notation)
             {
                 $notation[0]->text_notation = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $notation[0]->text_notation);
-               
+                
+                if(is_null($notation[0]->avatar))
+                    $notation[0]->avatar = 'img/avatar/no_avatar.png';
+
                 return $notation;
             }
             else return 0;    

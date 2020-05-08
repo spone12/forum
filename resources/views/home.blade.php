@@ -31,6 +31,7 @@
                     <div class='row justify-content-start'>
                      <div class='col-4 col-sm-2 add_notation_who'>Добавил:</div>
                      <div class='col-5 col-sm-3 add_notation_who'>
+                        <img class='mini_avatar' title='{{$v->name}}' width=30 src="{{ asset($v->avatar) }}" />
                         <a href='/profile/{{$v->id_user}}' title='Перейти в профиль'>{{$v->name}}</a>
                      </div>
                     </div>

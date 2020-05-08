@@ -41,10 +41,12 @@
                 <div class='col-9 t_a p-1'>
                     <img class="page_avatar" src={{asset($data_user->avatar)}} title='Name profile' alt='avatar' />
                 </div>
-           
+
+                @if(Auth::user()->id === $data_user->id) 
                 <div class='col-9 t_a'>
                     <button class='btn-success'>Редактировать</button>
                 </div>
+                @endif 
         </div>
     </div>  
 </div>

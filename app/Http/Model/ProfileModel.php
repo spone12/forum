@@ -15,7 +15,7 @@ class ProfileModel extends Model
             $user = Auth::user()->id;
 
             $data = DB::table('users')
-                        ->select('name','email','gender', 'avatar',
+                        ->select('id','name','email','gender', 'avatar',
                                 'created_at')
                         ->where('id', '=', $user)
                         ->first();
@@ -41,7 +41,7 @@ class ProfileModel extends Model
            
 
             $data = DB::table('users')
-                        ->select('name','email','gender', 'avatar',
+                        ->select('id','name','email','gender', 'avatar',
                                 'created_at')
                         ->where('id', '=', $id)
                         ->first();
