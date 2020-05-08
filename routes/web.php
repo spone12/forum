@@ -27,3 +27,6 @@ Route::post('/notation', 'NotationController@AjaxReq')->middleware('auth');
 
 // зайти могут только зарегестрированные
 Route::get('/profile', 'ProfileController@view_profile')->middleware('auth');
+
+//с использованием where
+Route::get('/profile/{id}', 'ProfileController@view_another_profile')->where('id','[0-9]{1,11}')->middleware('auth');

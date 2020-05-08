@@ -33,4 +33,30 @@ class ProfileModel extends Model
 
         return $data;
     }
+
+    protected static function get_another_user($id)
+    {
+        if (Auth::check()) 
+        {
+           
+
+            $data = DB::table('users')
+                        ->select('name','email','gender', 'avatar',
+                                'created_at')
+                        ->where('id', '=', $id)
+                        ->first();
+
+            if(!empty($data))
+            {
+                $data->gender == 1 ?  $data->gender = 'Мужской':  $data->gender = 'Женский';
+                if(is_null($data->avatar))
+                {
+                    $data->avatar = 'img/avatar/no_avatar.png';
+                }
+            }
+        }
+        else $data = 0;
+
+        return $data;
+    }
 }

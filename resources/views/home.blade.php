@@ -35,10 +35,10 @@
                         </div>
                         @endauth
                     </div>
-                    <div class='row'>
+                    <div class='row justify-content-start'>
                      <div class='col-4 col-sm-2 add_notation_who'>Добавил:</div>
                      <div class='col-5 col-sm-3 add_notation_who'>
-                        <a href='#' title='name_user'>DDDFFG</a>
+                        <a href='/profile/{{$v->notation_id}}' title='Перейти в профиль'>{{$v->name}}</a>
                      </div>
                     </div>
                 </div>

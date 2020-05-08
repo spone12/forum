@@ -39,7 +39,7 @@
             <div class='row justify-content-center align-items-center'>
            
                 <div class='col-9 t_a p-1'>
-                    <img class="page_avatar" src='{{$data_user->avatar}}' title='Name profile' alt='avatar' />
+                    <img class="page_avatar" src={{asset($data_user->avatar)}} title='Name profile' alt='avatar' />
                 </div>
            
                 <div class='col-9 t_a'>

@@ -26,8 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-       $data = HomeModel::take_notations();
+       $notations = HomeModel::take_notations();
 
-        return view('home', ['notations' => $data]);
+        return view('home', ['notations' => $notations]);
     }
 }
