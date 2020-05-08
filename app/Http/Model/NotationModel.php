@@ -19,8 +19,8 @@ class NotationModel extends Model
             $ins =  
             DB::table('notations')->insert(
                 array('id_user' => $user, 
-                    'name_notation' =>  trim($data_notation['name_tema']), 
-                    'text_notation' =>  trim($data_notation['text_notation']),
+                    'name_notation' =>  trim(addslashes($data_notation['name_tema'])), 
+                    'text_notation' =>  trim(addslashes($data_notation['text_notation'])),
                     'notation_add_date' =>  date("d.m.y H:i:s"),
                     'notation_edit_date' => date("d.m.y H:i:s"))
             );
@@ -46,7 +46,7 @@ class NotationModel extends Model
             if($notation)
             {
                 $notation[0]->text_notation = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $notation[0]->text_notation);
-               // PHP_EOL
+               
                 return $notation;
             }
             else return 0;    
