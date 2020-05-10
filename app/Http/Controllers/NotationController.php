@@ -4,21 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Model\NotationModel;
+use App\Http\Requests\NotationRequest;
 
 class NotationController extends Controller
 {
-    public function AjaxReq(Request $request)
+    public function AjaxReq(NotationRequest $request)
     {
         $input = $request->all(); //получение всех входных данных
         $method = $request->input('method');
-
+    
         if($method == 'add')
         {
-           $data = NotationModel::ins_notation($input);
+            $data = NotationModel::ins_notation($input);
         }
-
+    
         return response()->json(['success'=> $data]);
+          
       
+       
     }
 
     public function NotationView(int $notation_id)

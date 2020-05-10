@@ -27,8 +27,8 @@
 
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm fix_nav">
             <div class="container">
-            <a class="navbar-brand" href="/"><img width=30 src="{{ asset('img/logo/logo.png') }}" /></a>
-                <a class="navbar-brand" href="{{ url('/') }}">
+            <a class="navbar-brand" href="{{ route('home')}}"><img width=30 src="{{ asset('img/logo/logo.png') }}" /></a>
+                <a class="navbar-brand" href="{{ route('home')}}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -68,7 +68,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/profile" onclick="">Профиль</a>
+                                    <a class="dropdown-item" href="{{ route('profile')}}" onclick="">Профиль</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

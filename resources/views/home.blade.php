@@ -8,7 +8,7 @@
         <div>  <img id='notation_add' name='notation_add' onclick="event.preventDefault();
          document.getElementById('notation_form_add').submit();" class='marker' width=20 title='Добавить запись' alt='Добавить запись' src="{{ asset('img/icons/add.png') }}"></div>
     </div>
-    <form id="notation_form_add" action="/notation" method="GET" style="display: none;">
+    <form id="notation_form_add" action="{{ route('notation') }}" method="GET" style="display: none;">
                              {{ csrf_field() }}
     </form>    
 </div>

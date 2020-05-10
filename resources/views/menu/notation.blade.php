@@ -3,6 +3,20 @@
 @section('content')
 <script src="{{ asset('resource/js/notation.js') }}"></script>
 
+    {{-- Для форм
+    @if($errors->any())
+    <div class='alert alert-danger'>
+        <ul>
+            @foreach($errors->any() as $error)
+                <li> {{ $error }}</li>
+            @endforeach
+        </ul>    
+    </div>
+    @endif
+    --}}
+
+    <div id="form-errors"></div>
+
     <div class='container'>
         <div class='row justify-content-center'>
             <div class="col-md-10">
@@ -13,7 +27,7 @@
                           Тема новости 
                         </div>
                         <div  class='col-9 align-self-end'>
-                            <input id='name_tema' placeholder='Тема' style='width:100%' type='text' />
+                            <input id='name_tema' name='name_tema' placeholder='Тема' style='width:100%' type='text' />
                         </div>
                         
                     </div>
@@ -21,7 +35,7 @@
                 <div class="card-body">
                     <div class='row justify-content-center'>
                         <div  class='col-10'>
-                            <textarea id='text_notation' style='width:100%'></textarea>
+                            <textarea id='text_notation' name='text_notation' style='width:100%'></textarea>
                         </div>    
                     </div>
                     <div class='row justify-content-center'>

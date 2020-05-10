@@ -22,12 +22,12 @@ Route::get('/about', function () {
 
 Route::post('/search', 'SearchController@getDataSearch')->name('search');
 
-Route::get('/notation', 'NotationController@Notation')->middleware('auth');
+Route::get('/notation', 'NotationController@Notation')->name('notation')->middleware('auth');
 Route::post('/notation', 'NotationController@AjaxReq')->middleware('auth');
 Route::get('/notation/view/{notation_id}', 'NotationController@NotationView')->where('notation_id','[0-9]{1,11}')->middleware('auth');
 
 // зайти могут только зарегестрированные
-Route::get('/profile', 'ProfileController@view_profile')->middleware('auth');
+Route::get('/profile', 'ProfileController@view_profile')->name('profile')->middleware('auth');
 
 //с использованием where
 Route::get('/profile/{id}', 'ProfileController@view_another_profile')->where('id','[0-9]{1,11}')->middleware('auth');

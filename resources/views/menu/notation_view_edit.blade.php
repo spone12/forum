@@ -34,7 +34,7 @@
                 <div class="card-body">
                     <div class='row justify-content-center'>
                         <div  class='col-10'>
-                           &emsp; {!! $view[0]->text_notation!!}
+                            &emsp; {!! $view[0]->text_notation!!}
                         </div>    
                     </div>
                      

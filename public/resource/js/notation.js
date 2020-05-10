@@ -17,14 +17,29 @@
                 {
                     location.href = '/home';
                 }
-
+                
                // console.log( data.success);
             },
-            error: function (msg) {
-            
-                console.log(msg);
-            
+            error: function(data)
+            {
+                // Log in the console
+                console.log(errors);
+
+                var errors = data.responseJSON;
+
+                // blade page
+                 errorsHtml = '<div class="alert alert-danger">' +
+                                '<ul>';
+
+                 $.each( errors.errors, function( key, value ) 
+                 {
+                      errorsHtml += '<li>'+ value + '</li>';
+                 });
+                 errorsHtml += '</ul></div>';
+
+                 $( '#form-errors' ).html( errorsHtml ); //appending to a <div id="form-errors"></div> 
             }
+            
             
         });
     }
