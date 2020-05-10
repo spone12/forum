@@ -27,7 +27,7 @@
 
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm fix_nav">
             <div class="container">
-            <a class="navbar-brand" href="{{ route('home')}}"><img width=30 src="{{ asset('img/logo/logo.png') }}" /></a>
+            <a class="navbar-brand" href="{{ route('home')}}"><img width=30 class='logo' src="{{ asset('img/logo/logo.png') }}" /></a>
                 <a class="navbar-brand" href="{{ route('home')}}">
                     {{ config('app.name', 'Laravel') }}
                 </a>

@@ -72,3 +72,11 @@
 {
     color: #b03535;
 }
+
+.logo:hover
+{
+    opacity: 1;
+    background: url('/img/logo/logo_hover.png');
+	background-size: 100% 100%;
+    transition: 1s;
+}
