@@ -19,9 +19,6 @@ class NotationController extends Controller
         }
     
         return response()->json(['success'=> $data]);
-          
-      
-       
     }
 
     public function NotationView(int $notation_id)

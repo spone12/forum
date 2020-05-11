@@ -3,18 +3,6 @@
 @section('content')
 <script src="{{ asset('resource/js/notation.js') }}"></script>
 
-    {{-- Для форм
-    @if($errors->any())
-    <div class='alert alert-danger'>
-        <ul>
-            @foreach($errors->any() as $error)
-                <li> {{ $error }}</li>
-            @endforeach
-        </ul>    
-    </div>
-    @endif
-    --}}
-
     <div id="form-errors"></div>
 
     <div class='container'>

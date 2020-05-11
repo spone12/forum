@@ -27,6 +27,7 @@ class HomeController extends Controller
     public function index()
     {
        $notations = HomeModel::take_notations();
+      // dd($notations);
 
         return view('home', ['notations' => $notations]);
     }

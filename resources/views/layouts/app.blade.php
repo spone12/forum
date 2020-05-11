@@ -90,6 +90,7 @@
 
 
         <main class="py-4 fix_main">
+            @include('layouts.messages')
             @yield('content')
         </main>
     
