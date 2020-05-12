@@ -21,4 +21,11 @@ $(function()
         }
     });
     
+
+    $('#search').on('click', function(){
+        $('.search-marker').hide();
+    });
+    $('#search').blur(function(){
+        $('.search-marker').show();
+    })
 });

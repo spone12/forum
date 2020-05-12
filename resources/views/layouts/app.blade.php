@@ -45,10 +45,19 @@
                     </ul>
 
                     <ul>
-                        <form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('search') }}">
+                        <!--form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('search') }}">
                             @csrf
-                            <li class="no_mark"> <input class="form-control mr-sm-2" type="search" name="search" placeholder="Поиск" aria-label="Search"></li>
+                            <li class="no_mark"> <input class="form-control mr-sm-2" type="search" name="search" placeholder="Поиск" aria-label="Search"> <span class="hotkey-marker">/</span></li>
                             <li class="no_mark"> <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button></li>
+                        </form-->
+                        <form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('search') }}">
+                         @csrf
+                            <label>
+                                <img  width=15 class='search-icon' src="{{ url('/img/icons/search.png') }}" /> 
+                                <input id='search' placeholder="Поиск..." class='search-input' name="search" type="search">
+                                <span class="search-marker">/</span>
+                                <button id='search-button' class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+                            </label>
                         </form>
                     </ul>
 

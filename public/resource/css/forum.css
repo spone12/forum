@@ -131,3 +131,32 @@
 {
     padding-left: 10px;
 }
+
+
+/* SEARCH*/
+.search-marker
+{
+    border-radius: 3px;
+    border: 1px solid #acb1b4;
+    bottom: 10px;
+    color: #acb1b4;
+    content: '/';
+    font-size: 13px;
+    line-height: 21px;
+    margin: auto 0;
+    position: relative;
+    right: 25px;
+    text-align: center;
+    top: -1px;
+    padding: 1px 4px 0px 6px;
+}
+
+.search-input
+{
+    border-radius: 7px;
+    height: 38px;
+    width: 240px;
+}
+
+.search-icon{margin-right: 5px;}
+/*                             */
