@@ -12,12 +12,15 @@
                             <strong class='notation_tema'>  {{ $view[0]->name_notation}}</strong>
                         </div>
                         @auth
+                            @if(Auth::user()->id === $view[0]->id_user) 
                             <div class='col-2 align-self-end'>
-
-                                <img id="notation_edit" class='marker' width=20 title='Редактировать запись' alt='Редактировать запись' src="{{ asset('img/icons/edit.png') }}">
+                                <a class='no_decor' href="{{ route('notation_edit_id', $view[0]->notation_id) }}">
+                                    <img id="notation_edit" class='marker' width=20 title='Редактировать запись' alt='Редактировать запись' src="{{ asset('img/icons/edit.png') }}">
+                                </a>
                                 
                                 <img id="notation_delete" class='marker' width=20 title='Удалить запись' alt='Удалить запись' src="{{ asset('img/icons/delete.png') }}">
                             </div>
+                            @endif
                         @endauth
                     </div>
                     <div class='row justify-content-start'>

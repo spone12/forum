@@ -10,11 +10,11 @@ class ProfileController extends Controller
     
     public function view_another_profile(int $id)
     {
-        $data_user = ProfileModel::get_another_user($id);
-
+            $data_user = ProfileModel::get_another_user($id);
+            
         if(!empty($data_user->name))
             return view('menu.profile', ['data_user' => $data_user]);
-        else  return view('error_404');
+        else  return view('error_404', ['error' => ['Данного пользователя не существует']]);
     }
 
     public function view_profile(Request $request)

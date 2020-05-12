@@ -32,9 +32,6 @@ class NotationModel extends Model
 
     protected function view_notation(int $notation_id)
     {
-        if (Auth::check()) 
-        {
-
             $notation = DB::table('notations')
             ->join('users', 'users.id', '=', 'notations.id_user')
             ->select('notations.notation_id', 'notations.id_user',
@@ -51,8 +48,16 @@ class NotationModel extends Model
 
                 return $notation;
             }
-            else return 0;    
-        }
+    
+    }
+
+    protected function edit_notation_access(int $notation_id)
+    {
+        $notation = DB::table('notations')
+        ->select('id_user','notation_id','category','name_notation','text_notation')
+        ->where('notation_id', '=', $notation_id)->first();
+
+        return $notation;
     }
 
     protected function del_notation()
@@ -60,8 +65,5 @@ class NotationModel extends Model
         
     }
 
-    protected function upd_notation()
-    {
-        
-    }
+   
 }

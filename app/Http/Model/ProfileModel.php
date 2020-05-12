@@ -29,16 +29,13 @@ class ProfileModel extends Model
                 }
             }
         }
-        else $data = 0;
+        else $data = false;
 
         return $data;
     }
 
     protected static function get_another_user($id)
     {
-        if (Auth::check()) 
-        {
-           
 
             $data = DB::table('users')
                         ->select('id','name','email','gender', 'avatar',
@@ -54,8 +51,7 @@ class ProfileModel extends Model
                     $data->avatar = 'img/avatar/no_avatar.png';
                 }
             }
-        }
-        else $data = 0;
+        
 
         return $data;
     }
