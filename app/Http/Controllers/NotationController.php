@@ -23,9 +23,17 @@ class NotationController extends Controller
 
     public function NotationView(int $notation_id)
     {
-        $view = NotationModel::view_notation($notation_id);
-
+        try
+        {
+            $view = NotationModel::view_notation($notation_id);
+        }
+        catch (\Exception $exception) 
+        {
+            return view('error_404', ['error' => ['Данной статьи не существует']]);
+           //abort(404,'Данной статьи не существует');
+        }
         return view('menu.notation_view_edit', ['view' => $view]);
+      
     }
 
     public function Notation(Request $request)
