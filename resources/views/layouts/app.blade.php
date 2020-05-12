@@ -20,8 +20,10 @@
     <link href="{{ asset('resource/css/forum.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('resource/libraries/bootstrap/css/bootstrap.min.css') }}" />
+
     <script src="{{ asset('resource/libraries/jQuery/jquery-3.3.1.js') }}"></script>
     <script src="{{ asset('resource/libraries/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('resource/js/nav.js') }}"></script>
 </head>
 <body>
 
@@ -37,9 +39,9 @@
             
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                    
                     </ul>
 
                     <ul>
@@ -49,6 +51,7 @@
                             <li class="no_mark"> <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button></li>
                         </form>
                     </ul>
+
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
@@ -63,23 +66,36 @@
                             @endif
                         @else
                             <li class="nav-item dropdown menu_user">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle c" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    <!--dropdown-toggle class-->
+                                <a id="navbarDropdown" class="nav-link  c" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} 
+                                    <span class="caret">
+                                     <img id='navigation_arrow' width=15 src="{{ url('/img/icons/navigation_arrow.png') }}" /> 
+                                    </span>
                                 </a>
-
+                                
+                               
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('profile')}}" onclick="">Профиль</a>
+                                   
+                                    <a class="dropdown-item" href="{{ route('profile')}}" onclick="">
+                                        <div>
+                                            <img width=20 src="{{ url('/img/icons/profile.png') }}" /> 
+                                            <span class='icon-text'>Профиль</span>
+                                        </div>
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        Выйти
+                                        <div>
+                                            <img width=20 src="{{ url('/img/icons/logout.png') }}" /> 
+                                            <span class='icon-text'>Выход</span>
+                                        </div>
                                     </a>
-                                    {{-- __('Logout') --}}
+
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
 
-                                   
                                 </div>
                             </li>
                         @endauth
