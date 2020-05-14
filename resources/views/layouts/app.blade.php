@@ -62,21 +62,21 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Вход') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Регистрация') }}</a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item dropdown menu_user">
                                     <!--dropdown-toggle class-->
                                 <a id="navbarDropdown" class="nav-link  c" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <span class='name_profile'>{{ Auth::user()->name }} </span>
                                     <img class='mini_avatar' title='' style='margin-right: 5px;' width=30 src="{{ url('/img/avatar/no_avatar.png') }}" />
-                                    {{ Auth::user()->name }} 
                                     <span class="caret">
-                                     <img id='navigation_arrow' width=10 src="{{ url('/img/icons/navigation_arrow.png') }}" /> 
+                                     <img id='navigation_arrow' width=10 src="{{ url('/img/icons/arrow.svg') }}" /> 
                                     </span>
                                 </a>
                                 
