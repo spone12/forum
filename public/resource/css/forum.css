@@ -158,5 +158,39 @@
     width: 240px;
 }
 
-.search-icon{margin-right: 5px;}
+.search-icon
+{
+    margin-right: 5px;
+}
+.search-button
+{
+    background: none;
+    border: none;
+}
+
+.search-button :hover
+{
+    border: 1px solid green;
+    border-radius: 10px;
+    transition: all 0.5s;
+}
 /*                             */
+
+/* Показать/скрыть пароль */
+
+.password {position: relative;}
+
+.password-control 
+{
+	position: absolute;
+	top: 11px;
+	right: 20px;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background: url('/img/icons/view.svg') 0 0 no-repeat;
+}
+
+.password-control.view {background: url('/img/icons/no-view.svg') 0 0 no-repeat;}
+
+/*                            */

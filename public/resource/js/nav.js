@@ -20,12 +20,27 @@ $(function()
              $rotated = false;
         }
     });
-    
 
     $('#search').on('click', function(){
-        $('.search-marker').hide();
+        $('.search-marker').hide(300);
     });
     $('#search').blur(function(){
-        $('.search-marker').show();
+        $('.search-marker').show(300);
     })
+
+    $('body').on('click', '.password-control', function()
+    {
+        if ($('#password').attr('type') == 'password')
+        {
+            $(this).addClass('view');
+            $('#password').attr('type', 'text');
+        } 
+        else
+        {
+            $(this).removeClass('view');
+            $('#password').attr('type', 'password');
+        }
+
+        return false;
+    });
 });

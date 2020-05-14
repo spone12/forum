@@ -45,18 +45,14 @@
                     </ul>
 
                     <ul>
-                        <!--form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('search') }}">
-                            @csrf
-                            <li class="no_mark"> <input class="form-control mr-sm-2" type="search" name="search" placeholder="Поиск" aria-label="Search"> <span class="hotkey-marker">/</span></li>
-                            <li class="no_mark"> <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button></li>
-                        </form-->
                         <form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('search') }}">
                          @csrf
                             <label>
-                                <img  width=15 class='search-icon' src="{{ url('/img/icons/search.png') }}" /> 
+                                <button id='search-button' class="search-button" type="submit">
+                                 <img  width=20 class='search-icon' src="{{ url('/img/icons/search.png') }}" /> 
+                                </button>
                                 <input id='search' placeholder="Поиск..." class='search-input' name="search" type="search">
                                 <span class="search-marker">/</span>
-                                <button id='search-button' class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
                             </label>
                         </form>
                     </ul>
@@ -77,9 +73,10 @@
                             <li class="nav-item dropdown menu_user">
                                     <!--dropdown-toggle class-->
                                 <a id="navbarDropdown" class="nav-link  c" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <img class='mini_avatar' title='' style='margin-right: 5px;' width=30 src="{{ url('/img/avatar/no_avatar.png') }}" />
                                     {{ Auth::user()->name }} 
                                     <span class="caret">
-                                     <img id='navigation_arrow' width=15 src="{{ url('/img/icons/navigation_arrow.png') }}" /> 
+                                     <img id='navigation_arrow' width=10 src="{{ url('/img/icons/navigation_arrow.png') }}" /> 
                                     </span>
                                 </a>
                                 
@@ -92,6 +89,15 @@
                                             <span class='icon-text'>Профиль</span>
                                         </div>
                                     </a>
+
+                                    <a class="dropdown-item" href="{{ url('/') }}"
+                                       onclick=''>
+                                        <div>
+                                            <img width=20 src="{{ url('/img/icons/message.png') }}" /> 
+                                            <span class='icon-text'>Сообщения</span>
+                                        </div>
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
