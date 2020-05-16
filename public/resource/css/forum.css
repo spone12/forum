@@ -202,3 +202,16 @@
     font-weight: bold;
     margin-right: 5px;
 }
+
+.button-native
+{
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+.couter_likes1
+{
+    text-align: center; 
+    margin-bottom: 10px;
+}

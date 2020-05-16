@@ -24,7 +24,7 @@ class NotationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name_tema' => 'required|min:5|max:150',
+            'name_tema' => 'required|min:3|max:150',
             'text_notation' => 'required|min:30|max:2500'
         ];
     }

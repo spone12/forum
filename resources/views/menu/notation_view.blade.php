@@ -4,7 +4,23 @@
 
     <div class='container'>
         <div class='row justify-content-center'>
-            <div class="col-md-10">
+
+        <div class="col-sm-12 col-lg-1 col-md-1" style='text-align: center;>
+           
+            <button class='button-native'>
+                <img width=15 src="{{ url('/img/icons/arrow-up.svg') }}" />
+            </button>    
+            <img width=25 src="{{ url('/img/icons/like.svg') }}" />
+            <button class='button-native'>
+                <img width=15 src="{{ url('/img/icons/arrow-down.svg') }}" />
+            </button>
+
+            <div class='row justify-content-center' style='margin-bottom: 10px;'>
+                <div>134</div>
+            </div>
+        </div>
+
+            <div class="col-md-11">
             <div class="card">
                 <div class="card-header">
                     <div class="row no-gutters">

@@ -79,7 +79,6 @@
                                      <img id='navigation_arrow' width=10 src="{{ url('/img/icons/arrow.svg') }}" /> 
                                     </span>
                                 </a>
-                                
                                
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                    

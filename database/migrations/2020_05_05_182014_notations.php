@@ -20,6 +20,7 @@ class Notations extends Migration
             $table->smallInteger('category')->comment('Категория темы')->default(0);
             $table->string('name_notation', 150);
             $table->text('text_notation')->comment('Текст нотации');
+            $table->integer('rating')->default(0)->comment('Рейтинг');
             $table->timestamp('notation_add_date')->nullable();
             $table->timestamp('notation_edit_date')->nullable();
 

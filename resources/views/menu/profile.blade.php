@@ -13,13 +13,25 @@
             </div>
             <div class='card card-body'>
                 <div class='row align-items-center'>
-                    <div class='col-sm-4 profile_info'>E-mail:</div>
-                    <div class='col-sm-8 '>{{$data_user->email}}</div>
+                    <div class='col-sm-4 profile_info'>Имя:</div>
+                    <div class='col-sm-8 '>...</div>
                 </div>
+
                 <div class='row align-items-center'>
                     <div class='col-sm-4 profile_info'>Пол:</div>
                     <div class='col-sm-8'>{{$data_user->gender}}</div>
                 </div>
+
+                <div class='row align-items-center'>
+                    <div class='col-sm-4 profile_info'>Город:</div>
+                    <div class='col-sm-8'> ... </div>
+                </div>
+
+                <div class='row align-items-center'>
+                    <div class='col-sm-4 profile_info'>E-mail:</div>
+                    <div class='col-sm-8 '>{{$data_user->email}}</div>
+                </div>
+                
                 <div class='row align-items-center'>
                     <div class='col-sm-4  profile_info'>Дата рождения:</div>
                     <div class='col-sm-8'>12.11.1282</div>

@@ -1,5 +1,6 @@
 $(function() 
 {
+    //ROTATED//
     $rotated = false;
     $('#navbarDropdown').hover(function()
     {
@@ -20,14 +21,19 @@ $(function()
              $rotated = false;
         }
     });
+    //END ROTATED
 
-    $('#search').on('click', function(){
+    //SEARCH
+    $('#search').on('click', function()
+    {
         $('.search-marker').hide(300);
     });
     $('#search').blur(function(){
         $('.search-marker').show(300);
-    })
+    });
+    ///END SEARCH//////
 
+    //PASSWORD VIEW //
     $('body').on('click', '.password-control', function()
     {
         if ($('#password').attr('type') == 'password')
@@ -43,4 +49,5 @@ $(function()
 
         return false;
     });
+     //END PASSWORD VIEW //
 });
