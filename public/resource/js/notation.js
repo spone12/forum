@@ -23,10 +23,11 @@
             error: function(data)
             {
                 // Log in the console
-                console.log(errors);
+               
 
                 var errors = data.responseJSON;
 
+                console.log(errors);
                 // blade page
                  errorsHtml = '<div class="alert alert-danger">' +
                                 '<ul>';
@@ -42,5 +43,38 @@
             
             
         });
+    }
+
+    function change_rating(action = 1)
+    {
+        if(action != 0 && action != 1)
+            return;
+        
+           let id_notation = $('#id_notation').val();
+            $.ajax(
+                {
+                    url: '/notation/rating/' + id_notation,
+                    type: "POST",
+                    data: {
+                            id_notation: id_notation, 
+                            action: action,
+                          },
+                    headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+                    success: function (data) 
+                    {
+                        
+                       console.log( data);
+                    },
+                    error: function(data)
+                    {
+        
+                        var errors = data.responseJSON;
+        
+                        console.log(errors);
+                       
+                    }
+                    
+                    
+                });
     }
        

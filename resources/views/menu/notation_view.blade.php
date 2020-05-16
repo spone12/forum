@@ -1,17 +1,20 @@
 @extends('layouts.app')
 @section('title-block')Новость@endsection
 @section('content')
+<script src="{{ asset('resource/js/notation.js') }}"></script>
 
+    <input type='hidden' id='id_notation' value='{{ $view[0]->notation_id}}' />
+    
     <div class='container'>
         <div class='row justify-content-center'>
 
-        <div class="col-sm-12 col-lg-1 col-md-1" style='text-align: center;>
+        <div class="col-sm-12 col-lg-1 col-md-1" style='text-align: center;'>
            
-            <button class='button-native'>
+            <button class='button-native' onclick='change_rating(1)'>
                 <img width=15 src="{{ url('/img/icons/arrow-up.svg') }}" />
             </button>    
             <img width=25 src="{{ url('/img/icons/like.svg') }}" />
-            <button class='button-native'>
+            <button class='button-native' onclick='change_rating(0)'>
                 <img width=15 src="{{ url('/img/icons/arrow-down.svg') }}" />
             </button>
 

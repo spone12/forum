@@ -53,6 +53,11 @@ class NotationController extends Controller
         }
     }
 
+    protected function NotationRating(int $notation_id)
+    {
+        return response()->json(['success'=> $notation_id]);
+    }
+
     public function Notation(Request $request)
     {
         return view('menu.notation');

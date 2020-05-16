@@ -15,7 +15,7 @@ class Notations extends Migration
     public function up()
     {
         Schema::create('notations', function (Blueprint $table) {
-            $table->Increments('notation_id');
+            $table->increments('notation_id')->unsigned(false);
             $table->integer('id_user')->comment('id пользователя, который добавил тему');
             $table->smallInteger('category')->comment('Категория темы')->default(0);
             $table->string('name_notation', 150);
@@ -24,6 +24,7 @@ class Notations extends Migration
             $table->timestamp('notation_add_date')->nullable();
             $table->timestamp('notation_edit_date')->nullable();
 
+            //$table->primary('notation_id');
         });
 
         DB::statement("ALTER TABLE `notations` ADD FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;");
