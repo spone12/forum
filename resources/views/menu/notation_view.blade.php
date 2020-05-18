@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title-block')Новость@endsection
 @section('content')
+
 <script src="{{ asset('resource/js/notation.js') }}"></script>
 
     <input type='hidden' id='id_notation' value='{{ $view[0]->notation_id}}' />
@@ -10,18 +11,28 @@
 
         <div class="col-sm-12 col-lg-1 col-md-1" style='text-align: center;'>
            
-            <button class='button-native' onclick='change_rating(1)'>
-                <img width=15 src="{{ url('/img/icons/arrow-up.svg') }}" />
-            </button>    
+            @auth
+                <button class='button-native' onclick='change_rating(1)'>
+                    <img width=15 src="{{ url('/img/icons/arrow-up.svg') }}" />
+                </button> 
+            @endauth   
 
+            @if(isset($view[0]->vote))
+            <img id='rating' class="{{ $view[0]->vote == 1 ? 'rating_like' : 'rating_dislike' }}" 
+                width=25 src="{{ $view[0]->vote == 1 ? '/img/icons/like.svg' : '/img/icons/dislike.svg' }}" />
+           
+            @else
             <img id='rating' width=25 src="{{ url('/img/icons/like.svg') }}" />
-            
-            <button class='button-native' onclick='change_rating(0)'>
-                <img width=15 src="{{ url('/img/icons/arrow-down.svg') }}" />
-            </button>
+            @endif
+
+            @auth
+                <button class='button-native' onclick='change_rating(0)'>
+                    <img width=15 src="{{ url('/img/icons/arrow-down.svg') }}" />
+                </button>
+            @endauth   
 
             <div class='row justify-content-center' style='margin-bottom: 10px;'>
-                <div id='rating_voted'>134</div>
+                <div id='rating_voted'>{{ $view[0]->rating}}</div>
             </div>
         </div>
 

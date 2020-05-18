@@ -85,10 +85,9 @@
                                 src: url,
                                 class: class_add
                             });
-
-                            console.log( data);
+                            
+                            //console.log( data);
                        }
-                       
                     },
                     error: function(data)
                     {

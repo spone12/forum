@@ -32,12 +32,38 @@ class NotationModel extends Model
 
     protected function view_notation(int $notation_id)
     {
+
+        if (Auth::check())
+        {
+            $is_vote = DB::table('vote_notation')
+            ->select('vote_notation_id')
+            ->where('notation_id', '=', $notation_id)
+            ->where('id_user', '=', Auth::user()->id)->get();
+            
+            if(!empty($is_vote[0]->vote_notation_id))
+            {
+                $notation = DB::table('notations')
+                    ->join('users', 'users.id', '=', 'notations.id_user')
+                    ->join('vote_notation', 'vote_notation.notation_id', '=', 'notations.notation_id')
+                    ->select('notations.notation_id', 'notations.id_user',
+                            'notations.name_notation', 'notations.text_notation',
+                            'notations.rating','users.name', 'users.avatar',
+                            'notations.notation_add_date','vote_notation.vote')
+                    ->where('notations.notation_id', '=', $notation_id)->get();
+            }
+            
+        } 
+        
+        if(empty($notation))
+        {
             $notation = DB::table('notations')
             ->join('users', 'users.id', '=', 'notations.id_user')
             ->select('notations.notation_id', 'notations.id_user',
                     'notations.name_notation', 'notations.text_notation',
-                    'users.name', 'users.avatar','notations.notation_add_date')
+                    'notations.rating','users.name', 'users.avatar',
+                    'notations.notation_add_date')
             ->where('notations.notation_id', '=', $notation_id)->get();
+        }
 
             if($notation)
             {
@@ -86,12 +112,21 @@ class NotationModel extends Model
             
             if($check_rating->vote == 0 && $action == 0)
                 return 0;
-
+            
             $upd = DB::table('vote_notation')
             ->where('id_user', '=', Auth::user()->id)
             ->where('notation_id', '=', $notation_id)
             ->update(['vote' => $action,
                       'vote_date' => date('Y-m-d H:i:s')]);
+            
+            if($action == 1)
+            {
+                $string = "SET `rating` =  `rating` + 1";
+            }
+            else  $string = "SET `rating` =  `rating` - 1";
+
+            DB::statement("UPDATE `notations` {$string}
+                           WHERE `notation_id` =  {$notation_id}");
 
             return $upd;
        }

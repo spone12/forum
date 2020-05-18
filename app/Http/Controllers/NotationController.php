@@ -33,6 +33,7 @@ class NotationController extends Controller
             return view('error_404', ['error' => ['Данной статьи не существует']]);
            //abort(404,'Данной статьи не существует');
         }
+
         return view('menu.notation_view', ['view' => $view]);
       
     }
@@ -60,7 +61,7 @@ class NotationController extends Controller
             $input = $request->all(); //получение всех входных данных
             $back = NotationModel::notation_rating($input['notation_id'], $input['action']);
 
-            return response()->json(['success'=> $back]);
+            return response()->json(['success'=> $back, 'action' => $input['action']]);
         }
     }
 
