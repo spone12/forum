@@ -13,13 +13,15 @@
             <button class='button-native' onclick='change_rating(1)'>
                 <img width=15 src="{{ url('/img/icons/arrow-up.svg') }}" />
             </button>    
-            <img width=25 src="{{ url('/img/icons/like.svg') }}" />
+
+            <img id='rating' width=25 src="{{ url('/img/icons/like.svg') }}" />
+            
             <button class='button-native' onclick='change_rating(0)'>
                 <img width=15 src="{{ url('/img/icons/arrow-down.svg') }}" />
             </button>
 
             <div class='row justify-content-center' style='margin-bottom: 10px;'>
-                <div>134</div>
+                <div id='rating_voted'>134</div>
             </div>
         </div>
 

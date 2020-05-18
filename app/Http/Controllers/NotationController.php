@@ -53,9 +53,15 @@ class NotationController extends Controller
         }
     }
 
-    protected function NotationRating(int $notation_id)
+    protected function NotationRating(Request $request)
     {
-        return response()->json(['success'=> $notation_id]);
+        if($request->ajax())
+        {
+            $input = $request->all(); //получение всех входных данных
+            $back = NotationModel::notation_rating($input['notation_id'], $input['action']);
+
+            return response()->json(['success'=> $back]);
+        }
     }
 
     public function Notation(Request $request)

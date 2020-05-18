@@ -215,3 +215,17 @@
     text-align: center; 
     margin-bottom: 10px;
 }
+
+/* RATING */
+.rating_like
+{
+    background: #99fb99;
+    border-radius: 30%;
+}
+
+.rating_dislike
+{
+    background: #fb9e99;
+    border-radius: 30%;
+}
+/* END RATING*/

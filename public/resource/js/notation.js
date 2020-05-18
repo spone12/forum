@@ -49,29 +49,51 @@
     {
         if(action != 0 && action != 1)
             return;
-        
-           let id_notation = $('#id_notation').val();
+
+           let notation_id = $('#id_notation').val();
             $.ajax(
                 {
-                    url: '/notation/rating/' + id_notation,
+                    url: '/notation/rating/' + notation_id,
                     type: "POST",
                     data: {
-                            id_notation: id_notation, 
+                            notation_id: notation_id, 
                             action: action,
                           },
                     headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
                     success: function (data) 
                     {
-                        
-                       console.log( data);
+                       if(data.success == 1)
+                       {
+                            let rating = Number($('#rating_voted').text());
+
+                            if(action == 1)
+                            {
+                                rating++;
+                                url = '/img/icons/like.svg';
+                                class_add = 'rating_like';
+                            }  
+                            else
+                            {
+                                rating--;
+                                url = '/img/icons/dislike.svg';
+                                class_add = 'rating_dislike';
+                            } 
+
+                            $('#rating_voted').html(rating);
+
+                            $('#rating').attr({
+                                src: url,
+                                class: class_add
+                            });
+
+                            console.log( data);
+                       }
+                       
                     },
                     error: function(data)
                     {
-        
                         var errors = data.responseJSON;
-        
                         console.log(errors);
-                       
                     }
                     
                     

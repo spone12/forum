@@ -60,6 +60,43 @@ class NotationModel extends Model
         return $notation;
     }
 
+    protected function notation_rating(int $notation_id, int $action)
+    {
+       $check_rating = DB::table('vote_notation')
+       ->select('vote_notation_id', 'vote')
+       ->where('id_user', '=', Auth::user()->id)
+       ->where('notation_id', '=', $notation_id)
+       ->first();
+
+       if(empty($check_rating->vote_notation_id))
+       {
+            $ins = DB::table('vote_notation')->insert(
+            array('id_user' => Auth::user()->id, 
+                  'notation_id' =>  (INT)$notation_id, 
+                  'vote' => $action,
+                  'vote_date' => date('Y-m-d H:i:s'))
+            );
+
+            return $ins;
+       }
+       else 
+       {
+            if($check_rating->vote == 1 && $action == 1)
+                return 0;
+            
+            if($check_rating->vote == 0 && $action == 0)
+                return 0;
+
+            $upd = DB::table('vote_notation')
+            ->where('id_user', '=', Auth::user()->id)
+            ->where('notation_id', '=', $notation_id)
+            ->update(['vote' => $action,
+                      'vote_date' => date('Y-m-d H:i:s')]);
+
+            return $upd;
+       }
+    }
+
     protected function del_notation()
     {
         
