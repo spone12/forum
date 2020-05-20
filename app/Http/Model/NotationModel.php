@@ -49,7 +49,9 @@ class NotationModel extends Model
                             'notations.name_notation', 'notations.text_notation',
                             'notations.rating','users.name', 'users.avatar',
                             'notations.notation_add_date','vote_notation.vote')
-                    ->where('notations.notation_id', '=', $notation_id)->get();
+                    ->where('notations.notation_id', '=', $notation_id)
+                    ->where('vote_notation.id_user', '=', Auth::user()->id)
+                    ->get();
             }
             
         } 
@@ -103,6 +105,16 @@ class NotationModel extends Model
                   'vote_date' => date('Y-m-d H:i:s'))
             );
 
+            if($action == 1)
+            {
+                $string = "SET `rating` =  `rating` + 1";
+            }
+            else  $string = "SET `rating` =  `rating` - 1";
+
+           $upd_notation = DB::statement("UPDATE `notations` {$string}
+                           WHERE `notation_id` =  {$notation_id}");
+
+
             return $ins;
        }
        else 
@@ -125,9 +137,11 @@ class NotationModel extends Model
             }
             else  $string = "SET `rating` =  `rating` - 1";
 
-            DB::statement("UPDATE `notations` {$string}
+           $upd_notation = DB::statement("UPDATE `notations` {$string}
                            WHERE `notation_id` =  {$notation_id}");
 
+            //$back['upd_not'] =  $upd_notation;
+           // $back['upd'] =  $upd;
             return $upd;
        }
     }

@@ -61,7 +61,7 @@ class NotationController extends Controller
             $input = $request->all(); //получение всех входных данных
             $back = NotationModel::notation_rating($input['notation_id'], $input['action']);
 
-            return response()->json(['success'=> $back, 'action' => $input['action']]);
+            return response()->json(['success'=> $back]);
         }
     }
 
