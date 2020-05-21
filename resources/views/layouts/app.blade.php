@@ -118,6 +118,26 @@
             </div>
         </nav>
 
+        <div id='modal_window' class="modal fade">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <a href='#' id='modal_window_close'>
+                            &times;
+                        </a>
+                    </span>
+                    </button>
+                 </div>
+                <div class="modal-body"> 
+                    <p class='c' id='modal_window_text'>&hellip;</p>
+                </div>
+
+                </div>
+            </div>
+        </div>
 
         <main class="py-4 fix_main">
             @include('layouts.messages')

@@ -54,6 +54,17 @@ class NotationController extends Controller
         }
     }
 
+    protected function NotationEdit(Request $request)
+    {
+        if($request->ajax())
+        {
+            $input = $request->all(); //получение всех входных данных
+            $edit = NotationModel::notation_edit($input);
+
+            return response()->json(['success'=> $edit]);
+        }
+    }
+
     protected function NotationRating(Request $request)
     {
         if($request->ajax())

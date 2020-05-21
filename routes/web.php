@@ -29,6 +29,7 @@ Route::get('/notation/view/{notation_id}', 'NotationController@NotationView')
 Route::get('/notation/edit/{notation_id}', 'NotationController@NotationEditAccess')
     ->name('notation_edit_id')->where('notation_id','[0-9]{1,11}')->middleware('auth');
 Route::post('/notation/rating/{notation_id}', 'NotationController@NotationRating')->middleware('auth');
+Route::post('/notation/edit_upd/{notation_id}', 'NotationController@NotationEdit')->middleware('auth');
 
 // зайти могут только зарегестрированные
 Route::get('/profile', 'ProfileController@view_profile')->name('profile')->middleware('auth');

@@ -6,6 +6,7 @@
 
 <div id="form-errors"></div>
 
+<input type='hidden' id='id_notation' value='{{ $data_notation->notation_id}}' />
 <div class='container'>
     <div class='row justify-content-center'>
         <div class="col-md-10">

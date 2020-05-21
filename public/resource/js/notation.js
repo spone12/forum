@@ -23,7 +23,6 @@
             error: function(data)
             {
                 // Log in the console
-               
 
                 var errors = data.responseJSON;
 
@@ -85,10 +84,8 @@
                                 src: url,
                                 class: class_add
                             });
-                            
-                           
                        }
-                       console.log( data);
+                       //console.log( data);
                     },
                     error: function(data)
                     {
@@ -99,4 +96,41 @@
                     
                 });
     }
-       
+    
+    function edit_notation()
+    {
+        let notation_id = $('#id_notation').val();
+        let name_tema = $('#name_tema').val();
+        let text_notation = $('#text_notation').val();
+
+        $.ajax(
+            {
+                url: '/notation/edit_upd/' + notation_id,
+                type: "POST",
+                data: {
+                        notation_id: notation_id, 
+                        name_tema: name_tema,
+                        text_notation, text_notation
+                      },
+                headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+                success: function (data) 
+                {
+                   if(data.success === true)
+                   {
+                        $('#modal_window_text').text('Нотация успешно изменена!');
+                       // $('#modal_window_close').attr('href', '/notation/view/' + notation_id);
+                        $('#modal_window').modal('show');
+
+                        $('#modal_window_close').on('click', function(){
+                            window.location.href = '/notation/view/' + notation_id;
+                        })
+                   }
+                   //console.log( data);
+                },
+                error: function(data)
+                {
+                    var errors = data.responseJSON;
+                    console.log(errors);
+                }
+            });
+    }
