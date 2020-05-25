@@ -153,8 +153,6 @@ class NotationModel extends Model
 
     protected function notation_edit(Array $data_notation_edit)
     {
-        /*trim(addslashes($data_notation['text_notation'])),
-                    'notation_add_date' =>  date('Y-m-d H:i:s')*/
         if (Auth::check())
         {
             $upd = DB::table('notations')
@@ -171,9 +169,38 @@ class NotationModel extends Model
        
     }
 
-    protected function del_notation()
+    protected function notation_delete(int $notation_delete)
     {
-        
+        if (Auth::check())
+        {
+            $notation = DB::table('notations')
+            ->select('id_user','notation_id')
+            ->where('notation_id', '=', $notation_delete)->first();
+
+            if($notation->id_user ===  Auth::user()->id)
+            {
+                $destroy = DB::table('notations')
+                ->where('notation_id', '=', $notation_delete)
+                ->where('id_user', '=',  Auth::user()->id)->delete();
+
+                    if ($destroy)
+                    {
+                        $data=[
+                            'status'=>'1',
+                            'msg'=>'success'
+                        ];
+
+                    }else{
+
+                        $data=[
+                            'status'=>'0',
+                            'msg'=>'fail'
+                        ];
+
+                    }
+                    return $data;
+            }
+        }   
     }
 
    

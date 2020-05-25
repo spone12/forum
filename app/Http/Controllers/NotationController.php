@@ -76,6 +76,17 @@ class NotationController extends Controller
         }
     }
 
+    protected function NotationDelete(Request $request)
+    {
+        if($request->ajax())
+        {
+            $input = $request->all(); //получение всех входных данных
+            $back = NotationModel::notation_delete($input['notation_id']);
+           
+            return response()->json(['success'=> $back]);
+        }
+    }
+
     public function Notation(Request $request)
     {
         return view('menu.notation');

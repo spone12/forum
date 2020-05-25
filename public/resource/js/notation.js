@@ -134,3 +134,40 @@
                 }
             });
     }
+
+
+    function notation_delete()
+    {
+        let notation_id = $('#id_notation').val();
+        $('#modal_window_text').text('Вы действительно хотите удалить нотацию?');
+        $('#modal_window_button').attr('type', 'button');
+        $('#modal_window').modal('show');
+
+         $('#modal_window_button').on('click', function()
+         {
+            $.ajax(
+                {
+                    url: '/notation/delete/' + notation_id,
+                    type: "POST",
+                    data: {
+                            notation_id: notation_id
+                          },
+                    headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+                    success: function (data) 
+                    {
+                        if(data.success.status == 1)
+                        {
+                            $('#modal_window').modal('hide');
+                            window.location.href = '/';
+                        }
+
+                       console.log( data);
+                    },
+                    error: function(data)
+                    {
+                        var errors = data.responseJSON;
+                        console.log(errors);
+                    }
+                });
+         })
+    }

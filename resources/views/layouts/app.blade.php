@@ -131,8 +131,11 @@
                     </span>
                     </button>
                  </div>
-                <div class="modal-body"> 
-                    <p class='c' id='modal_window_text'>&hellip;</p>
+                <div class="modal-body row justify-content-center"> 
+                    <div class='col-8'><p class='c' id='modal_window_text'>&hellip;</p></div>
+                    <div class='col-2'>
+                        <input type='hidden' class='btn btn-danger' value='Удалить' id='modal_window_button' />
+                    </div>
                 </div>
 
                 </div>
