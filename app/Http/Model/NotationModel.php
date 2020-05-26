@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\DB;
 
 class NotationModel extends Model
 {
+    protected $table = 'notations';
+    /*protected $fillable = [
+        'id_user', 'name_notation', 'text_notation','notation_add_date'
+    ];*/
+    public $timestamps = false;
+
     protected static function ins_notation(Array $data_notation)
     {
         if (Auth::check()) 

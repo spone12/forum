@@ -22,7 +22,21 @@ $factory->define(User::class, function (Faker $faker) {
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'password' => bcrypt('12345678'),
         'remember_token' => Str::random(10),
+        'ip_user' => rand(1, 254).'.'.rand(1, 254).'.'.rand(1, 254).'.'.rand(1, 254),
+        'browser_user' => Str::random(10)
+        //'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+    ];
+});
+
+$factory->defineAs(App\Http\Model\NotationModel::class, 'notation', function(Faker $faker){
+    $faker = \Faker\Factory::create('ru_RU');
+
+    return [
+        'id_user' => 1,
+        'name_notation' => Str::random(10),
+        'text_notation' => $faker->realText(rand(100,500)),
+        'notation_add_date' => $faker->dateTimeBetween('-3 months', '-1 days')
     ];
 });
