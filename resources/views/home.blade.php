@@ -2,6 +2,7 @@
 @section('title-block')Главная страница@endsection
 @section('content')
 
+
 @auth
 <div class="container">
     <div class="row justify-content-end">
@@ -46,8 +47,13 @@
         </div>
     </div>
 </div>
-
 @endforeach
+
+<div class='container'>
+    <div class='row justify-content-center'>
+        <div class='col-sm-10'>{{$notations->links()}}</div>
+    </div>
+</div>
 
 
 @endsection

@@ -14,7 +14,7 @@ class HomeModel extends Model
                      ->select('notations.notation_id', 'notations.id_user',
                               'notations.name_notation', 'notations.text_notation',
                               'users.name','users.avatar')
-                     ->orderByRaw('notation_add_date')->get();
+                     ->orderByRaw('notation_add_date')->paginate(5);
         
         if($notations)
         {
