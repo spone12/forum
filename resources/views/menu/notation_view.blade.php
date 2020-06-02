@@ -4,7 +4,10 @@
 
 <script src="{{ asset('resource/js/notation.js') }}"></script>
 
-    <input type='hidden' id='id_notation' value='{{ $view[0]->notation_id}}' />
+    {{
+         Form::hidden('hidden_id', $view[0]->notation_id,
+                     ['id' => 'id_notation'])
+    }}
     
     <div class='container'>
         <div class='row justify-content-center'>

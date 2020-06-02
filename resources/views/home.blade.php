@@ -50,8 +50,10 @@
 @endforeach
 
 <div class='container'>
-    <div class='row justify-content-center'>
-        <div class='col-sm-10'>{{$notations->links()}}</div>
+    <div class='row justify-content-around'>
+        <div class='col-6'>{{$notations->links()}}</div>
+        <div class='col-2'>Всего записей: {{$notations->total()}}</div>
+       
     </div>
 </div>
 

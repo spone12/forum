@@ -6,7 +6,9 @@
 
 <div id="form-errors"></div>
 
-<input type='hidden' id='id_notation' value='{{ $data_notation->notation_id}}' />
+<!-- name, value, id -->
+{{ Form::hidden('invisible', $data_notation->notation_id, array('id' => 'id_notation')) }}
+
 <div class='container'>
     <div class='row justify-content-center'>
         <div class="col-md-10">
@@ -18,20 +20,35 @@
                       Тема новости 
                     </div>
                     <div  class='col-9 align-self-end'>
-                        <input id='name_tema' class="input_field"  value='{{$data_notation->name_notation}}' name='name_tema' placeholder='Тема' style='width:100%' type='text' />
+                         {{ Form::text('name_tema',  $data_notation->name_notation,
+                             ['id' => 'name_tema',
+                                   'class' => 'input_field',
+                                   'style' => 'width:100%',
+                                   'placeholder' => 'Тема']) }}
                     </div>
-                    
                 </div>
             </div>
 
             <div class="card-body">
                 <div class='row justify-content-center'>
                     <div  class='col-10'>
-                        <textarea id='text_notation' class='textarea_field' name='text_notation' style='width:100%'>{{$data_notation->text_notation}}</textarea>
+                        {{
+                            Form::textarea('text_notation',$data_notation->text_notation,
+                                            ['class' => 'textarea_field',
+                                             'style' => 'width:100%',
+                                             'id' => 'text_notation']
+                                          )
+                        }}
                     </div>    
                 </div>
                 <div class='row justify-content-center m-1'>
-                     <button id='notation_add' onclick='edit_notation();' class='btn btn-info' type='submit'>Изменить</button>
+                    {{
+                        Form::button('Изменить',
+                                    ['class'=>'btn btn-info',
+                                     'id' => 'notation_add',
+                                     'onclick' => 'edit_notation();',
+                                     'type' => 'submit'])
+                    }}
                 </div>     
             </div>
         </div>

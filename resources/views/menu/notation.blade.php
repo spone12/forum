@@ -15,7 +15,13 @@
                           Тема новости 
                         </div>
                         <div  class='col-9 align-self-end'>
-                            <input id='name_tema' class='input_field' name='name_tema' placeholder='Тема' style='width:100%' type='text' />
+                            {{
+                                Form::text('name_tema', null,
+                                            ['id' => 'name_tema',
+                                            'class' => 'input_field',
+                                            'placeholder' => 'Тема',
+                                            'style' => 'width:100%'])
+                            }}
                         </div>
                         
                     </div>
@@ -23,11 +29,22 @@
                 <div class="card-body">
                     <div class='row justify-content-center'>
                         <div  class='col-10'>
-                            <textarea class='textarea_field' id='text_notation' name='text_notation' style='width:100%'></textarea>
+                            {{
+                                Form::textarea('text_notation', null,
+                                              ['class' => 'textarea_field',
+                                               'id' => 'text_notation',
+                                               'style' =>  'width:100%'])
+                            }}
                         </div>    
                     </div>
                     <div class='row justify-content-center m-1'>
-                         <button id='notation_add' onclick='add_notation();' class='btn btn-success' type='submit'>Создать</button>
+                        {{
+                            Form::button('Создать',
+                                            ['id' => 'notation_add',
+                                            'class' => 'btn btn-success',
+                                            'onclick' => 'add_notation();',
+                                            'type' => 'submit'])
+                        }}
                     </div>     
                 </div>
             </div>
