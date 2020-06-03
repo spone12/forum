@@ -56,7 +56,13 @@
 
                 @if(Auth::user()->id === $data_user->id) 
                 <div class='col-9 t_a'>
-                    <button class='btn-success'>Редактировать</button>
+                    <a href="{{route ('change_profile', $data_user->id) }}">
+                        {{
+                            Form::button('Редактировать',
+                                    ['class'=>'btn btn-success'])
+                        }}
+                        
+                    </a>
                 </div>
                 @endif 
         </div>

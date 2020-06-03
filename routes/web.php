@@ -41,3 +41,5 @@ Route::get('/profile', 'ProfileController@view_profile')->name('profile')->middl
 //с использованием where
 Route::get('/profile/{id}', 'ProfileController@view_another_profile')->where('id','[0-9]{1,11}')
     ->name('profile_id')->middleware('auth');
+ Route::get('/change_profile/{id}', 'ProfileController@change_profile')->where('id','[0-9]{1,11}')
+    ->name('change_profile')->middleware('auth');
