@@ -26,6 +26,9 @@ class ProfileController extends Controller
 
     public function change_profile(int $id_user)
     {
-        return view('menu.profile.change_profile', ['data_user' => $id_user]);
+        $data_user = ProfileModel::get_user_data_change($id_user);
+        //$data_user =1;
+
+        return view('menu.profile.change_profile', ['data_user' => $data_user]);
     }
 }
