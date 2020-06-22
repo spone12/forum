@@ -18,7 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('resource/css/forum.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!--link href="{{ asset('css/app.css') }}" rel="stylesheet"-->
     <link rel="stylesheet" type="text/css" href="{{ asset('resource/libraries/bootstrap/css/bootstrap.min.css') }}" />
 
     <script src="{{ asset('resource/libraries/jQuery/jquery-3.3.1.js') }}"></script>

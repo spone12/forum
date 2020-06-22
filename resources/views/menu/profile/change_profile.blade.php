@@ -2,6 +2,12 @@
 @section('title-block')Профиль@endsection
 @section('content')
 
+<script src="{{ asset('resource/js/profile.js') }}"></script>
+
+    {{
+         Form::hidden('id_user', $data_user->id,
+                     ['id' => 'id_user'])
+    }}
 <div class="container p-3">
     <div class="row col-10">
         <div class='col-sm-8 col-9'>
@@ -28,7 +34,10 @@
                     <div class='col-sm-4 profile_info'>Пол:</div>
                     <div class='col-sm-8'>
                         {{
-                            Form::select('gender', array('1' => 'Мужской', '2' => 'Женский'),  $data_user->gender)
+                            Form::select('gender', 
+                                         array('1' => 'Мужской', '2' => 'Женский'), 
+                                         $data_user->gender,
+                                         array('id' => 'gender'))
                         }}
                     </div>
                 </div>
@@ -81,7 +90,8 @@
                 <div class='col-9 t_a'>
                         {{
                             Form::button('Cохранить',
-                                    ['class'=>'btn btn-primary'])
+                                    ['class'=>'btn btn-primary',
+                                     'onclick' => 'edit_profile();'])
                         }}
                 </div>
                 @endif

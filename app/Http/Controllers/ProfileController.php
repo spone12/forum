@@ -31,4 +31,16 @@ class ProfileController extends Controller
 
         return view('menu.profile.change_profile', ['data_user' => $data_user]);
     }
+
+    public function change_profile_confirm(Request $request)
+    {
+        //$data_user = ProfileModel::get_user_data_change($id_user);
+        if($request->ajax())
+        {
+            $input = $request->all();
+
+            //return view('menu.profile.change_profile', ['data_user' => $input]);
+            return array('data_user' => $input);
+        }
+    }
 }

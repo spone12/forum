@@ -12,7 +12,7 @@
                 <div class="card-header">
                     <div class="row no-gutters">
                         <div class='col-3 align-self-start text_mg'>
-                          Тема новости 
+                          Тема новости
                         </div>
                         <div  class='col-9 align-self-end'>
                             {{
