@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class ProfileModel extends Model
 {
+    protected $table = 'description_profile';
+    protected $fillable = [
+        'id_user'
+    ];
+    public $timestamps = false;
+
     protected static function get_data_user()
     {
         if (Auth::check()) 
@@ -88,5 +94,55 @@ class ProfileModel extends Model
             return $data;
         }
         else $data = false;
+    }
+
+    protected static function change_profile(array $data_user)
+    {
+        $id_user = Auth::user()->id;
+        if($id_user === (INT)$data_user['data_send']['id_user'])
+        {
+            $gender = DB::table('users')->select('gender')
+                             ->where('id', '=', $id_user)->first();
+
+            if($gender->gender !== (INT)$data_user['data_send']['gender'])
+            {
+                $upd = DB::table('users')
+                ->where('id', '=', $id_user)
+                ->update(['gender' => $data_user['data_send']['gender']]);
+            }
+
+
+            if (!ProfileModel::where('id_user', '=', $id_user)->exists())
+            {
+                $profile = DB::table('description_profile')->insert(
+                    array('id_user' => $id_user,
+                          'real_name' => $data_user['data_send']['name'],
+                          'date_born' =>  $data_user['data_send']['date_user'],
+                          'town' => $data_user['data_send']['town_user'],
+                          'about' => $data_user['data_send']['about_user']) 
+                );
+            }
+            else 
+            {
+                $profile = DB::table('description_profile')
+                ->where('id_user', '=', $id_user)
+                ->update(['id_user' => $id_user,
+                        'real_name' => $data_user['data_send']['name'],
+                        'date_born' =>  $data_user['data_send']['date_user'],
+                        'town' => $data_user['data_send']['town_user'],
+                        'about' => $data_user['data_send']['about_user']]);
+            }
+
+          
+            return $profile;
+        }
+        else
+        {
+            $returnData = array(
+                'status' => 'error',
+                'message' => 'Не совпадает ID!'
+            );
+            return response()->json($returnData, 500);
+        }
     }
 }

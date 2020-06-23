@@ -39,8 +39,12 @@ class ProfileController extends Controller
         {
             $input = $request->all();
 
+            $back = ProfileModel::change_profile($input);
+
+            return array('data_user' => $back);
             //return view('menu.profile.change_profile', ['data_user' => $input]);
-            return array('data_user' => $input);
+            //return array('data_user' => $input);
+            //return redirect()->route('profile', ['id' => 1]);
         }
     }
 }
