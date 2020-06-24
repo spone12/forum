@@ -20,14 +20,26 @@ class ProfileModel extends Model
         {
             $user = Auth::user()->id;
 
-            $data = DB::table('users')
-                        ->select('id','name','email','gender', 'avatar',
-                                'created_at')
+            $data = DB::table('users  AS u')
+                        ->select('u.id','u.name','u.email','u.gender', 'u.avatar',
+                                'u.created_at', 'dp.real_name','dp.date_born','dp.town','dp.about')
+                        ->leftJoin('description_profile AS dp', 'dp.id_user', '=', 'u.id')
                         ->where('id', '=', $user)
                         ->first();
 
             if($data)
             {
+                if(!is_null($data->date_born))
+                {
+                   $data->date_born = date_create($data->date_born)->Format('d-m-Y');
+                }
+
+                if(!is_null($data->about))
+                {
+                   $data->about = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $data->about);
+                }
+
+
                 $data->gender == 1 ?  $data->gender = 'Мужской':  $data->gender = 'Женский';
                 if(is_null($data->avatar))
                 {

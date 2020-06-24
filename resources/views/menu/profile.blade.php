@@ -14,7 +14,7 @@
             <div class='card card-body'>
                 <div class='row align-items-center'>
                     <div class='col-sm-4 profile_info'>Имя:</div>
-                    <div class='col-sm-8 '>...</div>
+                    <div class='col-sm-8 '>{{$data_user->real_name}}</div>
                 </div>
 
                 <div class='row align-items-center'>
@@ -24,7 +24,7 @@
 
                 <div class='row align-items-center'>
                     <div class='col-sm-4 profile_info'>Город:</div>
-                    <div class='col-sm-8'> ... </div>
+                    <div class='col-sm-8'> {{$data_user->town}} </div>
                 </div>
 
                 <div class='row align-items-center'>
@@ -34,7 +34,7 @@
                 
                 <div class='row align-items-center'>
                     <div class='col-sm-4  profile_info'>Дата рождения:</div>
-                    <div class='col-sm-8'>12.11.1282</div>
+                    <div class='col-sm-8'>{{$data_user->date_born}}</div>
                 </div>
                 <div class='row align-items-center'>
                     <div class='col-sm-4  profile_info'>Дата регистрации:</div>
@@ -42,7 +42,7 @@
                 </div>
                 <div class='row align-items-center'>
                     <div class='col-sm-4  profile_info'>О себе:</div>
-                    <div class='col-sm-8'></div>
+                    <div class='col-sm-8'>{{$data_user->about}}</div>
                 </div>
             </div>
         </div>
