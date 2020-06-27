@@ -22,8 +22,6 @@
             },
             error: function(data)
             {
-                // Log in the console
-
                 var errors = data.responseJSON;
 
                 console.log(errors);

@@ -145,8 +145,14 @@ class ProfileModel extends Model
                         'about' => $data_user['data_send']['about_user']]);
             }
 
-          
-            return $profile;
+            if($profile)
+            {
+                return $returnData = array(
+                    'status' => 1,
+                    'message' => 'OK'
+                );
+            }
+         
         }
         else
         {

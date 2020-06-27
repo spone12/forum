@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Model\ProfileModel;
+use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class ProfileController extends Controller
 {
@@ -34,17 +36,23 @@ class ProfileController extends Controller
 
     public function change_profile_confirm(Request $request)
     {
-        //$data_user = ProfileModel::get_user_data_change($id_user);
         if($request->ajax())
         {
             $input = $request->all();
 
-            $back = ProfileModel::change_profile($input);
-
-            return array('data_user' => $back);
-            //return view('menu.profile.change_profile', ['data_user' => $input]);
-            //return array('data_user' => $input);
-            //return redirect()->route('profile', ['id' => 1]);
+           /* $validator = Validator::make($input, 
+                [
+                     $input['data_send']['gender'] => 'numeric',
+                ])->validate();
+                
+            if($validator)
+            {*/
+                
+               
+                $back = ProfileModel::change_profile($input);
+                return array('data_user' => $back);
+           // }
+          
         }
     }
 }

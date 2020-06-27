@@ -8,6 +8,9 @@
          Form::hidden('id_user', $data_user->id,
                      ['id' => 'id_user'])
     }}
+    
+<div id='form-errors'></div>
+
 <div class="container p-3">
     <div class="row col-10">
         <div class='col-sm-8 col-9'>
