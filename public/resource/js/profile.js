@@ -1,4 +1,26 @@
 
+    jQuery(function()
+    {
+      $('#page_avatar_edit').on('click', function()
+      {
+        $('#user_avatar').click();
+      });
+
+      $("#user_avatar").change(function()
+      { 
+        // событие выбора файла
+        $("#form_change_avatar").submit(); // отправка формы
+
+        /*$("#form_change_avatar").submit(function( event ) {
+          //alert( "Handler for .submit() called." );
+         // event.preventDefault();
+         alert(event);
+        });*/
+
+      });
+    });
+
+
     function edit_profile()
     {
         let name = $('#name_user').val();

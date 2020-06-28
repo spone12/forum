@@ -86,10 +86,20 @@
             <div class='row justify-content-center align-items-center'>
            
                 <div class='col-9 t_a p-1'>
-                    <img class="page_avatar" src="{{asset($data_user->avatar)}}" title='Name profile' alt='avatar' />
+
+                <form  enctype="multipart/form-data" id='form_change_avatar' method="POST" action="{{route('avatar_change')}}" >
+                @csrf
+                <div>
+                    <img id='page_avatar_edit' class="page_avatar_edit" src="{{asset($data_user->avatar)}}" title='Изменить аватар' alt='avatar' />
+                    <input name="avatar" id='user_avatar' type="file" hidden>
+                </div>
+                </form>
+
+                    
                 </div>
 
                 @if(Auth::user()->id === $data_user->id) 
+
                 <div class='col-9 t_a'>
                         {{
                             Form::button('Cохранить',

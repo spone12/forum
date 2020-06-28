@@ -27,6 +27,7 @@
     color:white;
 }
 
+/*PAGE AVATAR*/
 .page_avatar
 {
     vertical-align: top;
@@ -34,6 +35,26 @@
     max-width: 200px;
     width: 200px;
 }
+
+.page_avatar_edit
+{
+    vertical-align: top;
+    border-radius: 2px;
+    max-width: 200px;
+    width: 200px;
+    border: 1px dashed;
+}
+
+.page_avatar_edit:hover
+{
+    vertical-align: top;
+    border-radius: 2px;
+    max-width: 200px;
+    width: 200px;
+    border: 2px dashed;
+    cursor: pointer;
+}
+/* END PAGE AVATAR*/
 
 .mini_avatar{border-radius: 50%;}
 

@@ -55,4 +55,19 @@ class ProfileController extends Controller
           
         }
     }
+
+    public function change_avatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        
+        $imageName = time().'.'.$request->avatar->extension();  
+            
+        $request->avatar->move(public_path('img/avatar/user_avatar'), $imageName);
+   
+        return back()
+            ->with('success','Вы успешно изменили фотографию');
+
+    }
 }
