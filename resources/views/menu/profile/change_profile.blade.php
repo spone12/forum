@@ -2,6 +2,8 @@
 @section('title-block')Профиль@endsection
 @section('content')
 
+
+
 <script src="{{ asset('resource/js/profile.js') }}"></script>
 
     {{
@@ -9,7 +11,17 @@
                      ['id' => 'id_user'])
     }}
     
-<div id='form-errors'></div>
+<div id='form-errors'>
+    @if (count($errors) > 0)
+    <div class='alert alert-danger'>
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+    </div>
+    @endif
+</div>
 
 <div class="container p-3">
     <div class="row col-10">

@@ -47,10 +47,6 @@
 
 .page_avatar_edit:hover
 {
-    vertical-align: top;
-    border-radius: 2px;
-    max-width: 200px;
-    width: 200px;
     border: 2px dashed;
     cursor: pointer;
 }

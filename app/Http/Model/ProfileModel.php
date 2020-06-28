@@ -80,6 +80,9 @@ class ProfileModel extends Model
         {
             $clarification['avatar'] = 'img/avatar/no_avatar.png';
         }
+        else
+            $clarification['avatar'] = $avatar;
+
         return $clarification;
     }
 
@@ -162,5 +165,18 @@ class ProfileModel extends Model
             );
             return response()->json($returnData, 500);
         }
+    }
+
+    protected static function change_avatar($request)
+    {
+        $id_user = Auth::user()->id;
+        $imageName = uniqid().'.'.$request->avatar->extension();  
+        
+        DB::table('users')
+            ->where('id', $id_user)
+            ->update(['avatar' => "/img/avatar/user_avatar/".$id_user."/".$imageName]);
+
+        $request->avatar->move(public_path("img/avatar/user_avatar/".$id_user), $imageName);
+        $request->session()->put('avatar', "/img/avatar/user_avatar/".$id_user."/".$imageName);
     }
 }

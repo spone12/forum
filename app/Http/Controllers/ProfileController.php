@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Model\ProfileModel;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ProfileAvatarRequest;
 use Validator;
 
 class ProfileController extends Controller
@@ -29,7 +30,6 @@ class ProfileController extends Controller
     public function change_profile(int $id_user)
     {
         $data_user = ProfileModel::get_user_data_change($id_user);
-        //$data_user =1;
 
         return view('menu.profile.change_profile', ['data_user' => $data_user]);
     }
@@ -56,18 +56,12 @@ class ProfileController extends Controller
         }
     }
 
-    public function change_avatar(Request $request)
+    public function change_avatar(ProfileAvatarRequest $request)
     {
-        $request->validate([
-            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-        
-        $imageName = time().'.'.$request->avatar->extension();  
-            
-        $request->avatar->move(public_path('img/avatar/user_avatar'), $imageName);
+        $answer = ProfileModel::change_avatar($request);
    
         return back()
-            ->with('success','Вы успешно изменили фотографию');
-
+            ->with('success','Вы успешно изменили аватар');
+           
     }
 }

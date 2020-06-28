@@ -31,6 +31,12 @@ class AppServiceProvider extends ServiceProvider
             return auth()->guest();
         });
 
+        
+        Blade::directive('getSessValue', function ($variable) 
+        {
+            return "<?php echo session({$variable}); ?>";
+        });
+
         //Директива с параметром, вставляет HTML код разрыва строки перед каждым переводом строки 
         Blade::directive('newlinesToBr', function ($expression) 
         {

@@ -11,12 +11,6 @@
         // событие выбора файла
         $("#form_change_avatar").submit(); // отправка формы
 
-        /*$("#form_change_avatar").submit(function( event ) {
-          //alert( "Handler for .submit() called." );
-         // event.preventDefault();
-         alert(event);
-        });*/
-
       });
     });
 
