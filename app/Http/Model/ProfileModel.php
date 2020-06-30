@@ -52,13 +52,15 @@ class ProfileModel extends Model
         return $data;
     }
 
-    protected static function get_another_user($id)
+    protected static function get_another_user(int $id)
     {
-
-            $data = DB::table('users')
-                        ->select('id','name','email','gender', 'avatar',
-                                'created_at')
-                        ->where('id', '=', $id)
+        $data = DB::table('users')
+                        ->select('users.name','users.id', 'users.email','users.created_at',
+                                'description_profile.real_name', 'users.gender',
+                                'description_profile.town','description_profile.date_born',
+                                'description_profile.about', 'users.avatar')
+                        ->leftJoin('description_profile', 'description_profile.id_user', '=', 'users.id')
+                        ->where('users.id', '=', $id)
                         ->first();
 
             if(!empty($data))

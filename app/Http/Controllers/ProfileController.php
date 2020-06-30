@@ -60,7 +60,7 @@ class ProfileController extends Controller
     {
         $answer = ProfileModel::change_avatar($request);
    
-        return back()
+        return redirect()->route('profile_id', Auth::user()->id)
             ->with('success','Вы успешно изменили аватар');
            
     }

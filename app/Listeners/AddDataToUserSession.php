@@ -7,6 +7,8 @@ class AddDataToUserSession
 {
   public function handle(Login $loginEvent)
   {
-    Session::put('avatar', $loginEvent->user->avatar);
+    if(!empty($loginEvent->user->avatar))
+      Session::put('avatar', $loginEvent->user->avatar);
+    else  Session::put('avatar', '/img/avatar/no_avatar.png');
   }
 }
