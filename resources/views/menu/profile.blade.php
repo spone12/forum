@@ -31,6 +31,11 @@
                     <div class='col-sm-4 profile_info'>E-mail:</div>
                     <div class='col-sm-8 '>{{$data_user->email}}</div>
                 </div>
+
+                <div class='row align-items-center'>
+                    <div class='col-sm-4 profile_info'>Телефон:</div>
+                    <div class='col-sm-8 '></div>
+                </div>
                 
                 <div class='row align-items-center'>
                     <div class='col-sm-4  profile_info'>Дата рождения:</div>

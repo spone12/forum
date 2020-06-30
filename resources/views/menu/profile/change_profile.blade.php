@@ -69,6 +69,18 @@
                     </div>
                 </div>
 
+                <div class='row align-items-center'>
+                    <div class='col-sm-4 profile_info'>Телефон:</div>
+                    <div class='col-sm-8'> 
+                        {{
+                            Form::text('phone',  null,
+                                            ['id' => 'phone_user',
+                                            'class' => 'input_field',
+                                            'style' => 'width:100%'])
+                        }}
+                    </div>
+                </div>
+
                 <!--div class='row align-items-center'>
                     <div class='col-sm-4 profile_info'>E-mail:</div>
                     <div class='col-sm-8 '>Email</div>

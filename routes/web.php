@@ -16,10 +16,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('home');
 
-/*Route::get('/about', function () {
-    return view('about');
-});*/
-
 Route::post('/search', 'SearchController@getDataSearch')->name('search');
 
 //NOTATION
