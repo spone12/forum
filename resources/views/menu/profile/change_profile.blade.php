@@ -28,12 +28,16 @@
         <div class='col-sm-8 col-9'>
         <div class="card card-header">
             <div class='row'>
-                <div class='col-sm-4 profile_info'>Логин:</div>
+                <div class='col-sm-4 profile_info'>
+                    <a href='/profile' class='link_prevDefault'>
+                        <img alt='back' title='Вернуться обратно' src="{{asset('img/icons/back-arrow.svg')}}" width=15 />
+                    </a> 
+                    Логин:</div>
                 <div class='col-sm-8'>{{$data_user->name}}</div>
             </div>
             </div>
             <div class='card card-body'>
-                <div class='row align-items-center'>
+                <div class='row align-items-center mb-2'>
                     <div class='col-sm-4 profile_info'>Имя:</div>
                     <div class='col-sm-8 '>
                         {{
@@ -45,19 +49,20 @@
                     </div>
                 </div>
 
-                <div class='row align-items-center'>
+                <div class='row align-items-center mb-2'>
                     <div class='col-sm-4 profile_info'>Пол:</div>
                     <div class='col-sm-8'>
                         {{
                             Form::select('gender', 
                                          array('1' => 'Мужской', '2' => 'Женский'), 
                                          $data_user->gender,
-                                         array('id' => 'gender'))
+                                         array('id' => 'gender',
+                                                'class' => 'form-control'))
                         }}
                     </div>
                 </div>
 
-                <div class='row align-items-center'>
+                <div class='row align-items-center mb-2'>
                     <div class='col-sm-4 profile_info'>Город:</div>
                     <div class='col-sm-8'> 
                         {{
@@ -69,15 +74,11 @@
                     </div>
                 </div>
 
-                <div class='row align-items-center'>
+                <div class='row align-items-center mb-2'>
                     <div class='col-sm-4 profile_info'>Телефон:</div>
                     <div class='col-sm-8'> 
-                        {{
-                            Form::text('phone',  null,
-                                            ['id' => 'phone_user',
-                                            'class' => 'input_field',
-                                            'style' => 'width:100%'])
-                        }}
+                    <input class='form-control input_field' type='tel'  id="phone_user" name="phone_user" pattern="[0-9-]{11,15}" value="" />
+                       
                     </div>
                 </div>
 
@@ -86,10 +87,10 @@
                     <div class='col-sm-8 '>Email</div>
                 </div-->
                 
-                <div class='row align-items-center'>
+                <div class='row align-items-center mb-2'>
                     <div class='col-sm-4  profile_info'>Дата рождения:</div>
                     <div class='col-sm-8'>
-                        <input type='date' min='1900-01-01' id="date_user" name="date_user" max="<?=date('Y-m-d');?>" value="{{$data_user->date_born}}" />
+                        <input class='form-control' type='date' min='1900-01-01' id="date_user" name="date_user" max="<?=date('Y-m-d');?>" value="{{$data_user->date_born}}" />
                     </div>
                 </div>
                 <div class='row align-items-center'>

@@ -47,13 +47,22 @@
                     <ul>
                         <form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('search') }}">
                          @csrf
-                            <label>
-                                <button id='search-button' class="search-button" type="submit">
+                            <div class="input-group">
+                                <div class="input-group-prepend search-button">
+                                    <button class="input-group-text" id="search-button">
+                                        <img src="{{ url('/img/icons/search.png') }}" width="20">
+                                    </button>
+                                </div>
+                                <input id='search' name="search" type="text" class="form-control" placeholder="Поиск.." aria-label="search" aria-describedby="search-button">
+                                    <span class="search-marker">/</span>
+                                </div>
+
+                                <!--button id='search-button' class="search-button" type="submit">
                                  <img  width=20 class='search-icon' src="{{ url('/img/icons/search.png') }}" /> 
                                 </button>
                                 <input id='search' placeholder="Поиск..." class='search-input' name="search" type="search">
-                                <span class="search-marker">/</span>
-                            </label>
+                                <span class="search-marker">/</span-->
+                          
                         </form>
                     </ul>
 

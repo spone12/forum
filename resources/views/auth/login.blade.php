@@ -30,7 +30,7 @@
 
                             <div class="col-md-6 password">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-                                <a href="#" class="password-control"></a>
+                                <a href="#" class="password-control"></a> 
                                 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
