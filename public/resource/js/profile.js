@@ -30,7 +30,7 @@
         $.ajax(
             {
                 url: '/change_profile_confirm/' + id_user,
-                type: "POST",
+                type: "PUT",
                 data: {
                         data_send: data_send
                       },
@@ -47,6 +47,7 @@
                                         '<li>Вы не изменили ни одного поля</li>' +
                                         '</ul>' +
                                     '</div>';
+                                    
                     $('#form-errors').html( errorsHtml );
                   }
                   else

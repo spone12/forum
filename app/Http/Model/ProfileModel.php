@@ -171,14 +171,17 @@ class ProfileModel extends Model
 
     protected static function change_avatar($request)
     {
-        $id_user = Auth::user()->id;
-        $imageName = uniqid().'.'.$request->avatar->extension();  
+        if($request->hasFile('avatar'))
+        {
+            $id_user = Auth::user()->id;
+            $imageName = uniqid().'.'.$request->avatar->extension();  
         
-        DB::table('users')
-            ->where('id', $id_user)
-            ->update(['avatar' => "/img/avatar/user_avatar/".$id_user."/".$imageName]);
+            DB::table('users')
+                ->where('id', $id_user)
+                ->update(['avatar' => "/img/avatar/user_avatar/".$id_user."/".$imageName]);
 
-        $request->avatar->move(public_path("img/avatar/user_avatar/".$id_user), $imageName);
-        $request->session()->put('avatar', "/img/avatar/user_avatar/".$id_user."/".$imageName);
+            $request->avatar->move(public_path("img/avatar/user_avatar/".$id_user), $imageName);
+            $request->session()->put('avatar', "/img/avatar/user_avatar/".$id_user."/".$imageName);
+        }
     }
 }

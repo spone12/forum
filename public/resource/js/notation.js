@@ -104,7 +104,7 @@
         $.ajax(
             {
                 url: '/notation/edit_upd/' + notation_id,
-                type: "POST",
+                type: "PUT",
                 data: {
                         notation_id: notation_id, 
                         name_tema: name_tema,
@@ -146,7 +146,7 @@
             $.ajax(
                 {
                     url: '/notation/delete/' + notation_id,
-                    type: "POST",
+                    type: "DELETE",
                     data: {
                             notation_id: notation_id
                           },

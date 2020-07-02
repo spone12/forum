@@ -25,9 +25,12 @@ Route::get('/notation/view/{notation_id}', 'NotationController@NotationView')
     ->name('notation_view_id')->where('notation_id','[0-9]{1,11}');
 Route::get('/notation/edit/{notation_id}', 'NotationController@NotationEditAccess')
     ->name('notation_edit_id')->where('notation_id','[0-9]{1,11}')->middleware('auth');
-Route::post('/notation/rating/{notation_id}', 'NotationController@NotationRating')->middleware('auth');
-Route::post('/notation/edit_upd/{notation_id}', 'NotationController@NotationEdit')->middleware('auth');
-Route::post('/notation/delete/{notation_id}', 'NotationController@NotationDelete')->middleware('auth');
+Route::post('/notation/rating/{notation_id}', 'NotationController@NotationRating')
+    ->where('id','[0-9]{1,11}')->middleware('auth');
+Route::put('/notation/edit_upd/{notation_id}', 'NotationController@NotationEdit')
+    ->where('id','[0-9]{1,11}')->middleware('auth');
+Route::delete('/notation/delete/{notation_id}', 'NotationController@NotationDelete')
+    ->where('id','[0-9]{1,11}')->middleware('auth');
 //END NOTATION
 
 
@@ -39,6 +42,6 @@ Route::get('/profile', 'ProfileController@view_profile')->name('profile')->middl
     ->name('profile_id')->middleware('auth');
  Route::get('/change_profile/{id}', 'ProfileController@change_profile')->where('id','[0-9]{1,11}')
     ->name('change_profile')->middleware('auth');
- Route::post('/change_profile_confirm/{id}', 'ProfileController@change_profile_confirm')->where('id','[0-9]{1,11}')
+ Route::put('/change_profile_confirm/{id}', 'ProfileController@change_profile_confirm')->where('id','[0-9]{1,11}')
     ->middleware('auth');
 Route::post('/avatar-change', 'ProfileController@change_avatar')->name('avatar_change')->middleware('auth');

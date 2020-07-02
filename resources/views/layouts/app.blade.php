@@ -56,13 +56,6 @@
                                 <input id='search' name="search" type="text" class="form-control" placeholder="Поиск.." aria-label="search" aria-describedby="search-button">
                                     <span class="search-marker">/</span>
                                 </div>
-
-                                <!--button id='search-button' class="search-button" type="submit">
-                                 <img  width=20 class='search-icon' src="{{ url('/img/icons/search.png') }}" /> 
-                                </button>
-                                <input id='search' placeholder="Поиск..." class='search-input' name="search" type="search">
-                                <span class="search-marker">/</span-->
-                          
                         </form>
                     </ul>
 
