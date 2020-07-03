@@ -11,7 +11,7 @@ class NotationController extends Controller
 {
     protected function AjaxReq(NotationRequest $request)
     {
-        $input = $request->all(); //получение всех входных данных
+        $input = $request->only(['name_tema','text_notation']); //получение входных данных
         $method = $request->input('method');
     
         if($method == 'add')
@@ -58,7 +58,7 @@ class NotationController extends Controller
     {
         if($request->ajax())
         {
-            $input = $request->all(); //получение всех входных данных
+            $input = $request->only(['notation_id','name_tema','text_notation']); //получение входных данных
             $edit = NotationModel::notation_edit($input);
 
             return response()->json(['success'=> $edit]);
@@ -80,7 +80,7 @@ class NotationController extends Controller
     {
         if($request->ajax())
         {
-            $input = $request->all(); //получение всех входных данных
+            $input = $request->only(['notation_id']); //получение всех входных данных
             $back = NotationModel::notation_delete($input['notation_id']);
            
             return response()->json(['success'=> $back]);

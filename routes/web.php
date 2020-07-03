@@ -19,18 +19,22 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::post('/search', 'SearchController@getDataSearch')->name('search');
 
 //NOTATION
-Route::get('/notation', 'NotationController@Notation')->name('notation')->middleware('auth');
-Route::post('/notation', 'NotationController@AjaxReq')->middleware('auth');
-Route::get('/notation/view/{notation_id}', 'NotationController@NotationView')
-    ->name('notation_view_id')->where('notation_id','[0-9]{1,11}');
-Route::get('/notation/edit/{notation_id}', 'NotationController@NotationEditAccess')
-    ->name('notation_edit_id')->where('notation_id','[0-9]{1,11}')->middleware('auth');
-Route::post('/notation/rating/{notation_id}', 'NotationController@NotationRating')
+Route::prefix('notation')->group(function()
+{
+    Route::get('/', 'NotationController@Notation')->name('notation')->middleware('auth');
+    Route::post('/', 'NotationController@AjaxReq')->middleware('auth');
+    Route::get('/view/{notation_id}', 'NotationController@NotationView')
+        ->name('notation_view_id')->where('notation_id','[0-9]{1,11}');
+    Route::get('/edit/{notation_id}', 'NotationController@NotationEditAccess')
+        ->name('notation_edit_id')->where('notation_id','[0-9]{1,11}')->middleware('auth');
+    Route::post('/rating/{notation_id}', 'NotationController@NotationRating')
+        ->where('id','[0-9]{1,11}')->middleware('auth');
+    Route::put('/edit_upd/{notation_id}', 'NotationController@NotationEdit')
+        ->where('id','[0-9]{1,11}')->middleware('auth');
+    Route::delete('/delete/{notation_id}', 'NotationController@NotationDelete')
     ->where('id','[0-9]{1,11}')->middleware('auth');
-Route::put('/notation/edit_upd/{notation_id}', 'NotationController@NotationEdit')
-    ->where('id','[0-9]{1,11}')->middleware('auth');
-Route::delete('/notation/delete/{notation_id}', 'NotationController@NotationDelete')
-    ->where('id','[0-9]{1,11}')->middleware('auth');
+});
+
 //END NOTATION
 
 

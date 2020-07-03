@@ -34,9 +34,9 @@ $factory->defineAs(App\Http\Model\NotationModel::class, 'notation', function(Fak
     $faker = \Faker\Factory::create('ru_RU');
 
     return [
-        'id_user' => 1,
+        'id_user' => \App\User::query()->inRandomOrder()->first()->id,
         'name_notation' => Str::random(10),
         'text_notation' => $faker->realText(rand(100,500)),
-        'notation_add_date' => $faker->dateTimeBetween('-3 months', '-1 days')
+        'notation_add_date' => $faker->dateTimeBetween('-9 months', '-1 days')
     ];
 });
