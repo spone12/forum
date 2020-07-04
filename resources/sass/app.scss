@@ -84,9 +84,12 @@ $c: center;
     margin-left: 5px;
 }
 
+
+.no_decor{text-decoration: none !important;}
+
 .a_header
 {
-    text-decoration: none !important;
+    @extend .no_decor;
     color: black;
     &:hover{color: #b03535;}
 }
@@ -98,8 +101,6 @@ $c: center;
 	background-size: 100% 100%;
     transition: 1s;
 }
-
-.no_decor{text-decoration: none !important;}
 
 
 /*INPUT*/
@@ -234,4 +235,10 @@ $c: center;
 }
 /* END RATING*/
 
-.link_prevDefault{text-decoration: none !important;}
+.link_prevDefault{@extend .no_decor;}
+
+.lock
+{
+    height: 20px !important;
+    cursor: pointer;
+}

@@ -87,8 +87,13 @@
   margin-left: 5px;
 }
 
+.no_decor,
+.link_prevDefault,
 .a_header {
   text-decoration: none !important;
+}
+
+.a_header {
   color: black;
 }
 
@@ -101,10 +106,6 @@
   background: url("/img/logo/logo_hover.png");
   background-size: 100% 100%;
   transition: 1s;
-}
-
-.no_decor {
-  text-decoration: none !important;
 }
 
 /*INPUT*/
@@ -237,7 +238,8 @@
 
 /* END RATING*/
 
-.link_prevDefault {
-  text-decoration: none !important;
+.lock {
+  height: 20px !important;
+  cursor: pointer;
 }
 

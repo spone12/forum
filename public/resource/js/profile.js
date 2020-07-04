@@ -63,3 +63,20 @@
                 }
             });
     }
+
+    function c_confidentiality(id)
+    {
+        console.info(id);
+
+        $('#modal_window_text').html("<div class='row mb-3'><div class='col-12'><b>" + id + "</b></div></div>" +
+                                      "<div class='row mb-0 align-items-center d-flex  justify-content-start'>" +
+                                      "<div class='col-1'><input class='form-control' type='radio' name=" + id + " /></div><div class='col-10 '>Открыть для всех</div>" +
+                                       "</div>" +
+                                       "<div class='row mb-2 align-items-center d-flex justify-content-start'>" +
+                                      "<div class='col-1'><input class='form-control' type='radio' name=" + id + " /></div><div class='col-10'>Скрыть для всех</div>" +
+                                       "</div>" +
+                                      "<div class='row align-items-center'><button class='col-12 btn btn-primary'>Готово</button></div>"
+                                      );
+                       
+        $('#modal_window').modal('show');
+    }

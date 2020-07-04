@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title-block')Профиль@endsection
+@section('title-block')Редактирование профиля@endsection
 @section('content')
 
 
@@ -51,7 +51,7 @@
 
                 <div class='row align-items-center mb-2'>
                     <div class='col-sm-4 profile_info'>Пол:</div>
-                    <div class='col-sm-8'>
+                    <div class='col-sm-6'>
                         {{
                             Form::select('gender', 
                                          array('1' => 'Мужской', '2' => 'Женский'), 
@@ -60,6 +60,10 @@
                                                 'class' => 'form-control'))
                         }}
                     </div>
+
+                    <div class='col-sm-2'>
+                        <img id='l-gender' onclick="c_confidentiality(this.id);" class='lock' title='Настройки конфиденциальности' src="{{asset('img/icons/profile/lock.svg')}}">
+                   </div>
                 </div>
 
                 <div class='row align-items-center mb-2'>
@@ -76,10 +80,12 @@
 
                 <div class='row align-items-center mb-2'>
                     <div class='col-sm-4 profile_info'>Телефон:</div>
-                    <div class='col-sm-8'> 
-                    <input class='form-control input_field' type='tel'  id="phone_user" name="phone_user" pattern="[0-9-]{11,15}" value="" />
-                       
+                    <div class='col-sm-6'> 
+                        <input class='form-control input_field' type='tel'  id="phone_user" name="phone_user" pattern="[0-9-]{11,15}" value="" /> 
                     </div>
+                    <div class='col-sm-2'>
+                        <img  id='l-phone' onclick="c_confidentiality(this.id);" class='lock' title='Настройки конфиденциальности' src="{{asset('img/icons/profile/lock.svg')}}">
+                   </div>
                 </div>
 
                 <!--div class='row align-items-center'>
@@ -89,9 +95,13 @@
                 
                 <div class='row align-items-center mb-2'>
                     <div class='col-sm-4  profile_info'>Дата рождения:</div>
-                    <div class='col-sm-8'>
+                    <div class='col-sm-6'>
                         <input class='form-control' type='date' min='1900-01-01' id="date_user" name="date_user" max="<?=date('Y-m-d');?>" value="{{$data_user->date_born}}" />
                     </div>
+
+                    <div class='col-sm-2'>
+                        <img  id='l-dateB' onclick="c_confidentiality(this.id);" class='lock' title='Настройки конфиденциальности' src="{{asset('img/icons/profile/lock.svg')}}">
+                   </div>
                 </div>
                 <div class='row align-items-center'>
                     <div class='col-sm-4  profile_info'>О себе:</div>

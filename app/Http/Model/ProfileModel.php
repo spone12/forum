@@ -29,9 +29,11 @@ class ProfileModel extends Model
 
             if($data)
             {
+                $data->created_at =  date_create($data->created_at)->Format('d.m.y H:i');
                 if(!is_null($data->date_born))
                 {
-                   $data->date_born = date_create($data->date_born)->Format('d-m-Y');
+                    
+                   $data->date_born = date_create($data->date_born)->Format('d.m.Y');
                 }
 
                 if(!is_null($data->about))
@@ -65,6 +67,7 @@ class ProfileModel extends Model
 
             if(!empty($data))
             {
+                $data->created_at =  date_create($data->created_at)->Format('d.m.Y H:i');
                 $data->gender == 1 ?  $data->gender = 'Мужской':  $data->gender = 'Женский';
                 if(is_null($data->avatar))
                 {
