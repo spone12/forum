@@ -68,7 +68,7 @@
     {
         console.info(id);
 
-        $('#modal_window_text').html("<div class='row mb-3'><div class='col-12'><b>" + id + "</b></div></div>" +
+        $('#modal_window_text').html("<div class='row mb-3'><div class='col-12'><b>" + id + "</b>g</div></div>" +
                                       "<div class='row mb-0 align-items-center d-flex  justify-content-start'>" +
                                       "<div class='col-1'><input class='form-control' type='radio' name=" + id + " /></div><div class='col-10 '>Открыть для всех</div>" +
                                        "</div>" +

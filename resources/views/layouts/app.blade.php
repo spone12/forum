@@ -24,6 +24,7 @@
     <script src="{{ asset('resource/libraries/jQuery/jquery-3.3.1.js') }}"></script>
     <script src="{{ asset('resource/libraries/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('resource/js/nav.js') }}"></script>
+    @stack('scripts')
 </head>
 <body>
 

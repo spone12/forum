@@ -3,8 +3,9 @@
 @section('content')
 
 
-
-<script src="{{ asset('resource/js/profile.js') }}"></script>
+@push('scripts')
+    <script src="{{ asset('resource/js/profile.js') }}"></script>
+@endpush
 
     {{
          Form::hidden('id_user', $data_user->id,
