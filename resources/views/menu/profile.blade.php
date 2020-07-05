@@ -6,12 +6,23 @@
     <div class="row col-10">
         <div class='col-sm-8 col-9'>
         <div class="card card-header">
-            <div class='row'>
+            <div class='row align-items-center'>
                 <div class='col-sm-4 profile_info'>Логин:</div>
-                <div class='col-sm-8'>{{$data_user->name}}</div>
-            </div>
+                <div class='col-sm-8'>
+                    {{$data_user->name}}
+                </div>
+            </div>  
             </div>
             <div class='card card-body'>
+                <div class='row align-items-end justify-content-sm-end'>
+                    @inject('user', 'App\User')
+
+                    @if($user->isOnline($data_user->id))
+                        <div class='col-sm-6 status_user_text'>Онлайн <img class='status_user' src="{{ asset('img/icons/profile/status_online.png') }}" /> </div>
+                    @else
+                        <div class='col-sm-6 status_user_text'>Оффлайн <img class='status_user' src="{{ asset('img/icons/profile/status_offline.png') }}" /></div>
+                    @endif
+                </div>
                 <div class='row align-items-center'>
                     <div class='col-sm-4 profile_info'>Имя:</div>
                     <div class='col-sm-8 '>{{$data_user->real_name}}</div>

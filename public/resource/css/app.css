@@ -243,3 +243,15 @@
   cursor: pointer;
 }
 
+.status_user {
+  width: 10px;
+}
+
+.status_user_text {
+  font-style: italic;
+  font-size: 12px;
+  text-align: center;
+  color: #4a1c1c;
+  font-weight: 400;
+}
+
