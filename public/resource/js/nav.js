@@ -23,16 +23,6 @@ $(function()
     });
     //END ROTATED
 
-    //SEARCH
-    $('#search').on('click', function()
-    {
-        $('.search-marker').hide(300);
-    });
-    $('#search').blur(function(){
-        $('.search-marker').show(300);
-    });
-    ///END SEARCH//////
-
     //PASSWORD VIEW //
     $('body').on('click', '.password-control', function()
     {

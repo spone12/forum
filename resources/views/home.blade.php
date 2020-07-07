@@ -2,7 +2,6 @@
 @section('title-block')Главная страница@endsection
 @section('content')
 
-
 @auth
 <div class="container">
     <div class="row justify-content-end">
@@ -32,11 +31,14 @@
                         </div>
                     </div>
                     <div class='row justify-content-start'>
-                     <div class='col-4 col-sm-2 add_notation_who'>Добавил:</div>
-                     <div class='col-5 col-sm-3 add_notation_who'>
-                        <img class='mini_avatar' title='{{$v->name}}' width=30 src="{{ asset($v->avatar) }}" />
-                        <a href="{{route('profile_id', $v->id_user) }}" title='Перейти в профиль'>{{$v->name}}</a>
-                     </div>
+                        <div class='col-3 col-sm-2 add_notation_who'>Добавил:</div>
+                        <div class='col-5 col-sm-5 add_notation_who'>
+                            <img class='mini_avatar' title='{{$v->name}}' width=30 src="{{ asset($v->avatar) }}" />
+                            <a href="{{route('profile_id', $v->id_user) }}" title='Перейти в профиль'>{{$v->name}}</a>
+                        </div>
+                        <div  class='col-4 col-sm-4 d-flex justify-content-end'>
+                            {{$v->date_n}}
+                        </div>
                     </div>
                 </div>
 

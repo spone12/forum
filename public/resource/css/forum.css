@@ -27,6 +27,7 @@
     color:white;
 }
 
+/*PAGE AVATAR*/
 .page_avatar
 {
     vertical-align: top;
@@ -34,6 +35,22 @@
     max-width: 200px;
     width: 200px;
 }
+
+.page_avatar_edit
+{
+    vertical-align: top;
+    border-radius: 2px;
+    max-width: 200px;
+    width: 200px;
+    border: 1px dashed;
+}
+
+.page_avatar_edit:hover
+{
+    border: 2px dashed;
+    cursor: pointer;
+}
+/* END PAGE AVATAR*/
 
 .mini_avatar{border-radius: 50%;}
 
@@ -151,28 +168,10 @@
     padding: 1px 4px 0px 6px;
 }
 
-.search-input
-{
-    border-radius: 7px;
-    height: 38px;
-    width: 240px;
-}
-
-.search-icon
-{
-    margin-right: 5px;
-}
-.search-button
-{
-    background: none;
-    border: none;
-}
-
 .search-button :hover
 {
-    border: 1px solid green;
-    border-radius: 10px;
-    transition: all 0.5s;
+    background: #645c48;
+    transition: all 0.3s;
 }
 /*                             */
 
@@ -229,3 +228,5 @@
     border-radius: 30%;
 }
 /* END RATING*/
+
+.link_prevDefault{text-decoration: none !important;;}

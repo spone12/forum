@@ -16,22 +16,25 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('home');
 
-/*Route::get('/about', function () {
-    return view('about');
-});*/
-
 Route::post('/search', 'SearchController@getDataSearch')->name('search');
 
 //NOTATION
-Route::get('/notation', 'NotationController@Notation')->name('notation')->middleware('auth');
-Route::post('/notation', 'NotationController@AjaxReq')->middleware('auth');
-Route::get('/notation/view/{notation_id}', 'NotationController@NotationView')
-    ->name('notation_view_id')->where('notation_id','[0-9]{1,11}');
-Route::get('/notation/edit/{notation_id}', 'NotationController@NotationEditAccess')
-    ->name('notation_edit_id')->where('notation_id','[0-9]{1,11}')->middleware('auth');
-Route::post('/notation/rating/{notation_id}', 'NotationController@NotationRating')->middleware('auth');
-Route::post('/notation/edit_upd/{notation_id}', 'NotationController@NotationEdit')->middleware('auth');
-Route::post('/notation/delete/{notation_id}', 'NotationController@NotationDelete')->middleware('auth');
+Route::prefix('notation')->group(function()
+{
+    Route::get('/', 'NotationController@Notation')->name('notation')->middleware('auth');
+    Route::post('/', 'NotationController@AjaxReq')->middleware('auth');
+    Route::get('/view/{notation_id}', 'NotationController@NotationView')
+        ->name('notation_view_id')->where('notation_id','[0-9]{1,11}');
+    Route::get('/edit/{notation_id}', 'NotationController@NotationEditAccess')
+        ->name('notation_edit_id')->where('notation_id','[0-9]{1,11}')->middleware('auth');
+    Route::post('/rating/{notation_id}', 'NotationController@NotationRating')
+        ->where('id','[0-9]{1,11}')->middleware('auth');
+    Route::put('/edit_upd/{notation_id}', 'NotationController@NotationEdit')
+        ->where('id','[0-9]{1,11}')->middleware('auth');
+    Route::delete('/delete/{notation_id}', 'NotationController@NotationDelete')
+    ->where('id','[0-9]{1,11}')->middleware('auth');
+});
+
 //END NOTATION
 
 
@@ -39,7 +42,10 @@ Route::post('/notation/delete/{notation_id}', 'NotationController@NotationDelete
 Route::get('/profile', 'ProfileController@view_profile')->name('profile')->middleware('auth');
 
 //с использованием where
-Route::get('/profile/{id}', 'ProfileController@view_another_profile')->where('id','[0-9]{1,11}')
+ Route::get('/profile/{id}', 'ProfileController@view_another_profile')->where('id','[0-9]{1,11}')
     ->name('profile_id')->middleware('auth');
  Route::get('/change_profile/{id}', 'ProfileController@change_profile')->where('id','[0-9]{1,11}')
     ->name('change_profile')->middleware('auth');
+ Route::put('/change_profile_confirm/{id}', 'ProfileController@change_profile_confirm')->where('id','[0-9]{1,11}')
+    ->middleware('auth');
+Route::post('/avatar-change', 'ProfileController@change_avatar')->name('avatar_change')->middleware('auth');

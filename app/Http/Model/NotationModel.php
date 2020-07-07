@@ -5,6 +5,7 @@ namespace App\Http\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class NotationModel extends Model
@@ -26,8 +27,8 @@ class NotationModel extends Model
                 array('id_user' => $user, 
                     'name_notation' =>  trim(addslashes($data_notation['name_tema'])), 
                     'text_notation' =>  trim(addslashes($data_notation['text_notation'])),
-                    'notation_add_date' =>  date('Y-m-d H:i:s'),
-                    'notation_edit_date' => date('Y-m-d H:i:s'))
+                    'notation_add_date' =>  Carbon::now(),
+                    'notation_edit_date' => Carbon::now())
             );
         }
         else $ins = false;
@@ -110,7 +111,7 @@ class NotationModel extends Model
                 array('id_user' => Auth::user()->id, 
                     'notation_id' =>  (INT)$notation_id, 
                     'vote' => $action,
-                    'vote_date' => date('Y-m-d H:i:s'))
+                    'vote_date' => Carbon::now())
                 );
 
                 if($action == 1)
@@ -137,7 +138,7 @@ class NotationModel extends Model
                 ->where('id_user', '=', Auth::user()->id)
                 ->where('notation_id', '=', $notation_id)
                 ->update(['vote' => $action,
-                        'vote_date' => date('Y-m-d H:i:s')]);
+                        'vote_date' => Carbon::now()]);
                 
                 if($action == 1)
                 {
@@ -166,7 +167,7 @@ class NotationModel extends Model
             ->where('notation_id', '=', $data_notation_edit['notation_id'])
             ->update(['name_notation' =>  $data_notation_edit['name_tema'], 
                       'text_notation' =>  $data_notation_edit['text_notation'],
-                      'notation_edit_date' => date('Y-m-d H:i:s')]);
+                      'notation_edit_date' => Carbon::now()]);
 
             if($upd)
                 return true;

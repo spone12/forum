@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @section('title-block')Новость@endsection
 @section('content')
-<script src="{{ asset('resource/js/notation.js') }}"></script>
+
+@push('scripts')
+    <script src="{{ asset('resource/js/notation.js') }}"></script>
+@endpush
 
     <div id="form-errors"></div>
 
@@ -12,7 +15,7 @@
                 <div class="card-header">
                     <div class="row no-gutters">
                         <div class='col-3 align-self-start text_mg'>
-                          Тема новости 
+                          Тема новости
                         </div>
                         <div  class='col-9 align-self-end'>
                             {{

@@ -17,13 +17,14 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"-->
 
     <!-- Styles -->
-    <link href="{{ asset('resource/css/forum.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!--link href="{{ asset('resource/css/forum.css') }}" rel="stylesheet"-->
+    <link href="{{ asset('resource/css/app.css') }}" rel="stylesheet" type='text/css'>
     <link rel="stylesheet" type="text/css" href="{{ asset('resource/libraries/bootstrap/css/bootstrap.min.css') }}" />
 
     <script src="{{ asset('resource/libraries/jQuery/jquery-3.3.1.js') }}"></script>
     <script src="{{ asset('resource/libraries/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('resource/js/nav.js') }}"></script>
+    @stack('scripts')
 </head>
 <body>
 
@@ -47,13 +48,15 @@
                     <ul>
                         <form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('search') }}">
                          @csrf
-                            <label>
-                                <button id='search-button' class="search-button" type="submit">
-                                 <img  width=20 class='search-icon' src="{{ url('/img/icons/search.png') }}" /> 
-                                </button>
-                                <input id='search' placeholder="Поиск..." class='search-input' name="search" type="search">
-                                <span class="search-marker">/</span>
-                            </label>
+                            <div class="input-group">
+                                <div class="input-group-prepend search-button">
+                                    <button class="input-group-text" id="search-button">
+                                        <img src="{{ url('/img/icons/search.png') }}" width="20">
+                                    </button>
+                                </div>
+                                <input id='search' name="search" type="text" class="form-control" placeholder="Поиск.." aria-label="search" aria-describedby="search-button">
+                                    <span class="search-marker">/</span>
+                                </div>
                         </form>
                     </ul>
 
@@ -74,7 +77,7 @@
                                     <!--dropdown-toggle class-->
                                 <a id="navbarDropdown" class="nav-link  c" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     <span class='name_profile'>{{ Auth::user()->name }} </span>
-                                    <img class='mini_avatar' title='' style='margin-right: 5px;' width=30 src="{{ url('/img/avatar/no_avatar.png') }}" />
+                                    <img class='mini_avatar' title='' style='margin-right: 5px;' width=30 src=@getSessValue('avatar') />
                                     <span class="caret">
                                      <img id='navigation_arrow' width=10 src="{{ url('/img/icons/arrow.svg') }}" /> 
                                     </span>
