@@ -20,6 +20,7 @@
                     @if($user->isOnline($data_user->id))
                         <div class='col-sm-6 status_user_text'>Онлайн <img class='status_user' src="{{ asset('img/icons/profile/status_online.png') }}" /> </div>
                     @else
+                        <div class='col-sm-6 status_user_text'>Был в сети: {{$data_user->last_online_at }}</div>
                         <div class='col-sm-6 status_user_text'>Оффлайн <img class='status_user' src="{{ asset('img/icons/profile/status_offline.png') }}" /></div>
                     @endif
                 </div>

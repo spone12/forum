@@ -20,6 +20,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'ip_user','browser_user'
     ];
+    
+    protected $table = 'users';
 
     /**
      * The attributes that should be hidden for arrays.
@@ -37,6 +39,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        "last_online_at" => "datetime"
     ];
 
     public function isOnline(int $id_user)

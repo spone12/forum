@@ -29,6 +29,7 @@ class ProfileModel extends Model
 
             if($data)
             {
+                
                 $data->created_at =  date_create($data->created_at)->Format('d.m.y H:i');
                 if(!is_null($data->date_born))
                 {
@@ -60,13 +61,14 @@ class ProfileModel extends Model
                         ->select('users.name','users.id', 'users.email','users.created_at',
                                 'description_profile.real_name', 'users.gender',
                                 'description_profile.town','description_profile.date_born',
-                                'description_profile.about', 'users.avatar')
+                                'description_profile.about', 'users.avatar', 'users.last_online_at')
                         ->leftJoin('description_profile', 'description_profile.id_user', '=', 'users.id')
                         ->where('users.id', '=', $id)
                         ->first();
 
             if(!empty($data))
             {
+                $data->last_online_at =  date_create($data->last_online_at)->Format('d.m.Y H:i');
                 $data->created_at =  date_create($data->created_at)->Format('d.m.Y H:i');
                 $data->gender == 1 ?  $data->gender = 'Мужской':  $data->gender = 'Женский';
                 if(is_null($data->avatar))

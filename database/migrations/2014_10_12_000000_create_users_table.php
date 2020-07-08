@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->text('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp("last_online_at")->useCurrent();
             $table->timestamp('date_change_profile')->nullable();
             $table->ipAddress('ip_user');
             $table->text('browser_user');
