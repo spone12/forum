@@ -31,7 +31,13 @@
 
                 <div class='row align-items-center'>
                     <div class='col-sm-4 profile_info'>Пол:</div>
-                    <div class='col-sm-8'>{{$data_user->gender}}</div>
+                    <div class='col-sm-8'>
+                        @if ($data_user->gender == 1)
+                         <img src="{{ asset('img/icons/profile/gender_male.svg') }}" />   {{$data_user->gender}}
+                        @else
+                         <img src="{{ asset('img/icons/profile/gender_female.svg') }}" /> {{$data_user->gender}}
+                        @endif
+                    </div>
                 </div>
 
                 <div class='row align-items-center'>

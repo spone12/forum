@@ -12,6 +12,6 @@ class NotationsSeeder extends Seeder
     public function run()
     {
         factory(App\User::class, 5)->create();
-        factory(App\Http\Model\NotationModel::class, 'notation', 50)->create();
+        factory(App\Http\Model\NotationModel::class, 'notation', 70)->create();
     }
 }

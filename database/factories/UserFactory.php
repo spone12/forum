@@ -21,8 +21,10 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
+        'email_verified_at' =>  $faker->dateTimeBetween('-9 months', '-1 days'),
         'password' => bcrypt('12345678'),
+        'last_online_at' =>  $faker->dateTimeBetween('-12 months', '-1 days'),
+        'gender' => rand(1,2),
         'remember_token' => Str::random(10),
         'ip_user' => rand(1, 254).'.'.rand(1, 254).'.'.rand(1, 254).'.'.rand(1, 254),
         'browser_user' => Str::random(10)

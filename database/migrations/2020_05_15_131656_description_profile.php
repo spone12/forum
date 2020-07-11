@@ -16,13 +16,13 @@ class DescriptionProfile extends Migration
         Schema::create('description_profile', function (Blueprint $table) {
             $table->Increments('description_profile_id');
             $table->integer('id_user')->comment('id пользователя, с таблицы users');
-            $table->string('real_name', 100);
-            $table->date('date_born');
-            $table->string('town', 100);
+            $table->string('real_name', 100)->nullable();
+            $table->date('date_born')->nullable();
+            $table->string('town', 100)->nullable();
             $table->text('about')->nullable();
+
+            $table->foreign('id_user')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
-        
-        DB::statement("ALTER TABLE `description_profile` ADD FOREIGN KEY (`id_user`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;");
     }
 
     /**

@@ -38,7 +38,7 @@ class ProfileController extends Controller
     {
         if($request->ajax())
         {
-            $input = $request->all();
+            $input = $request->only(['data_send']);
 
            /* $validator = Validator::make($input, 
                 [
