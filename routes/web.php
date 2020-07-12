@@ -49,3 +49,12 @@ Route::get('/profile', 'ProfileController@view_profile')->name('profile')->middl
  Route::put('/change_profile_confirm/{id}', 'ProfileController@change_profile_confirm')->where('id','[0-9]{1,11}')
     ->middleware('auth');
 Route::post('/avatar-change', 'ProfileController@change_avatar')->name('avatar_change')->middleware('auth');
+
+//Localization
+Route::get('locale/{locale}', function ($locale) 
+{
+    Session::put('locale', $locale);
+
+    return redirect()->back();
+})->name('locale');
+//END Localization

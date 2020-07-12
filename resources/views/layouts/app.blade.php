@@ -54,10 +54,26 @@
                                         <img src="{{ url('/img/icons/search.png') }}" width="20">
                                     </button>
                                 </div>
-                                <input id='search' name="search" type="text" class="form-control" placeholder="Поиск.." aria-label="search" aria-describedby="search-button">
+                                <input id='search' name="search" type="text" class="form-control" placeholder="{{ __('app.search') }}" aria-label="search" aria-describedby="search-button">
                                     <span class="search-marker">/</span>
                                 </div>
                         </form>
+                    </ul>
+                    
+                    <ul class="mb-3 btn-group">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{{ url( __('app.lang_src') ) }}" width="20">
+                        </button>
+                        <div class="dropdown-menu">
+                            <div class='col'>
+                                <img src="{{ url('/img/icons/lang/ru.png') }}" width="20">
+                                <a href="{{ route('locale', ['locale' => 'ru']) }}">Русский</a>
+                            </div>
+                            <div class='col'>
+                                <img src="{{ url('/img/icons/lang/en.png') }}" width="20">
+                                <a href="{{ route('locale', ['locale' => 'en']) }}">English</a>
+                            </div>
+                        </div>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -88,7 +104,7 @@
                                     <a class="dropdown-item" href="{{ route('profile')}}" onclick="">
                                         <div>
                                             <img width=20 src="{{ url('/img/icons/profile.png') }}" /> 
-                                            <span class='icon-text'>Профиль</span>
+                                            <span class='icon-text'>{{ __('app.profile') }}</span>
                                         </div>
                                     </a>
 
@@ -96,7 +112,7 @@
                                        onclick=''>
                                         <div>
                                             <img width=20 src="{{ url('/img/icons/message.png') }}" /> 
-                                            <span class='icon-text'>Сообщения</span>
+                                            <span class='icon-text'>{{ __('app.messages') }}</span>
                                         </div>
                                     </a>
 
@@ -105,14 +121,13 @@
                                                      document.getElementById('logout-form').submit();">
                                         <div>
                                             <img width=20 src="{{ url('/img/icons/logout.png') }}" /> 
-                                            <span class='icon-text'>Выход</span>
+                                            <span class='icon-text'>{{ __('app.logout') }}</span>
                                         </div>
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
-
                                 </div>
                             </li>
                         @endauth
