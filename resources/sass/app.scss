@@ -1,70 +1,11 @@
+@import 'menu/lang';
+@import 'menu/nav';
+@import 'menu/avatar';
+
+
 $c: center;
 
-.fix_nav
-{
-    position: fixed !important;
-    z-index: 999;
-    width: 100%;
-    opacity: .98;
-}
-
-.fix_main 
-{
-    position: relative;
-    top: 50px;
-}
-
 .c{text-align: $c;}
-
-.no_mark
-{
-    list-style-type: none;
-    &:last-child{margin-left:5px;}
-}
-
-.marker{cursor: pointer;}
-
-.menu_user:hover
-{
-    background: #ae3232;
-    border-radius: 4px;
-    color:white;
-}
-
-/*PAGE AVATAR*/
-.page_avatar
-{
-    vertical-align: top;
-    border-radius: 2px;
-    max-width: 200px;
-    width: 200px;
-}
-
-.page_avatar_edit
-{
-    vertical-align: top;
-    border-radius: 2px;
-    max-width: 200px;
-    width: 200px;
-    border: 1px dashed;
-
-    &:hover
-    {
-        border: 2px dashed;
-        cursor: pointer;
-    }
-}
-
-/* END PAGE AVATAR*/
-
-.mini_avatar{border-radius: 50%;}
-
-.profile_info 
-{
-    color: #828282;
-    font-family: sans-serif;
-    font-style:  italic;
-}
 
 .t_a{text-align: $c;}
 
@@ -83,7 +24,6 @@ $c: center;
     font-size: larger;
     margin-left: 5px;
 }
-
 
 .no_decor{text-decoration: none !important;}
 

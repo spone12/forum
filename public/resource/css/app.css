@@ -1,19 +1,20 @@
 @charset "UTF-8";
 
-.fix_nav {
-  position: fixed !important;
-  z-index: 999;
-  width: 100%;
-  opacity: 0.98;
+.lang {
+  border-radius: 5px !important;
 }
 
-.fix_main {
-  position: relative;
-  top: 50px;
+.lang__flag {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.c {
-  text-align: center;
+.lang__drop > div:hover {
+  background-color: #f8f9fa;
+}
+
+.lang__drop > div > a {
+  color: #261010;
+  text-decoration: none;
 }
 
 .no_mark {
@@ -32,6 +33,18 @@
   background: #ae3232;
   border-radius: 4px;
   color: white;
+}
+
+.fix_nav {
+  position: fixed !important;
+  z-index: 999;
+  width: 100%;
+  opacity: 0.98;
+}
+
+.fix_main {
+  position: relative;
+  top: 50px;
 }
 
 /*PAGE AVATAR*/
@@ -66,6 +79,10 @@
   color: #828282;
   font-family: sans-serif;
   font-style: italic;
+}
+
+.c {
+  text-align: center;
 }
 
 .t_a {

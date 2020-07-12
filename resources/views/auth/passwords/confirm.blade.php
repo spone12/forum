@@ -5,16 +5,16 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Подтверждение пароля') }}</div>
+                <div class="card-header">{{ __('auth.password_confirm_title') }}</div>
 
                 <div class="card-body">
-                    {{ __('Пожалуйста, подтвердите ваш пароль, прежде чем продолжить') }}
+                    {{ __('auth.please_confirm_password') }}
 
                     <form method="POST" action="{{ route('password.confirm') }}">
                         @csrf
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Пароль') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('auth.password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
@@ -30,12 +30,12 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Подтвердить') }}
+                                    {{ __('auth.confirm') }}
                                 </button>
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Забыли свой пароль?') }}
+                                        {{ __('auth.forgot_password') }}
                                     </a>
                                 @endif
                             </div>

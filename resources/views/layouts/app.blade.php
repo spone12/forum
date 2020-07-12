@@ -61,16 +61,16 @@
                     </ul>
                     
                     <ul class="mb-3 btn-group">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="{{ url( __('app.lang_src') ) }}" width="20">
+                        <button class="btn btn-secondary btn-sm lang" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class='lang__flag' src="{{ url( __('app.lang_src') ) }}" width="30">
                         </button>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu lang__drop">
                             <div class='col'>
-                                <img src="{{ url('/img/icons/lang/ru.png') }}" width="20">
+                                <img class='lang__flag' src="{{ url('/img/icons/lang/ru.png') }}" width="20">
                                 <a href="{{ route('locale', ['locale' => 'ru']) }}">Русский</a>
                             </div>
                             <div class='col'>
-                                <img src="{{ url('/img/icons/lang/en.png') }}" width="20">
+                                <img class='lang__flag' src="{{ url('/img/icons/lang/en.png') }}" width="20">
                                 <a href="{{ route('locale', ['locale' => 'en']) }}">English</a>
                             </div>
                         </div>
@@ -81,11 +81,11 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Вход') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('auth.enter') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Регистрация') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('auth.registration') }}</a>
                                 </li>
                             @endif
                         @else
