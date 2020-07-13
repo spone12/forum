@@ -81,11 +81,11 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('auth.enter') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ trans('auth.enter') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('auth.registration') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ trans('auth.registration') }}</a>
                                 </li>
                             @endif
                         @else
@@ -104,7 +104,7 @@
                                     <a class="dropdown-item" href="{{ route('profile')}}" onclick="">
                                         <div>
                                             <img width=20 src="{{ url('/img/icons/profile.png') }}" /> 
-                                            <span class='icon-text'>{{ __('app.profile') }}</span>
+                                            <span class='icon-text'>{{ trans('app.profile') }}</span>
                                         </div>
                                     </a>
 
@@ -112,7 +112,7 @@
                                        onclick=''>
                                         <div>
                                             <img width=20 src="{{ url('/img/icons/message.png') }}" /> 
-                                            <span class='icon-text'>{{ __('app.messages') }}</span>
+                                            <span class='icon-text'>{{ trans('app.messages') }}</span>
                                         </div>
                                     </a>
 
@@ -121,7 +121,7 @@
                                                      document.getElementById('logout-form').submit();">
                                         <div>
                                             <img width=20 src="{{ url('/img/icons/logout.png') }}" /> 
-                                            <span class='icon-text'>{{ __('app.logout') }}</span>
+                                            <span class='icon-text'>{{ trans('app.logout') }}</span>
                                         </div>
                                     </a>
 

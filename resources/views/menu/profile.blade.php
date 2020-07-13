@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title-block')Профиль@endsection
+@section('title-block') {{$data_user->name}} /Профиль@endsection
 @section('content')
 
 <div class="container p-3">

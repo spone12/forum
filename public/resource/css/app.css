@@ -2,6 +2,11 @@
 
 .lang {
   border-radius: 5px !important;
+  background: none !important;
+}
+
+.lang:hover {
+  background: #396858 !important;
 }
 
 .lang__flag {

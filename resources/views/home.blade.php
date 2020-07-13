@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title-block')Главная страница@endsection
+@section('title-block')Главная страница / {{ __('app.lang')}}@endsection
 @section('content')
 
 @auth

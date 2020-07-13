@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title-block')Новость@endsection
+@section('title-block'){{ $view[0]->name_notation}}  /Просмотр@endsection
 @section('content')
 
 <script src="{{ asset('resource/js/notation.js') }}"></script>

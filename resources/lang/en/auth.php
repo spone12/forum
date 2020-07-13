@@ -17,24 +17,29 @@ return [
     'registration' => 'Registration',
     'login' => 'Login',
 
-    'email' => 'E-Mail address',
-    'email_confirm' => 'Confirm email address',
-    'email_confirm_link_send' => 'A confirmation link has been sent to your email address',
-    'email_check' => 'Please check your email before proceeding',
-    'email_not_get' => 'Did not get the email?',
-    'email_send_repeat' => 'Click here to resend',
-
-    'password' => 'Password',
-    'password_confirm' => 'Password (confirm)',
-    'password_confirm_title' => 'Password confirmation',
-    'password_confirm_statement' => 'Confirm the password',
-    'remember_me' => 'Remember me',
-    'forgot_password' => 'Forgot your password?',
-    'restore_password' => 'Reset the password',
-    'send_link_restore' => 'Send password reset link',
-    'please_confirm_password' => 'Please confirm your password before proceeding',
+    'email' => [
+        'email' => 'E-Mail address',
+        'email_confirm' => 'Confirm email address',
+        'email_confirm_link_send' => 'A confirmation link has been sent to your email address',
+        'email_check' => 'Please check your email before proceeding',
+        'email_not_get' => 'Did not get the email?',
+        'email_send_repeat' => 'Click here to resend',
+        ],
+    
+        'password' => [
+            'password' => 'Password',
+            'password_confirm' => 'Password (confirm)',
+            'password_confirm_title' => 'Password confirmation',
+            'password_confirm_statement' => 'Confirm the password',
+            'remember_me' => 'Remember me',
+            'forgot_password' => 'Forgot your password?',
+            'restore_password' => 'Reset the password',
+            'password_recovery' => 'Password recovery',
+            'please_confirm_password' => 'Please confirm your password before proceeding',
+            'send_link_restore' => 'Send password reset link',
+            ],
+   
     'confirm' => 'Сonfirm',
-    'password_recovery' => 'Password recovery',
     'restore' => 'Restore',
 
 

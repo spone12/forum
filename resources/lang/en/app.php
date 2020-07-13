@@ -12,6 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'lang' => 'en',
 
     'profile' => 'Profile',
     'messages' => 'Messages',

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title-block')Новость@endsection
+@section('title-block')Создание новости@endsection
 @section('content')
 
 @push('scripts')

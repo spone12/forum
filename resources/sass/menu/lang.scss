@@ -1,7 +1,14 @@
 .lang
 {
     border-radius: 5px !important;
+    background: none !important;
+
+    &:hover
+    {
+        background: #396858 !important;
+    }
 }
+
 .lang__flag
 {
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
