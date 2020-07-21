@@ -93,7 +93,7 @@
                                     <!--dropdown-toggle class-->
                                 <a id="navbarDropdown" class="nav-link  c" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     <span class='name_profile'>{{ Auth::user()->name }} </span>
-                                    <img class='mini_avatar' title='' style='margin-right: 5px;' width=30 src=@getSessValue('avatar') />
+                                    <img class='mini_avatar' style='margin-right: 5px;' width=30 src=@getSessValue('avatar') />
                                     <span class="caret">
                                      <img id='navigation_arrow' width=10 src="{{ url('/img/icons/arrow.svg') }}" /> 
                                     </span>

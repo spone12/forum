@@ -8,8 +8,11 @@ use App\Http\Model\SearchModel;
 class SearchController extends Controller
 {
 
-    public function getDataSearch(Request $search)
+    public function getDataSearch(Request $request)
     {
-        return view('search',  ['name' => $search->input('search')]);
+        $search = $request->input('search');
+        $result = SearchModel::query_search_user($search);
+
+        return view('search',  ['result' => $result]);
     }
 }

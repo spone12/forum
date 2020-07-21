@@ -52,13 +52,14 @@
 @endforeach
 
 <div class='container'>
-    <div class='row justify-content-around'>
-        <div class='col-6'>{{$notations->links()}}</div>
-        <div class='col-2'>Всего записей: {{$notations->total()}}</div>
-       
+    <div class='row'>
+        <div class='mx-auto'>{{$notations->links()}}</div>
+    </div>
+
+    <div class='row'>
+     <div class='mx-auto'>Всего записей: {{$notations->total()}}</div>
     </div>
 </div>
-
 
 @endsection
 
