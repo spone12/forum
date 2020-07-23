@@ -56,7 +56,8 @@
                                 </div>
                                 <input id='search' name="search" type="text" class="form-control" placeholder="{{ __('app.search') }}" aria-label="search" aria-describedby="search-button">
                                     <span class="search-marker">/</span>
-                                </div>
+                                <input type='hidden' name='search-by' value='search-by__user' id='search-by' />    
+                            </div>
                         </form>
                     </ul>
                     

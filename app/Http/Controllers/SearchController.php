@@ -10,8 +10,18 @@ class SearchController extends Controller
 
     public function getDataSearch(Request $request)
     {
-        $search = $request->input('search');
-        $result = SearchModel::query_search_user($search);
+        $search = $request->only(['search', 'search-by']);
+
+        if(stripos($search['search-by'], 'user' ) !== false)
+        {
+            $result = SearchModel::search_by_user((object)$search);
+            $result->search_by = 1;
+        }
+        else
+        {
+             $result = SearchModel::search_by_notation((object)$search);
+             $result->search_by = 2;
+        }
 
         return view('search',  ['result' => $result]);
     }

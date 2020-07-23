@@ -86,6 +86,19 @@
   font-style: italic;
 }
 
+.search-by__selected {
+  cursor: pointer;
+  font-style: italic;
+  color: rebeccapurple !important;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.search-by div a:hover {
+  cursor: pointer;
+  font-weight: italic !important;
+}
+
 .c {
   text-align: center;
 }
