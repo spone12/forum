@@ -16,7 +16,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::post('/search', 'SearchController@getDataSearch')->name('search');
+Route::match(['get', 'post'], '/search', 'SearchController@getDataSearch')->name('search');
 
 //NOTATION
 Route::prefix('notation')->group(function()

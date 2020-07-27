@@ -8,10 +8,15 @@ use App\Http\Model\NotationModel;
 
 class SearchModel extends Model
 {
+   
+
     protected static function search_by_user($query)
     {
         $result = User::select('name', 'id', 'avatar')->where('name', 'LIKE', $query->search.'%')
-                        ->orderBy('name', 'ASC')->get();
+                        ->orderBy('name', 'ASC')->paginate(10)->onEachSide(1);
+
+        $result->view = 1;
+        $result->search = $query->search;
         return $result;
     }
 
@@ -20,7 +25,10 @@ class SearchModel extends Model
         $result = NotationModel::select('notation_id', 'name_notation', 'rating')
             ->where('name_notation', 'LIKE', $query->search.'%')
             ->orWhere('text_notation', 'LIKE', '%'.$query->search.'%')
-                        ->orderBy('notation_add_date', 'ASC')->get();
+                        ->orderBy('notation_add_date', 'ASC')->paginate(10)->onEachSide(1);
+        
+        $result->view = 2;
+        $result->search = $query->search;
         return $result;
     }
 }
