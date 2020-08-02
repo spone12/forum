@@ -13,3 +13,23 @@
     cursor: pointer;
     font-weight: italic !important;
 }
+
+.search-body
+{
+    border-radius: 20px;
+    background: rgb(111,108,171);
+    background: linear-gradient(90deg, rgba(111,108,171,0) 0%, rgba(124,124,158,0.5298319156764268) 50%, rgba(53,111,138,0) 100%);
+}
+
+.a_search
+{
+    font-size: 18px;
+    color: black;
+    font-weight: 400;
+
+    &:hover
+    {
+        text-decoration: none;
+        color: #710000;
+    }
+}
