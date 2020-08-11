@@ -41,6 +41,8 @@ Route::prefix('notation')->group(function()
 // зайти могут только зарегестрированные
 Route::get('/profile', 'ProfileController@view_profile')->name('profile')->middleware('auth');
 
+Route::get('/map', 'MapController@view_map')->name('map')->middleware('auth');
+
 //с использованием where
  Route::get('/profile/{id}', 'ProfileController@view_another_profile')->where('id','[0-9]{1,11}')
     ->name('profile_id')->middleware('auth');

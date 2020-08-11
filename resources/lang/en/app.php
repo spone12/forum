@@ -18,5 +18,6 @@ return [
     'messages' => 'Messages',
     'logout' => 'Logout',
     'search' => 'Search..',
-    'lang_src' => '/img/icons/lang/en.png'
+    'lang_src' => '/img/icons/lang/en.png',
+    'map' => 'Map',
 ];

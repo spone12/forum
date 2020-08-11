@@ -117,6 +117,13 @@
                                         </div>
                                     </a>
 
+                                    <a class="dropdown-item" href="{{ route('map') }}" >
+                                        <div>
+                                            <img width=20 src="{{ url('/img/icons/map.svg') }}" /> 
+                                            <span class='icon-text'>{{ trans('app.map') }}</span>
+                                        </div>
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

@@ -18,6 +18,7 @@ return [
     'messages' => 'Сообщения',
     'logout' => 'Выход',
     'search' => 'Поиск..',
-    'lang_src' => '/img/icons/lang/ru.png'
+    'lang_src' => '/img/icons/lang/ru.png',
+    'map' => 'Карта',
 
 ];
