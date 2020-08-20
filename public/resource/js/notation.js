@@ -1,6 +1,7 @@
 
     function add_notation()
     {
+        
         $.ajax(
         {
             url: '/notation',

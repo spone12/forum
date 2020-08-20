@@ -30,6 +30,7 @@ class NotationModel extends Model
                     'notation_add_date' =>  Carbon::now(),
                     'notation_edit_date' => Carbon::now())
             );
+          
         }
         else $ins = false;
 

@@ -31,7 +31,7 @@
                 </div>
                 <div class="card-body">
                     <div class='row justify-content-center'>
-                        <div  class='col-10'>
+                        <div class='col-10'>
                             {{
                                 Form::textarea('text_notation', null,
                                               ['class' => 'textarea_field',

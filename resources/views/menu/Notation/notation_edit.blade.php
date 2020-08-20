@@ -40,6 +40,19 @@
                                           )
                         }}
                     </div>    
+
+                    <form action="{{route('notation_add_photos')}}" enctype="multipart/form-data" method="POST">
+                        {{ csrf_field() }}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="file" id='notation_images' class='btn btn-info mt-2' name="images[]" multiple />
+                            </div>
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success">Загрузить</button>
+                            </div>
+                        </div>
+                    </form>
+                    
                 </div>
                 <div class='row justify-content-center m-1'>
                     {{

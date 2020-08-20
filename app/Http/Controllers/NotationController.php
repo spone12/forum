@@ -87,6 +87,28 @@ class NotationController extends Controller
         }
     }
 
+    protected function NotationAddPhotos(Request $request)
+    {
+        $paths = array();
+
+        if($request->hasFile('images'))
+        {
+            $files = $request->file('images');
+
+            foreach($files as $file)
+            {
+                //$imageName = time() . '.' . $image->getClientOriginalExtension();
+                $imageName = $file->getClientOriginalName();
+                $file->move(public_path('img/notation_photos/'), $imageName);
+                $paths[] = $imageName;
+            }
+        }
+
+        return back()
+            ->with('success', 'Изображения загружены успешно.')
+            ->with('paths', $paths);
+    }
+    
     public function Notation(Request $request)
     {
         return view('menu.notation');
