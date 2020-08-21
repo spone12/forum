@@ -1,0 +1,34 @@
+.add_notation_who
+{
+    font-style: italic;
+    font-size: 13px;
+}
+.notation_tema
+{
+    font-size: larger;
+    margin-left: 5px;
+}
+
+.notation_carousel
+{
+    background: #000 !important;
+    width: 10px !important;
+}
+
+$border-nav: 25px;
+.notation_carousel_prev
+{
+    @extend .notation_carousel;
+    border-radius: $border-nav 0px 0px $border-nav;
+}
+
+.notation_carousel_next
+{
+    @extend .notation_carousel;
+    border-radius: 0px $border-nav $border-nav 0px;
+}
+
+.notation_carousel_photo
+{
+    border-radius: 15px;
+}

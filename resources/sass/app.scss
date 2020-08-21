@@ -2,6 +2,7 @@
 @import 'menu/nav';
 @import 'menu/avatar';
 @import 'menu/search';
+@import 'menu/notation';
 
 
 $c: center;
@@ -14,16 +15,6 @@ $c: center;
 {
     background: #fffaf0;
     border-radius: 10px;
-}
-.add_notation_who
-{
-    font-style: italic;
-    font-size: 13px;
-}
-.notation_tema
-{
-    font-size: larger;
-    margin-left: 5px;
 }
 
 .no_decor{text-decoration: none !important;}

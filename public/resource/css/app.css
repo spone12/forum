@@ -116,6 +116,35 @@
   color: #710000;
 }
 
+.add_notation_who {
+  font-style: italic;
+  font-size: 13px;
+}
+
+.notation_tema {
+  font-size: larger;
+  margin-left: 5px;
+}
+
+.notation_carousel,
+.notation_carousel_next,
+.notation_carousel_prev {
+  background: #000 !important;
+  width: 10px !important;
+}
+
+.notation_carousel_prev {
+  border-radius: 25px 0px 0px 25px;
+}
+
+.notation_carousel_next {
+  border-radius: 0px 25px 25px 0px;
+}
+
+.notation_carousel_photo {
+  border-radius: 15px;
+}
+
 .c {
   text-align: center;
 }
@@ -127,16 +156,6 @@
 .profile_bg {
   background: #fffaf0;
   border-radius: 10px;
-}
-
-.add_notation_who {
-  font-style: italic;
-  font-size: 13px;
-}
-
-.notation_tema {
-  font-size: larger;
-  margin-left: 5px;
 }
 
 .no_decor,

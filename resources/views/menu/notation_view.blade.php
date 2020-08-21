@@ -75,6 +75,38 @@
                             &emsp; {!! $view[0]->text_notation!!}
                         </div>    
                     </div>
+
+                    <div class='row justify-content-center mt-3'>
+                        <div  class='col-5'>
+
+                            <div id="carouselExampleControls" class="carousel slide" data-keyboard="true" data-wrap="true" data-ride="carousel">
+                            <div class="carousel-inner">
+
+                                @foreach($view as $v)
+                                    <div class="carousel-item 
+
+                                    @if($loop->first)
+                                        active
+                                    @endif
+
+                                    ">
+                                        <img class="d-block w-100 notation_carousel_photo" src="{{asset($v->path_photo)}}" alt="Первый слайд">
+                                    </div>
+                                @endforeach
+
+                            </div>
+                            <a class="carousel-control-prev notation_carousel_prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Предыдущий</span>
+                            </a>
+                            <a class="carousel-control-next notation_carousel_next" href="#carouselExampleControls" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Следующий</span>
+                            </a>
+                            </div>
+
+                        </div>    
+                    </div>
                      
                 </div>
             </div>

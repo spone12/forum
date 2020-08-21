@@ -68,10 +68,11 @@ class NotationModel extends Model
         {
             $notation = DB::table('notations')
             ->join('users', 'users.id', '=', 'notations.id_user')
+            ->join('notation_photos AS np', 'np.notation_id', '=', 'notations.notation_id')
             ->select('notations.notation_id', 'notations.id_user',
                     'notations.name_notation', 'notations.text_notation',
                     'notations.rating','users.name', 'users.avatar',
-                    'notations.notation_add_date')
+                    'notations.notation_add_date', 'np.path_photo')
             ->where('notations.notation_id', '=', $notation_id)->get();
         }
 
@@ -209,6 +210,34 @@ class NotationModel extends Model
                     return $data;
             }
         }   
+    }
+
+    protected function notation_add_photo($request)
+    {
+        $paths = array();
+        if($request->hasFile('images'))
+        {
+            $files = $request->file('images');
+
+            foreach($files as $file)
+            {
+                //$imageName = time() . '.' . $image->getClientOriginalExtension();
+                $imageName = $file->getClientOriginalName();
+                $file->move(public_path("img/notation_photos/{$request->notation_id}"), $imageName);
+
+                $ins =  
+                DB::table('notation_photos')->insert(
+                    array('id_user' => Auth::user()->id, 
+                        'notation_id' => $request->notation_id, 
+                        'path_photo' => "img/notation_photos/{$request->notation_id}/{$imageName}",
+                        'photo_edit_date' =>  Carbon::now())
+                );
+
+                $paths[] = $imageName;
+            }
+        }
+
+        return $paths;
     }
 
    

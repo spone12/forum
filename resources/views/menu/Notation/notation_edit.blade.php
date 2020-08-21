@@ -6,6 +6,16 @@
 
 <div id="form-errors"></div>
 
+@if (count($errors) > 0)
+  <div class="alert alert-danger">
+    <ul>
+    @foreach ($errors->all() as $error)
+      <li>{{ $error }}</li>
+    @endforeach
+    </ul>
+  </div>
+@endif
+
 <!-- name, value, id -->
 {{ Form::hidden('invisible', $data_notation->notation_id, array('id' => 'id_notation')) }}
 
@@ -41,14 +51,14 @@
                         }}
                     </div>    
 
-                    <form action="{{route('notation_add_photos')}}" enctype="multipart/form-data" method="POST">
+                    <form action="{{route('notation_add_photos', $data_notation->notation_id)}}" enctype="multipart/form-data" method="POST">
                         {{ csrf_field() }}
                         <div class="row">
                             <div class="col-md-12">
                                 <input type="file" id='notation_images' class='btn btn-info mt-2' name="images[]" multiple />
                             </div>
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success">Загрузить</button>
+                                <button type="submit" class="btn btn-success">Добавить фотографии</button>
                             </div>
                         </div>
                     </form>

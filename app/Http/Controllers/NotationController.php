@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Model\NotationModel;
 use App\Http\Requests\NotationRequest;
+use App\Http\Requests\NotationPhotoRequest;
 use Illuminate\Support\Facades\Auth;
 
 class NotationController extends Controller
@@ -87,26 +88,20 @@ class NotationController extends Controller
         }
     }
 
+    //NotationPhotoRequest Request
     protected function NotationAddPhotos(Request $request)
-    {
-        $paths = array();
+    { 
+        
+        $paths = NotationModel::notation_add_photo($request);
 
-        if($request->hasFile('images'))
+        if(!empty($paths))
         {
-            $files = $request->file('images');
-
-            foreach($files as $file)
-            {
-                //$imageName = time() . '.' . $image->getClientOriginalExtension();
-                $imageName = $file->getClientOriginalName();
-                $file->move(public_path('img/notation_photos/'), $imageName);
-                $paths[] = $imageName;
-            }
-        }
-
-        return back()
-            ->with('success', 'Изображения загружены успешно.')
+            return back()
+            ->with('success', "Изображения загружены успешно.")
             ->with('paths', $paths);
+        }
+        else 
+            return back()->with('success', "11Изображения загружены успешно.");
     }
     
     public function Notation(Request $request)
