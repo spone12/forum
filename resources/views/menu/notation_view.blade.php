@@ -2,7 +2,9 @@
 @section('title-block'){{ $view[0]->name_notation}}  /Просмотр@endsection
 @section('content')
 
-<script src="{{ asset('resource/js/notation.js') }}"></script>
+@push('scripts')
+    <script src="{{ asset('resource/js/notation.js') }}"></script>
+@endpush
 
     {{
          Form::hidden('hidden_id', $view[0]->notation_id,
@@ -77,9 +79,20 @@
                     </div>
 
                     <div class='row justify-content-center mt-3'>
-                        <div  class='col-5'>
+                        <div  class='col-6'>
 
-                            <div id="carouselExampleControls" class="carousel slide" data-keyboard="true" data-wrap="true" data-ride="carousel">
+                            <div id="carousel" class="carousel slide" data-keyboard="true" data-wrap="true" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    @foreach($view as $v)
+                                        <li data-target = "#carousel" data-slide-to = "{{$loop->index}}" class="
+                                        
+                                        @if($loop->first)
+                                            active
+                                        @endif
+
+                                        "></li>
+                                    @endforeach
+                                </ol>
                             <div class="carousel-inner">
 
                                 @foreach($view as $v)
@@ -95,11 +108,11 @@
                                 @endforeach
 
                             </div>
-                            <a class="carousel-control-prev notation_carousel_prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                            <a class="carousel-control-prev notation_carousel_prev" href="#carousel" role="button" data-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="sr-only">Предыдущий</span>
                             </a>
-                            <a class="carousel-control-next notation_carousel_next" href="#carouselExampleControls" role="button" data-slide="next">
+                            <a class="carousel-control-next notation_carousel_next" href="#carousel" role="button" data-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="sr-only">Следующий</span>
                             </a>

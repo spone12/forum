@@ -43,11 +43,12 @@ class NotationController extends Controller
     {
         try 
         {
-            $edit_access = NotationModel::edit_notation_access($notation_id);
+            $data_edit = NotationModel::data_edit_notation($notation_id);
 
-            if($edit_access->id_user == Auth::user()->id)
-                return view('menu.Notation.notation_edit', ['data_notation' => $edit_access]);
-            else  return view('error_404', ['error' => ['Доступ на редактирование запрещён']]);
+           if($data_edit['notation']->id_user == Auth::user()->id)
+                return view('menu.Notation.notation_edit', ['data_notation' => $data_edit['notation'],
+                        'photo_notation' => $data_edit['notation_photos']]);
+           else  return view('error_404', ['error' => ['Доступ на редактирование запрещён']]);
         } 
         catch (\Exception $exception) 
         {

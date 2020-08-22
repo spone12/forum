@@ -88,13 +88,24 @@ class NotationModel extends Model
     
     }
 
-    protected function edit_notation_access(int $notation_id)
+    protected function data_edit_notation(int $notation_id)
     {
-        $notation = DB::table('notations')
+        $data = array();
+        $data['notation'] = DB::table('notations')
         ->select('id_user','notation_id','category','name_notation','text_notation')
         ->where('notation_id', '=', $notation_id)->first();
 
-        return $notation;
+        $data['notation_photos'] = DB::table('notation_photos')
+        ->select('path_photo')
+        ->where('notation_id', '=', $notation_id)->get();
+
+        /*$notation = DB::table('notations AS n')
+            ->select('n.id_user','n.notation_id','n.category','n.text_notation','np.path_photo')
+            ->join('notation_photos AS np', 'np.notation_id', '=', 'n.notation_id')
+            ->where('n.notation_id', '=', $notation_id)->get();*/
+
+       // return $notation;
+        return $data;
     }
 
     protected function notation_rating(int $notation_id, int $action)

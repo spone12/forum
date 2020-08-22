@@ -2,7 +2,9 @@
 @section('title-block'){{ $data_notation->name_notation}}  /Редакирование@endsection
 @section('content')
 
-<script src="{{ asset('resource/js/notation.js') }}"></script>
+@push('scripts')
+    <script src="{{ asset('resource/js/notation.js') }}"></script>
+@endpush
 
 <div id="form-errors"></div>
 
@@ -53,15 +55,26 @@
 
                     <form action="{{route('notation_add_photos', $data_notation->notation_id)}}" enctype="multipart/form-data" method="POST">
                         {{ csrf_field() }}
-                        <div class="row">
+                       
+                        <div class="d-row justify-content-center">
                             <div class="col-md-12">
+                            Добавить фотографии:
                                 <input type="file" id='notation_images' class='btn btn-info mt-2' name="images[]" multiple />
                             </div>
-                            <div class="col-md-12">
-                                <button type="submit" class="btn btn-success">Добавить фотографии</button>
+                            <div class="col-md-12 mt-1 text-center">
+                                <button type="submit" class="btn btn-success">Добавить</button>
                             </div>
                         </div>
                     </form>
+
+                    <div class='row col-10 mt-1 notation_photo justify-content-center'>
+                            @foreach($photo_notation as $v)
+                            <span class="content clossable" >
+                                <div title='Удалить фотографию' class="close"></div>
+                                <img src="{{asset($v->path_photo)}}" height=50 />
+                            </span>
+                            @endforeach
+                    </div>
                     
                 </div>
                 <div class='row justify-content-center m-1'>
