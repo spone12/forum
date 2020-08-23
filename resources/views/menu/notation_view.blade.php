@@ -81,6 +81,7 @@
                     <div class='row justify-content-center mt-3'>
                         <div  class='col-6'>
 
+                        @if($view[0]->path_photo)
                             <div id="carousel" class="carousel slide" data-keyboard="true" data-wrap="true" data-ride="carousel">
                                 <ol class="carousel-indicators">
                                     @foreach($view as $v)
@@ -117,6 +118,7 @@
                                 <span class="sr-only">Следующий</span>
                             </a>
                             </div>
+                        @endif
 
                         </div>    
                     </div>

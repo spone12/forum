@@ -166,6 +166,7 @@
   max-width: 50%;
   max-height: 150px;
   display: inline-block;
+  overflow-x: hidden;
 }
 
 .close {

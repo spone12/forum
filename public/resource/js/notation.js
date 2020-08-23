@@ -206,3 +206,30 @@
                 });
          })
     }
+
+    function del_photo(photo_id, notation_id)
+    {
+        $.ajax(
+            {
+                url: '/notation/delete_photo/' + notation_id,
+                type: "DELETE",
+                data: {
+                        photo_id: photo_id,
+                        notation_id: notation_id
+                      },
+                headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+                success: function (data) 
+                {
+                   if(data.answer === 'success')
+                   {
+                       location.href = '';
+                   }
+                   //console.log( data);
+                },
+                error: function(data)
+                {
+                    var errors = data.responseJSON;
+                    console.log(errors);
+                }
+            });
+    }

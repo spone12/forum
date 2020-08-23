@@ -28,24 +28,23 @@ Route::prefix('notation')->group(function()
     Route::get('/edit/{notation_id}', 'NotationController@NotationEditAccess')
         ->name('notation_edit_id')->where('notation_id','[0-9]{1,11}')->middleware('auth');
     Route::post('/rating/{notation_id}', 'NotationController@NotationRating')
-        ->where('id','[0-9]{1,11}')->middleware('auth');
+        ->where('notation_id','[0-9]{1,11}')->middleware('auth');
     Route::post('/add_photos/{notation_id}', 'NotationController@NotationAddPhotos')
         ->name('notation_add_photos')->where('notation_id','[0-9]{1,11}')->middleware('auth');
     Route::put('/edit_upd/{notation_id}', 'NotationController@NotationEdit')
-        ->where('id','[0-9]{1,11}')->middleware('auth');
+        ->where('notation_id','[0-9]{1,11}')->middleware('auth');
     Route::delete('/delete/{notation_id}', 'NotationController@NotationDelete')
-    ->where('id','[0-9]{1,11}')->middleware('auth');
+    ->where('notation_id','[0-9]{1,11}')->middleware('auth');
+    Route::delete('/delete_photo/{photo_id}', 'NotationController@NotationPhotoDelete')
+    ->where('photo_id','[0-9]{1,11}')->middleware('auth');
 });
 
 //END NOTATION
 
-
-// зайти могут только зарегестрированные
-Route::get('/profile', 'ProfileController@view_profile')->name('profile')->middleware('auth');
-
 Route::get('/map', 'MapController@view_map')->name('map')->middleware('auth');
 
-//с использованием where
+//Profile
+Route::get('/profile', 'ProfileController@view_profile')->name('profile')->middleware('auth');
  Route::get('/profile/{id}', 'ProfileController@view_another_profile')->where('id','[0-9]{1,11}')
     ->name('profile_id')->middleware('auth');
  Route::get('/change_profile/{id}', 'ProfileController@change_profile')->where('id','[0-9]{1,11}')

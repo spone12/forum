@@ -29,7 +29,10 @@
             <div class="card-header">
                 <div class="row no-gutters">
                     <div class='col-3 align-self-start text_mg'>
-                      Тема новости 
+                        <a href='{{ URL::previous() }}' class='link_prevDefault'>
+                            <img alt='back' title='Вернуться обратно' src="{{asset('img/icons/back-arrow.svg')}}" width=15 />
+                        </a> 
+                        Тема новости 
                     </div>
                     <div  class='col-9 align-self-end'>
                          {{ Form::text('name_tema',  $data_notation->name_notation,
@@ -70,7 +73,7 @@
                     <div class='row col-10 mt-1 notation_photo justify-content-center'>
                             @foreach($photo_notation as $v)
                             <span class="content clossable" >
-                                <div title='Удалить фотографию' class="close"></div>
+                                <div title='Удалить фотографию' class="close" onclick="del_photo({{$v->notation_photo_id}}, {{$data_notation->notation_id}});"></div>
                                 <img src="{{asset($v->path_photo)}}" height=50 />
                             </span>
                             @endforeach

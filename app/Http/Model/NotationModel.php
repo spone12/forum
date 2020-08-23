@@ -11,9 +11,11 @@ use Carbon\Carbon;
 class NotationModel extends Model
 {
     protected $table = 'notations';
+
     /*protected $fillable = [
         'id_user', 'name_notation', 'text_notation','notation_add_date'
     ];*/
+
     public $timestamps = false;
 
     protected static function ins_notation(Array $data_notation)
@@ -53,10 +55,11 @@ class NotationModel extends Model
                 $notation = DB::table('notations')
                     ->join('users', 'users.id', '=', 'notations.id_user')
                     ->join('vote_notation', 'vote_notation.notation_id', '=', 'notations.notation_id')
+                    ->leftJoin('notation_photos AS np', 'np.notation_id', '=', 'notations.notation_id')
                     ->select('notations.notation_id', 'notations.id_user',
                             'notations.name_notation', 'notations.text_notation',
                             'notations.rating','users.name', 'users.avatar',
-                            'notations.notation_add_date','vote_notation.vote')
+                            'notations.notation_add_date','vote_notation.vote','np.path_photo')
                     ->where('notations.notation_id', '=', $notation_id)
                     ->where('vote_notation.id_user', '=', Auth::user()->id)
                     ->get();
@@ -68,7 +71,7 @@ class NotationModel extends Model
         {
             $notation = DB::table('notations')
             ->join('users', 'users.id', '=', 'notations.id_user')
-            ->join('notation_photos AS np', 'np.notation_id', '=', 'notations.notation_id')
+            ->leftJoin('notation_photos AS np', 'np.notation_id', '=', 'notations.notation_id')
             ->select('notations.notation_id', 'notations.id_user',
                     'notations.name_notation', 'notations.text_notation',
                     'notations.rating','users.name', 'users.avatar',
@@ -96,13 +99,8 @@ class NotationModel extends Model
         ->where('notation_id', '=', $notation_id)->first();
 
         $data['notation_photos'] = DB::table('notation_photos')
-        ->select('path_photo')
+        ->select('path_photo','notation_photo_id')
         ->where('notation_id', '=', $notation_id)->get();
-
-        /*$notation = DB::table('notations AS n')
-            ->select('n.id_user','n.notation_id','n.category','n.text_notation','np.path_photo')
-            ->join('notation_photos AS np', 'np.notation_id', '=', 'n.notation_id')
-            ->where('n.notation_id', '=', $notation_id)->get();*/
 
        // return $notation;
         return $data;
@@ -223,6 +221,34 @@ class NotationModel extends Model
         }   
     }
 
+    protected function notationPhotoDelete(array $photo_data)
+    {
+        $check_added_photo = DB::table('notation_photos')
+            ->select('id_user', 'path_photo')
+                ->where('notation_id', '=', $photo_data['notation_id'])
+                ->where('notation_photo_id', '=', $photo_data['photo_id'])
+            ->first();
+
+            if($check_added_photo->id_user == Auth::user()->id)
+            {
+                $delete = DB::table('notation_photos')
+                    ->where('notation_id', '=', $photo_data['notation_id'])
+                    ->where('notation_photo_id', '=', $photo_data['photo_id'])
+                ->delete();
+
+                unlink(public_path($check_added_photo->path_photo));
+
+                if($delete)
+                    return $check_added_photo->answer = 'success';
+                else
+                    return $check_added_photo->answer = 'Ошибка удаления';
+            }
+            else 
+            {    
+                return $check_added_photo->answer = 'Не совпадает id пользователя';
+            }
+    }
+
     protected function notation_add_photo($request)
     {
         $paths = array();
@@ -232,8 +258,7 @@ class NotationModel extends Model
 
             foreach($files as $file)
             {
-                //$imageName = time() . '.' . $image->getClientOriginalExtension();
-                $imageName = $file->getClientOriginalName();
+                $imageName = uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path("img/notation_photos/{$request->notation_id}"), $imageName);
 
                 $ins =  

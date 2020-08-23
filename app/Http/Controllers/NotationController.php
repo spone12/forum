@@ -104,6 +104,14 @@ class NotationController extends Controller
         else 
             return back()->with('success', "11Изображения загружены успешно.");
     }
+
+    protected function NotationPhotoDelete(Request $request)
+    {
+        $photo_data = $request->only(['photo_id', 'notation_id']); 
+        $del = NotationModel::notationPhotoDelete($photo_data);
+
+        return response()->json(['answer'=> $del]);
+    }
     
     public function Notation(Request $request)
     {
