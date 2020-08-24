@@ -57,7 +57,7 @@
     </div>
 
     <div class='row'>
-     <div class='mx-auto'>Всего записей: {{$notations->total()}}</div>
+     <div class='mx-auto'>Всего записей: {{ number_format($notations->total()) }}</div>
     </div>
 </div>
 

@@ -90,9 +90,8 @@ class NotationController extends Controller
     }
 
     //NotationPhotoRequest Request
-    protected function NotationAddPhotos(Request $request)
+    protected function NotationAddPhotos(NotationPhotoRequest $request)
     { 
-        
         $paths = NotationModel::notation_add_photo($request);
 
         if(!empty($paths))
@@ -102,7 +101,7 @@ class NotationController extends Controller
             ->with('paths', $paths);
         }
         else 
-            return back()->with('success', "11Изображения загружены успешно.");
+            return back()->with('success', "Изображения загружены успешно.");
     }
 
     protected function NotationPhotoDelete(Request $request)

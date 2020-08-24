@@ -152,7 +152,7 @@
                 {
                    if(data.success === true)
                    {
-                        $('#modal_window_text').text('Нотация успешно изменена!');
+                        $('#modal_window_text').text('Новость успешно изменена!');
                        // $('#modal_window_close').attr('href', '/notation/view/' + notation_id);
                         $('#modal_window').modal('show');
 
@@ -174,7 +174,7 @@
     function notation_delete()
     {
         let notation_id = $('#id_notation').val();
-        $('#modal_window_text').text('Вы действительно хотите удалить нотацию?');
+        $('#modal_window_text').text('Вы действительно хотите удалить новость?');
         $('#modal_window_button').attr('type', 'button');
         $('#modal_window').modal('show');
 

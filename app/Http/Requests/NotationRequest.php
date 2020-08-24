@@ -41,7 +41,7 @@ class NotationRequest extends FormRequest
     {
         return [
             'name_tema.required' => 'Необходимо заполнить имя темы',
-            'text_notation.required' => 'Необходимо заполнить текст нотации',
+            'text_notation.required' => 'Необходимо заполнить текст новости',
             'name_tema.min' => 'Минимальная длина темы 5 символов',
             'name_tema.max' => 'Максимальная длина темы 150 символов',
             'text_notation.min' => 'Минимальная длина сообщения 30 символов',

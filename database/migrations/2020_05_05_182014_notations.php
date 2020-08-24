@@ -19,7 +19,7 @@ class Notations extends Migration
             $table->integer('id_user')->comment('id пользователя, который добавил тему');
             $table->smallInteger('category')->comment('Категория темы')->default(0);
             $table->string('name_notation', 150);
-            $table->text('text_notation')->comment('Текст нотации');
+            $table->text('text_notation')->comment('Текст новости');
             $table->integer('rating')->default(0)->comment('Рейтинг');
             $table->timestamp('notation_add_date')->useCurrent(); //CURRENTTIMESTAMP
             $table->timestamp('notation_edit_date')->nullable();

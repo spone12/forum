@@ -149,7 +149,7 @@
                 <div class="modal-content">
 
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">
                         <a href='#' id='modal_window_close'>
                             &times;

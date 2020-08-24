@@ -24,7 +24,8 @@ class NotationPhotoRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images'   => 'array',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 
@@ -32,16 +33,16 @@ class NotationPhotoRequest extends FormRequest
     public function attributes()
     {
         return [
-            'image' => 'изображение'
+            'images.*' => 'изображение'
         ];
     }
 
     public function messages()
     {
         return [
-            'image.image' => 'Файл должен быть изображением',
-            'image.mimes' => 'Файл должен быть расширения jpeg,png,jpg,gif или svg',
-            'image.max'     => 'Максимальный размер фотографии не должен превышать 2048 КБ',
+            'images.*.image' => 'Файл должен быть изображением',
+            'images.*.mimes' => 'Файл должен быть расширения jpeg,png,jpg,gif или svg',
+            'images.*.max'     => 'Максимальный размер фотографии не должен превышать 2048 КБ',
         ];
     }
 }

@@ -29,7 +29,7 @@
             <div class="card-header">
                 <div class="row no-gutters">
                     <div class='col-3 align-self-start text_mg'>
-                        <a href='{{ URL::previous() }}' class='link_prevDefault'>
+                        <a href='/notation/view/{{ $data_notation->notation_id}}' class='link_prevDefault'>
                             <img alt='back' title='Вернуться обратно' src="{{asset('img/icons/back-arrow.svg')}}" width=15 />
                         </a> 
                         Тема новости 

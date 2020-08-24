@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title-block')Поиск@endsection
+@section('title-block'){{$result->search}} /Результат поиска@endsection
 @section('content')
 
 @push('scripts')
@@ -30,7 +30,7 @@
 
                 @if($result->total() > 10)
                 <div class='row mt-3 mb-2'>
-                    <div class='col-sm-12'>Всего результатов: <b>{{$result->total()}}</b></div>
+                    <div class='col-sm-12'>Всего результатов: <b>{{ number_format($result->total()) }}</b></div>
                 </div>
                 @endif
             </div>
