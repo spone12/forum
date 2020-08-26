@@ -2,29 +2,28 @@
 
 namespace Tests\Unit\Notation;
 
-use PHPUnit\Framework\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 class NotationTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
+    /** @test  */
+    protected $id;
 
     public function testNotationId()
     {
-        $id = rand(1, 50);
-
+        $this->id =  rand(1, 5);
         $this
-            ->get(route('notation_view_id'), ['id' => $id])
+            ->get(route('notation_view_id',  $this->id))
             ->assertStatus(200);
     }
 
-    public function testNotation()
+    public function testNotationWrong()
     {
         $this
-            ->get(route('notation'))
-            ->assertStatus(200);
+        ->get(route('notation_view_id', 'bad'))
+        ->assertStatus(404);
     }
+
 }
+

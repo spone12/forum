@@ -71,10 +71,14 @@
                     </div>
                    
                 </div>
-                <div class="card-body">
+                            <div class='text-center'>
+                               <a href='#' id='v_notation' onclick='test(this.id);' class='active_block'>Статья</a> 
+                               <a href='#' id='views' onclick='test(this.id);'>Просмотры</a> 
+                            </div>
+                <div class="card-body" id='content_notation'>
                     <div class='row justify-content-center'>
                         <div  class='col-10'>
-                            &emsp; {!! $view[0]->text_notation!!}
+                                &emsp; {!! $view[0]->text_notation!!}
                         </div>    
                     </div>
 
