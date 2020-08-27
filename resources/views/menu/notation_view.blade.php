@@ -4,6 +4,9 @@
 
 @push('scripts')
     <script src="{{ asset('resource/js/notation.js') }}"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 @endpush
 
     {{
@@ -72,9 +75,10 @@
                    
                 </div>
                             <div class='text-center'>
-                               <a href='#' id='v_notation' onclick='test(this.id);' class='active_block'>Статья</a> 
-                               <a href='#' id='views' onclick='test(this.id);'>Просмотры</a> 
+                               <a href='#' id='v_notation' onclick='view_graph(this.id);' class='active_block'>Статья</a> 
+                               <a href="#" id='views' onclick='view_graph(this.id);'>Просмотры</a> 
                             </div>
+
                 <div class="card-body" id='content_notation'>
                     <div class='row justify-content-center'>
                         <div  class='col-10'>
@@ -89,6 +93,7 @@
                             <div id="carousel" class="carousel slide" data-keyboard="true" data-wrap="true" data-ride="carousel">
                                 <ol class="carousel-indicators">
                                     @foreach($view as $v)
+                                     @if(!empty($v->path_photo))
                                         <li data-target = "#carousel" data-slide-to = "{{$loop->index}}" class="
                                         
                                         @if($loop->first)
@@ -96,11 +101,13 @@
                                         @endif
 
                                         "></li>
+                                     @endif
                                     @endforeach
                                 </ol>
                             <div class="carousel-inner">
 
                                 @foreach($view as $v)
+                                    @if(!empty($v->path_photo))
                                     <div class="carousel-item 
 
                                     @if($loop->first)
@@ -110,6 +117,7 @@
                                     ">
                                         <img class="d-block w-100 notation_carousel_photo" src="{{asset($v->path_photo)}}" alt="Первый слайд">
                                     </div>
+                                    @endif
                                 @endforeach
 
                             </div>
@@ -133,6 +141,41 @@
         </div>
     </div>
 
+    <script>
+
+    var content_notation;
+    $(document).ready(function() 
+    { 
+        content_notation = $('#content_notation').html();
+    });
+
+    function view_graph(id)
+    {
+        if(id == 'v_notation')
+        {
+            $('#content_notation').html(content_notation);
+        }
+        else
+        {
+            $('#content_notation').empty().html('<div id="notation_views" style="height: 250px;"></div>');
+
+            new Morris.Bar({
+
+                element: 'notation_views',
+                data: {!! $view['graph'] !!},
+                //xkey: 'year',
+                xkey: 'full_date',
+                ykeys: ['value'],
+
+                lineColors:['#5cb85c'],
+                labels: ['Просмотры'],
+
+                
+            });
+        }
+    }
+
+    </script>
 @endsection
 
 

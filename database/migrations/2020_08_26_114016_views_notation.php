@@ -15,10 +15,11 @@ class ViewsNotation extends Migration
     {
         Schema::create('views_notation', function (Blueprint $table) {
             $table->increments('views_notation_id')->unsigned(false);
-            $table->integer('notation_id')->comment('id новости')->unique();
+            $table->integer('notation_id')->comment('id новости');
             $table->text('counter_views')->comment('Счётчик просмотров');
             $table->date('view_date');
            
+            $table->unique(['notation_id', 'view_date']);
             $table->foreign('notation_id')->references('notation_id')->on('notations')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }

@@ -1,20 +1,3 @@
-   
-    var content_notation;
-
-    function test(id)
-    {
-       
-        if(id == 'v_notation')
-        {
-            $('#content_notation').html(content_notation);
-        }
-        else
-        {
-            $('#content_notation').empty();
-        }
-        console.log(content_notation)
-    }
-
     $('.content.clossable').hover(function()
     {
         $(this).find('.close').animate({opacity:1},100)},
@@ -26,8 +9,6 @@
     
     $(document).ready(function() 
     { 
-        content_notation = $('#content_notation').html();
-        
         $(".notation_carousel_photo").click(function()
         {	
             var img = $(this);

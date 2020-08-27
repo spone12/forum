@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Model\NotationModel;
+use App\Http\Model\Notation\NotationViewModel;
 use App\Http\Requests\NotationRequest;
 use App\Http\Requests\NotationPhotoRequest;
 use Illuminate\Support\Facades\Auth;
@@ -23,16 +24,17 @@ class NotationController extends Controller
         return response()->json(['success'=> $data]);
     }
 
-    public function NotationView(int $notation_id)
+    protected function NotationView(int $notation_id)
     {
         try
         {
+            NotationViewModel::add_view_notation($notation_id);
             $view = NotationModel::view_notation($notation_id);
+                   
         }
         catch (\Exception $exception) 
         {
             return view('error_404', ['error' => ['Данной статьи не существует']]);
-           //abort(404,'Данной статьи не существует');
         }
 
         return view('menu.notation_view', ['view' => $view]);

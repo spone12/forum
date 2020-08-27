@@ -86,6 +86,22 @@ class NotationModel extends Model
                 if(is_null($notation[0]->avatar))
                     $notation[0]->avatar = 'img/avatar/no_avatar.png';
 
+                    $notation_views = DB::table('views_notation')
+                        ->select('counter_views','view_date')
+                         ->where('notation_id', '=', $notation_id)
+                            ->orderBy('view_date')
+                        ->get();
+
+                        $list = array();
+                        foreach ($notation_views as $v) 
+                        {
+                            $list[] = array('full_date' => date('d.m.Y', strtotime($v->view_date)),
+                                            //'year' => date('Y', strtotime($v->view_date)),
+                                            'value' => $v->counter_views);
+        
+                        }
+                        $notation['graph'] = json_encode($list);
+             
                 return $notation;
             }
     
