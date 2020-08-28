@@ -138,3 +138,27 @@ $border-nav: 25px;
 	max-width:  94%;
 	margin:     5% 0 0 0;
 }
+
+.nav_notation
+{
+    clear:both;
+    color:#280000;
+    border:2px solid;
+    border-radius:3px;
+    text-align:center;
+    text-decoration:none;
+    cursor: pointer;
+    font-family:sans-serif;
+    font-size:14px;
+    width:13em;
+    padding:5px 10px;
+    font-weight:600;
+    background:rgba(0,0,0,0.2);
+    box-shadow:0 0 0px 3px rgba(0,0,0,0.2);
+    opacity:0.6;
+
+    &:hover
+    {
+        opacity:1
+    }
+  }

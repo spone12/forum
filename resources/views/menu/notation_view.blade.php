@@ -4,9 +4,9 @@
 
 @push('scripts')
     <script src="{{ asset('resource/js/notation.js') }}"></script>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <link rel="stylesheet" href="{{asset('resource/libraries/MorrisJs/CSS/morris.css')}}">
+    <script src="{{asset('resource/libraries/MorrisJs/JS/raphael-min.js')}}"></script>
+    <script src="{{asset('resource/libraries/MorrisJs/JS/morris.min.js')}}"></script>
 @endpush
 
     {{
@@ -64,21 +64,22 @@
                         @endauth
                     </div>
                     <div class='row justify-content-start'>
-                     <div class='col-4 col-sm-3 add_notation_who'>Добавил:</div>
-                     <div class='col-5 col-sm-3 add_notation_who'>
-                        <img class='mini_avatar' title='{{$view[0]->name}}' width=30 src="{{ asset($view[0]->avatar) }}" />
-                        <a href='/profile/{{$view[0]->id_user}}' target='_blank' title='Перейти в профиль'>{{$view[0]->name}}</a>
-                     </div>
-                     <div class='col-4 col-sm-3 add_notation_who'>Дата создания:</div>
-                     <div class='col-4 col-sm-3 add_notation_who'>{{$view[0]->notation_add_date}}</div>
+                        <div class='col-4 col-sm-3 add_notation_who'>Добавил:</div>
+                        <div class='col-5 col-sm-3 add_notation_who'>
+                            <img class='mini_avatar' title='{{$view[0]->name}}' width=30 src="{{ asset($view[0]->avatar) }}" />
+                            <a href='/profile/{{$view[0]->id_user}}' target='_blank' title='Перейти в профиль'>{{$view[0]->name}}</a>
+                        </div>
+                        <div class='col-4 col-sm-3 add_notation_who'>Дата создания:</div>
+                        <div class='col-4 col-sm-3 add_notation_who'>{{$view[0]->notation_add_date}}</div>
                     </div>
                    
                 </div>
-                            <div class='text-center'>
-                               <a href='#' id='v_notation' onclick='view_graph(this.id);' class='active_block'>Статья</a> 
-                               <a href="#" id='views' onclick='view_graph(this.id);'>Просмотры</a> 
-                            </div>
+                    <div class='text-center mt-2'>
+                        <span id='v_notation' onclick='view_graph(this.id);' class='nav_notation mr-1'>Статья</span> 
+                        <span id='views' onclick='view_graph(this.id);'  class='nav_notation'>Просмотры</span> 
+                    </div>
 
+                <div id="notation_views" style="height: 250px;display:none;"></div>
                 <div class="card-body" id='content_notation'>
                     <div class='row justify-content-center'>
                         <div  class='col-10'>
@@ -143,32 +144,29 @@
 
     <script>
 
-    var content_notation;
-    $(document).ready(function() 
-    { 
-        content_notation = $('#content_notation').html();
-    });
-
     function view_graph(id)
     {
         if(id == 'v_notation')
         {
-            $('#content_notation').html(content_notation);
+           $('#notation_views').empty().hide();
+           $('#content_notation').show(300);
         }
         else
         {
-            $('#content_notation').empty().html('<div id="notation_views" style="height: 250px;"></div>');
+            $('#content_notation').hide();
+            $('#notation_views').empty().show();
 
-            new Morris.Bar({
+            new Morris.Line({
 
                 element: 'notation_views',
                 data: {!! $view['graph'] !!},
-                //xkey: 'year',
                 xkey: 'full_date',
-                ykeys: ['value'],
+                ykeys: ['value','sum_views'],
+                xLabelAngle: 45,
+                parseTime: false,
 
-                lineColors:['#5cb85c'],
-                labels: ['Просмотры'],
+                lineColors:['#5cb85c','#867b1e'],
+                labels: ['Просмотры','Всего просмотров на текущий день'],
 
                 
             });

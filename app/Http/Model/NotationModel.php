@@ -93,10 +93,13 @@ class NotationModel extends Model
                         ->get();
 
                         $list = array();
+                        $sum_v = 0;
+
                         foreach ($notation_views as $v) 
                         {
+                            $sum_v += $v->counter_views;
                             $list[] = array('full_date' => date('d.m.Y', strtotime($v->view_date)),
-                                            //'year' => date('Y', strtotime($v->view_date)),
+                                            'sum_views' => $sum_v,
                                             'value' => $v->counter_views);
         
                         }
