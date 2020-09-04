@@ -40,4 +40,6 @@ $(function()
         return false;
     });
      //END PASSWORD VIEW //
+
+     $('[data-toggle="tooltip"]').tooltip()
 });

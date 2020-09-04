@@ -34,7 +34,7 @@
                         <div class='col-3 col-sm-2 add_notation_who'>Добавил:</div>
                         <div class='col-5 col-sm-5 add_notation_who'>
                             <img class='mini_avatar' title='{{$v->name}}' width=30 src="{{ asset($v->avatar) }}" />
-                            <a href="{{route('profile_id', $v->id_user) }}" title='Перейти в профиль'>{{$v->name}}</a>
+                            <a href="{{route('profile_id', $v->id_user) }}" data-toggle="tooltip" data-placement="bottom"  title='Перейти в профиль'>{{$v->name}}</a>
                         </div>
                         <div  class='col-4 col-sm-4 d-flex justify-content-end'>
                             {{$v->date_n}}
