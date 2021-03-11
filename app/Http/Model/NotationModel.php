@@ -70,12 +70,12 @@ class NotationModel extends Model
         if(empty($notation))
         {
             $notation = DB::table('notations')
-            ->join('users', 'users.id', '=', 'notations.id_user')
-            ->leftJoin('notation_photos AS np', 'np.notation_id', '=', 'notations.notation_id')
             ->select('notations.notation_id', 'notations.id_user',
                     'notations.name_notation', 'notations.text_notation',
                     'notations.rating','users.name', 'users.avatar',
                     'notations.notation_add_date', 'np.path_photo')
+            ->join('users', 'users.id', '=', 'notations.id_user')
+            ->leftJoin('notation_photos AS np', 'np.notation_id', '=', 'notations.notation_id')
             ->where('notations.notation_id', '=', $notation_id)->get();
         }
 
@@ -222,10 +222,11 @@ class NotationModel extends Model
 
                     if ($destroy)
                     {
-                        $data=[
-                            'status'=>'1',
-                            'msg'=>'success'
-                        ];
+                        $data =
+                                [
+                                    'status'=>'1',
+                                    'msg'=>'success'
+                                ];
 
                     }else{
 

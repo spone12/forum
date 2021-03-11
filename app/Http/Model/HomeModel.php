@@ -31,7 +31,6 @@ class HomeModel extends Model
                 if(strlen($v->text_notation) >= 250)
                     $notations[$k]->text_notation =  \Illuminate\Support\Str::limit($v->text_notation, 250);
             }
-           
         }
         else $notations = 0;
 

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Integrations\ServerHandler;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,6 +44,20 @@ Route::prefix('notation')->group(function()
 //END NOTATION
 
 Route::get('/map', 'MapController@view_map')->name('map')->middleware('auth');
+
+//Integrations
+Route::match(['get', 'post'], "/vk_bot_callback", function (Request $request)
+{
+    $handler = new ServerHandler();
+    $data = json_decode(file_get_contents('php://input'));
+    $handler->parse($data);
+});
+
+/*Route::group(['namespace' => 'Integrations', 'middleware' => ['auth'], 'prefix' => '/integration'], function () {
+    Route::get('/vk', 'vkController@confirmation')->name('vk');
+
+});
+*/
 
 //Profile
 Route::get('/profile', 'ProfileController@view_profile')->name('profile')->middleware('auth');
