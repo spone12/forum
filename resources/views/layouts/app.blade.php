@@ -110,7 +110,7 @@
                                         </div>
                                     </a>
 
-                                    <a class="dropdown-item" href="{{ url('/') }}"
+                                    <a class="dropdown-item" href="{{ url('/chat') }}"
                                        onclick=''>
                                         <div>
                                             <img width=20 src="{{ url('/img/icons/message.png') }}" /> 

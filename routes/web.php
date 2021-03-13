@@ -59,6 +59,12 @@ Route::match(['get', 'post'], "/vk_bot_callback", function (Request $request)
 });
 */
 
+Route::group(['middleware' => ['auth'], 'prefix' => '/chat'], function () 
+{
+    Route::get('/', 'chatController@chat')->name('chat');
+    Route::get('/{chat_id}', 'chatController@getChat')->name('getChat')->where('chat_id','[0-9]{1,11}');
+});
+
 //Profile
 Route::get('/profile', 'ProfileController@view_profile')->name('profile')->middleware('auth');
  Route::get('/profile/{id}', 'ProfileController@view_another_profile')->where('id','[0-9]{1,11}')

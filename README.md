@@ -1,4 +1,7 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+<p align="center">
+    <img src="https://laravel.com/img/logomark.min.svg" alt="Laravel Logo">\
+    <img class="hidden ml-5 sm:block" src="https://laravel.com/img/logotype.min.svg" alt="Laravel">
+</p>
 
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
@@ -23,3 +26,10 @@
 <p>Перейдите в корень проекта и в файле .env заполните поля DB_DATABASE=**,DB_USERNAME=**,DB_PASSWORD=** (Имя базы данных, логин и пароль)</p>
 
 <p>Далее в консоли выполните команду php artisan migrate:refresh --seed для создания миграций с сидерами</p>
+
+<div>
+    <div><strong>Ngrok</strong></div>
+    <p><b> Path: </b> App\Http\Integrations\ngrok.exe
+    <p><b>Description: </b> делает ваш локальный сервер доступным всему интернету по специальному HTTPS адресу</p>
+    <p><b>In console: </b>ngrok http 80</p>
+</div>
