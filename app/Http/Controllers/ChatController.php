@@ -8,6 +8,6 @@ class ChatController extends Controller
 {
     protected function chat()
     {
-        return view('menu.chat');
+        return view('menu.Chat.chat');
     }
 }

@@ -264,6 +264,10 @@
   opacity: 1;
 }
 
+.search_chat {
+  color: #522d3f;
+}
+
 .c {
   text-align: center;
 }
@@ -351,7 +355,8 @@
 
 /* SEARCH*/
 
-.search-marker {
+.search-marker,
+.search_chat {
   border-radius: 3px;
   border: 1px solid #acb1b4;
   bottom: 10px;

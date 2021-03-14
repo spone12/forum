@@ -13,12 +13,14 @@ class Messages extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('messages');
         Schema::create('messages', function (Blueprint $table) {
             $table->increments('message_id')->unsigned(false);
             $table->integer('dialog')->comment('id Диалога');
             $table->integer('send')->comment('Отправитель');
             $table->integer('recive')->comment('Получатель');
-            $table->text('text')->comment('Текст сообщения');
+            $table->text('text')->comment('Текст сообщения')->nullable(false);
+            $table->boolean('read')->comment('Прочитано сообщение')->default(0);
             $table->timestamps();
 
             $table->unique('dialog');

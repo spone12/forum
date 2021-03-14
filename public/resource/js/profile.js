@@ -34,12 +34,13 @@
                 data: {
                         data_send: data_send
                       },
+                dataType: "JSON",
                 headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) 
                 {
-                  //console.log(data);
+                  console.log(data.data_user.original.status + ' ggg');
                  // console.log(data.data_user.status);
-                  if(!data.data_user)
+                  if(!data.data_user.original.status)
                   {
 
                     let errorsHtml = '<div class="alert alert-primary">' +
@@ -52,14 +53,15 @@
                   }
                   else
                   {
-                    if(data.data_user.status == 1)
+                    if(data.data_user.original.status == 1)
                         location.href = '/profile';
                   }
                 },
-                error: function(data)
+                error: function(data) 
                 {
-                    var errors = data.responseJSON;
-                    console.log(errors);
+                   getError(data.responseText);
+                   // var errors = data.responseJSON;
+                    console.log(data.responseText);
                 }
             });
     }

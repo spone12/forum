@@ -120,57 +120,76 @@ class ProfileModel extends Model
 
     protected static function change_profile(array $data_user)
     {
-        $id_user = Auth::user()->id;
-        if($id_user === (INT)$data_user['data_send']['id_user'])
+        try
         {
-            $gender = DB::table('users')->select('gender')
-                             ->where('id', '=', $id_user)->first();
+            $id_user = Auth::user()->id;
 
-            if($gender->gender !== (INT)$data_user['data_send']['gender'])
+            if($id_user === (INT)$data_user['data_send']['id_user'])
             {
-                $upd = DB::table('users')
-                ->where('id', '=', $id_user)
-                ->update(['gender' => $data_user['data_send']['gender']]);
-            }
+                $updateProfile = 0;
 
+                if(preg_match("/[\d]+/", $data_user['data_send']['name']))
+                {
+                    throw new \Exception('Имя не должно содержать цифры66!');
+                }
+            
+                $gender = DB::table('users')->select('gender')
+                                ->where('id', '=', $id_user)->first();
 
-            if (!ProfileModel::where('id_user', '=', $id_user)->exists())
-            {
-                $profile = DB::table('description_profile')->insert(
-                    array('id_user' => $id_user,
-                          'real_name' => $data_user['data_send']['name'],
-                          'date_born' =>  $data_user['data_send']['date_user'],
-                          'town' => $data_user['data_send']['town_user'],
-                          'about' => $data_user['data_send']['about_user']) 
-                );
-            }
-            else 
-            {
-                $profile = DB::table('description_profile')
-                ->where('id_user', '=', $id_user)
-                ->update(['id_user' => $id_user,
-                        'real_name' => $data_user['data_send']['name'],
-                        'date_born' =>  $data_user['data_send']['date_user'],
-                        'town' => $data_user['data_send']['town_user'],
-                        'about' => $data_user['data_send']['about_user']]);
-            }
+                            
+                if($gender->gender !== (INT)$data_user['data_send']['gender'])
+                {
+                    $profile = DB::table('users')
+                    ->where('id', '=', $id_user)
+                    ->update(['gender' => $data_user['data_send']['gender']]);
+                    $updateProfile = 1;
+                
+                }
 
-            if($profile)
-            {
-                return $returnData = array(
-                    'status' => 1,
-                    'message' => 'OK'
-                );
+                if (!ProfileModel::where('id_user', '=', $id_user)->exists())
+                {
+                    DB::table('description_profile')->insert(
+                        array('id_user' => $id_user,
+                            'real_name' => $data_user['data_send']['name'],
+                            'date_born' =>  $data_user['data_send']['date_user'],
+                            'town' => $data_user['data_send']['town_user'],
+                            'about' => $data_user['data_send']['about_user']) 
+                    );
+                    $updateProfile = 1;
+                }
+                else 
+                {
+                    DB::table('description_profile')
+                    ->where('id_user', '=', $id_user)
+                    ->update(['id_user' => $id_user,
+                            'real_name' => $data_user['data_send']['name'],
+                            'date_born' =>  $data_user['data_send']['date_user'],
+                            'town' => $data_user['data_send']['town_user'],
+                            'about' => $data_user['data_send']['about_user']]);
+                    $updateProfile = 1;
+                }
+
+                if($updateProfile)
+                {
+                    return response()->json([
+                        'status' => 1,
+                        'message' => 'OK'
+                    ]);
+                }
+            
             }
-         
+            else
+            {
+                throw new \Exception('Не совпадает ID!');
+            }
         }
-        else
+        catch (\Exception $e) 
         {
-            $returnData = array(
-                'status' => 'error',
-                'message' => 'Не совпадает ID!'
-            );
-            return response()->json($returnData, 500);
+            return response()->json([
+                'status' => 0,
+                'errors'  =>  $e->getMessage(),
+            ], 400);
+           
         }
     }
 

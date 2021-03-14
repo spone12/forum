@@ -47,10 +47,23 @@ class ProfileController extends Controller
                 
             if($validator)
             {*/
+        
                 
-               
-                $back = ProfileModel::change_profile($input);
-                return array('data_user' => $back);
+               $back = ProfileModel::change_profile($input);
+                
+               try
+               {
+                    if(!$back->original['status'])
+                    {
+                        throw new \Exception($back->original['errors']);
+                    }
+               }
+               catch(\Exception $e)
+               {
+                    die($e->getMessage());
+               }
+
+               return array('data_user' => $back);
            // }
           
         }
