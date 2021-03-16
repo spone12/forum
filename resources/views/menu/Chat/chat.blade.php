@@ -2,6 +2,10 @@
 @section('title-block') {{trans('chat.chat')}} @endsection
 @section('content')
 
+@push('scripts')
+    <script src="{{ asset('resource/js/chat.js') }}"></script>
+@endpush
+
 <div class="container p-3">
     <div class="row col-12">
         <div class='col-sm-8 col-md-8 col-lg-12'>
@@ -13,9 +17,8 @@
                                 <img src="{{ url('/img/icons/search.png') }}" width="20">
                             </button>
                         </div>
-                        <input id='search' name="search" type="text" class="form-control" placeholder="{{ __('app.search') }}" aria-label="search" aria-describedby="search-button">
-                            <span class="search_chat">/</span>
-                        <input type='hidden' name='search-by' value='search-by__user' id='search-by' />    
+                        <input id='chatSearch' name="searchChat" type="text" class="form-control" placeholder="{{ __('app.search') }}" aria-label="search" aria-describedby="search-button">
+                            <span class="search_chat">/</span> 
                     </div>
                 </div>  
             </div>

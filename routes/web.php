@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/chat'], function ()
 {
     Route::get('/', 'chatController@chat')->name('chat');
     Route::get('/{chat_id}', 'chatController@getChat')->name('getChat')->where('chat_id','[0-9]{1,11}');
+   // Route::get('/search={word}', 'chatController@searchChat')->name('searchChat')->where('word','[а-яА-Яa-zA-Z0-9 ]+');
+    Route::post('/search/', 'chatController@searchChat')->name('searchChat')->where('word','[а-яА-Яa-zA-Z0-9 ]+');
 });
 
 //Profile

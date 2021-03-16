@@ -22,6 +22,7 @@ class Messages extends Migration
             $table->text('text')->comment('Текст сообщения')->nullable(false);
             $table->boolean('read')->comment('Прочитано сообщение')->default(0);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unique('dialog');
             $table->foreign('dialog')->references('dialog_id')->on('dialog')->onUpdate('CASCADE')->onDelete('CASCADE');

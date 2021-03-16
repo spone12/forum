@@ -10,10 +10,13 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-## Установка
+## Установка ( Installation )
 #<b>Версия PHP-7.2 +, Apache-2.2 +, MySQL-5.6 +</b>
 
-<p>Для установки для начала выполните клонирование репозитория: <code>git clone https://github.com/spone12/forum.git</code></p>
+<p>Установите и запустите любой локальный веб-сервер, например, Open Server</p>
+
+<p>Для установки для начала выполните клонирование репозитория: <code>git clone https://github.com/spone12/forum.git</code>
+</p>
 
 <div>
     <p>Далее установите <b>Node.js</b></p>
@@ -21,8 +24,6 @@
     <p>Выполните глобальную установку SASS<code>npm install -g node-sass</code></p>
     <p>Для компиляции SASS используется команда <code>npm run watch (dev)</code></p>
 </div>
-
-<p>Запустите любой локальный веб-сервер, например, Open Server</p>
 
 <p>Создайте базу данных с кодировкой utf8_general_ci</p>
 
@@ -35,4 +36,27 @@
     <p><b> Path: </b> App\Http\Integrations\ngrok.exe
     <p><b>Description: </b> делает ваш локальный сервер доступным всему интернету по специальному HTTPS адресу</p>
     <p><b>In console: </b><code>ngrok http 80</code></p>
+</div>
+
+<div>
+   <div> <strong>IDE: VS Code</strong></div>
+    <div> <i><blockquote>Extensions:</blockquote></i> </div>
+   <ul>
+        <li><i>Auto Close Tag</i></li>
+        <li><i>Auto Rename Tag</i></li>
+        <li><i>Autoprefixer</i></li>
+        <li><i>Beautify</i></li>
+        <li><i>Code Navigation</i></li>
+        <li><i>Git Graph</i></li>
+        <li><i>Git Merger</i></li>
+        <li><i>GitLens</i></li>
+        <li><i>Image preview</i></li>
+        <li><i>Live Server</i></li>
+        <li><i>Material Theme Icons</i></li>
+        <li><i>Mithril Emmet</i></li>
+        <li><i>Path Intellisense</i></li>
+        <li><i>Php Debug</i></li>
+        <li><i>Php Intelephense</i></li>
+        <li><i>Prettier</i></li>
+   </ul>
 </div>
