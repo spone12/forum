@@ -3,5 +3,6 @@
 return [
 
     'chat' => 'Чат',
+    'writeMessage' => 'Написать сообщение',
 
 ];

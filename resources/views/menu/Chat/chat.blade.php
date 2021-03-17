@@ -12,18 +12,27 @@
             <div class="card card-header">
                 <div class='row align-items-center'>
                     <div class="input-group">
-                        <div class="input-group-prepend search-button">
-                            <button class="input-group-text" id="search-button">
-                                <img src="{{ url('/img/icons/search.png') }}" width="20">
-                            </button>
-                        </div>
+                        
                         <input id='chatSearch' name="searchChat" type="text" class="form-control" placeholder="{{ __('app.search') }}" aria-label="search" aria-describedby="search-button">
-                            <span class="search_chat">/</span> 
+                            <span class="search_chat" isQuery=0>
+                                <span>/</span>
+                            </span> 
+                        <div class='btn btn-outline-primary'> {{trans('chat.writeMessage')}}</div>
                     </div>
+                    
                 </div>  
             </div>
             <div class='card card-body'>
-                    
+                <div class='mainData'>
+                    @if(isset($searched))
+                        @foreach($searched as $v)
+                            <div>
+                                <div><img class='photo' src="{{ asset('{$v}') }}" /></div>
+                                <div>{{ $v->name }}</div>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
             </div>
         </div>
    

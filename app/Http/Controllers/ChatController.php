@@ -16,6 +16,6 @@ class ChatController extends Controller
         $word = $request->only(['word']);
         $data = ChatModel::searchChat(addslashes($word['word']));
 
-        return response()->json(['success'=> $word]);
+        return response()->json(['searched'=> $word]);
     }
 }

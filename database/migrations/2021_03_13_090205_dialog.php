@@ -18,7 +18,7 @@ class Dialog extends Migration
             $table->increments('dialog_id')->unsigned(false);
             $table->integer('send')->comment('Кто');
             $table->integer('recive')->comment('С кем');
-            $table->date('date_create')->comment('Дата создания диалога');
+            $table->timestamp('date_create')->comment('Дата создания диалога')->useCurrent = true;
 
             $table->unique(['send', 'recive']);
             $table->foreign('send')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
