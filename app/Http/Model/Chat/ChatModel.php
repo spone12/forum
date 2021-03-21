@@ -36,10 +36,13 @@ class ChatModel extends Model
             $query->where('users.name', 'like', '%'.$word.'%')
                   ->orWhere('messages.text', 'like', '%' . $word . '%');
         })
+        //->groupBy('users.name')
+        ->orderBy('messages.created_at', 'DESC')
+        ->orderBy('users.name', 'ASC')
         ->limit(10)
         ->get();
 
-       // print_r($search);
+        //print_r($search);
 
         return $search;
     }

@@ -2,3 +2,24 @@
 {
     @extend .search-marker;
 }
+
+.Chat-search 
+{
+    display: none;
+    
+    .Chat-search__photo
+    {
+        @extend .mini_avatar;
+        width: 50px;
+    }
+    
+    .Chat-search__name
+    {
+        @extend .c_p;
+    }
+
+    .Chat-search_body
+    {
+        @extend .i;
+    }
+}

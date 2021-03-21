@@ -11,7 +11,7 @@ use VK\Client\VKApiClient;
 
 class ServerHandler extends VKCallbackApiServerHandler
 {
-    const CONFIRMATION_TOKEN = '25e22f56';
+    const CONFIRMATION_TOKEN = '60734b31';
     const SECRET = 'ge34gjaSSg';
     const GROUP_ID = 203158449;
 

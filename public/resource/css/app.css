@@ -76,7 +76,8 @@
 
 /* END PAGE AVATAR*/
 
-.mini_avatar {
+.mini_avatar,
+.Chat-search .Chat-search__photo {
   border-radius: 50%;
 }
 
@@ -264,16 +265,34 @@
   opacity: 1;
 }
 
-.search_chat {
-  color: #522d3f;
+.Chat-search {
+  display: none;
+}
+
+.Chat-search .Chat-search__photo {
+  width: 50px;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 .c {
   text-align: center;
 }
 
+.i,
+.Chat-search .Chat-search_body {
+  font-style: italic;
+}
+
 .t_a {
   text-align: center;
+}
+
+.c_p,
+.Chat-search .Chat-search__name {
+  cursor: pointer;
 }
 
 .profile_bg {

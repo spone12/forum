@@ -7,8 +7,8 @@
 @endpush
 
 <div class="container p-3">
-    <div class="row col-12">
-        <div class='col-sm-8 col-md-8 col-lg-12'>
+    <div class="row">
+        <div class='col-12'>
             <div class="card card-header">
                 <div class='row align-items-center'>
                     <div class="input-group">
@@ -23,15 +23,28 @@
                 </div>  
             </div>
             <div class='card card-body'>
-                <div class='mainData'>
-                    @if(isset($searched))
-                        @foreach($searched as $v)
+                <div class='mainData col-lg-12'>
+                    @if(isset($dialogs))
+                        @foreach($dialogs as $v)
                             <div>
-                                <div><img class='photo' src="{{ asset('{$v}') }}" /></div>
-                                <div>{{ $v->name }}</div>
+                                <div class='col-sm-4'><img class='photo' src="{{ asset('{$v}') }}" /></div>
+                                <div class='col-sm-8'>{{ $v->name }}</div>
                             </div>
                         @endforeach
                     @endif
+                </div>
+                <div class='Chat-search'>
+                    <div class='Chat-search__item col-lg-12'>
+                        <div class='Chat-search__header row'>
+                            <div class='col-sm-1'>
+                                <img class='Chat-search__photo' src="" />
+                            </div>
+                            <div class='Chat-search__name bold col-sm-8'></div>
+                        </div>
+                        <div class='Chat-search_body'>
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

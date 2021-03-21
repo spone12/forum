@@ -35,7 +35,10 @@
     <div><strong>Ngrok</strong></div>
     <p><b> Path: </b> App\Http\Integrations\ngrok.exe
     <p><b>Description: </b> делает ваш локальный сервер доступным всему интернету по специальному HTTPS адресу</p>
-    <p><b>In console: </b><code>ngrok http 80</code></p>
+    <p><b>In console: </b>
+        <div><code>ngrok http 80</code></div>
+        <div><code>ngrok http -host-header=rewrite localhost:80</code></div>
+    </p>
 </div>
 
 <div>

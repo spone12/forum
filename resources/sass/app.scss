@@ -7,9 +7,11 @@
 
 $c: center;
 
-.c{text-align: $c;}
-
-.t_a{text-align: $c;}
+.bold {font-weight: bold;}
+.c {text-align: $c;}
+.i {font-style: italic;}
+.t_a {text-align: $c;}
+.c_p {cursor: pointer;}
 
 .profile_bg
 {
