@@ -114,12 +114,12 @@ class NotationModel extends Model
     {
         $data = array();
         $data['notation'] = DB::table('notations')
-        ->select('id_user','notation_id','category','name_notation','text_notation')
-        ->where('notation_id', '=', $notation_id)->first();
+                            ->select('id_user','notation_id','category','name_notation','text_notation')
+                            ->where('notation_id', '=', $notation_id)->first();
 
         $data['notation_photos'] = DB::table('notation_photos')
-        ->select('path_photo','notation_photo_id')
-        ->where('notation_id', '=', $notation_id)->get();
+                                    ->select('path_photo','notation_photo_id')
+                                    ->where('notation_id', '=', $notation_id)->get();
 
        // return $notation;
         return $data;
@@ -130,10 +130,10 @@ class NotationModel extends Model
         if (Auth::check())
         {
             $check_rating = DB::table('vote_notation')
-        ->select('vote_notation_id', 'vote')
-        ->where('id_user', '=', Auth::user()->id)
-        ->where('notation_id', '=', $notation_id)
-        ->first();
+                            ->select('vote_notation_id', 'vote')
+                                ->where('id_user', '=', Auth::user()->id)
+                                ->where('notation_id', '=', $notation_id)
+                            ->first();
 
         if(empty($check_rating->vote_notation_id))
         {
@@ -165,10 +165,12 @@ class NotationModel extends Model
                     return 0;
                 
                 $upd = DB::table('vote_notation')
-                ->where('id_user', '=', Auth::user()->id)
-                ->where('notation_id', '=', $notation_id)
-                ->update(['vote' => $action,
-                        'vote_date' => Carbon::now()]);
+                            ->where('id_user', '=', Auth::user()->id)
+                            ->where('notation_id', '=', $notation_id)
+                        ->update([
+                                  'vote' => $action,
+                                  'vote_date' => Carbon::now()
+                                ]);
                 
                 if($action == 1)
                 {

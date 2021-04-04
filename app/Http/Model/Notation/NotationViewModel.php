@@ -22,8 +22,8 @@ class NotationViewModel extends Model
     protected static function add_view_notation(int $notation_id)
     {
        $check_note = NotationViewModel::where('view_date', '=', Carbon::now()->format('Y-m-d'))
-                ->where('notation_id', '=', $notation_id)
-                ->exists();
+                                        ->where('notation_id', '=', $notation_id)
+                                        ->exists();
 
         if($check_note)
         {

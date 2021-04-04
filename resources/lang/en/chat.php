@@ -3,6 +3,8 @@
 return [
 
     'chat' => 'Chat',
-    'writeMessage' => 'Write message',
+    'writeMessage' => 'Write message..',
+    'chatLS' => 'Dialog',
+    'sendMessage' => 'Send message',
 
 ];

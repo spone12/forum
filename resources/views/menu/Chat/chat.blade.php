@@ -36,13 +36,16 @@
                 <div class='Chat-search'>
                     <div class='Chat-search__item col-lg-12'>
                         <div class='Chat-search__header row'>
-                            <div class='col-sm-1'>
-                                <img class='Chat-search__photo' src="" />
-                            </div>
-                            <div class='Chat-search__name bold col-sm-8'></div>
-                        </div>
-                        <div class='Chat-search_body'>
-                            
+                            <div class='row col-sm-12'>
+                                <div class='col-sm-2 align-middle c'>
+                                    <img class='Chat-search__photo' src="" /> 
+                                    <div class='Chat-search__name bold'>
+                                        <a class='Chat-search__link' href='/'> </a>
+                                    </div>
+                                   
+                                </div>
+                                <div class='Chat-search_body col-sm-10'> </div>
+                            </div>                     
                         </div>
                     </div>
                 </div>

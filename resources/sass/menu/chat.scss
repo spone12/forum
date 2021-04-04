@@ -6,7 +6,7 @@
 .Chat-search 
 {
     display: none;
-    
+
     .Chat-search__photo
     {
         @extend .mini_avatar;
@@ -21,5 +21,24 @@
     .Chat-search_body
     {
         @extend .i;
+        text-indent: 15px;
     }
+}
+
+.dialog__send
+{
+    @extend .c_p;
+    width: 35px;
+    border: 1px solid;
+    margin-left: 2px;
+    border-radius: 50%;
+    vertical-align: middle;
+    opacity: 0.7;
+
+    &:hover
+    {
+        background: #e6dada;
+        opacity: 1;
+    }
+
 }

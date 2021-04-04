@@ -273,6 +273,24 @@
   width: 50px;
 }
 
+.Chat-search .Chat-search_body {
+  text-indent: 15px;
+}
+
+.dialog__send {
+  width: 35px;
+  border: 1px solid;
+  margin-left: 2px;
+  border-radius: 50%;
+  vertical-align: middle;
+  opacity: 0.7;
+}
+
+.dialog__send:hover {
+  background: #e6dada;
+  opacity: 1;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -291,7 +309,8 @@
 }
 
 .c_p,
-.Chat-search .Chat-search__name {
+.Chat-search .Chat-search__name,
+.dialog__send {
   cursor: pointer;
 }
 

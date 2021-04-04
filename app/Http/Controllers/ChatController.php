@@ -18,4 +18,11 @@ class ChatController extends Controller
 
         return response()->json(['searched'=> $data]);
     }
+
+    protected function dialog(int $userId)
+    {
+        //$dialog = ChatModel::dialog($userId);
+        //return response()->json(['dialog'=> $dialog]);
+        return view('menu.chat.chatLS', ['dialog' => $userId]);
+    }
 }
