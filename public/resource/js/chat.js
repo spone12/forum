@@ -2,7 +2,30 @@
    function sendMessage()
    {
       let message = $.trim($('.dialog__message').val());
-      console.log(message);
+      let userId = $('#userId').val();
+      let dialogId = $('#dialogId').val();
+      
+      $.ajax(
+      {
+            url: '/chat/send_message',
+            type: "POST",
+            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+            data: 
+            {
+               message: message,
+               userId: userId,
+               dialogId: dialogId
+            },
+            success: function (data) 
+            {
+               console.log(data);
+            },
+            error: function(data)
+            {
+               var errors = data.responseJSON;
+               console.log(errors);
+            }
+         });
    }
 
    $( document ).ready(function() 

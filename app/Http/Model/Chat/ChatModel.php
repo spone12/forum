@@ -49,26 +49,59 @@ class ChatModel extends Model
         return $search;
     }
 
-    private function insertMessage()
-    {   
-        /*$dialogId = DB::table('dialog')->insertGetId(
-            [
-                'send' =>  Auth::user()->id,
-                'recive' => $userId
-            ]);
+    protected static function sendMessage(string $message, int $dialogId, int $userId)
+    {
+        $dialogId = self::dialog($userId, $dialogId, $message);
 
-        return $dialogId;*/
-
-        $id = DB::table('messages')->insertGetId(
-            ['text' => 'john@example.com', 'votes' => 0]
-          );
+        return $dialogId;
     }
 
-    protected static function dialog(int $userId)
+    protected static function dialog($userId, $dialogId, $message)
     {
-        if(DialogModel::where('send', $userId)->orWhere('recive', $userId)->exists())
+        if(!$dialogId)
         {
-            return $userId;
+            $dialogId = 0;
+
+            $dialogSendExist = DB::table('dialog AS d')
+            ->select('d.dialog_id')
+                ->where('d.send',  Auth::user()->id)
+                ->where('d.recive', $userId)
+            ->first();
+            
+            $dialogReciveExist = DB::table('dialog AS d')
+            ->select('d.dialog_id')
+                ->where('d.send',  $userId)
+                ->where('d.recive', Auth::user()->id)
+            ->first();
+
+            if(empty($dialogSendExist) || empty($dialogReciveExist))
+            {
+                $dialogId = DB::table('dialog')->insertGetId(
+                [
+                    'send' =>  Auth::user()->id,
+                    'recive' => $userId
+                ]);
+            }
+            else {
+                $dialogId = !empty($dialogSendExist) ?$dialogSendExist->dialog_id:$dialogReciveExist->dialog_id;
+            }
         }
+
+        $messageId = self::insertMessage($userId, $dialogId, $message); 
+        return $messageId;
+    }
+
+    private static function insertMessage($userId, $dialogId, $message)
+    {   
+        $messageId = DB::table('messages')->insertGetId(
+            [
+                'dialog' => $dialogId,
+                'send' =>  Auth::user()->id,
+                'recive' => $userId,
+                'text' => $message,
+                'created_at' => Carbon::now()
+            ]);
+
+        return $messageId;
     }
 }

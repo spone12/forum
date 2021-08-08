@@ -6,6 +6,16 @@
     <script src="{{ asset('resource/js/chat.js') }}"></script>
 @endpush
 
+{{
+        Form::hidden('userId', $userId,
+                    ['id' => 'userId'])
+}}
+
+{{
+        Form::hidden('dialogId', $dialogId,
+                    ['id' => 'dialogId'])
+}}
+
 <div class="container p-3">
     <div class="row">
         <div class='col-12'>

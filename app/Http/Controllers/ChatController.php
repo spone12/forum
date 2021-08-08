@@ -19,10 +19,23 @@ class ChatController extends Controller
         return response()->json(['searched'=> $data]);
     }
 
+    protected function sendMessage(Request $request)
+    {
+        $data = $request->only([
+            'message', 
+            'dialogId',
+            'userId'
+        ]);
+        
+        $sendMessage = ChatModel::sendMessage(addslashes($data['message']), (INT)$data['dialogId'], (INT)$data['userId']);
+
+        return response()->json(['message' => $sendMessage]);
+    }
+
     protected function dialog(int $userId)
     {
         //$dialog = ChatModel::dialog($userId);
         //return response()->json(['dialog'=> $dialog]);
-        return view('menu.chat.chatLS', ['dialog' => $userId]);
+        return view('menu.chat.chatLS', ['userId' => $userId, 'dialogId' => 0]);
     }
 }
