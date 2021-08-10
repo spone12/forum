@@ -39,13 +39,16 @@
          $('#chatSearch').val("");  
 
          $('.Chat-search__item').not('.Chat-search__item:first').remove();
+         $('.mainData').show();
       });
 
       $('#chatSearch').on('change', function()
       {
          var searchWord = $.trim($(this).val());
-         if(searchWord == '')
+         
+         if (jQuery.isEmptyObject(searchWord))
          {
+            $('.mainData').show();
             $('.Chat-search__item').not('.Chat-search__item:first').remove();
             return;
          }  
@@ -60,7 +63,9 @@
             {
                if (jQuery.isEmptyObject(data.searched[0]))
                   return;
-                  
+               
+               $('.mainData').hide();
+
                $('.search_chat').attr('isQuery', 1).text('x');
                
                var chat = $('.Chat-search__item:eq(0)').clone();
@@ -88,12 +93,11 @@
          });
       });
    
-      
       $(document).keypress(function (e) 
       {
          if (e.which == 13) 
          {
-            $(document).hasClass('dialog__message')
+            if ($('input').hasClass("dialog__message")) 
             {
                sendMessage();
             }

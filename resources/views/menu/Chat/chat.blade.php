@@ -24,12 +24,15 @@
             </div>
             <div class='card card-body'>
                 <div class='mainData col-lg-12'>
-                    @if(isset($dialogs))
-                        @foreach($dialogs as $v)
+                    @if(isset($userChats))
+                        @foreach($userChats as $chat)
                             <div>
-                                <div class='col-sm-4'><img class='photo' src="{{ asset('{$v}') }}" /></div>
-                                <div class='col-sm-8'>{{ $v->name }}</div>
+                                <a class='mainData__link' href='/chat/dialog/{{$chat->id}}'>
+                                    <div class='col-sm-4'><img class='photo' src="{{ asset($chat->avatar) }}" /></div>
+                                    <div class='col-sm-8 mainData__name'>{{ $chat->name }}</div>
+                                </a>
                             </div>
+                            <hr class='mainData-hr'>
                         @endforeach
                     @endif
                 </div>

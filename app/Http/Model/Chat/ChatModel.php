@@ -15,12 +15,31 @@ class ChatModel extends Model
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $primaryKey = 'message_id';
 
-    protected $chat;
+    protected static function getUserChats(){
 
-    function __construct()
-    {
-       
+        $userChats = DB::table('users')
+        ->select('messages.text', 'users.name', 'users.id','users.avatar', 'dialog.dialog_id')
+            ->leftJoin('messages', 'users.id', '=', 'messages.recive')
+            ->leftJoin('dialog', 'messages.dialog', '=', 'dialog.dialog_id') 
+        ->where(function($query)
+        {
+            $query->where('messages.send', Auth::user()->id)
+              ->orWhere('messages.recive', Auth::user()->id);
+        })
+            ->orderBy('messages.created_at', 'DESC')
+            ->orderBy('users.name', 'ASC')
+        ->groupBy('users.id')
+        ->get();
+
+        foreach($userChats as $chat){
+
+            if(!$chat->avatar)
+                $chat->avatar =  'img/avatar/no_avatar.png';
+        }
+ 
+        return $userChats;
     }
+
     protected static function searchChat(String $word)
     {   
         $search = DB::table('users')
@@ -44,7 +63,6 @@ class ChatModel extends Model
         ->limit(10)
         ->get();
 
-        //print_r($search);
 
         return $search;
     }
@@ -62,19 +80,21 @@ class ChatModel extends Model
         {
             $dialogId = 0;
 
-            $dialogSendExist = DB::table('dialog AS d')
+            $dialogExist = DB::table('dialog AS d')
             ->select('d.dialog_id')
-                ->where('d.send',  Auth::user()->id)
-                ->where('d.recive', $userId)
-            ->first();
-            
-            $dialogReciveExist = DB::table('dialog AS d')
-            ->select('d.dialog_id')
-                ->where('d.send',  $userId)
-                ->where('d.recive', Auth::user()->id)
+                ->where(function($query) use ($userId)
+                {
+                   $query->where('d.send',  Auth::user()->id)
+                         ->where('d.recive', $userId);
+                })
+                ->orWhere(function($query) use ($userId)
+                {
+                    $query->where('d.send',  $userId)
+                          ->where('d.recive', Auth::user()->id);
+                })
             ->first();
 
-            if(empty($dialogSendExist) || empty($dialogReciveExist))
+            if(empty($dialogExist))
             {
                 $dialogId = DB::table('dialog')->insertGetId(
                 [
@@ -83,7 +103,7 @@ class ChatModel extends Model
                 ]);
             }
             else {
-                $dialogId = !empty($dialogSendExist) ?$dialogSendExist->dialog_id:$dialogReciveExist->dialog_id;
+               $dialogId = $dialogExist->dialog_id;
             }
         }
 

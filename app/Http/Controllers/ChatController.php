@@ -8,7 +8,8 @@ class ChatController extends Controller
 {
     protected function chat()
     {
-        return view('menu.Chat.chat');
+        $userChats = ChatModel::getUserChats();
+        return view('menu.Chat.chat', ['userChats' => $userChats]);
     }
 
     protected function searchChat(Request $request)
