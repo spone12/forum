@@ -35,8 +35,12 @@ class ChatController extends Controller
 
     protected function dialog(int $userId)
     {
-        //$dialog = ChatModel::dialog($userId);
-        //return response()->json(['dialog'=> $dialog]);
+        $userDialog = ChatModel::getuserDialog($userId);
+        
+        if(isset($userDialog['error'])){
+            return redirect()->route('chat');
+        }
+
         return view('menu.chat.chatLS', ['userId' => $userId, 'dialogId' => 0]);
     }
 }

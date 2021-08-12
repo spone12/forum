@@ -77,7 +77,7 @@
 /* END PAGE AVATAR*/
 
 .mini_avatar,
-.photo,
+.mainData .mainData__photo,
 .Chat-search .Chat-search__photo {
   border-radius: 50%;
 }
@@ -278,21 +278,51 @@
   text-indent: 15px;
 }
 
-.photo {
-  width: 50px;
-}
-
 .mainData-hr {
   margin: -30px auto 10px;
   padding: 0;
   height: 40px;
   border: none;
   box-shadow: 0 10px 10px -10px #333;
-  width: 90%;
+  width: 100%;
+}
+
+.mainData .mainData__chat:hover {
+  opacity: 0.9;
+}
+
+.mainData .mainData__text {
+  color: black;
+  background: aliceblue;
+  border-radius: 20px;
+}
+
+.mainData .mainData__text:hover {
+  opacity: 0.9;
+}
+
+.mainData .mainData__photo {
+  width: 50px;
+}
+
+.mainData .mainData__photo:hover {
+  transform: scale(1.03);
 }
 
 .mainData .mainData__link {
   text-decoration: none;
+}
+
+.mainData .mainData__name {
+  color: #603737;
+  font-weight: bold;
+  padding-left: 3%;
+}
+
+.mainData .mainData__date {
+  padding-top: 3px;
+  text-align: right;
+  color: #788888;
 }
 
 .dialog__send {

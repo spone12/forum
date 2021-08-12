@@ -26,10 +26,16 @@
                 <div class='mainData col-lg-12'>
                     @if(isset($userChats))
                         @foreach($userChats as $chat)
-                            <div>
+                            <div class="mainData__chat">
                                 <a class='mainData__link' href='/chat/dialog/{{$chat->id}}'>
-                                    <div class='col-sm-4'><img class='photo' src="{{ asset($chat->avatar) }}" /></div>
-                                    <div class='col-sm-8 mainData__name'>{{ $chat->name }}</div>
+                                    <div class='col-sm-12 row'>
+                                        <div class='col-lg-1 col-sm-2'><img class='mainData__photo' src="{{ asset($chat->avatar) }}" /> </div>
+                                        <div class='col-lg-9 col-sm-6 mainData__text'>{{$chat->text}}</div>
+                                        <div class='col-lg-2 col-sm-4 mainData__date'>{{$chat->created_at}}</div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class="col-sm-12 mainData__name">{{ $chat->name }}</div>
+                                    </div>
                                 </a>
                             </div>
                             <hr class='mainData-hr'>

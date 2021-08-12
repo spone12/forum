@@ -24,11 +24,6 @@
         text-indent: 15px;
     }
 }
-.photo{
-    @extend .mini_avatar;
-    width: 50px;
-
-}
 
 .mainData-hr {
     margin: -30px auto 10px;
@@ -36,13 +31,47 @@
 	height: 40px;
 	border: none;
 	box-shadow: 0 10px 10px -10px #333;
-	width: 90%;
+	width: 100%;
 }
 
 .mainData {
+    .mainData__chat{
+        &:hover{
+            opacity: 0.9;
+        }
+    }
+    .mainData__text{
+        color: black;
+        background: aliceblue;
+        border-radius: 20px;
 
+        &:hover{
+            opacity: 0.9;
+        }
+    }
+    .mainData__photo{
+        @extend .mini_avatar;
+        width: 50px;
+        &:hover{
+            -webkit-transform: scale(1.03);
+            -ms-transform: scale(1.03);
+            transform: scale(1.03);
+        }
+    }
     .mainData__link{
         text-decoration: none;
+    }
+
+    .mainData__name{
+        color: #603737;
+        font-weight: bold;
+        padding-left: 3%;
+    }
+
+    .mainData__date{
+        padding-top: 3px;
+        text-align: right;
+        color: #788888;
     }
 }
 

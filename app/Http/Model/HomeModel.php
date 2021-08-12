@@ -29,7 +29,6 @@ class HomeModel extends Model
                 if(is_null($v->avatar))
                     $notations[$k]->avatar = 'img/avatar/no_avatar.png';
 
-                //обращение к глобальной функции laravel
                 if(strlen($v->text_notation) >= 250)
                     $notations[$k]->text_notation =  \Illuminate\Support\Str::limit($v->text_notation, 250);
             }
