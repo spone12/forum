@@ -26,6 +26,7 @@ class ChatModel extends Model
             $query->where('messages.send', Auth::user()->id)
               ->orWhere('messages.recive', Auth::user()->id);
         })
+            ->orderBy('messages.updated_at', 'DESC')
             ->orderBy('messages.created_at', 'DESC')
             ->orderBy('users.name', 'ASC')
         ->groupBy('users.id')
@@ -33,22 +34,30 @@ class ChatModel extends Model
 
         $date = date('d.m.Y');
         foreach($userChats as $chat){
-            $chatDate = date('d.m.Y', strtotime($chat->created_at));
-
-            if($date == $chatDate){
-                $chat->created_at =  date('H:i', strtotime($chat->created_at));
-            }else{
-                $chat->created_at =  date('d.m.Y H:i', strtotime($chat->created_at));
-            }
+            self::formatChatDate($chat, $date);
 
             if(strlen($chat->text) >= 50)
                 $chat->text =  \Illuminate\Support\Str::limit($chat->text, 50);
 
-            if(!$chat->avatar)
-                $chat->avatar =  'img/avatar/no_avatar.png';
+            self::checkAvatarExist($chat);
         }
  
         return $userChats;
+    }
+
+    private static function formatChatDate($obj, $date){
+        $chatDate = date('d.m.Y', strtotime($obj->created_at));
+
+        if($date == $chatDate){
+            $obj->created_at =  date('H:i', strtotime($obj->created_at));
+        }else{
+            $obj->created_at =  date('d.m.Y H:i', strtotime($obj->created_at));
+        }
+    }
+
+    private static function checkAvatarExist($obj){
+        if(!$obj->avatar)
+            $obj->avatar = 'img/avatar/no_avatar.png';
     }
 
     protected static function searchChat(String $word){   
@@ -73,7 +82,6 @@ class ChatModel extends Model
         ->limit(10)
         ->get();
 
-        echo $word;
         print_r($search);
         return $search;
     }
@@ -147,13 +155,41 @@ class ChatModel extends Model
 
         $dialogId = self::getDialog($userId);
 
-        $dialogGet = DB::table('dialog as d')
-        ->select('messages.text', 'u.name', 'u.id','u.avatar', 'd.dialog_id')
-            ->join('users AS u', 'd.send', '=', 'u.id') 
-            ->leftJoin('messages', 'u.id', '=', 'messages.recive')
-            ->where('d.dialog_id', $dialogId)
+        $currentUserId =  Auth::user()->id;
+        $currentUserObj = User::where('id', $currentUserId)->get();
+        $anotherUserObj = User::where('id', $userId)->get();
+
+        self::checkAvatarExist($currentUserObj[0]);
+        self::checkAvatarExist($anotherUserObj[0]);
+
+        $dialogGet = DB::table('messages')
+        ->select( 'messages.text', 'messages.dialog', 'messages.created_at', 
+                  'messages.updated_at', 'messages.send', 'messages.recive',
+                  'messages.text' )
+            ->where('dialog', $dialogId)
+        ->orderBy('updated_at', 'asc')
+        ->orderBy('created_at', 'asc')
         ->get();
+
+        $date = date('d.m.Y');
+        foreach($dialogGet as $dialog){
+
+            $dialog->difference = 
+                Carbon::createFromFormat('Y-m-d H:i:s', $dialog->created_at)->diffForHumans();
+
+            self::formatChatDate($dialog, $date);
+
+            if($dialog->send == $currentUserId){
+                $dialog->name = $currentUserObj[0]->name;
+                $dialog->avatar = $currentUserObj[0]->avatar;
+                $dialog->id = $currentUserObj[0]->id;
+            }else{
+                $dialog->name = $anotherUserObj[0]->name;
+                $dialog->avatar = $anotherUserObj[0]->avatar;
+                $dialog->id = $anotherUserObj[0]->id;
+            }
+        }
         
-        echo "<pre>".print_r($dialogGet)."</pre>";
+        return [$dialogGet, $dialogId];
     }
 }

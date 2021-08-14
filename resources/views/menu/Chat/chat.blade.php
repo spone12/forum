@@ -31,7 +31,7 @@
                                     <div class='col-sm-12 row'>
                                         <div class='col-lg-1 col-sm-2'><img class='mainData__photo' src="{{ asset($chat->avatar) }}" /> </div>
                                         <div class='col-lg-9 col-sm-6 mainData__text'>{{$chat->text}}</div>
-                                        <div class='col-lg-2 col-sm-4 mainData__date'>{{$chat->created_at}}</div>
+                                        <div class='col-lg-2 col-sm-4 mainData__date align-items-center justify-content-end d-flex'>{{$chat->created_at}}</div>
                                     </div>
                                     <div class='row'>
                                         <div class="col-sm-12 mainData__name">{{ $chat->name }}</div>
@@ -60,8 +60,6 @@
                 </div>
             </div>
         </div>
-   
-       
         
     </div>  
 </div>

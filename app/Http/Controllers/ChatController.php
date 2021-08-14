@@ -41,6 +41,10 @@ class ChatController extends Controller
             return redirect()->route('chat');
         }
 
-        return view('menu.chat.chatLS', ['userId' => $userId, 'dialogId' => 0]);
+        return view('menu.chat.chatLS', [
+            'userId' => $userId,
+            'dialogObj' => $userDialog[0],
+            'dialogId' => $userDialog[1]
+        ]);
     }
 }

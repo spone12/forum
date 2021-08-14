@@ -26,7 +26,7 @@
 }
 
 .mainData-hr {
-    margin: -30px auto 10px;
+    margin: -20px auto 10px;
 	padding: 0;
 	height: 40px;
 	border: none;
@@ -59,7 +59,7 @@
         }
     }
     .mainData__link{
-        text-decoration: none;
+        @extend .no_decor;
     }
 
     .mainData__name{
@@ -75,10 +75,75 @@
     }
 }
 
+.chatLs{
+    height: 400px;
+    overflow-y: auto;
+
+    .chatLs__chat{
+        &:hover{
+            opacity: 0.9;
+        }
+    }
+    .chatLs__text{
+        color: black;
+        background: aliceblue;
+        border-radius: 20px;
+
+        &:hover{
+            opacity: 0.9;
+        }
+    }
+    .chatLs__photo{
+        @extend .mini_avatar;
+        width: 50px;
+        &:hover{
+            -webkit-transform: scale(1.03);
+            -ms-transform: scale(1.03);
+            transform: scale(1.03);
+        }
+    }
+    .chatLs__link{
+        @extend .no_decor;
+    }
+
+    .chatLs__name{
+        color: #603737;
+        font-weight: bold;
+        padding-left: 3%;
+    }
+
+    .chatLs__date{
+        padding-top: 3px;
+        text-align: right;
+        color: #788888;
+        cursor: context-menu;
+    }
+
+    .chatLs__move-edit{
+        @extend .c_p;
+    }
+
+    .chatLs__move-delete{
+        @extend .chatLs__move-edit;
+        margin-left: 3px;
+    }
+}
+
+.MessageBlock{
+    margin-top: 3px;
+
+    .MessageBlock__back{
+        opacity: 0.7;
+        &:hover{
+            opacity: 1;
+        }
+    }
+}
+
 .dialog__send
 {
     @extend .c_p;
-    width: 35px;
+    width: 40px;
     border: 3px solid;
     margin-left: 5px;
     border-radius: 50%;
@@ -87,7 +152,7 @@
 
     &:hover
     {
-        background: #e6dada;
+        background: #d5d5d5;
         opacity: 1;
     }
 

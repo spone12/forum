@@ -77,6 +77,7 @@
 /* END PAGE AVATAR*/
 
 .mini_avatar,
+.chatLs .chatLs__photo,
 .mainData .mainData__photo,
 .Chat-search .Chat-search__photo {
   border-radius: 50%;
@@ -279,7 +280,7 @@
 }
 
 .mainData-hr {
-  margin: -30px auto 10px;
+  margin: -20px auto 10px;
   padding: 0;
   height: 40px;
   border: none;
@@ -309,10 +310,6 @@
   transform: scale(1.03);
 }
 
-.mainData .mainData__link {
-  text-decoration: none;
-}
-
 .mainData .mainData__name {
   color: #603737;
   font-weight: bold;
@@ -325,8 +322,64 @@
   color: #788888;
 }
 
+.chatLs {
+  height: 400px;
+  overflow-y: auto;
+}
+
+.chatLs .chatLs__chat:hover {
+  opacity: 0.9;
+}
+
+.chatLs .chatLs__text {
+  color: black;
+  background: aliceblue;
+  border-radius: 20px;
+}
+
+.chatLs .chatLs__text:hover {
+  opacity: 0.9;
+}
+
+.chatLs .chatLs__photo {
+  width: 50px;
+}
+
+.chatLs .chatLs__photo:hover {
+  transform: scale(1.03);
+}
+
+.chatLs .chatLs__name {
+  color: #603737;
+  font-weight: bold;
+  padding-left: 3%;
+}
+
+.chatLs .chatLs__date {
+  padding-top: 3px;
+  text-align: right;
+  color: #788888;
+  cursor: context-menu;
+}
+
+.chatLs .chatLs__move-delete {
+  margin-left: 3px;
+}
+
+.MessageBlock {
+  margin-top: 3px;
+}
+
+.MessageBlock .MessageBlock__back {
+  opacity: 0.7;
+}
+
+.MessageBlock .MessageBlock__back:hover {
+  opacity: 1;
+}
+
 .dialog__send {
-  width: 35px;
+  width: 40px;
   border: 3px solid;
   margin-left: 5px;
   border-radius: 50%;
@@ -335,7 +388,7 @@
 }
 
 .dialog__send:hover {
-  background: #e6dada;
+  background: #d5d5d5;
   opacity: 1;
 }
 
@@ -358,6 +411,8 @@
 
 .c_p,
 .Chat-search .Chat-search__name,
+.chatLs .chatLs__move-edit,
+.chatLs .chatLs__move-delete,
 .dialog__send {
   cursor: pointer;
 }
@@ -369,7 +424,9 @@
 
 .no_decor,
 .link_prevDefault,
-.a_header {
+.a_header,
+.mainData .mainData__link,
+.chatLs .chatLs__link {
   text-decoration: none !important;
 }
 

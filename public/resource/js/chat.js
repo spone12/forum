@@ -1,4 +1,3 @@
-
    function sendMessage()
    {
       let message = $.trim($('.dialog__message').val());
@@ -18,6 +17,7 @@
             },
             success: function (data) 
             {
+               $('#dialog__message').val('');
                console.log(data);
             },
             error: function(data)
@@ -29,7 +29,10 @@
    }
 
    $( document ).ready(function() 
-   {
+   {  
+     // var chatLsHeight = $(".chatLs").height();
+     // $('.chatLs').scrollTop(chatLsHeight);
+ 
       $(".search_chat").on("click", function()
       { 
          if($(this).attr('isQuery') == 0)
