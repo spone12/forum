@@ -275,8 +275,29 @@
   width: 50px;
 }
 
+.Chat-search .Chat-search__photo:hover {
+  transform: scale(1.03);
+}
+
+.Chat-search .Chat-search__name .Chat-search__link {
+  color: #603737;
+  font-weight: bold;
+  padding-left: 3%;
+}
+
 .Chat-search .Chat-search_body {
+  color: black;
+  background: aliceblue;
+  border-radius: 20px;
   text-indent: 15px;
+}
+
+.Chat-search .Chat-search_body:hover {
+  opacity: 0.9;
+}
+
+.Chat-search .Chat-search__item {
+  padding-top: 5px;
 }
 
 .mainData-hr {
@@ -327,6 +348,10 @@
   overflow-y: auto;
 }
 
+.chatLs .chatLs__chat {
+  padding-top: 5px;
+}
+
 .chatLs .chatLs__chat:hover {
   opacity: 0.9;
 }
@@ -353,6 +378,7 @@
   color: #603737;
   font-weight: bold;
   padding-left: 3%;
+  cursor: context-menu;
 }
 
 .chatLs .chatLs__date {
@@ -425,6 +451,7 @@
 .no_decor,
 .link_prevDefault,
 .a_header,
+.Chat-search .Chat-search__name .Chat-search__link,
 .mainData .mainData__link,
 .chatLs .chatLs__link {
   text-decoration: none !important;

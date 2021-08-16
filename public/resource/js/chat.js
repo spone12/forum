@@ -64,25 +64,29 @@
             data: {word: searchWord},
             success: function (data) 
             {
-               if (jQuery.isEmptyObject(data.searched[0]))
-                  return;
-               
                $('.mainData').hide();
 
+               if (jQuery.isEmptyObject(data.searched[0])){
+                  $('.Chat-search__item:eq(0)').find('.Chat-search_body').html('Рузультатов поиска нет');
+                  $('.Chat-search__item').not('.Chat-search__item:first').remove();
+                  return;
+               }
+                  
                $('.search_chat').attr('isQuery', 1).text('x');
                
                var chat = $('.Chat-search__item:eq(0)').clone();
 
+               $('.Chat-search__item:eq(0)').find('.Chat-search_body').html('Результат поиска: '+ data.searched.length + ' элемент');
                $('.Chat-search__item').not('.Chat-search__item:first').remove();
 
                $.each(data.searched, function(key, searchItem) 
                {
-                  //chat.find('.Chat-search__name').text(searchItem.name);
-                  chat.find('.Chat-search_body').text(searchItem.message);
-                  chat.find('.Chat-search__photo').attr('src', searchItem.avatar);
-                  chat.find('.Chat-search__link').text(searchItem.name).attr('href', '/chat/dialog/' + searchItem.id);
+                  var elements = chat.clone();
+                  elements.find('.Chat-search_body').text(searchItem.text);
+                  elements.find('.Chat-search__photo').attr('src', searchItem.avatar);
+                  elements.find('.Chat-search__link').text(searchItem.name).attr('href', '/chat/dialog/' + searchItem.id);
 
-                  chat.appendTo('.Chat-search');
+                  elements.appendTo('.Chat-search');
                });
 
                $('.Chat-search').show();

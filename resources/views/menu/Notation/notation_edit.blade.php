@@ -62,7 +62,7 @@
                         <div class="d-row justify-content-center">
                             <div class="col-md-12">
                             Добавить фотографии:
-                                <input type="file" id='notation_images' class='btn btn-info mt-2' name="images[]" multiple />
+                                <input type="file" id='notation_images' accept="image/*" class='btn btn-info mt-2' name="images[]" multiple />
                             </div>
                             <div class="col-md-12 mt-1 text-center">
                                 <button type="submit" class="btn btn-success">Добавить</button>

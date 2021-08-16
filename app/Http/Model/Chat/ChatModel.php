@@ -18,7 +18,8 @@ class ChatModel extends Model
     protected static function getUserChats(){
 
         $userChats = DB::table('users')
-        ->select('messages.text', 'users.name', 'users.id','users.avatar', 'dialog.dialog_id', 'messages.created_at')
+        ->select('messages.text', 'users.name', 'users.id','users.avatar',
+                 'dialog.dialog_id', 'messages.created_at')
             ->leftJoin('messages', 'users.id', '=', 'messages.recive')
             ->leftJoin('dialog', 'messages.dialog', '=', 'dialog.dialog_id') 
         ->where(function($query)
@@ -41,7 +42,7 @@ class ChatModel extends Model
 
             self::checkAvatarExist($chat);
         }
- 
+
         return $userChats;
     }
 
@@ -61,29 +62,40 @@ class ChatModel extends Model
     }
 
     protected static function searchChat(String $word){   
-        $search = DB::table('users')
-        ->select('messages.text', 'users.name', 'users.id','users.avatar', 'dialog.dialog_id')
-            ->leftJoin('messages', 'users.id', '=', 'messages.recive')
-            ->leftJoin('dialog', 'messages.dialog', '=', 'dialog.dialog_id') 
-        ->where('users.id',  Auth::user()->id)
+
+        $searchResult = DB::table('dialog')
+        ->select(  'messages.send','dialog.dialog_id', 'messages.created_at','messages.text')
+            ->join('users', 'dialog.recive', '=', 'users.id') 
+            ->join('users as user2', 'dialog.send', '=', 'user2.id') 
+            ->leftJoin('messages','messages.dialog', '=', 'dialog.dialog_id' )
         ->where(function($query)
         {
-            $query->where('users.id', 'messages.recive')
-                  ->orWhere('users.id', 'messages.send');
+            $query->where('messages.recive', Auth::user()->id)
+                  ->orWhere('messages.send', Auth::user()->id);
         })
         ->where(function($query) use (&$word)
         {
-            $query->where('users.name', 'like', '%'.$word.'%')
-                  ->orWhere('messages.text', 'like', '%' . $word . '%');
+            $query->where('messages.text', 'like', '%' . $word . '%')
+                    ->orWhere('users.name', 'like', '%'.$word.'%')
+                    ->orWhere('user2.name', 'like', '%'.$word.'%');
         })
         //->groupBy('users.id')
         ->orderBy('messages.created_at', 'DESC')
         ->orderBy('users.name', 'ASC')
+        ->orderBy('user2.name', 'ASC')
         ->limit(10)
         ->get();
 
-        print_r($search);
-        return $search;
+        foreach($searchResult as $search){
+
+            $userObj = User::where('id', $search->send)->get();
+
+            $search->avatar = $userObj[0]->avatar ?: 'img/avatar/no_avatar.png';
+            $search->id = $userObj[0]->id;
+            $search->name = $userObj[0]->name;
+        }
+        
+        return $searchResult;
     }
 
     protected static function sendMessage(string $message, int $dialogId, int $userId)
@@ -156,10 +168,8 @@ class ChatModel extends Model
         $dialogId = self::getDialog($userId);
 
         $currentUserId =  Auth::user()->id;
-        $currentUserObj = User::where('id', $currentUserId)->get();
         $anotherUserObj = User::where('id', $userId)->get();
 
-        self::checkAvatarExist($currentUserObj[0]);
         self::checkAvatarExist($anotherUserObj[0]);
 
         $dialogGet = DB::table('messages')
@@ -172,6 +182,8 @@ class ChatModel extends Model
         ->get();
 
         $date = date('d.m.Y');
+        $currentUserAvatar = Auth::user()->avatar ?: 'img/avatar/no_avatar.png';
+
         foreach($dialogGet as $dialog){
 
             $dialog->difference = 
@@ -180,9 +192,9 @@ class ChatModel extends Model
             self::formatChatDate($dialog, $date);
 
             if($dialog->send == $currentUserId){
-                $dialog->name = $currentUserObj[0]->name;
-                $dialog->avatar = $currentUserObj[0]->avatar;
-                $dialog->id = $currentUserObj[0]->id;
+                $dialog->name = Auth::user()->name;
+                $dialog->avatar = $currentUserAvatar;
+                $dialog->id = $currentUserId;
             }else{
                 $dialog->name = $anotherUserObj[0]->name;
                 $dialog->avatar = $anotherUserObj[0]->avatar;
