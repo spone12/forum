@@ -23,10 +23,10 @@
         let date_user = $('#date_user').val();
         let about_user = $('#about_user').val();
         let id_user = $('#id_user').val();
+        let phone = $('#phone_user').val();
 
-        let data_send = {name,gender,town_user,date_user,about_user,id_user};
+        let data_send = {name, gender, town_user, date_user, about_user, id_user, phone};
        
-        //console.log(data_send)
         $.ajax(
             {
                 url: '/change_profile_confirm/' + id_user,
@@ -38,8 +38,6 @@
                 headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) 
                 {
-                  console.log(data.data_user.original.status + ' ggg');
-                 // console.log(data.data_user.status);
                   if(!data.data_user.original.status)
                   {
 
@@ -59,8 +57,8 @@
                 },
                 error: function(data) 
                 {
-                   getError(data.responseText);
-                   // var errors = data.responseJSON;
+                   //getError(data.responseText);
+                    var errors = data.responseJSON;
                     console.log(data.responseText);
                 }
             });
@@ -68,7 +66,6 @@
 
     function c_confidentiality(id)
     {
-        console.info(id);
 
         $('#modal_window_text').html("<div class='row mb-3'><div class='col-12'><b>" + id + "</b>g</div></div>" +
                                       "<div class='row mb-0 align-items-center d-flex  justify-content-start'>" +

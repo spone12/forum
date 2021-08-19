@@ -11,30 +11,31 @@ use Validator;
 class ProfileController extends Controller
 {
     
-    public function view_another_profile(int $id)
+    public function viewAnotherProfile(int $id)
     {
-            $data_user = ProfileModel::get_another_user($id);
+            $dataUser = ProfileModel::getAnotherUser($id);
             
-        if(!empty($data_user->name))
-            return view('menu.profile', ['data_user' => $data_user]);
+        if(!empty($dataUser->name))
+            return view('menu.profile', ['data_user' => $dataUser]);
+            
         else  return view('error_404', ['error' => ['Данного пользователя не существует']]);
     }
 
-    public function view_profile(Request $request)
+    public function viewProfile(Request $request)
     {
-        $data_user = ProfileModel::get_data_user();
+        $dataUser = ProfileModel::getDataUser();
 
-        return view('menu.profile', ['data_user' => $data_user]);
+        return view('menu.profile', ['data_user' => $dataUser]);
     }
 
-    public function change_profile(int $id_user)
+    public function changeProfile(int $id_user)
     {
-        $data_user = ProfileModel::get_user_data_change($id_user);
+        $dataUser = ProfileModel::getUserDataChange($id_user);
 
-        return view('menu.profile.change_profile', ['data_user' => $data_user]);
+        return view('menu.profile.change_profile', ['data_user' => $dataUser]);
     }
 
-    public function change_profile_confirm(Request $request)
+    public function changeProfileConfirm(Request $request)
     {
         if($request->ajax())
         {
@@ -49,7 +50,7 @@ class ProfileController extends Controller
             {*/
         
                 
-               $back = ProfileModel::change_profile($input);
+               $back = ProfileModel::changeProfile($input);
                 
                try
                {
@@ -69,9 +70,9 @@ class ProfileController extends Controller
         }
     }
 
-    public function change_avatar(ProfileAvatarRequest $request)
+    public function changeAvatar(ProfileAvatarRequest $request)
     {
-        $answer = ProfileModel::change_avatar($request);
+        $answer = ProfileModel::changeAvatar($request);
    
         return redirect()->route('profile_id', Auth::user()->id)
             ->with('success','Вы успешно изменили аватар');

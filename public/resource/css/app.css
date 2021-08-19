@@ -578,6 +578,10 @@
   margin-right: 5px;
 }
 
+.profileGender {
+  width: 14px !important;
+}
+
 .button-native {
   border: none;
   background: none;

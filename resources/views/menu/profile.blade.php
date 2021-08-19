@@ -4,7 +4,7 @@
 
 <div class="container p-3">
     <div class="row col-10">
-        <div class='col-sm-8 col-9'>
+        <div class='col-sm-9 col-9'>
         <div class="card card-header">
             <div class='row align-items-center'>
                 <div class='col-sm-4 profile_info'>Логин:</div>
@@ -20,7 +20,14 @@
                     @if($user->isOnline($data_user->id))
                         <div class='col-sm-6 status_user_text'>Онлайн <img class='status_user' src="{{ asset('img/icons/profile/status_online.png') }}" /> </div>
                     @else
-                        <div class='col-sm-6 status_user_text'>Был в сети: {{$data_user->last_online_at }}</div>
+                        <div class='col-sm-6 status_user_text'>
+                            @if ($data_user->gender == 1)
+                                Был в сети:
+                            @else
+                                Была в сети:
+                            @endif
+                            {{$data_user->last_online_at }}
+                        </div>
                         <div class='col-sm-6 status_user_text'>Оффлайн <img class='status_user' src="{{ asset('img/icons/profile/status_offline.png') }}" /></div>
                     @endif
                 </div>
@@ -33,9 +40,9 @@
                     <div class='col-sm-4 profile_info'>Пол:</div>
                     <div class='col-sm-8'>
                         @if ($data_user->gender == 1)
-                         <img src="{{ asset('img/icons/profile/gender_male.svg') }}" />   {{$data_user->gender}}
+                         <img class='profileGender' src="{{ asset('img/icons/profile/gender_male.svg') }}" />   {{$data_user->genderName}}
                         @else
-                         <img src="{{ asset('img/icons/profile/gender_female.svg') }}" /> {{$data_user->gender}}
+                         <img src="{{ asset('img/icons/profile/gender_female.svg') }}" /> {{$data_user->genderName}}
                         @endif
                     </div>
                 </div>
@@ -52,7 +59,7 @@
 
                 <div class='row align-items-center'>
                     <div class='col-sm-4 profile_info'>Телефон:</div>
-                    <div class='col-sm-8'></div>
+                    <div class='col-sm-8'>{{$data_user->phone}}</div>
                 </div>
                 
                 <div class='row align-items-center'>
@@ -70,24 +77,28 @@
             </div>
         </div>
         <div class='col-sm-3 col-3'>
-       
             <div class='row justify-content-center align-items-center'>
-           
-                <div class='col-9 t_a p-1'>
+                <div class='col-12 t_a p-1'>
                     <img class="page_avatar" src="{{asset($data_user->avatar)}}" title='{{$data_user->name}}' alt='avatar' />
                 </div>
 
                 @if(Auth::user()->id === $data_user->id) 
-                <div class='col-9 t_a'>
-                    <a href="{{route ('change_profile', $data_user->id) }}">
-                        {{
-                            Form::button('Редактировать',
-                                    ['class'=>'btn btn-success'])
-                        }}
-                        
-                    </a>
-                </div>
+                    <div class='col-12 t_a'>
+                        <a href="{{route ('change_profile', $data_user->id) }}">
+                            {{
+                                Form::button('Редактировать',
+                                        ['class'=>'btn btn-success'])
+                            }}
+                        </a>
+                    </div>
+                @else
+                    <div class='col-12 t_a'> 
+                        <a href='{{ route("dialog", $data_user->id) }}'>
+                            <img alt='message' data-toggle="tooltip" title='Написать сообщение' src="{{asset('img/icons/profile/message.svg')}}" width=30 />
+                        </a>
+                    </div>
                 @endif 
+                
         </div>
     </div>  
 </div>

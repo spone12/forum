@@ -82,7 +82,7 @@
                 <div class='row align-items-center mb-2'>
                     <div class='col-sm-4 profile_info'>Телефон:</div>
                     <div class='col-sm-6'> 
-                        <input class='form-control input_field' type='tel'  id="phone_user" name="phone_user" pattern="[0-9-]{11,15}" value="" /> 
+                        <input class='form-control input_field' type='tel'  id="phone_user" name="phone_user" pattern="[0-9-]{11,15}" value="{{$data_user->phone}}" /> 
                     </div>
                     <div class='col-sm-2'>
                         <img  id='l-phone' onclick="c_confidentiality(this.id);" class='lock' title='Настройки конфиденциальности' src="{{asset('img/icons/profile/lock.svg')}}">

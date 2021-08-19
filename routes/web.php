@@ -68,14 +68,14 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/chat'], function ()
 });
 
 //Profile
-Route::get('/profile', 'ProfileController@view_profile')->name('profile')->middleware('auth');
- Route::get('/profile/{id}', 'ProfileController@view_another_profile')->where('id','[0-9]{1,11}')
+Route::get('/profile', 'ProfileController@viewProfile')->name('profile')->middleware('auth');
+ Route::get('/profile/{id}', 'ProfileController@viewAnotherProfile')->where('id','[0-9]{1,11}')
     ->name('profile_id')->middleware('auth');
- Route::get('/change_profile/{id}', 'ProfileController@change_profile')->where('id','[0-9]{1,11}')
+ Route::get('/change_profile/{id}', 'ProfileController@changeProfile')->where('id','[0-9]{1,11}')
     ->name('change_profile')->middleware('auth');
- Route::put('/change_profile_confirm/{id}', 'ProfileController@change_profile_confirm')->where('id','[0-9]{1,11}')
+ Route::put('/change_profile_confirm/{id}', 'ProfileController@changeProfileConfirm')->where('id','[0-9]{1,11}')
     ->middleware('auth');
-Route::post('/avatar-change', 'ProfileController@change_avatar')->name('avatar_change')->middleware('auth');
+Route::post('/avatar-change', 'ProfileController@changeAvatar')->name('avatar_change')->middleware('auth');
 
 //Localization
 Route::get('locale/{locale}', function ($locale) 

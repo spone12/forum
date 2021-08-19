@@ -14,7 +14,7 @@ class ProfileModel extends Model
     ];
     public $timestamps = false;
 
-    protected static function get_data_user()
+    protected static function getDataUser()
     {
         if (Auth::check()) 
         {
@@ -22,11 +22,11 @@ class ProfileModel extends Model
 
             $data = DB::table('users  AS u')
                         ->select('u.id','u.name','u.email','u.gender', 'u.avatar',
-                                'u.created_at', 'dp.real_name','dp.date_born','dp.town','dp.about')
+                                'u.created_at', 'dp.real_name','dp.date_born','dp.town','dp.about', 'dp.phone')
                         ->leftJoin('description_profile AS dp', 'dp.id_user', '=', 'u.id')
                         ->where('id', '=', $user)
                         ->first();
-
+        
             if($data)
             {
                 
@@ -42,8 +42,7 @@ class ProfileModel extends Model
                    $data->about = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $data->about);
                 }
 
-
-                $data->gender == 1 ?  $data->gender = 'Мужской':  $data->gender = 'Женский';
+                $data->gender == 1 ?  $data->genderName = 'Мужской':  $data->genderName = 'Женский';
                 if(is_null($data->avatar))
                 {
                     $data->avatar = 'img/avatar/no_avatar.png';
@@ -55,13 +54,14 @@ class ProfileModel extends Model
         return $data;
     }
 
-    protected static function get_another_user(int $id)
+    protected static function getAnotherUser(int $id)
     {
         $data = DB::table('users')
                         ->select('users.name','users.id', 'users.email','users.created_at',
                                 'description_profile.real_name', 'users.gender',
                                 'description_profile.town','description_profile.date_born',
-                                'description_profile.about', 'users.avatar', 'users.last_online_at')
+                                'description_profile.about', 'users.avatar', 'users.last_online_at', 
+                                'description_profile.phone')
                         ->leftJoin('description_profile', 'description_profile.id_user', '=', 'users.id')
                         ->where('users.id', '=', $id)
                         ->first();
@@ -70,7 +70,8 @@ class ProfileModel extends Model
             {
                 $data->last_online_at =  date_create($data->last_online_at)->Format('d.m.Y H:i');
                 $data->created_at =  date_create($data->created_at)->Format('d.m.Y H:i');
-                $data->gender == 1 ?  $data->gender = 'Мужской':  $data->gender = 'Женский';
+                $data->gender == 1 ?  $data->genderName = 'Мужской':  $data->genderName = 'Женский';
+               
                 if(is_null($data->avatar))
                 {
                     $data->avatar = 'img/avatar/no_avatar.png';
@@ -93,7 +94,7 @@ class ProfileModel extends Model
         return $clarification;
     }
 
-    protected static function get_user_data_change(int $id_user)
+    protected static function getUserDataChange(int $id_user)
     {
         if (Auth::check()) 
         {
@@ -102,7 +103,7 @@ class ProfileModel extends Model
             $data = DB::table('users')
                         ->select('users.name','users.id','description_profile.real_name', 'users.gender',
                          'description_profile.town','description_profile.date_born',
-                         'description_profile.about', 'users.avatar')
+                         'description_profile.about', 'users.avatar', 'description_profile.phone')
                         ->leftJoin('description_profile', 'description_profile.id_user', '=', 'users.id')
                         ->where('users.id', '=', $user)
                         ->first();
@@ -118,7 +119,7 @@ class ProfileModel extends Model
         else $data = false;
     }
 
-    protected static function change_profile(array $data_user)
+    protected static function changeProfile(array $data_user)
     {
         try
         {
@@ -130,7 +131,7 @@ class ProfileModel extends Model
 
                 if(preg_match("/[\d]+/", $data_user['data_send']['name']))
                 {
-                    throw new \Exception('Имя не должно содержать цифры66!');
+                    throw new \Exception('Имя не должно содержать цифры!');
                 }
             
                 $gender = DB::table('users')->select('gender')
@@ -153,6 +154,7 @@ class ProfileModel extends Model
                             'real_name' => $data_user['data_send']['name'],
                             'date_born' =>  $data_user['data_send']['date_user'],
                             'town' => $data_user['data_send']['town_user'],
+                            'phone' => $data_user['data_send']['phone'],
                             'about' => $data_user['data_send']['about_user']) 
                     );
                     $updateProfile = 1;
@@ -165,6 +167,7 @@ class ProfileModel extends Model
                             'real_name' => $data_user['data_send']['name'],
                             'date_born' =>  $data_user['data_send']['date_user'],
                             'town' => $data_user['data_send']['town_user'],
+                            'phone' => $data_user['data_send']['phone'],
                             'about' => $data_user['data_send']['about_user']]);
                     $updateProfile = 1;
                 }
@@ -193,7 +196,7 @@ class ProfileModel extends Model
         }
     }
 
-    protected static function change_avatar($request)
+    protected static function changeAvatar($request)
     {
         if($request->hasFile('avatar'))
         {
