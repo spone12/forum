@@ -15,7 +15,9 @@ class DescriptionProfile extends Migration
     {
         Schema::create('description_profile', function (Blueprint $table) {
             $table->Increments('description_profile_id');
-            $table->integer('id_user')->comment('id пользователя, с таблицы users');
+            $table->integer('id_user')->comment('user id, from the users table ');
+            $table->integer('lvl')->comment('User level')->default(1);
+            $table->float('exp')->comment('Experience');
             $table->string('real_name', 100)->nullable();
             $table->date('date_born')->nullable();
             $table->string('town', 100)->nullable();

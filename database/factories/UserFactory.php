@@ -26,9 +26,8 @@ $factory->define(User::class, function (Faker $faker) {
         'last_online_at' =>  $faker->dateTimeBetween('-12 months', '-1 days'),
         'gender' => rand(1,2),
         'remember_token' => Str::random(10),
-        'ip_user' => rand(1, 254).'.'.rand(1, 254).'.'.rand(1, 254).'.'.rand(1, 254),
+        'ip_user' => $faker->ipv4(),
         'browser_user' =>  \Faker\Provider\UserAgent::userAgent()
-        //'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
     ];
 });
 

@@ -31,11 +31,12 @@
                         <div class='col-sm-6 status_user_text'>Оффлайн <img class='status_user' src="{{ asset('img/icons/profile/status_offline.png') }}" /></div>
                     @endif
                 </div>
+                
                 <div class='row align-items-center'>
                     <div class='col-sm-4 profile_info'>Имя:</div>
                     <div class='col-sm-8 '>{{$data_user->real_name}}</div>
                 </div>
-
+                
                 <div class='row align-items-center'>
                     <div class='col-sm-4 profile_info'>Пол:</div>
                     <div class='col-sm-8'>
@@ -80,6 +81,14 @@
             <div class='row justify-content-center align-items-center'>
                 <div class='col-12 t_a p-1'>
                     <img class="page_avatar" src="{{asset($data_user->avatar)}}" title='{{$data_user->name}}' alt='avatar' />
+                </div>
+
+                <div class='col-12 t_a'>
+                   Уровень: {{$data_user->lvl}}
+                </div>
+
+                <div class='col-12 t_a'>
+                   Опыт: {{$data_user->exp}} / {{$data_user->expNeed}}
                 </div>
 
                 @if(Auth::user()->id === $data_user->id) 

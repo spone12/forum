@@ -25,7 +25,6 @@ $factory->defineAs(App\Http\Model\Notation\NotationViewModel::class, 'views_nota
     $this_value = (int) $autoIncrement->current();
 
     return [
-        //$faker->numberBetween(199,499);
         'notation_id' => $this_value,
         'counter_views' => rand(100,500),
         'view_date' => $faker->dateTimeBetween('-9 months', '-1 days')

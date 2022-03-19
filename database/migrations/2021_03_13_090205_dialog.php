@@ -16,9 +16,9 @@ class Dialog extends Migration
         Schema::dropIfExists('dialog');
         Schema::create('dialog', function (Blueprint $table) {
             $table->increments('dialog_id')->unsigned(false);
-            $table->integer('send')->comment('Кто');
-            $table->integer('recive')->comment('С кем');
-            $table->timestamp('date_create')->comment('Дата создания диалога')->useCurrent = true;
+            $table->integer('send')->comment('Who send');
+            $table->integer('recive')->comment('With whom');
+            $table->timestamp('date_create')->comment('Date the dialog was created ')->useCurrent = true;
 
             $table->unique(['send', 'recive']);
             $table->foreign('send')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');

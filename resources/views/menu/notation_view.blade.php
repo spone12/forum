@@ -164,7 +164,7 @@
                 ykeys: ['value','sum_views'],
                 xLabelAngle: 45,
                 parseTime: false,
-
+                resize: true,
                 lineColors:['#5cb85c','#867b1e'],
                 labels: ['Просмотры','Всего просмотров на текущий день'],
 

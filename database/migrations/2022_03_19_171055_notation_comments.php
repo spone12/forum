@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class NotationPhotos extends Migration
+class NotationComments extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class NotationPhotos extends Migration
      */
     public function up()
     {
-        Schema::create('notation_photos', function (Blueprint $table) {
-            $table->increments('notation_photo_id')->unsigned(false);
-            $table->integer('id_user')->comment('id of the user who added the photo ');
+        Schema::create('notation_comments', function (Blueprint $table) {
+            $table->increments('comment_id')->unsigned(false);
+            $table->integer('id_user')->comment('id of the user who added the comment');
             $table->integer('notation_id')->comment('id news');
-            $table->text('path_photo')->comment('Photo path');
-            $table->timestamp('photo_add_date')->useCurrent(); //CURRENTTIMESTAMP
-            $table->timestamp('photo_edit_date')->nullable();
+            $table->text('text')->comment('Comment text');
+            $table->timestamp('comment_add_date')->useCurrent(); //CURRENTTIMESTAMP
+            $table->timestamp('comment_edit_date')->nullable();
 
             $table->foreign('id_user')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->foreign('notation_id')->references('notation_id')->on('notations')->onUpdate('CASCADE')->onDelete('CASCADE');
@@ -33,6 +33,6 @@ class NotationPhotos extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notation_photos');
+        Schema::dropIfExists('notation_comments');
     }
 }

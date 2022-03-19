@@ -15,9 +15,10 @@ class VoteNotation extends Migration
     {
         Schema::create('vote_notation', function (Blueprint $table) {
             $table->increments('vote_notation_id')->unsigned(false);
-            $table->integer('id_user')->comment('id пользователя, который проголосовал');
-            $table->integer('notation_id')->comment('id новости');
-            $table->smallInteger('vote')->comment('1 - like, 0 - дизлайк')->default(1);
+            $table->integer('id_user')->comment('id of the user who voted ');
+            $table->integer('notation_id')->comment('id news');
+            $table->smallInteger('vote')->comment('1 - like, 0 - dislike')->default(1);
+            $table->float('star')->comment('Star')->default(0);
             $table->timestamp('vote_date')->nullable();
 
             //$table->primary('vote_notation_id');
