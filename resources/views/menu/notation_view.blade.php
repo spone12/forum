@@ -75,8 +75,8 @@
                    
                 </div>
                     <div class='text-center mt-2'>
-                        <span id='v_notation' onclick='view_graph(this.id);' class='nav_notation mr-1'>Статья</span> 
-                        <span id='views' onclick='view_graph(this.id);'  class='nav_notation'>Просмотры</span> 
+                        <span id='v_notation' onclick='viewGraph(this.id);' class='nav_notation mr-1'>Статья</span> 
+                        <span id='views' onclick='viewGraph(this.id);'  class='nav_notation'>Просмотры</span> 
                     </div>
 
                 <div id="notation_views" style="height: 250px;display:none;"></div>
@@ -138,13 +138,23 @@
                      
                 </div>
             </div>
-         </div>
+            <div class="separator"></div>
+            <div class="media card col-12">
+                <div class="media-left">
+                    <img class="media-object img-rounded" src="{{ asset($view[0]->avatar) }}" />
+                </div>
+                <div class="media-body">
+                    <h5 class="media-heading">name</h5>
+                    <small>text</small>
+                </div>
+            </div>
+          </div>
         </div>
     </div>
 
     <script>
 
-    function view_graph(id)
+    function viewGraph(id)
     {
         if(id == 'v_notation')
         {

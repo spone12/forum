@@ -111,9 +111,8 @@ $c: center;
     background: #645c48;
     transition: all 0.3s;
 }
-/*                             */
 
-/* Показать/скрыть пароль */
+/* Show / hide password */
 
 .password 
 {
@@ -132,8 +131,6 @@ $c: center;
     .password-control.view {background: url('/img/icons/password-hide.svg') 0 0 no-repeat;}
 }
 
-/*                            */
-
 .name_profile
 {
     font-size: 16px;
@@ -146,11 +143,27 @@ $c: center;
     width: 14px !important;
 }
 
+.level {text-shadow: 1px 1px 0 #b95e5e;}
+
 .button-native
 {
     border: none;
     background: none;
     padding: 0;
+}
+
+.separator {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 5px solid rgba(0,0,0,.125);
+    border-radius: 50px;
 }
 
 .couter_likes1
@@ -182,6 +195,7 @@ $c: center;
 }
 
 .status_user{width: 10px;}
+
 .status_user_text
 {
     font-style: italic;

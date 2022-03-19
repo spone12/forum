@@ -1,5 +1,3 @@
-@charset "UTF-8";
-
 .lang {
   border-radius: 5px !important;
   background: none !important;
@@ -561,9 +559,7 @@
   transition: all 0.3s;
 }
 
-/*                             */
-
-/* Показать/скрыть пароль */
+/* Show / hide password */
 
 .password {
   position: relative;
@@ -583,8 +579,6 @@
   background: url("/img/icons/password-hide.svg") 0 0 no-repeat;
 }
 
-/*                            */
-
 .name_profile {
   font-size: 16px;
   font-family: initial;
@@ -596,10 +590,26 @@
   width: 14px !important;
 }
 
+.level {
+  text-shadow: 1px 1px 0 #b95e5e;
+}
+
 .button-native {
   border: none;
   background: none;
   padding: 0;
+}
+
+.separator {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 5px solid rgba(0, 0, 0, 0.125);
+  border-radius: 50px;
 }
 
 .couter_likes1 {
