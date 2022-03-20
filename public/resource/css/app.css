@@ -265,6 +265,42 @@
   opacity: 1;
 }
 
+.notationCommentAdd {
+  margin-left: 90px !important;
+  margin-top: 10px !important;
+}
+
+.notationComment__send {
+  height: 7%;
+  border: 3px solid;
+  margin-left: 5px;
+  border-radius: 50%;
+  vertical-align: middle;
+  opacity: 0.7;
+  -o-object-fit: contain;
+     object-fit: contain;
+  margin-top: 20px;
+}
+
+.notationComment__send:hover {
+  background: #d5d5d5;
+  opacity: 1;
+}
+
+.notationComment_text {
+  resize: none !important;
+}
+
+.commentProfilePhoto {
+  border-radius: 50%;
+  width: 30px;
+  margin-top: 10px;
+}
+
+.countComments {
+  text-align: right;
+}
+
 .Chat-search {
   display: none;
 }
@@ -448,6 +484,7 @@
 }
 
 .c_p,
+.notationComment__send,
 .Chat-search .Chat-search__name,
 .chatLs .chatLs__move-edit,
 .chatLs .chatLs__move-delete,
@@ -610,6 +647,7 @@
   background-clip: border-box;
   border: 5px solid rgba(0, 0, 0, 0.125);
   border-radius: 50px;
+  margin: 5px 0px 30px 0px;
 }
 
 .couter_likes1 {

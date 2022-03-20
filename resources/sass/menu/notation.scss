@@ -162,3 +162,41 @@ $border-nav: 25px;
         opacity:1
     }
   }
+
+  .notationCommentAdd{ 
+      margin-left: 90px !important; 
+      margin-top: 10px !important; 
+}
+
+.notationComment__send
+{
+    @extend .c_p;
+    height: 7%;
+    border: 3px solid;
+    margin-left: 5px;
+    border-radius: 50%;
+    vertical-align: middle;
+    opacity: 0.7;
+    object-fit: contain;
+    margin-top: 20px;
+
+    &:hover
+    {
+        background: #d5d5d5;
+        opacity: 1;
+    }
+}
+
+.notationComment_text{
+    resize:none !important;
+}
+
+.commentProfilePhoto{
+    border-radius: 50%;
+    width: 30px;
+    margin-top: 10px;
+}
+
+.countComments{
+    text-align: right;
+  }

@@ -139,15 +139,38 @@
                 </div>
             </div>
             <div class="separator"></div>
+
+            <div class="card col-12 countComments">
+                <div><b>Комментарии:</b> count_comments</div>
+            </div>
             <div class="media card col-12">
-                <div class="media-left">
-                    <img class="media-object img-rounded" src="{{ asset($view[0]->avatar) }}" />
+                
+                <div class="row justify-content-start">
+                    <div class='col-12 add_notation_who'>
+                        <img class='commentProfilePhoto' data-toggle="tooltip" data-placement="bottom" title='{{$view[0]->name}}' width=30 src="{{ asset($view[0]->avatar) }}" />
+                        <a href='/profile/{{$view[0]->id_user}}' data-toggle="tooltip" data-placement="bottom" target='_blank' title='Перейти в профиль'>{{$view[0]->name}}</a>
+                    </div>
+                   
                 </div>
                 <div class="media-body">
-                    <h5 class="media-heading">name</h5>
+                   
                     <small>text</small>
                 </div>
             </div>
+
+            <div class="row notationCommentAdd justify-content-center align-items-center">
+                <div class='col-8'>
+                    <div class="row no-gutters notationComment">
+                        <div class="col-8 col-sm-8"> 
+                            <textarea type='text' id='notationComment_text' class='input_field' placeholder="{{trans('notation.writeComment')}}" ></textarea>
+                        </div>
+                        <div class="col-3 col-sm-2 justify-content-start d-flex"> 
+                            <img class='notationComment__send align-middle' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{{trans('chat.sendMessage')}}">
+                        </div>
+                    </div>
+                </div>  
+            </div> 
+
           </div>
         </div>
     </div>

@@ -37,7 +37,6 @@ class NotationModel extends Model
         else $ins = false;
 
         return $ins;
-        //return $ins;
     }
 
     protected function view_notation(int $notation_id)

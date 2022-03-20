@@ -20,7 +20,9 @@
 
     <div class="row justify-content-center align-items-center">
         <div class='chatLs col-lg-10'>
-         @if(isset($dialogObj))
+
+         @if(!empty($dialogObj[0]))
+
             @foreach($dialogObj as $chat)
                 <div class="chatLs__chat">
                     <div class='col-sm-12 row'>
@@ -45,7 +47,14 @@
                     </div>
                 </div>
             @endforeach
-            @endif
+       
+        @else
+            <div class="chatLs__chat noMessages">
+                <div class='col-sm-12 row t_a'>
+                    Нет сообщений
+                </div>
+            </div>
+        @endif
         </div>
     </div>
 

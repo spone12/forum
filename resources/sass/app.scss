@@ -4,6 +4,7 @@
 @import 'menu/search';
 @import 'menu/notation';
 @import 'menu/chat';
+@import 'profile/profile';
 
 $c: center;
 
@@ -164,6 +165,7 @@ $c: center;
     background-clip: border-box;
     border: 5px solid rgba(0,0,0,.125);
     border-radius: 50px;
+    margin: 5px 0px 30px 0px;
 }
 
 .couter_likes1
