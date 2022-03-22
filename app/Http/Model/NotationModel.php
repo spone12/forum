@@ -18,25 +18,23 @@ class NotationModel extends Model
 
     public $timestamps = false;
 
-    protected static function ins_notation(Array $data_notation)
+    protected static function createNotation(Array $dataNotation)
     {
-        if (Auth::check()) 
+        if (Auth::check() && $dataNotation['method'] == 'add') 
         {
-            $user = Auth::user()->id;
-
-            $ins =  
-            DB::table('notations')->insert(
-                array('id_user' => $user, 
-                    'name_notation' =>  trim(addslashes($data_notation['name_tema'])), 
-                    'text_notation' =>  trim(addslashes($data_notation['text_notation'])),
+            $notationId = DB::table('notations')->insertGetId(
+                [
+                    'id_user' =>  Auth::user()->id,
+                    'name_notation' =>  trim(addslashes($dataNotation['name_tema'])), 
+                    'text_notation' =>  trim(addslashes($dataNotation['text_notation'])),
                     'notation_add_date' =>  Carbon::now(),
-                    'notation_edit_date' => Carbon::now())
+                    'notation_edit_date' => Carbon::now()
+                ]
             );
-          
         }
-        else $ins = false;
+        else $notationId = false;
 
-        return $ins;
+        return $notationId;
     }
 
     protected function view_notation(int $notation_id)
@@ -120,7 +118,6 @@ class NotationModel extends Model
                                     ->select('path_photo','notation_photo_id')
                                     ->where('notation_id', '=', $notation_id)->get();
 
-       // return $notation;
         return $data;
     }
 
@@ -134,56 +131,43 @@ class NotationModel extends Model
                                 ->where('notation_id', '=', $notation_id)
                             ->first();
 
-        if(empty($check_rating->vote_notation_id))
-        {
-                $ins = DB::table('vote_notation')->insert(
-                array('id_user' => Auth::user()->id, 
-                    'notation_id' =>  (INT)$notation_id, 
-                    'vote' => $action,
-                    'vote_date' => Carbon::now())
+            $dbMove = null;
+            if(empty($check_rating->vote_notation_id))
+            {
+                $dbMove = DB::table('vote_notation')->insert(
+                    array(
+                        'id_user' => Auth::user()->id, 
+                        'notation_id' =>  (INT)$notation_id, 
+                        'vote' => $action,
+                        'vote_date' => Carbon::now()
+                    )
                 );
-
-                if($action == 1)
-                {
-                    $string = "SET `rating` =  `rating` + 1";
-                }
-                else  $string = "SET `rating` =  `rating` - 1";
-
-            $upd_notation = DB::statement("UPDATE `notations` {$string}
-                            WHERE `notation_id` =  {$notation_id}");
-
-
-                return $ins;
-        }
-        else 
-        {
+            }
+            else 
+            {
                 if($check_rating->vote == 1 && $action == 1)
                     return 0;
                 
                 if($check_rating->vote == 0 && $action == 0)
                     return 0;
                 
-                $upd = DB::table('vote_notation')
-                            ->where('id_user', '=', Auth::user()->id)
-                            ->where('notation_id', '=', $notation_id)
-                        ->update([
-                                  'vote' => $action,
-                                  'vote_date' => Carbon::now()
-                                ]);
-                
-                if($action == 1)
-                {
-                    $string = "SET `rating` =  `rating` + 1";
-                }
-                else  $string = "SET `rating` =  `rating` - 1";
+                $dbMove = DB::table('vote_notation')
+                    ->where('id_user', '=', Auth::user()->id)
+                    ->where('notation_id', '=', $notation_id)
+                ->update([
+                            'vote' => $action,
+                            'vote_date' => Carbon::now()
+                        ]);
+            }
 
-            $upd_notation = DB::statement("UPDATE `notations` {$string}
-                            WHERE `notation_id` =  {$notation_id}");
+            if($action) {
+                $string = "SET `rating` =  `rating` + 1";
+            }
+            else  $string = "SET `rating` =  `rating` - 1";
 
-                //$back['upd_not'] =  $upd_notation;
-            // $back['upd'] =  $upd;
-                return $upd;
-        }
+            DB::statement("UPDATE `notations` {$string} WHERE `notation_id` =  {$notation_id}");
+
+            return $dbMove;
       }
       else return null;
        
@@ -270,7 +254,7 @@ class NotationModel extends Model
             }
     }
 
-    protected function notation_add_photo($request)
+    protected static function notationAddPhotos($request)
     {
         $paths = array();
         if($request->hasFile('images'))
@@ -296,6 +280,4 @@ class NotationModel extends Model
 
         return $paths;
     }
-
-   
 }

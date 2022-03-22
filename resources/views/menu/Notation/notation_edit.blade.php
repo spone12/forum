@@ -56,7 +56,7 @@
                         }}
                     </div>    
 
-                    <form action="{{route('notation_add_photos', $data_notation->notation_id)}}" enctype="multipart/form-data" method="POST">
+                    <form action="{{route('notationAddPhotos', $data_notation->notation_id)}}" enctype="multipart/form-data" method="POST">
                         {{ csrf_field() }}
                        
                         <div class="d-row justify-content-center">

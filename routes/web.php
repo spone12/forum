@@ -24,7 +24,7 @@ Route::match(['get', 'post'], '/search', 'SearchController@getDataSearch')->name
 Route::prefix('notation')->group(function()
 {
     Route::get('/', 'NotationController@Notation')->name('notation')->middleware('auth');
-    Route::post('/', 'NotationController@AjaxReq')->middleware('auth');
+    Route::post('/', 'NotationController@createNotation')->middleware('auth');
     Route::get('/view/{notation_id}', 'NotationController@NotationView')
         ->name('notation_view_id')->where('notation_id','[0-9]{1,11}');
     Route::get('/edit/{notation_id}', 'NotationController@NotationEditAccess')
@@ -32,7 +32,7 @@ Route::prefix('notation')->group(function()
     Route::post('/rating/{notation_id}', 'NotationController@NotationRating')
         ->where('notation_id','[0-9]{1,11}')->middleware('auth');
     Route::post('/add_photos/{notation_id}', 'NotationController@NotationAddPhotos')
-        ->name('notation_add_photos')->where('notation_id','[0-9]{1,11}')->middleware('auth');
+        ->name('notationAddPhotos')->where('notation_id','[0-9]{1,11}')->middleware('auth');
     Route::put('/edit_upd/{notation_id}', 'NotationController@NotationEdit')
         ->where('notation_id','[0-9]{1,11}')->middleware('auth');
     Route::delete('/delete/{notation_id}', 'NotationController@NotationDelete')

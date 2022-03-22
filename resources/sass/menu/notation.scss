@@ -168,7 +168,7 @@ $border-nav: 25px;
       margin-top: 10px !important; 
 }
 
-.notationComment__send
+.notationCommentAdd__send
 {
     @extend .c_p;
     height: 7%;
@@ -187,7 +187,7 @@ $border-nav: 25px;
     }
 }
 
-.notationComment_text{
+.notationCommentAdd_text{
     resize:none !important;
 }
 
@@ -199,4 +199,23 @@ $border-nav: 25px;
 
 .countComments{
     text-align: right;
-  }
+}
+
+.profileLink{
+    border: 1px solid #eaeac0;
+    border-radius: 4px;
+    padding: 3px;
+    text-decoration: none !important;
+    color: #e03232;
+    opacity: 0.8;
+
+    &:hover{
+        opacity: 1;
+        color:#e03232;
+    }
+}
+
+.commentText {
+    text-indent: 50px;
+    text-align: justify;
+}

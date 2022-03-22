@@ -270,7 +270,7 @@
   margin-top: 10px !important;
 }
 
-.notationComment__send {
+.notationCommentAdd__send {
   height: 7%;
   border: 3px solid;
   margin-left: 5px;
@@ -282,12 +282,12 @@
   margin-top: 20px;
 }
 
-.notationComment__send:hover {
+.notationCommentAdd__send:hover {
   background: #d5d5d5;
   opacity: 1;
 }
 
-.notationComment_text {
+.notationCommentAdd_text {
   resize: none !important;
 }
 
@@ -299,6 +299,25 @@
 
 .countComments {
   text-align: right;
+}
+
+.profileLink {
+  border: 1px solid #eaeac0;
+  border-radius: 4px;
+  padding: 3px;
+  text-decoration: none !important;
+  color: #e03232;
+  opacity: 0.8;
+}
+
+.profileLink:hover {
+  opacity: 1;
+  color: #e03232;
+}
+
+.commentText {
+  text-indent: 50px;
+  text-align: justify;
 }
 
 .Chat-search {
@@ -339,7 +358,7 @@
   padding: 0;
   height: 40px;
   border: none;
-  box-shadow: 0 10px 10px -10px #333;
+  box-shadow: 0 2px 2px -2px #333;
   width: 100%;
 }
 
@@ -484,7 +503,7 @@
 }
 
 .c_p,
-.notationComment__send,
+.notationCommentAdd__send,
 .Chat-search .Chat-search__name,
 .chatLs .chatLs__move-edit,
 .chatLs .chatLs__move-delete,

@@ -67,7 +67,7 @@
                         <div class='col-4 col-sm-3 add_notation_who'>Добавил:</div>
                         <div class='col-5 col-sm-3 add_notation_who'>
                             <img class='mini_avatar' data-toggle="tooltip" data-placement="bottom" title='{{$view[0]->name}}' width=30 src="{{ asset($view[0]->avatar) }}" />
-                            <a href='/profile/{{$view[0]->id_user}}' data-toggle="tooltip" data-placement="bottom" target='_blank' title='Перейти в профиль'>{{$view[0]->name}}</a>
+                            <a href='/profile/{{$view[0]->id_user}}'  class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='Перейти в профиль'>{{$view[0]->name}}</a>
                         </div>
                         <div class='col-4 col-sm-3 add_notation_who'>Дата создания:</div>
                         <div class='col-4 col-sm-3 add_notation_who'>{{$view[0]->notation_add_date}}</div>
@@ -81,13 +81,7 @@
 
                 <div id="notation_views" style="height: 250px;display:none;"></div>
                 <div class="card-body" id='content_notation'>
-                    <div class='row justify-content-center'>
-                        <div  class='col-10'>
-                                &emsp; {!! $view[0]->text_notation!!}
-                        </div>    
-                    </div>
-
-                    <div class='row justify-content-center mt-3'>
+                <div class='row justify-content-center mt-3'>
                         <div  class='col-6'>
 
                         @if($view[0]->path_photo)
@@ -135,37 +129,41 @@
 
                         </div>    
                     </div>
-                     
+                    <div class='row justify-content-center'>
+                        <div  class='col-10'>
+                                &emsp; {!! $view[0]->text_notation!!}
+                        </div>    
+                    </div>
+
                 </div>
             </div>
             <div class="separator"></div>
 
             <div class="card col-12 countComments">
-                <div><b>Комментарии:</b> count_comments</div>
+                <div><b>Комментарии:</b><span class="countComments__count"> count_comments </span></div>
             </div>
-            <div class="media card col-12">
-                
+
+            <div class="card col-12 notationComment">
                 <div class="row justify-content-start">
                     <div class='col-12 add_notation_who'>
                         <img class='commentProfilePhoto' data-toggle="tooltip" data-placement="bottom" title='{{$view[0]->name}}' width=30 src="{{ asset($view[0]->avatar) }}" />
-                        <a href='/profile/{{$view[0]->id_user}}' data-toggle="tooltip" data-placement="bottom" target='_blank' title='Перейти в профиль'>{{$view[0]->name}}</a>
+                        <a href='/profile/{{$view[0]->id_user}}' class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='Перейти в профиль'>{{$view[0]->name}}</a>
+                        <span>10:12</span>
                     </div>
-                   
                 </div>
-                <div class="media-body">
-                   
-                    <small>text</small>
+                <div class="commentText">
+                    <small class=""> По крайней мере — в прошедший четверг. Очень приятно провели там время? — сделал наконец, в свою — очередь, вопрос Чичиков. — Ну, семнадцать бутылок — шампанского! — Ну, послушай, чтоб доказать тебе, что я тебе положу этот кусочек“. Само собою разумеется, что полюбопытствовал узнать, какие в окружности находятся у них были такого рода, что с тобою не стану снимать — плевы с черт знает что дали, трех аршин с вершком. </small>
                 </div>
             </div>
 
             <div class="row notationCommentAdd justify-content-center align-items-center">
                 <div class='col-8'>
-                    <div class="row no-gutters notationComment">
+                    <div class="row no-gutters notationCommentAdd">
                         <div class="col-8 col-sm-8"> 
-                            <textarea type='text' id='notationComment_text' class='input_field' placeholder="{{trans('notation.writeComment')}}" ></textarea>
+                            <textarea type='text' id='notationCommentAdd_text' class='input_field' placeholder="{{trans('notation.writeComment')}}" ></textarea>
                         </div>
                         <div class="col-3 col-sm-2 justify-content-start d-flex"> 
-                            <img class='notationComment__send align-middle' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{{trans('chat.sendMessage')}}">
+                            <img class='notationCommentAdd__send align-middle' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{{trans('chat.sendMessage')}}">
                         </div>
                     </div>
                 </div>  

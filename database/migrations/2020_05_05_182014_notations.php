@@ -30,10 +30,6 @@ class Notations extends Migration
 
     }
 
-   
-
-
-
     /**
      * Reverse the migrations.
      *

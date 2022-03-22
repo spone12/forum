@@ -11,17 +11,12 @@ use Illuminate\Support\Facades\Auth;
 
 class NotationController extends Controller
 {
-    protected function AjaxReq(NotationRequest $request)
+    protected function createNotation(NotationRequest $request)
     {
-        $input = $request->only(['name_tema','text_notation']); //получение входных данных
-        $method = $request->input('method');
+        $input = $request->only(['name_tema','text_notation', 'method']);
+        $data = NotationModel::createNotation($input);
     
-        if($method == 'add')
-        {
-            $data = NotationModel::ins_notation($input);
-        }
-    
-        return response()->json(['success'=> $data]);
+        return response()->json(['notationId'=> $data]);
     }
 
     protected function NotationView(int $notation_id)
@@ -94,7 +89,7 @@ class NotationController extends Controller
     //NotationPhotoRequest Request
     protected function NotationAddPhotos(NotationPhotoRequest $request)
     { 
-        $paths = NotationModel::notation_add_photo($request);
+        $paths = NotationModel::notationAddPhotos($request);
 
         if(!empty($paths))
         {

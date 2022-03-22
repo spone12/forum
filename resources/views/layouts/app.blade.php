@@ -12,10 +12,6 @@
     <!-- Scripts -->
     <!--script src="{{ asset('js/app.js') }}" defer></script-->
 
-    <!-- Fonts -->
-    <!--link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"-->
-
     <!-- Styles -->
     <!--link href="{{ asset('resource/css/forum.css') }}" rel="stylesheet"-->
     <link href="{{ asset('resource/css/app.css') }}" rel="stylesheet" type='text/css'>
@@ -25,6 +21,10 @@
     <script src="{{ asset('resource/libraries/popper/popper.min.js') }}"></script>
     <script src="{{ asset('resource/libraries/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('resource/js/nav.js') }}"></script>
+
+    <script src="{{ asset('resource/libraries/TataJs/tata.js') }}"></script>
+    <script src="{{ asset('resource/libraries/TataJs/index.js') }}"></script>
+    
     @stack('scripts')
 </head>
 <body>
@@ -38,7 +38,6 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-            
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     

@@ -25,7 +25,7 @@ class NotationRequest extends FormRequest
     {
         return [
             'name_tema' => 'required|min:3|max:150',
-            'text_notation' => 'required|min:30|max:2500'
+            'text_notation' => 'required|min:30'
         ];
     }
 
@@ -44,8 +44,7 @@ class NotationRequest extends FormRequest
             'text_notation.required' => 'Необходимо заполнить текст новости',
             'name_tema.min' => 'Минимальная длина темы 5 символов',
             'name_tema.max' => 'Максимальная длина темы 150 символов',
-            'text_notation.min' => 'Минимальная длина сообщения 30 символов',
-            'text_notation.max' => 'Максимальная длина сообщения 2500 символов',
+            'text_notation.min' => 'Минимальная длина сообщения 30 символов'
         ];
     }
 }

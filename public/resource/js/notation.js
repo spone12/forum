@@ -6,28 +6,30 @@
                 $(this).find('.close').animate({opacity:0},100)
             }
     )
-    
+
+    function reyFhg(){
+        alert('ff');
+    }
+
     $(document).ready(function() 
-    { 
+    {  
         $(".notation_carousel_photo").click(function()
         {	
             var img = $(this);
             var src = img.attr('src'); 
-            $("body").append("<div class='popup'>"+ //Добавляем в тело документа разметку всплывающего окна
-                             "<div class='popup_bg'></div>"+ // Блок, который будет служить фоном затемненным
-                             "<img src='"+ src +"' class='popup_img' />"+ // Само увеличенное фото
+            $("body").append("<div class='popup'>"+ 
+                             "<div class='popup_bg'></div>"+ 
+                             "<img src='"+ src +"' class='popup_img' />"+ 
                              "</div>"); 
 
-            $(".popup").fadeIn(800); // Медленно выводим изображение
+            $(".popup").fadeIn(800); 
 
             $(".popup_bg").click(function()
             {	
-                // Событие клика на затемненный фон	   
-                $(".popup").fadeOut(800);	// Медленно убираем всплывающее окно
-
+                $(".popup").fadeOut(800);
                 setTimeout(function()
-                {	// Выставляем таймер
-                  $(".popup").remove(); // Удаляем разметку всплывающего окна
+                {	
+                   $(".popup").remove();
                 }, 800);
             });
         });
@@ -36,7 +38,6 @@
 
     function add_notation()
     {
-        
         $.ajax(
         {
             url: '/notation',
@@ -49,21 +50,25 @@
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
             success: function (data) 
             {
-                if(data.success == 1)
+                if(typeof(data.notationId) == 'number')
                 {
-                    location.href = '/home';
+                    tata.success('', 'Новость успешно создана', {
+                        duration: 2000,
+                        animate: 'slide',
+                        position: 'tr'
+                    });
+
+                    setTimeout(function(){
+                        window.location.href = '/notation/view/' + data.notationId;
+                    }, 2000);
                 }
-                
-               // console.log( data.success);
             },
             error: function(data)
             {
                 var errors = data.responseJSON;
 
-                console.log(errors);
-                // blade page
-                 errorsHtml = '<div class="alert alert-danger">' +
-                                '<ul>';
+                errorsHtml = '<div class="alert alert-danger">' +
+                    '<ul>';
 
                  $.each( errors.errors, function( key, value ) 
                  {
@@ -71,7 +76,7 @@
                  });
                  errorsHtml += '</ul></div>';
 
-                 $( '#form-errors' ).html( errorsHtml ); //appending to a <div id="form-errors"></div> 
+                 $( '#form-errors' ).html( errorsHtml ); 
             }
             
             
@@ -119,7 +124,6 @@
                                 class: class_add
                             });
                        }
-                       //console.log( data);
                     },
                     error: function(data)
                     {
@@ -151,15 +155,20 @@
                 {
                    if(data.success === true)
                    {
-                        $('#modal_window_text').text('Новость успешно изменена!');
-                       // $('#modal_window_close').attr('href', '/notation/view/' + notation_id);
-                        $('#modal_window').modal('show');
+                        tata.success('', 'Новость успешно изменена', {
+                            duration: 3000,
+                            animate: 'slide',
+                            position: 'tr',
+                            onClose: function(){
+                                window.location.href = '/notation/view/' + notation_id;
+                            }
+                        });
 
-                        $('#modal_window_close').on('click', function(){
-                            window.location.href = '/notation/view/' + notation_id;
-                        })
+
+                       /* $('#modal_window_close').on('click', function(){
+                           
+                        })*/
                    }
-                   //console.log( data);
                 },
                 error: function(data)
                 {
@@ -183,19 +192,23 @@
                 {
                     url: '/notation/delete/' + notation_id,
                     type: "DELETE",
-                    data: {
-                            notation_id: notation_id
-                          },
+                    data: {notation_id: notation_id},
                     headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
                     success: function (data) 
                     {
+                        $('#modal_window').modal('hide');
                         if(data.success.status == 1)
                         {
-                            $('#modal_window').modal('hide');
-                            window.location.href = '/';
+                            tata.text('', 'Новость успешно удалена', {
+                                duration: 2000,
+                                animate: 'slide',
+                                position: 'tr'
+                            });
+        
+                            setTimeout(function(){
+                                window.location.href = '/';
+                            }, 2000);
                         }
-
-                       console.log( data);
                     },
                     error: function(data)
                     {
@@ -221,9 +234,8 @@
                 {
                    if(data.answer === 'success')
                    {
-                       location.href = '';
+                       window.location.href = '';
                    }
-                   //console.log( data);
                 },
                 error: function(data)
                 {
