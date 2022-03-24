@@ -4,6 +4,10 @@
       let userId = $('#userId').val();
       let dialogId = $('#dialogId').val();
       
+      if(message.trim() == ""){
+        return;
+      }
+
       $.ajax(
       {
             url: '/chat/send_message',
@@ -18,7 +22,6 @@
             success: function (data) 
             {
                $('#dialog__message').val('');
-               console.log(data);
             },
             error: function(data)
             {

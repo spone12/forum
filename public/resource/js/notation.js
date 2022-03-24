@@ -50,17 +50,16 @@
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
             success: function (data) 
             {
-                if(typeof(data.notationId) == 'number')
+                if(typeof(data.notationData.notationId) == 'number')
                 {
-                    tata.success('', 'Новость успешно создана', {
+                    tata.success('+' + data.notationData.expAdded + ' опыта', 'Новость успешно создана', {
                         duration: 2000,
                         animate: 'slide',
-                        position: 'tr'
+                        position: 'tr',
+                        onClose: function(){
+                            window.location.href = '/notation/view/' + data.notationData.notationId;
+                        }
                     });
-
-                    setTimeout(function(){
-                        window.location.href = '/notation/view/' + data.notationId;
-                    }, 2000);
                 }
             },
             error: function(data)
@@ -78,7 +77,6 @@
 
                  $( '#form-errors' ).html( errorsHtml ); 
             }
-            
             
         });
     }
@@ -163,11 +161,6 @@
                                 window.location.href = '/notation/view/' + notation_id;
                             }
                         });
-
-
-                       /* $('#modal_window_close').on('click', function(){
-                           
-                        })*/
                    }
                 },
                 error: function(data)
@@ -202,12 +195,11 @@
                             tata.text('', 'Новость успешно удалена', {
                                 duration: 2000,
                                 animate: 'slide',
-                                position: 'tr'
+                                position: 'tr',
+                                onClose: function(){
+                                    window.location.href = '/';
+                                }
                             });
-        
-                            setTimeout(function(){
-                                window.location.href = '/';
-                            }, 2000);
                         }
                     },
                     error: function(data)

@@ -33,8 +33,8 @@
             </div>
                 
             <div class='row align-items-center'>
-                <div class='col-sm-8 profile_info'>Имя:</div>
-                <div class='col-sm-4'>{{$data_user->real_name}}</div>
+                <div class='col-sm-7 profile_info'>Имя:</div>
+                <div class='col-sm-5'>{{$data_user->real_name}}</div>
             </div>
             
             <div class='row align-items-center'>

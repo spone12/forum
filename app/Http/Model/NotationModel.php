@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Http\Model\ProfileModel;
 
 
 class NotationModel extends Model
@@ -31,10 +32,12 @@ class NotationModel extends Model
                     'notation_edit_date' => Carbon::now()
                 ]
             );
+
+            $expAdded = ProfileModel::expAdd('addNotation');
+
+            return ['notationId' => $notationId, 'expAdded' => $expAdded];
         }
         else $notationId = false;
-
-        return $notationId;
     }
 
     protected function view_notation(int $notation_id)

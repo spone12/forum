@@ -14,6 +14,7 @@ class ProfileModel extends Model
     ];
     public $timestamps = false;
     public static $noAvatarPath = 'img/avatar/no_avatar.png';
+    private static $typesAddExp = ['addNotation'];
 
     protected static function getDataUser(){
 
@@ -64,8 +65,36 @@ class ProfileModel extends Model
         return $data;
     }
 
-    protected static function expAdd(int $user){
+    protected static function expAdd($action){
+        $addedExp = 0;
 
+        $userData = DB::table('users AS u')
+                ->select(
+                    'u.id',
+                    'dp.lvl',
+                    'dp.exp'
+                )
+                ->leftJoin('description_profile AS dp', 'dp.id_user', '=', 'u.id')
+                ->where('id', '=', Auth::user()->id)
+            ->first();
+
+        $exp = self::expGeneration($userData);
+        
+        if($action == 'addNotation'){
+            $addedExp = 10;
+            $userData->exp += $addedExp;
+        
+            if($userData->exp >= $exp){
+                $userData->lvl++;
+                $userData->exp = ($exp - $userData->exp);
+            }
+        }
+
+        DB::table('description_profile')
+            ->where('id_user',  Auth::user()->id)
+            ->update(['exp' => $userData->exp, 'lvl' => $userData->lvl]);
+        
+        return $addedExp;
     }
 
     protected static function lvlAdd(int $user){

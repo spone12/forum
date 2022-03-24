@@ -16,7 +16,7 @@ class NotationController extends Controller
         $input = $request->only(['name_tema','text_notation', 'method']);
         $data = NotationModel::createNotation($input);
     
-        return response()->json(['notationId'=> $data]);
+        return response()->json(['notationData' => $data]);
     }
 
     protected function NotationView(int $notation_id)
