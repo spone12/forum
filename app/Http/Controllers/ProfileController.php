@@ -13,69 +13,58 @@ class ProfileController extends Controller
     
     public function viewAnotherProfile(int $id)
     {
-            $dataUser = ProfileModel::getAnotherUser($id);
+        $userData = ProfileModel::getAnotherUser($id);
             
-        if(!empty($dataUser->name))
-            return view('menu.profile', ['data_user' => $dataUser]);
-            
-        else  return view('error_404', ['error' => ['Данного пользователя не существует']]);
+        if(!empty($userData->name))
+            return view('menu.profile', ['data_user' => $userData]);
+        else  
+            return view('error_404', ['error' => ['Данного пользователя не существует']]);
     }
 
     public function viewProfile(Request $request)
     {
-        $dataUser = ProfileModel::getDataUser();
+        $userData = ProfileModel::getUserData();
 
-        return view('menu.profile', ['data_user' => $dataUser]);
+        return view('menu.profile', ['data_user' => $userData]);
     }
 
-    public function changeProfile(int $id_user)
+    public function changeProfile(int $userId)
     {
-        $dataUser = ProfileModel::getUserDataChange($id_user);
+        $userData = ProfileModel::getUserDataChange($userId);
 
-        return view('menu.profile.change_profile', ['data_user' => $dataUser]);
+        return view('menu.profile.change_profile', ['data_user' => $userData]);
     }
 
     public function changeProfileConfirm(Request $request)
     {
         if($request->ajax())
         {
-            $input = $request->only(['data_send']);
+            $input = $request->only(['data_send']); 
+            $back = ProfileModel::changeProfile($input);
+                
+            try
+            {
+                if(!$back->original['status'])
+                {
+                    throw new \Exception($back->original['errors']);
+                }
+            }
+            catch(\Exception $e)
+            {
+                die($e->getMessage());
+            }
 
-           /* $validator = Validator::make($input, 
-                [
-                     $input['data_send']['gender'] => 'numeric',
-                ])->validate();
-                
-            if($validator)
-            {*/
-        
-                
-               $back = ProfileModel::changeProfile($input);
-                
-               try
-               {
-                    if(!$back->original['status'])
-                    {
-                        throw new \Exception($back->original['errors']);
-                    }
-               }
-               catch(\Exception $e)
-               {
-                    die($e->getMessage());
-               }
-
-               return array('data_user' => $back);
-           // }
-          
+            return array('data_user' => $back);
         }
     }
 
     public function changeAvatar(ProfileAvatarRequest $request)
     {
-        $answer = ProfileModel::changeAvatar($request);
+        $isChanged = ProfileModel::changeAvatar($request);
    
         return redirect()->route('profile_id', Auth::user()->id)
-            ->with('success','Вы успешно изменили аватар');
+            ->with('success','Вы успешно изменили аватар')
+            ->with('isChanged', $isChanged);
            
     }
 }

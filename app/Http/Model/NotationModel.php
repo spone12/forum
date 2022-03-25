@@ -42,7 +42,6 @@ class NotationModel extends Model
 
     protected function view_notation(int $notation_id)
     {
-
         if (Auth::check())
         {
             $is_vote = DB::table('vote_notation')
@@ -62,9 +61,8 @@ class NotationModel extends Model
                             'notations.notation_add_date','vote_notation.vote','np.path_photo')
                     ->where('notations.notation_id', '=', $notation_id)
                     ->where('vote_notation.id_user', '=', Auth::user()->id)
-                    ->get();
+                ->get();
             }
-            
         } 
         
         if(empty($notation))
