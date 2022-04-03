@@ -80,7 +80,7 @@
         <div class='col-sm-4 col-3'>
             <div class='row justify-content-center align-items-center'>
                 <div class='col-12 t_a p-1'>
-                    <img class="page_avatar" src="{{asset($data_user->avatar)}}" title='{{$data_user->name}}' alt='avatar' />
+                    <img class="page_avatar" src="{{asset($data_user->avatar)}}" data-toggle="tooltip" data-placement="bottom" title='{{$data_user->name}}' alt='avatar' />
                 </div>
 
                 <div class='col-12 t_a level'>

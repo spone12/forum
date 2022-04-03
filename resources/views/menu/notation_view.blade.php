@@ -156,18 +156,20 @@
                 </div>
             </div>
 
-            <div class="row notationCommentAdd justify-content-center align-items-center">
-                <div class='col-8'>
-                    <div class="row no-gutters notationCommentAdd">
-                        <div class="col-8 col-sm-8"> 
-                            <textarea type='text' id='notationCommentAdd_text' class='input_field' placeholder="{{trans('notation.writeComment')}}" ></textarea>
+            @auth
+                <div class="row notationCommentAdd justify-content-center align-items-center">
+                    <div class='col-8'>
+                        <div class="row no-gutters notationCommentAdd">
+                            <div class="col-8 col-sm-8"> 
+                                <textarea type='text' id='notationCommentAdd_text' class='input_field' placeholder="{{trans('notation.writeComment')}}" ></textarea>
+                            </div>
+                            <div class="col-3 col-sm-2 justify-content-start d-flex"> 
+                                <img class='notationCommentAdd__send align-middle' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{{trans('chat.sendMessage')}}">
+                            </div>
                         </div>
-                        <div class="col-3 col-sm-2 justify-content-start d-flex"> 
-                            <img class='notationCommentAdd__send align-middle' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{{trans('chat.sendMessage')}}">
-                        </div>
-                    </div>
-                </div>  
-            </div> 
+                    </div>  
+                </div> 
+            @endauth   
 
           </div>
         </div>

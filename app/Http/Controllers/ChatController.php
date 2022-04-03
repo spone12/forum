@@ -6,22 +6,19 @@ use Illuminate\Http\Request;
 use App\Http\Model\Chat\ChatModel;
 class ChatController extends Controller
 {
-    protected function chat()
-    {
+    protected function chat() {
         $userChats = ChatModel::getUserChats();
         return view('menu.Chat.chat', ['userChats' => $userChats]);
     }
 
-    protected function searchChat(Request $request)
-    {
+    protected function searchChat(Request $request) {
         $word = $request->only(['word']);
         $data = ChatModel::searchChat(addslashes($word['word']));
 
         return response()->json(['searched'=> $data]);
     }
 
-    protected function sendMessage(Request $request)
-    {
+    protected function sendMessage(Request $request) {
         $data = $request->only([
             'message', 
             'dialogId',
@@ -33,12 +30,12 @@ class ChatController extends Controller
         return response()->json(['message' => $sendMessage]);
     }
 
-    protected function dialog(int $userId)
-    {
-        $userDialog = ChatModel::getuserDialog($userId);
+    protected function dialog(int $userId) {
+
+        $userDialog = ChatModel::getUserDialog($userId);
         
         if(isset($userDialog['error'])){
-            return redirect()->route('chat');
+            return redirect()->route('chat')->with('error', $userDialog['error']);
         }
 
         return view('menu.chat.chatLS', [

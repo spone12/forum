@@ -271,9 +271,9 @@ class ProfileModel extends Model
 
             if(file_exists($request->session()->get('avatar'))){
                 return true;
-            }else{
-                return false;
             }
         }
+
+        return false;
     }
 }

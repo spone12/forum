@@ -14,8 +14,9 @@ class ChatModel extends Model
     protected $table = 'messages';
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $primaryKey = 'message_id';
+    public static $noAvatarPath = 'img/avatar/no_avatar.png';
 
-    protected static function getUserChats(){
+    protected static function getUserChats() {
 
         $userChats = DB::table('users')
         ->select('messages.text', 'users.name', 'users.id','users.avatar',
@@ -31,7 +32,7 @@ class ChatModel extends Model
             ->orderBy('messages.created_at', 'DESC')
             ->orderBy('users.name', 'ASC')
         ->groupBy('users.id')
-        ->get();
+       ->get();
 
         $date = date('d.m.Y');
         foreach($userChats as $chat){
@@ -46,7 +47,7 @@ class ChatModel extends Model
         return $userChats;
     }
 
-    private static function formatChatDate($obj, $date){
+    private static function formatChatDate($obj, $date) {
         $chatDate = date('d.m.Y', strtotime($obj->created_at));
 
         if($date == $chatDate){
@@ -56,12 +57,13 @@ class ChatModel extends Model
         }
     }
 
-    private static function checkAvatarExist($obj){
+    private static function checkAvatarExist($obj) {
+
         if(!$obj->avatar)
-            $obj->avatar = 'img/avatar/no_avatar.png';
+            $obj->avatar = static::$noAvatarPath;
     }
 
-    protected static function searchChat(String $word){   
+    protected static function searchChat(String $word) {   
 
         $searchResult = DB::table('dialog')
         ->select(  'messages.send','dialog.dialog_id', 'messages.created_at','messages.text')
@@ -90,7 +92,7 @@ class ChatModel extends Model
 
             $userObj = User::where('id', $search->send)->get();
 
-            $search->avatar = $userObj[0]->avatar ?: 'img/avatar/no_avatar.png';
+            $search->avatar = $userObj[0]->avatar ?: static::$noAvatarPath;;
             $search->id = $userObj[0]->id;
             $search->name = $userObj[0]->name;
         }
@@ -98,15 +100,15 @@ class ChatModel extends Model
         return $searchResult;
     }
 
-    protected static function sendMessage(string $message, int $dialogId, int $userId)
-    {
+    protected static function sendMessage(string $message, int $dialogId, int $userId) {
+        
         $dialogId = self::dialog($userId, $dialogId, $message);
 
         return $dialogId;
     }
 
-    protected static function getDialog($userId, $dialogId = 0)
-    {
+    protected static function getDialog($userId, $dialogId = 0) {
+
         $dialogExist = DB::table('dialog AS d')
         ->select('d.dialog_id')
             ->where(function($query) use ($userId)
@@ -136,16 +138,15 @@ class ChatModel extends Model
         return $dialogId;
     }
 
-    protected static function dialog($userId, $dialogId, $message = '')
-    {
+    protected static function dialog($userId, $dialogId, $message = '') {
         $getDialogId = self::getDialog($userId, $dialogId);
         $messageId = self::insertMessage($userId, $getDialogId, $message); 
         
         return $messageId;
     }
 
-    private static function insertMessage($userId, $dialogId, $message)
-    {   
+    private static function insertMessage($userId, $dialogId, $message) {   
+        
         $messageId = DB::table('messages')->insertGetId(
             [
                 'dialog' => $dialogId,
@@ -158,11 +159,9 @@ class ChatModel extends Model
         return $messageId;
     }
 
-    public static function getuserDialog(int $userId){
+    public static function getUserDialog(int $userId) {
 
-        $userExist = User::where('id', $userId)->exists();
-
-        if(!$userExist)
+        if(!User::where('id', $userId)->exists())
             return ['error' => 'user not exist'];
 
         $dialogId = self::getDialog($userId);
@@ -172,7 +171,7 @@ class ChatModel extends Model
 
         self::checkAvatarExist($anotherUserObj[0]);
 
-        $dialogGet = DB::table('messages')
+        $dialogMessages = DB::table('messages')
         ->select( 'messages.text', 'messages.dialog', 'messages.created_at', 
                   'messages.updated_at', 'messages.send', 'messages.recive',
                   'messages.text' )
@@ -182,9 +181,9 @@ class ChatModel extends Model
         ->get();
 
         $date = date('d.m.Y');
-        $currentUserAvatar = Auth::user()->avatar ?: 'img/avatar/no_avatar.png';
+        $currentUserAvatar = Auth::user()->avatar ?: static::$noAvatarPath;;
 
-        foreach($dialogGet as $dialog){
+        foreach($dialogMessages as $dialog){
 
             $dialog->difference = 
                 Carbon::createFromFormat('Y-m-d H:i:s', $dialog->created_at)->diffForHumans();
@@ -202,6 +201,6 @@ class ChatModel extends Model
             }
         }
         
-        return [$dialogGet, $dialogId];
+        return [$dialogMessages, $dialogId];
     }
 }
