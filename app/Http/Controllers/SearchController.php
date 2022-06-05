@@ -14,12 +14,12 @@ class SearchController extends Controller
 
         if(stripos($search['search-by'], 'user' ) !== false)
         {
-            $result = SearchModel::search_by_user((object)$search);
+            $result = SearchModel::searchByUser((object)$search);
             $result->search_by = 1;
         }
         else
         {
-             $result = SearchModel::search_by_notation((object)$search);
+             $result = SearchModel::searchByNotation((object)$search);
              $result->search_by = 2;
         }
 

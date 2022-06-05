@@ -16,7 +16,7 @@
                      class='search-by__selected'
                     @endif
 
-                     onclick='change_search_by(this.id);'>Пользователям</a>
+                     onclick='changeSearchBy(this.id);'>Пользователям</a>
                 </div>
                 <div class='col-sm-3 search-by__notation'>
                     <a id='search-by__notation'
@@ -25,7 +25,7 @@
                      class='search-by__selected'
                     @endif
 
-                     onclick='change_search_by(this.id);'>Новостям</a>
+                     onclick='changeSearchBy(this.id);'>Новостям</a>
                 </div>
 
                 @if($result->total() > 10)
