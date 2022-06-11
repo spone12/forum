@@ -13,18 +13,19 @@ class NotationController extends Controller
 {
     protected function createNotation(NotationRequest $request)
     {
+
         $input = $request->only(['name_tema','text_notation', 'method']);
         $data = NotationModel::createNotation($input);
     
         return response()->json(['notationData' => $data]);
     }
 
-    protected function NotationView(int $notation_id)
+    protected function NotationView(int $notationId)
     {
         try
         {
-            NotationViewModel::add_view_notation($notation_id);
-            $view = NotationModel::view_notation($notation_id);
+            NotationViewModel::addViewNotation($notationId);
+            $view = NotationModel::viewNotation($notationId);
                    
         }
         catch (\Exception $exception) 
@@ -36,11 +37,11 @@ class NotationController extends Controller
       
     }
 
-    protected function NotationEditAccess(int $notation_id)
+    protected function NotationEditAccess(int $notationId)
     {
         try 
         {
-            $data_edit = NotationModel::data_edit_notation($notation_id);
+            $data_edit = NotationModel::data_edit_notation($notationId);
 
            if($data_edit['notation']->id_user == Auth::user()->id)
                 return view('menu.Notation.notation_edit', ['data_notation' => $data_edit['notation'],

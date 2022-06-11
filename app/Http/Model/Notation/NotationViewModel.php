@@ -19,23 +19,23 @@ class NotationViewModel extends Model
 
     public $timestamps = false;
 
-    protected static function add_view_notation(int $notation_id)
+    protected static function addViewNotation(int $notationId)
     {
        $check_note = NotationViewModel::where('view_date', '=', Carbon::now()->format('Y-m-d'))
-                                        ->where('notation_id', '=', $notation_id)
+                                        ->where('notation_id', '=', $notationId)
                                         ->exists();
 
         if($check_note)
         {
             NotationViewModel::where('view_date', '=', Carbon::now()->format('Y-m-d'))
-                                ->where('notation_id', '=', $notation_id)
+                                ->where('notation_id', '=', $notationId)
                             ->increment('counter_views');
         }
         else 
         {
             $add = new NotationViewModel();
 
-                $add->notation_id = $notation_id;
+                $add->notation_id = $notationId;
                 $add->counter_views  = $add->counter_views + 1;
                 $add->view_date =  Carbon::now()->format('Y-m-d');
             $add->save();

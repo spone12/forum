@@ -12,6 +12,34 @@ jQuery(function()
   
 });
 
+function generateApiKey() {
+
+    $.ajax(
+        {
+            url: '/generate_api_key/',
+            type: "PUT",
+            dataType: "JSON",
+            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+            success: function (data) 
+            {
+                $('#apiKey').val(data.api_key);
+                tata.success('', 'Api ключ успешно установлен', {
+                    duration: 2000,
+                    animate: 'slide',
+                    position: 'tr',
+                    onClose: function() {
+                       
+                    }
+                });
+              
+            },
+            error: function(data) 
+            {
+                var errors = data.responseJSON;
+                console.log(data.responseText);
+            }
+        });
+}
 
 function edit_profile()
 {
@@ -67,7 +95,7 @@ function edit_profile()
         });
 }
 
-function c_confidentiality(id)
+function updateConfidentiality(id)
 {
 
     $('#modal_window_text').html("<div class='row mb-3'><div class='col-12'><b>" + id + "</b>g</div></div>" +

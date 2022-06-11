@@ -167,9 +167,18 @@ class ProfileModel extends Model
                 $userId = Auth::user()->id;
 
             $userData = DB::table('users')
-                ->select('users.name','users.id','description_profile.real_name', 'users.gender',
-                    'description_profile.town','description_profile.date_born',
-                    'description_profile.about', 'users.avatar', 'description_profile.phone')
+                ->select(
+                    'users.name',
+                    'users.id',
+                    'description_profile.real_name',
+                    'users.gender',
+                    'description_profile.town',
+                    'description_profile.date_born',
+                    'description_profile.about', 
+                    'users.avatar',
+                    'description_profile.phone',
+                    'users.api_key'
+                )
                 ->leftJoin('description_profile', 'description_profile.id_user', '=', 'users.id')
                 ->where('users.id', '=', $userId)
             ->first();

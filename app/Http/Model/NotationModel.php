@@ -40,13 +40,13 @@ class NotationModel extends Model
         else $notationId = false;
     }
 
-    protected function view_notation(int $notation_id)
+    protected function viewNotation(int $notationId)
     {
         if (Auth::check())
         {
             $is_vote = DB::table('vote_notation')
             ->select('vote_notation_id')
-            ->where('notation_id', '=', $notation_id)
+            ->where('notation_id', '=', $notationId)
             ->where('id_user', '=', Auth::user()->id)->get();
             
             if(!empty($is_vote[0]->vote_notation_id))
@@ -59,7 +59,7 @@ class NotationModel extends Model
                             'notations.name_notation', 'notations.text_notation',
                             'notations.rating','users.name', 'users.avatar',
                             'notations.notation_add_date','vote_notation.vote','np.path_photo')
-                    ->where('notations.notation_id', '=', $notation_id)
+                    ->where('notations.notation_id', '=', $notationId)
                     ->where('vote_notation.id_user', '=', Auth::user()->id)
                 ->get();
             }
@@ -74,7 +74,7 @@ class NotationModel extends Model
                     'notations.notation_add_date', 'np.path_photo')
             ->join('users', 'users.id', '=', 'notations.id_user')
             ->leftJoin('notation_photos AS np', 'np.notation_id', '=', 'notations.notation_id')
-            ->where('notations.notation_id', '=', $notation_id)->get();
+            ->where('notations.notation_id', '=', $notationId)->get();
         }
 
             if($notation)
@@ -86,7 +86,7 @@ class NotationModel extends Model
 
                     $notation_views = DB::table('views_notation')
                         ->select('counter_views','view_date')
-                         ->where('notation_id', '=', $notation_id)
+                         ->where('notation_id', '=', $notationId)
                             ->orderBy('view_date')
                         ->get();
 

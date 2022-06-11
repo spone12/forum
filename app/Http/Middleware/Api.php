@@ -17,18 +17,19 @@ class Api
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->checkToken($request)) {
+        if (!$this->checkAuthorization($request)) {
             return response()->json( [ 'error' => 'Unauthorized' ], 403 );
         }
 
         return $next($request);
     }
 
-    private function checkToken( $request ) {
+    private function checkAuthorization( $request ) {
 
-        //$token  = $request->header( 'api_token' );
-        $token  = $request->only( 'api_token' ); //To do uncomment header
+        $token   = $request->header('Authorization');
+        $apiKey  =  request()->only('api_key');
+        $authToken = trim(str_ireplace('Bearer', '', $token));
 
-        return User::where( 'api_token', $token )->exists();
+        return User::where('api_token', $authToken)->where('api_key', $apiKey)->exists();
     }
 }

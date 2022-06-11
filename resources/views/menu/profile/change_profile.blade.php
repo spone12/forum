@@ -63,7 +63,7 @@
                     </div>
 
                     <div class='col-sm-2'>
-                        <img id='l-gender' onclick="c_confidentiality(this.id);" class='lock' title='Настройки конфиденциальности' src="{{asset('img/icons/profile/lock.svg')}}">
+                        <img id='l-gender' onclick="updateConfidentiality(this.id);" class='lock' title='Настройки конфиденциальности' src="{{asset('img/icons/profile/lock.svg')}}">
                    </div>
                 </div>
 
@@ -85,7 +85,7 @@
                         <input class='form-control input_field' type='tel' id="phone_user" name="phone_user" pattern="[0-9-]{11,15}" value="{{$data_user->phone}}" /> 
                     </div>
                     <div class='col-sm-2'>
-                        <img  id='l-phone' onclick="c_confidentiality(this.id);" class='lock' title='Настройки конфиденциальности' src="{{asset('img/icons/profile/lock.svg')}}">
+                        <img  id='l-phone' onclick="updateConfidentiality(this.id);" class='lock' title='Настройки конфиденциальности' src="{{asset('img/icons/profile/lock.svg')}}">
                    </div>
                 </div>
 
@@ -101,9 +101,21 @@
                     </div>
 
                     <div class='col-sm-2'>
-                        <img  id='l-dateB' onclick="c_confidentiality(this.id);" class='lock' title='Настройки конфиденциальности' src="{{asset('img/icons/profile/lock.svg')}}">
+                        <img  id='l-dateB' onclick="updateConfidentiality(this.id);" class='lock' title='Настройки конфиденциальности' src="{{asset('img/icons/profile/lock.svg')}}">
                    </div>
                 </div>
+
+                <div class='row align-items-center mb-2'>
+                    <div class='col-sm-4 profile_info'>
+                        Api Key
+                    </div>
+                    <div class='col-sm-6'>
+                        <input id='apiKey' class='form-control' type="text" name="api_key" disabled value="{{  $data_user->api_key }}" />
+                    </div>
+                    <div class='col-sm-2'>
+                        <img class='lock'  onclick="generateApiKey();" title='Обновить Api ключ' src="{{asset('img/icons/profile/settings.png')}}">
+                     </div>
+                </div>   
                 <div class='row align-items-center'>
                     <div class='col-sm-4  profile_info'>О себе:</div>
                     <div class='col-sm-8'>

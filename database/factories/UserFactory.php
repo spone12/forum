@@ -27,7 +27,6 @@ $factory->define(User::class, function (Faker $faker) {
         'gender' => rand(1,2),
         'remember_token' => Str::random(10),
         'ip_user' => $faker->ipv4(),
-        'api_token' => Str::random(80),
         'browser_user' =>  \Faker\Provider\UserAgent::userAgent()
     ];
 });

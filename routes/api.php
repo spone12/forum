@@ -15,5 +15,5 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'v1/notation', 'middleware' => 'api'], function () {
 
-    Route::get('/list', 'Api\v1\ApiNotationController@list')->name('list');
+    Route::post('/list', 'Api\v1\ApiNotationController@list')->name('list');
 });
