@@ -38,10 +38,10 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\IsUserOnline::class,
             \App\Http\Middleware\Localization::class,
         ],
-
         'api' => [
             'throttle:60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\Api::class,
         ],
     ];
 
@@ -54,6 +54,7 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
+        'api' => \App\Http\Middleware\Api::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

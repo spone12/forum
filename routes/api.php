@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1/notation', 'middleware' => 'api'], function () {
+
+    Route::get('/list', 'Api\v1\ApiNotationController@list')->name('list');
 });
