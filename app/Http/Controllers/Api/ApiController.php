@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Http\Model\Api\v1\ApiNotationModel;
+use App\Http\Model\NotationModel;
+use Illuminate\Support\Str;
+use App\User;
+use Auth;
+
+class ApiController extends Controller
+{
+    public function updateToken(Request $request)
+    {
+        $token = Str::random(80);
+
+        $updateStatus = User::where('api_key', request()->only('api_key'))->update(['api_token' => $token]);
+
+        if($updateStatus){
+           return response()->json(['api_token' => $token]);
+        }
+        else{
+            return response()->json( [ 'error' => 'Api token not found!' ], 403 );
+        }
+
+    }
+}

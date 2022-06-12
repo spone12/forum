@@ -14,15 +14,4 @@ class ApiNotationController extends Controller
 
         return response()->json(['notations' => NotationModel::all()]);
     }
-
-    public function update(Request $request)
-    {
-        $token = Str::random(80);
-
-        $request->user()->forceFill([
-            'api_token' => hash('sha256', $token),
-        ])->save();
-
-        return ['token' => $token];
-    }
 }
