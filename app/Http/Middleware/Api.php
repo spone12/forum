@@ -15,12 +15,12 @@ class Api
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle( $request, Closure $next)
     {
+        //dd(request()->all());
         if(request()->only('update_token') && request()->only('api_key') && $request->isMethod('put')) {
             return $next($request);
         }
-
 
         if (!$this->checkAuthorization($request)) {
             return response()->json( [ 'error' => 'Unauthorized' ], 403 );

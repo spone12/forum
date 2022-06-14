@@ -7,7 +7,6 @@ use Tests\TestCase;
 
 class NotationTest extends TestCase
 {
-    /** @test  */
     protected $id;
 
     public function testNotationId()

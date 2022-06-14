@@ -13,10 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::put('/update_token', 'Api\ApiController@updateToken')->name('updateToken');
+Route::put('/update_token', 'Api\ApiController@updateToken')->middleware('api')->name('updateToken');
 
 Route::group(['prefix' => 'v1/notation', 'middleware' => 'api'], function () {
 
     Route::post('/list', 'Api\v1\ApiNotationController@list')->name('list');
-   
+
 });

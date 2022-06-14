@@ -20,10 +20,10 @@ class TestHttpController extends Controller
         /*$response = $client->$method($address, [
             'headers' => [
                 'Content-Type' => 'Application/json',
-                'Authorization' => 'Bearer 5cQBrccDy52sukVC68dtj0Eevvv6U4KvXTXmAQeVFx6Jw9eURdL64PHwZn6SfhkhIgv6d676x4QOgS1R',
+                'Authorization' => 'Bearer dT24bymNzHjnsgnx5KsGGkWOx6w3c5s9oejlWATu7AibTOIauIXtUCyr3vmxuzLhUWZzRtU6eQUsB6wP',
             ],
             'query' => [
-                'api_key' => 'd371969b1129da8fbc6e'
+                'api_key' => '4bb5dad0cfee460303f4'
             ],
         ]);*/
 
@@ -32,7 +32,7 @@ class TestHttpController extends Controller
                 'Content-Type' => 'Application/json',
             ],
             'query' => [
-                'api_key' => 'd371969b1129da8fbc6e',
+                'api_key' => '4bb5dad0cfee460303f4',
                 'update_token' => true,
             ],
         ]);

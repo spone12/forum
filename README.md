@@ -50,3 +50,8 @@
         <div>sass compilation: <code>npm run watch (dev)</code></div>
     </p>
 </div>
+
+<div>
+    <div>Запуск <b>tests PhpUnit</b>:</div>
+    <code> vendor\bin\phpunit </code>
+</div>

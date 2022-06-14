@@ -15,14 +15,18 @@ class ApiController extends Controller
     public function updateToken(Request $request)
     {
         $token = Str::random(80);
-
         $updateStatus = User::where('api_key', request()->only('api_key'))->update(['api_token' => $token]);
 
         if($updateStatus){
            return response()->json(['api_token' => $token]);
         }
-        else{
-            return response()->json( [ 'error' => 'Api token not found!' ], 403 );
+        else {
+
+            $jsonResponse = [
+                'error' => true,
+                'errorCause' => 'Api token not found!'
+            ];
+            return response()->json([ $jsonResponse ], 403 );
         }
 
     }
