@@ -53,8 +53,15 @@ class User extends Authenticatable
         return response()->json([ 'api_key' => $apiKey ]);
     }
 
-    public function isOnline(int $id_user)
-    {
-         return Cache::get('User_is_online-' . $id_user);
+    public function isOnline(int $id_user) {
+        return Cache::get('User_is_online-' . $id_user);
+    }
+
+    public function descriptionProfile() {
+        return $this->hasOne('\App\Http\Model\ProfileModel', 'id_user', 'id');
+    }
+
+    public function notations() {
+        return $this->hasMany('\App\Http\Model\NotationModel', 'id_user', 'id');
     }
 }

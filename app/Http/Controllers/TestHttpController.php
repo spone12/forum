@@ -8,7 +8,7 @@ class TestHttpController extends Controller
 {
     protected function http() {
 
-        return $this->guzzleCreate('put', '/api/update_token');
+        return $this->guzzleCreate('post', '/api/v1/notation/list');
     }
 
     protected function guzzleCreate($method = 'get', $address, $queryParams = [], $headers = [], $baseUri = 'http://l.forum') {
@@ -17,7 +17,7 @@ class TestHttpController extends Controller
             'base_uri' => $baseUri
         ]);
 
-        /*$response = $client->$method($address, [
+        $response = $client->$method($address, [
             'headers' => [
                 'Content-Type' => 'Application/json',
                 'Authorization' => 'Bearer dT24bymNzHjnsgnx5KsGGkWOx6w3c5s9oejlWATu7AibTOIauIXtUCyr3vmxuzLhUWZzRtU6eQUsB6wP',
@@ -25,9 +25,9 @@ class TestHttpController extends Controller
             'query' => [
                 'api_key' => '4bb5dad0cfee460303f4'
             ],
-        ]);*/
+        ]);
 
-        $response = $client->$method($address, [
+       /* $response = $client->$method($address, [
             'headers' => [
                 'Content-Type' => 'Application/json',
             ],
@@ -35,7 +35,7 @@ class TestHttpController extends Controller
                 'api_key' => '4bb5dad0cfee460303f4',
                 'update_token' => true,
             ],
-        ]);
+        ]);*/
 
         return json_decode($response->getBody(), true);
     }

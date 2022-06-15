@@ -281,4 +281,12 @@ class NotationModel extends Model
 
         return $paths;
     }
+
+    public function user() {
+        return $this->belongsTo('\App\User', 'id', 'id_user');
+    }
+
+    public function notationViews() {
+        return $this->hasOne('\App\Http\Model\Notation\NotationViewModel', 'notation_id', 'notation_id');
+    }
 }

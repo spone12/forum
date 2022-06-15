@@ -56,7 +56,6 @@ class ApiTest extends TestCase
     {
 
         $response = $this->put('/generate_api_key');
-
         $response
             ->assertStatus(200)
             ->assertJson([

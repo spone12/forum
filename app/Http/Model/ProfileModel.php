@@ -5,6 +5,7 @@ namespace App\Http\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\User as User;
 
 class ProfileModel extends Model
 {
@@ -205,10 +206,8 @@ class ProfileModel extends Model
                 if(preg_match("/[\d]+/", $userData['data_send']['name'])) {
                     throw new \Exception('Имя не должно содержать цифры!');
                 }
-            
-                $gender = DB::table('users')->select('gender')->where('id', '=', $userId)->first();
-
-                if($gender->gender !== (INT)$userData['data_send']['gender']) {
+                
+                if(Auth::user()->descriptionProfile->gender !== (INT)$userData['data_send']['gender']) {
 
                     $profile = DB::table('users')
                         ->where('id', '=', $userId)
@@ -284,5 +283,9 @@ class ProfileModel extends Model
         }
 
         return false;
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'id', 'user_id');
     }
 }

@@ -17,8 +17,7 @@ class Api
      */
     public function handle( $request, Closure $next)
     {
-        //dd(request()->all());
-        if(request()->only('update_token') && request()->only('api_key') && $request->isMethod('put')) {
+        if(request()->has(['update_token', 'api_key']) && $request->isMethod('put')) {
             return $next($request);
         }
 
@@ -33,13 +32,13 @@ class Api
 
         $token   = $request->header('Authorization');
 
-        if(!preg_match("/Bearer/i", $token))  {
+        if(!preg_match("/Bearer/i", $token)) {
             return false;
         }
 
         $apiKey  =  request()->only('api_key');
-        $authToken = trim(str_ireplace('Bearer', '', $token));
+        $apiToken = $request->bearerToken();
 
-        return User::whereNotNull('api_token')->where('api_token', $authToken)->where('api_key', $apiKey)->exists();
+        return User::whereNotNull('api_token')->where('api_token', $apiToken)->where('api_key', $apiKey)->exists();
     }
 }
