@@ -108,7 +108,7 @@ class NotationModel extends Model
     
     }
 
-    protected function data_edit_notation(int $notation_id)
+    protected function dataEditNotation(int $notation_id)
     {
         $data = array();
         $data['notation'] = DB::table('notations')
@@ -122,7 +122,7 @@ class NotationModel extends Model
         return $data;
     }
 
-    protected function notation_rating(int $notation_id, int $action)
+    protected function notationRating(int $notation_id, int $action)
     {
         if (Auth::check())
         {
@@ -174,7 +174,7 @@ class NotationModel extends Model
        
     }
 
-    protected function notation_edit(Array $data_notation_edit)
+    protected function notationEdit(Array $data_notation_edit)
     {
         if (Auth::check())
         {
@@ -192,7 +192,7 @@ class NotationModel extends Model
        
     }
 
-    protected function notation_delete(int $notation_delete)
+    protected function notationDelete(int $notation_delete)
     {
         if (Auth::check())
         {

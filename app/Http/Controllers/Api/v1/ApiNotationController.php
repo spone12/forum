@@ -37,7 +37,7 @@ class ApiNotationController extends Controller
         ]);
 
         if($isUpdate){
-            return response()->json([ 'error' => 'Notation update successfuly']);
+            return response()->json([ 'success' => 'Notation update successfuly']);
         }
         else {
             return response()->json([ 'error' => 'Notation not updated!']);

@@ -88,7 +88,7 @@ class ProfileModel extends Model
 
         $userData->exp += $addedExp;
     
-        if($userData->exp >= $exp){
+        if($userData->exp >= $exp) {
             $userData->lvl++;
             $userData->exp -= $exp;
         }

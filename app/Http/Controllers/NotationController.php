@@ -41,7 +41,7 @@ class NotationController extends Controller
     {
         try 
         {
-            $data_edit = NotationModel::data_edit_notation($notationId);
+            $data_edit = NotationModel::dataEditNotation($notationId);
 
            if($data_edit['notation']->id_user == Auth::user()->id)
                 return view('menu.Notation.notation_edit', ['data_notation' => $data_edit['notation'],
@@ -59,7 +59,7 @@ class NotationController extends Controller
         if($request->ajax())
         {
             $input = $request->only(['notation_id','name_tema','text_notation']); //получение входных данных
-            $edit = NotationModel::notation_edit($input);
+            $edit = NotationModel::notationEdit($input);
 
             return response()->json(['success'=> $edit]);
         }
@@ -69,8 +69,8 @@ class NotationController extends Controller
     {
         if($request->ajax())
         {
-            $input = $request->all(); //получение всех входных данных
-            $back = NotationModel::notation_rating($input['notation_id'], $input['action']);
+            $input = $request->all(); 
+            $back = NotationModel::notationRating($input['notation_id'], $input['action']);
 
             return response()->json(['success'=> $back]);
         }
@@ -81,7 +81,7 @@ class NotationController extends Controller
         if($request->ajax())
         {
             $input = $request->only(['notation_id']); //получение всех входных данных
-            $back = NotationModel::notation_delete($input['notation_id']);
+            $back = NotationModel::notationDelete($input['notation_id']);
            
             return response()->json(['success'=> $back]);
         }
@@ -99,7 +99,7 @@ class NotationController extends Controller
             ->with('paths', $paths);
         }
         else 
-            return back()->with('success', "Изображения загружены успешно.");
+            return back()->with('error', "Изображения не загружены!");
     }
 
     protected function NotationPhotoDelete(Request $request)
