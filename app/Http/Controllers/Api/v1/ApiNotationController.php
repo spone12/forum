@@ -23,7 +23,38 @@ class ApiNotationController extends Controller
         return response()->json(['notations' => $this->userObj->notations]);
     }
 
-    protected function getNotationById() {
-        $notationId = request()->only('notation_id');
+    protected function getNotationById(Request $request) {
+
+        $notationObj = $this->getNotationObj($request)->get();
+        return $notationObj;
+    }
+
+    protected function updateNotation(Request $request) {
+
+        $notationObj = $this->getNotationObj($request);
+        $isUpdate = $notationObj->update([
+            'text_notation' => $request->input('text')
+        ]);
+
+        if($isUpdate){
+            return response()->json([ 'error' => 'Notation update successfuly']);
+        }
+        else {
+            return response()->json([ 'error' => 'Notation not updated!']);
+        }
+    }
+
+    private function getNotationObj(Request $request) {
+
+        $notationId = (int)$request->input('notation_id');
+        $notation = NotationModel::where('notation_id', $notationId)
+            ->where('id_user', $this->userObj->id);
+
+        if(count($notation->get())) {
+            return $notation;
+        }
+        else {
+            return response()->json([ 'error' => 'Notation not found' ], 404 );
+        }
     }
 }
