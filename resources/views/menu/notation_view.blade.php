@@ -18,12 +18,13 @@
         <div class='row justify-content-center'>
 
         <div class="col-sm-12 col-lg-1 col-md-1" style='text-align: center;'>
-           
+            
             @auth
-                <button class='button-native' onclick='change_rating(1)'>
-                    <img width=15 src="{{ url('/img/icons/arrow-up.svg') }}" />
-                </button> 
+                <button class='button-native' onclick='change_rating(0)'>
+                    <img width=15 src="{{ url('/img/icons/arrow-down.svg') }}" />
+                </button>
             @endauth   
+           
 
             @if(isset($view[0]->vote))
             <img id='rating' class="{{ $view[0]->vote == 1 ? 'rating_like' : 'rating_dislike' }}" 
@@ -34,10 +35,11 @@
             @endif
 
             @auth
-                <button class='button-native' onclick='change_rating(0)'>
-                    <img width=15 src="{{ url('/img/icons/arrow-down.svg') }}" />
-                </button>
+                <button class='button-native' onclick='change_rating(1)'>
+                    <img width=15 src="{{ url('/img/icons/arrow-up.svg') }}" />
+                </button> 
             @endauth   
+          
 
             <div class='row justify-content-center' style='margin-bottom: 10px;'>
                 <div id='rating_voted'>{{ $view[0]->rating}}</div>
