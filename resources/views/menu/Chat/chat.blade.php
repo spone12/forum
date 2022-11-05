@@ -12,14 +12,14 @@
             <div class="card card-header">
                 <div class='row align-items-center'>
                     <div class="input-group">
-                        
+
                         <input id='chatSearch' name="searchChat" type="text" class="form-control" placeholder="{{ __('app.search') }}" aria-label="search" aria-describedby="search-button">
                             <span class="search_chat" isQuery=0>
                                 <span>/</span>
-                            </span> 
+                            </span>
                         <div class='btn btn-outline-primary'> {{trans('chat.writeMessage')}}</div>
                     </div>
-                </div>  
+                </div>
             </div>
             <div class='card card-body justify-content-center align-items-center'>
                 <div class='mainData col-lg-12'>
@@ -29,7 +29,7 @@
                                 <a class='mainData__link' href='/chat/dialog/{{$chat->id}}'>
                                     <div class='col-sm-12 row'>
                                         <div class='col-lg-2 col-sm-3'>
-                                            <img class='mainData__photo' src="{{ asset($chat->avatar) }}" /> 
+                                            <img class='mainData__photo' src="{{ asset($chat->avatar) }}" />
                                             <div class="col-sm-12 mainData__name">{{ $chat->name }}</div>
                                         </div>
                                         <div class='col-lg-8 col-sm-6 mainData__text'>{{$chat->text}}</div>
@@ -47,21 +47,21 @@
                          <div class='row col-12'>
                                 <div class='col-sm-2 align-middle c'>
                                     <div>
-                                        <img class='Chat-search__photo' src="" /> 
+                                        <img class='Chat-search__photo' src="" />
                                     </div>
                                     <div class='Chat-search__name bold'>
                                         <a class='Chat-search__link' href='/'></a>
                                     </div>
                                 </div>
                                 <div class='Chat-search_body col-sm-10'> </div>
-                            </div>                
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-    </div>  
+
+    </div>
 </div>
 
 @endsection

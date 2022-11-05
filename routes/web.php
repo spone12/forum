@@ -22,7 +22,9 @@ Route::put('/generate_api_key', [User::class, 'generateApiKey'])->name('generate
 
 Route::match(['get', 'post'], '/search', 'SearchController@getDataSearch')->name('search');
 
-//NOTATION
+/**
+ * Notation
+ */
 Route::prefix('notation')->group(function()
 {
     Route::get('/', 'NotationController@Notation')->name('notation')->middleware('auth');
@@ -43,8 +45,6 @@ Route::prefix('notation')->group(function()
     ->where('photo_id','[0-9]{1,11}')->middleware('auth');
 });
 
-//END NOTATION
-
 Route::get('/map', 'MapController@view_map')->name('map')->middleware('auth');
 
 //Integrations
@@ -61,15 +61,20 @@ Route::match(['get', 'post'], "/vk_bot_callback", function (Request $request)
 });
 */
 
-Route::group(['middleware' => ['auth'], 'prefix' => '/chat'], function () 
+/**
+ * Chat
+ */
+Route::group(['middleware' => ['auth'], 'prefix' => '/chat'], function ()
 {
     Route::get('/', 'chatController@chat')->name('chat');
-    Route::get('/dialog/{dialogId}', 'chatController@dialog')->name('dialog')->where('dialogId','[0-9]{1,11}'); 
+    Route::get('/dialog/{dialogId}', 'chatController@dialog')->name('dialog')->where('dialogId','[0-9]{1,11}');
     Route::post('/search/', 'chatController@searchChat')->name('searchChat')->where('word','[а-яА-Яa-zA-Z0-9 ]+');
     Route::post('/send_message/', 'chatController@sendMessage')->name('sendMessage');
 });
 
-//Profile
+/**
+ * Profile
+ */
 Route::get('/profile', 'ProfileController@viewProfile')->name('profile')->middleware('auth');
  Route::get('/profile/{id}', 'ProfileController@viewAnotherProfile')->where('id','[0-9]{1,11}')
     ->name('profile_id')->middleware('auth');
@@ -79,13 +84,15 @@ Route::get('/profile', 'ProfileController@viewProfile')->name('profile')->middle
     ->middleware('auth');
 Route::post('/avatar-change', 'ProfileController@changeAvatar')->name('avatar_change')->middleware('auth');
 
-//Localization
-Route::get('locale/{locale}', function ($locale) 
+/**
+ * Localization
+ *
+ * @return lluminate\Http\RedirectResponse
+ */
+Route::get('locale/{locale}', function ($locale)
 {
     Session::put('locale', $locale);
-
     return redirect()->back();
 })->name('locale');
-//END Localization
 
 Route::get('/test_http', 'TestHttpController@http')->name('testHttp');
