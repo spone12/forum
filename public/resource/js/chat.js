@@ -1,9 +1,9 @@
    function sendMessage()
    {
       let message = $.trim($('.dialog__message').val());
-      let userId = $('#userId').val();
+      let dialogWithId = $('#dialogWithId').val();
       let dialogId = $('#dialogId').val();
-      
+
       if(message.trim() == ""){
         return;
       }
@@ -13,13 +13,13 @@
             url: '/chat/send_message',
             type: "POST",
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-            data: 
+            data:
             {
                message: message,
-               userId: userId,
+                dialogWithId: dialogWithId,
                dialogId: dialogId
             },
-            success: function (data) 
+            success: function (data)
             {
                $('#dialog__message').val('');
             },
@@ -31,18 +31,18 @@
          });
    }
 
-   $( document ).ready(function() 
-   {  
+   $( document ).ready(function()
+   {
      // var chatLsHeight = $(".chatLs").height();
      // $('.chatLs').scrollTop(chatLsHeight);
- 
+
       $(".search_chat").on("click", function()
-      { 
+      {
          if($(this).attr('isQuery') == 0)
             return;
-         
+
          $(this).attr('isQuery', 0).text('/');
-         $('#chatSearch').val("");  
+         $('#chatSearch').val("");
 
          $('.Chat-search__item').not('.Chat-search__item:first').remove();
          $('.mainData').show();
@@ -51,13 +51,13 @@
       $('#chatSearch').on('change', function()
       {
          var searchWord = $.trim($(this).val());
-         
+
          if (jQuery.isEmptyObject(searchWord))
          {
             $('.mainData').show();
             $('.Chat-search__item').not('.Chat-search__item:first').remove();
             return;
-         }  
+         }
 
          $.ajax(
          {
@@ -65,7 +65,7 @@
             type: "POST",
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
             data: {word: searchWord},
-            success: function (data) 
+            success: function (data)
             {
                $('.mainData').hide();
 
@@ -74,15 +74,15 @@
                   $('.Chat-search__item').not('.Chat-search__item:first').remove();
                   return;
                }
-                  
+
                $('.search_chat').attr('isQuery', 1).text('x');
-               
+
                var chat = $('.Chat-search__item:eq(0)').clone();
 
                $('.Chat-search__item:eq(0)').find('.Chat-search_body').html('Результат поиска: '+ data.searched.length + ' элемент');
                $('.Chat-search__item').not('.Chat-search__item:first').remove();
 
-               $.each(data.searched, function(key, searchItem) 
+               $.each(data.searched, function(key, searchItem)
                {
                   var elements = chat.clone();
                   elements.find('.Chat-search_body').text(searchItem.text);
@@ -93,7 +93,7 @@
                });
 
                $('.Chat-search').show();
-              
+
             },
             error: function(data)
             {
@@ -102,12 +102,12 @@
             }
          });
       });
-   
-      $(document).keypress(function (e) 
+
+      $(document).keypress(function (e)
       {
-         if (e.which == 13) 
+         if (e.which == 13)
          {
-            if ($('input').hasClass("dialog__message")) 
+            if ($('input').hasClass("dialog__message"))
             {
                sendMessage();
             }

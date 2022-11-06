@@ -7,8 +7,8 @@
 @endpush
 
 {{
-        Form::hidden('userId', $userId,
-                    ['id' => 'userId'])
+        Form::hidden('dialogWithId', $dialogWithId,
+                    ['id' => 'dialogWithId'])
 }}
 
 {{
@@ -28,7 +28,7 @@
                     <div class='col-sm-12 row'>
                         <div class='col-lg-2 col-xl-1 col-sm-2 col-md-2'>
                             <a class='chatLs__link' target='_blank' href='{{ route("profile_id", $chat->id) }}'>
-                                <img class='chatLs__photo' src="{{ asset($chat->avatar) }}" /> 
+                                <img class='chatLs__photo' src="{{ asset($chat->avatar) }}" />
                             </a>
                             <div class="col-sm-12 chatLs__name">{{ $chat->name }}</div>
                         </div>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
             @endforeach
-       
+
         @else
             <div class="chatLs__chat noMessages">
                 <div class='col-sm-12 row t_a'>
@@ -64,11 +64,11 @@
             <div class="row no-gutters dialog">
                 <a href='{{ route("chat") }}' class='MessageBlock__back justify-content-center row col-1 col-sm-2'>
                     <img alt='back' data-toggle="tooltip" title='К списку диалогов' src="{{asset('img/icons/back-arrow.svg')}}" width=30 />
-                </a> 
-                <div class="col-8 col-sm-8"> 
-                    <input type='text' id='dialog__message' class='input_field dialog__message' placeholder="{{trans('chat.writeMessage')}}" /> 
+                </a>
+                <div class="col-8 col-sm-8">
+                    <input type='text' id='dialog__message' class='input_field dialog__message' placeholder="{{trans('chat.writeMessage')}}" />
                 </div>
-                <div class="col-3 col-sm-2 justify-content-start d-flex"> 
+                <div class="col-3 col-sm-2 justify-content-start d-flex">
                     <div class="dropdown dialogClip">
                         <img id="about-us"  aria-expanded="false" data-toggle="dropdown" aria-haspopup="true"  alt='clip' src="{{asset('img/chat/clip.svg')}}" width=30 />
                         <div class="dropdown-menu dialogClip__menu" aria-labelledby="about-us">
@@ -80,9 +80,9 @@
                     <img class='dialog__send' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{{trans('chat.sendMessage')}}">
                 </div>
             </div>
-        </div>  
-    </div>  
-    
+        </div>
+    </div>
+
 </div>
 
 

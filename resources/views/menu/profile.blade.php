@@ -11,7 +11,7 @@
                 <div class='col-sm-7 col-lg-8'>
                     {{$data_user->name}}
                 </div>
-            </div>  
+            </div>
         </div>
         <div class='card card-body'>
             <div class='row align-items-end justify-content-sm-end'>
@@ -31,12 +31,12 @@
                     <div class='col-sm-6 status_user_text'>{{ trans('profile.offline') }} <img class='status_user' src="{{ asset('img/icons/profile/status_offline.png') }}" /></div>
                 @endif
             </div>
-                
+
             <div class='row align-items-center'>
                 <div class='col-sm-7 profile_info'>{{ trans('profile.name') }}:</div>
                 <div class='col-sm-5'>{{$data_user->real_name}}</div>
             </div>
-            
+
             <div class='row align-items-center'>
                 <div class='col-sm-7 profile_info'>{{ trans('profile.gender') }}:</div>
                 <div class='col-sm-5'>
@@ -62,7 +62,7 @@
                 <div class='col-sm-7 profile_info'>{{ trans('profile.phone') }}:</div>
                 <div class='col-sm-5'>{{$data_user->phone}}</div>
             </div>
-            
+
             <div class='row align-items-center'>
                 <div class='col-sm-7 profile_info'>{{ trans('profile.birthday') }}:</div>
                 <div class='col-sm-5'>{{$data_user->date_born}}</div>
@@ -91,7 +91,7 @@
                    {{ trans('profile.exp') }}: {{$data_user->exp}} / {{$data_user->expNeed}}
                 </div>
 
-                @if(Auth::user()->id === $data_user->id) 
+                @if(Auth::user()->id === $data_user->id)
                     <div class='col-12 t_a'>
                         <a href="{{route ('change_profile', $data_user->id) }}">
                             {{
@@ -101,14 +101,14 @@
                         </a>
                     </div>
                 @else
-                    <div class='col-12 t_a'> 
-                        <a href='{{ route("dialog", $data_user->id) }}'>
+                    <div class='col-12 t_a'>
+                        <a href='{{ route("dialog", $data_user->id) }}?fromProfile=1'>
                             <img alt='message' data-toggle="tooltip" title='{{trans("profile.writeMessage") }}' src="{{asset('img/icons/profile/message.svg')}}" width=30 />
                         </a>
                     </div>
-                @endif 
+                @endif
         </div>
-    </div>  
+    </div>
 </div>
 
 @endsection

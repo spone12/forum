@@ -26,7 +26,7 @@
                     @if(isset($userChats))
                         @foreach($userChats as $chat)
                             <div class="mainData__chat">
-                                <a class='mainData__link' href='/chat/dialog/{{$chat->id}}'>
+                                <a class='mainData__link' href='/chat/dialog/{{$chat->dialog_id}}'>
                                     <div class='col-sm-12 row'>
                                         <div class='col-lg-2 col-sm-3'>
                                             <img class='mainData__photo' src="{{ asset($chat->avatar) }}" />
