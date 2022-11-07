@@ -42,7 +42,7 @@
                             </div>
                         </div>
                         <div class='col-lg-1 col-sm-2 col-md-2 chatLs__date align-items-start justify-content-end d-flex'>
-                            <div class='col-4' data-toggle="tooltip" title='{{$chat->difference}}'>{{$chat->created_at}} </div>
+                            <div class='chatLs__message-time col-4' data-toggle="tooltip" title='{{$chat->difference}}'>{{$chat->created_at}} </div>
                         </div>
                     </div>
                 </div>

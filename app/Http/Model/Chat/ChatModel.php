@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
 use App\Http\Model\Chat\DialogModel as DialogModel;
+use mysql_xdevapi\Collection;
 
 class ChatModel extends Model
 {
@@ -18,7 +19,7 @@ class ChatModel extends Model
 
     /**
      * Get current user's dialogs
-     * @return array
+     * @return Collection
      */
     protected static function getUserChats() {
 
@@ -50,6 +51,8 @@ class ChatModel extends Model
             $userDialogs[$k]->avatar = $user->avatar;
             $userDialogs[$k]->text = $lastMessage->text;
             $userDialogs[$k]->created_at = $lastMessage->created_at;
+            $userDialogs[$k]->difference =
+                Carbon::createFromFormat('Y-m-d H:i:s', $lastMessage->created_at)->diffForHumans();
 
             self::checkAvatarExist($userDialogs[$k]);
 
@@ -57,7 +60,7 @@ class ChatModel extends Model
                 $lastMessage->text =  \Illuminate\Support\Str::limit($chat->text, 50);
         }
 
-        return $userDialogs;
+        return $userDialogs->sortByDesc('created_at');
     }
 
     /**
@@ -91,6 +94,11 @@ class ChatModel extends Model
             $obj->avatar = static::$noAvatarPath;
     }
 
+    /**
+     * search word in the chats
+     * @param $word string
+     * @return array
+     */
     protected static function searchChat(String $word) {
 
         $searchResult = DB::table('dialog')
@@ -100,8 +108,8 @@ class ChatModel extends Model
             ->leftJoin('messages','messages.dialog', '=', 'dialog.dialog_id' )
         ->where(function($query)
         {
-            $query->where('messages.recive', Auth::user()->id)
-                  ->orWhere('messages.send', Auth::user()->id);
+            $query->where('dialog.recive', Auth::user()->id)
+                  ->orWhere('dialog.send', Auth::user()->id);
         })
         ->where(function($query) use (&$word)
         {
@@ -118,11 +126,11 @@ class ChatModel extends Model
 
         foreach($searchResult as $search){
 
-            $userObj = User::where('users.name')->get();
+            $userObj = User::where('id', $search->send)->first();
 
-            $search->avatar = $userObj[0]->avatar ?: static::$noAvatarPath;;
-            $search->id = $userObj[0]->id;
-            $search->name = $userObj[0]->name;
+            $search->avatar = $userObj->avatar ?: static::$noAvatarPath;;
+            $search->id = $userObj->id;
+            $search->name = $userObj->name;
         }
 
         return $searchResult;
@@ -133,25 +141,37 @@ class ChatModel extends Model
      * @param $message string
      * @param $dialogId int
      * @param $userId int
-     * @return int
+     * @return array
      */
     protected static function sendMessage(string $message, int $dialogId, int $userId) {
 
         $dialogId = ChatModel::getDialogId($userId, $dialogId);
-        $messageId = DB::table('messages')->insertGetId(
-            [
-                'dialog' => $dialogId,
-                'send' =>  Auth::user()->id,
-                'recive' => $userId,
-                'text' => $message,
-                'created_at' => Carbon::now()
-            ]);
+        try {
+            $messageId = DB::table('messages')->insertGetId(
+                [
+                    'dialog' => $dialogId,
+                    'send' =>  Auth::user()->id,
+                    'recive' => $userId,
+                    'text' => $message,
+                    'created_at' => Carbon::now()
+                ]);
 
-        return $messageId;
+            return [
+               'messageId' => $messageId,
+               'created_at' =>  Carbon::now()->format('H:i'),
+               'avatar' => session('avatar'),
+               'name' => Auth::user()->name,
+               'userId' => Auth::user()->id
+            ];
+        }
+        catch (\Exception $exception)
+        {
+            return $exception;
+        }
     }
 
     /**
-     * Get dialog Id
+     * Get dialog Id or create new
      * @param $userId int
      * @param $dialogId int
      * @return int
@@ -185,15 +205,12 @@ class ChatModel extends Model
                 'recive' => $userId
             ]);
         }
-/*        else {
-            $dialogId = DialogModel::where('dialog_id', $dialogId)->dialog_id;
-        }*/
 
         return $dialogId;
     }
 
     /**
-     * Insert message into dialog
+     * get user dialog by ID
      * @param $userId int
      * @param $dialogId int
      * @param $message string
@@ -201,11 +218,18 @@ class ChatModel extends Model
      */
     public static function getUserDialog(int $dialogId, $userMessageWithId = 0) {
 
-        if (!DialogModel::where('dialog_id', $dialogId)->exists()) {
+        $currentUserId =  Auth::user()->id;
+        $dialogCheck = DialogModel::where('dialog_id', $dialogId);
+
+        if (!$dialogCheck->exists()) {
             return ['error' => 'Chat not exist'];
         }
+        else {
+          if($dialogCheck->first()->send != $currentUserId && $dialogCheck->first()->recive != $currentUserId) {
+              return ['error' => 'Chat not exist'];
+          }
+        }
 
-        $currentUserId =  Auth::user()->id;
         $currentUserAvatar = Auth::user()->avatar ?: static::$noAvatarPath;
 
         $dialogMessages = DB::table('messages')
@@ -247,6 +271,10 @@ class ChatModel extends Model
             $anotherUserId = $userMessageWithId;
         }
 
-        return ['dialogMessages' => $dialogMessages, 'dialogId' => $dialogId, 'recive' => $anotherUserId ];
+        return [
+            'dialogMessages' => $dialogMessages,
+            'dialogId' => $dialogId,
+            'recive' => $anotherUserId
+        ];
     }
 }

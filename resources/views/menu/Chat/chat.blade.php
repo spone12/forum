@@ -33,7 +33,7 @@
                                             <div class="col-sm-12 mainData__name">{{ $chat->name }}</div>
                                         </div>
                                         <div class='col-lg-8 col-sm-6 mainData__text'>{{$chat->text}}</div>
-                                        <div class='col-lg-2 col-sm-3 mainData__date align-items-center justify-content-end d-flex'>{{$chat->created_at}}</div>
+                                        <div class='col-lg-2 col-sm-3 mainData__date align-items-center justify-content-end d-flex' data-toggle="tooltip" title='{{$chat->difference}}'>{{$chat->created_at}}</div>
                                     </div>
                                 </a>
                             </div>
@@ -53,7 +53,7 @@
                                         <a class='Chat-search__link' href='/'></a>
                                     </div>
                                 </div>
-                                <div class='Chat-search_body col-sm-10'> </div>
+                                <a class='Chat-search_body col-sm-10'> </a>
                             </div>
                         </div>
                     </div>
