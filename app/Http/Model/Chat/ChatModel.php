@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
 use App\Http\Model\Chat\DialogModel as DialogModel;
-use mysql_xdevapi\Collection;
 
 class ChatModel extends Model
 {
@@ -19,9 +18,10 @@ class ChatModel extends Model
 
     /**
      * Get current user's dialogs
+     * @param int $limit
      * @return Collection
      */
-    protected static function getUserChats() {
+    protected static function getUserChats(int $limit = 0) {
 
         $userDialogs = DB::table('dialog')
             ->select('dialog_id', 'send', 'recive')
@@ -30,7 +30,12 @@ class ChatModel extends Model
                 $query->where('dialog.send', Auth::user()->id)
                     ->orWhere('dialog.recive', Auth::user()->id);
             })
+
         ->get();
+
+        if($limit) {
+            $userDialogs = $userDialogs->take($limit);
+        }
 
         foreach($userDialogs as $k => $chat) {
 

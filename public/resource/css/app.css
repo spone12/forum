@@ -353,6 +353,13 @@
   padding-top: 5px;
 }
 
+.chatMenuLeft {
+  background-image: linear-gradient(to bottom, #f6ebeb 0%, #f4f4f4 100%);
+  border: 1px dotted;
+  border-radius: 10px;
+  padding: 20px;
+}
+
 .mainData-hr {
   margin: -20px auto 10px;
   padding: 0;

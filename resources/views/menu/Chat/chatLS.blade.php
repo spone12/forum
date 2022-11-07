@@ -17,23 +17,31 @@
 }}
 
 <div class="container p-3">
-
     <div class="row justify-content-center align-items-center">
+        <div class='chatLs chatMenuLeft col-lg-1 col-sm-1 align-items-start justify-content-end'>
+            @foreach($lastDialogs as $chat)
+                <div class="row col">
+                    <a class='chatLs__link' href='/chat/dialog/{{$chat->dialog_id}}'>
+                        <img class='chatLs__photo' src="{{ asset($chat->avatar) }}" />
+                    </a>
+                    <div class="col-sm-12 chatLs__name">{{$chat->name}}</div>
+                </div>
+            @endforeach
+        </div>
+
         <div class='chatLs col-lg-10'>
-
          @if(!empty($dialogObj[0]))
-
             @foreach($dialogObj as $chat)
                 <div class="chatLs__chat">
                     <div class='col-sm-12 row'>
-                        <div class='col-lg-2 col-xl-1 col-sm-2 col-md-2'>
+                        <div class='col-lg-2 col-2 col-xl-1 col-sm-2 col-md-2'>
                             <a class='chatLs__link' target='_blank' href='{{ route("profile_id", $chat->id) }}'>
                                 <img class='chatLs__photo' src="{{ asset($chat->avatar) }}" />
                             </a>
                             <div class="col-sm-12 chatLs__name">{{ $chat->name }}</div>
                         </div>
-                        <div class='col-lg-8 col-xl-8 col-sm-6 col-md-7 chatLs__text'>{!! $chat->text !!}</div>
-                        <div class='chatLs__move col-lg-1 col-sm-2 col-md-1 align-items-start justify-content-end d-flex'>
+                        <div class='col-lg-8 col-4 col-xl-8 col-sm-5 col-6 col-md-7 chatLs__text'>{!! $chat->text !!}</div>
+                        <div class='chatLs__move col-2 col-lg-1 col-sm-2 col-md-1 align-items-start justify-content-end d-flex'>
                             <div class='chatLs__move-edit'>
                                 <img class='' width=20 data-toggle="tooltip" data-placement="bottom" title='Редактировать запись' alt='Редактировать запись' src="{{ asset('img/icons/edit.png') }}">
                             </div>
@@ -41,7 +49,7 @@
                                 <img data-toggle="tooltip" data-placement="bottom" class='' width=20 title='Удалить запись' alt='Удалить запись' src="{{ asset('img/icons/delete.png') }}">
                             </div>
                         </div>
-                        <div class='col-lg-1 col-sm-2 col-md-2 chatLs__date align-items-start justify-content-end d-flex'>
+                        <div class='col-lg-1 col-sm-2 col-2 col-md-2 chatLs__date align-items-start justify-content-end d-flex'>
                             <div class='chatLs__message-time col-4' data-toggle="tooltip" title='{{$chat->difference}}'>{{$chat->created_at}} </div>
                         </div>
                     </div>

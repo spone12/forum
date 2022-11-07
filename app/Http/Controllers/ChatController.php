@@ -58,7 +58,8 @@ class ChatController extends Controller
         return view('menu.chat.chatLS', [
             'dialogWithId' =>  $userDialog['recive'],
             'dialogObj' => $userDialog['dialogMessages'],
-            'dialogId' => $dialogId
+            'dialogId' => $dialogId,
+            'lastDialogs' => ChatModel::getUserChats(5)
         ]);
     }
 }

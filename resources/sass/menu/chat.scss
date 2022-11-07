@@ -3,7 +3,7 @@
     @extend .search-marker;
 }
 
-.Chat-search 
+.Chat-search
 {
     display: none;
 
@@ -35,7 +35,7 @@
     .Chat-search_body
     {
         @extend .i;
-        
+
         color: black;
         background: aliceblue;
         border-radius: 20px;
@@ -50,6 +50,13 @@
     .Chat-search__item{
         padding-top: 5px;
     }
+}
+
+.chatMenuLeft {
+    background-image: linear-gradient(to bottom, #f6ebeb 0%, #f4f4f4 100%);
+    border: 1px dotted;
+    border-radius: 10px;
+    padding: 20px;
 }
 
 .mainData-hr {
@@ -108,7 +115,7 @@
 
     .chatLs__chat{
         padding-top: 5px;
-        
+
         &:hover{
             opacity: 0.9;
         }
@@ -173,11 +180,11 @@
 .dialogClip{
     margin-top: 5px;
     opacity: 0.7;
-   
+
     .dialogClip__menu{
         background: #eedec4 none repeat scroll 0% 0%;
     }
-    
+
     &:hover{
        opacity: 1;
        cursor: pointer;
