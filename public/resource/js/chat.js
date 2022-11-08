@@ -80,7 +80,7 @@
             {
                $('.mainData').hide();
 
-               if (jQuery.isEmptyObject(data.searched[0])){
+               if (jQuery.isEmptyObject(data.searched[0])) {
                   $('.Chat-search__item:eq(0)').find('.Chat-search_body').html('Рузультатов поиска нет');
                   $('.Chat-search__item').not('.Chat-search__item:first').remove();
                   return;

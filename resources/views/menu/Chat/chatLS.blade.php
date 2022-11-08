@@ -18,14 +18,17 @@
 
 <div class="container p-3">
     <div class="row justify-content-center align-items-center">
-        <div class='chatLs chatMenuLeft col-lg-1 col-sm-1 align-items-start justify-content-end'>
+        <div class='chatMenuLeft col-lg-2 col-sm-12 align-items-center justify-content-center'>
             @foreach($lastDialogs as $chat)
-                <div class="row col">
-                    <a class='chatLs__link' href='/chat/dialog/{{$chat->dialog_id}}'>
+                <a class="
+                    row align-items-center justify-content-center
+                @if($chat->dialog_id == $dialogId) currentChatSelectionInMenu @endif
+                " href='/chat/dialog/{{$chat->dialog_id}}'>
+                    <div class='chatLs__link col-sm-4'>
                         <img class='chatLs__photo' src="{{ asset($chat->avatar) }}" />
-                    </a>
-                    <div class="col-sm-12 chatLs__name">{{$chat->name}}</div>
-                </div>
+                    </div>
+                    <div class="col-sm-8 chatLs__name">{{$chat->name}}</div>
+                </a>
             @endforeach
         </div>
 
