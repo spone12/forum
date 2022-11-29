@@ -321,6 +321,15 @@
   text-align: justify;
 }
 
+.isRead {
+  background: #fbe4b8;
+  border: 1px solid black;
+  border-radius: 50%;
+  height: 7px;
+  width: 7px;
+  float: right;
+}
+
 .Chat-search {
   display: none;
 }
@@ -333,7 +342,7 @@
   transform: scale(1.03);
 }
 
-.Chat-search .Chat-search__name .Chat-search__lin {
+.Chat-search .Chat-search__name .Chat-search__link {
   color: #603737;
   font-weight: bold;
   padding-left: 3%;
@@ -451,6 +460,13 @@
   cursor: context-menu;
 }
 
+.chatLs .chatLs__move-edit,
+.chatMenuLeft .chatLs__move-edit,
+.chatLs .chatLs__move-delete,
+.chatMenuLeft .chatLs__move-delete {
+  display: none;
+}
+
 .chatLs .chatLs__move-delete,
 .chatMenuLeft .chatLs__move-delete {
   margin-left: 3px;
@@ -472,10 +488,18 @@
 
 .chatMenuLeft .row {
   opacity: 70%;
-  cursor: pointer !important;
   border-radius: 5px;
   padding-top: 3px;
   padding-bottom: 3px;
+}
+
+.chatMenuLeft .row:hover {
+  opacity: 70%;
+  background: #fbe4b8;
+}
+
+.chatMenuLeft .row * {
+  cursor: pointer !important;
 }
 
 .chatMenuLeft .chatLs__photo {
@@ -559,7 +583,7 @@
 .no_decor,
 .link_prevDefault,
 .a_header,
-.Chat-search .Chat-search__name .Chat-search__lin,
+.Chat-search .Chat-search__name .Chat-search__link,
 .mainData .mainData__link,
 .chatLs .chatLs__link,
 .chatMenuLeft .chatLs__link,

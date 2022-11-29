@@ -30,7 +30,6 @@ class ChatModel extends Model
                 $query->where('dialog.send', Auth::user()->id)
                     ->orWhere('dialog.recive', Auth::user()->id);
             })
-
         ->get();
 
         if($limit) {
@@ -56,6 +55,7 @@ class ChatModel extends Model
             $userDialogs[$k]->avatar = $user->avatar;
             $userDialogs[$k]->text = $lastMessage->text;
             $userDialogs[$k]->created_at = $lastMessage->created_at;
+            $userDialogs[$k]->isRead = $lastMessage->read;
             $userDialogs[$k]->difference =
                 Carbon::createFromFormat('Y-m-d H:i:s', $lastMessage->created_at)->diffForHumans();
 
@@ -281,5 +281,9 @@ class ChatModel extends Model
             'dialogId' => $dialogId,
             'recive' => $anotherUserId
         ];
+    }
+
+    public function dialogObject() {
+        return $this->hasOne('\App\Http\Model\Chat\DialogModel', 'dialog_id', 'dialog');
     }
 }

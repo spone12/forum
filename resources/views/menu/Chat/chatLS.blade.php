@@ -27,7 +27,12 @@
                     <div class='chatLs__link col-sm-4'>
                         <img class='chatLs__photo' src="{{ asset($chat->avatar) }}" />
                     </div>
-                    <div class="col-sm-8 chatLs__name">{{$chat->name}}</div>
+                    <div class="col-sm-8 chatLs__name">
+                        @if(!$chat->isRead)
+                            <div class="isRead"></div>
+                        @endif
+                        {{$chat->name}}
+                    </div>
                 </a>
             @endforeach
         </div>

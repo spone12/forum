@@ -21,12 +21,12 @@ class NotationModel extends Model
 
     protected static function createNotation(Array $dataNotation)
     {
-        if (Auth::check() && $dataNotation['method'] == 'add') 
+        if (Auth::check() && $dataNotation['method'] == 'add')
         {
             $notationId = DB::table('notations')->insertGetId(
                 [
                     'id_user' =>  Auth::user()->id,
-                    'name_notation' =>  trim(addslashes($dataNotation['name_tema'])), 
+                    'name_notation' =>  trim(addslashes($dataNotation['name_tema'])),
                     'text_notation' =>  trim(addslashes($dataNotation['text_notation'])),
                     'notation_add_date' =>  Carbon::now(),
                     'notation_edit_date' => Carbon::now()
@@ -48,7 +48,7 @@ class NotationModel extends Model
             ->select('vote_notation_id')
             ->where('notation_id', '=', $notationId)
             ->where('id_user', '=', Auth::user()->id)->get();
-            
+
             if(!empty($is_vote[0]->vote_notation_id))
             {
                 $notation = DB::table('notations')
@@ -63,8 +63,8 @@ class NotationModel extends Model
                     ->where('vote_notation.id_user', '=', Auth::user()->id)
                 ->get();
             }
-        } 
-        
+        }
+
         if(empty($notation))
         {
             $notation = DB::table('notations')
@@ -80,7 +80,7 @@ class NotationModel extends Model
             if($notation)
             {
                 $notation[0]->text_notation = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $notation[0]->text_notation);
-                
+
                 if(is_null($notation[0]->avatar))
                     $notation[0]->avatar = 'img/avatar/no_avatar.png';
 
@@ -93,19 +93,19 @@ class NotationModel extends Model
                         $list = array();
                         $sum_v = 0;
 
-                        foreach ($notation_views as $v) 
+                        foreach ($notation_views as $v)
                         {
                             $sum_v += $v->counter_views;
                             $list[] = array('full_date' => date('d.m.Y', strtotime($v->view_date)),
                                             'sum_views' => $sum_v,
                                             'value' => $v->counter_views);
-        
+
                         }
                         $notation['graph'] = json_encode($list);
-             
+
                 return $notation;
             }
-    
+
     }
 
     protected function dataEditNotation(int $notation_id)
@@ -126,39 +126,40 @@ class NotationModel extends Model
     {
         if (Auth::check())
         {
-            $check_rating = DB::table('vote_notation')
+            $checkRating = DB::table('vote_notation')
                             ->select('vote_notation_id', 'vote')
                                 ->where('id_user', '=', Auth::user()->id)
                                 ->where('notation_id', '=', $notation_id)
                             ->first();
 
             $dbMove = null;
-            if(empty($check_rating->vote_notation_id))
+            if(empty($checkRating->vote_notation_id))
             {
                 $dbMove = DB::table('vote_notation')->insert(
                     array(
-                        'id_user' => Auth::user()->id, 
-                        'notation_id' =>  (INT)$notation_id, 
+                        'id_user' => Auth::user()->id,
+                        'notation_id' =>  (INT)$notation_id,
                         'vote' => $action,
                         'vote_date' => Carbon::now()
                     )
                 );
             }
-            else 
+            else
             {
-                if($check_rating->vote == 1 && $action == 1)
-                    return 0;
-                
-                if($check_rating->vote == 0 && $action == 0)
-                    return 0;
-                
+                // checking for already set vote
+                if($checkRating->vote == 1 && $action == 1)
+                    return false;
+
+                if($checkRating->vote == 0 && $action == 0)
+                    return false;
+
                 $dbMove = DB::table('vote_notation')
                     ->where('id_user', '=', Auth::user()->id)
                     ->where('notation_id', '=', $notation_id)
                 ->update([
-                            'vote' => $action,
-                            'vote_date' => Carbon::now()
-                        ]);
+                    'vote' => $action,
+                    'vote_date' => Carbon::now()
+                ]);
             }
 
             if($action) {
@@ -171,7 +172,7 @@ class NotationModel extends Model
             return $dbMove;
       }
       else return null;
-       
+
     }
 
     protected function notationEdit(Array $data_notation_edit)
@@ -181,15 +182,15 @@ class NotationModel extends Model
             $upd = DB::table('notations')
             ->where('id_user', '=', Auth::user()->id)
             ->where('notation_id', '=', $data_notation_edit['notation_id'])
-            ->update(['name_notation' =>  $data_notation_edit['name_tema'], 
+            ->update(['name_notation' =>  $data_notation_edit['name_tema'],
                       'text_notation' =>  $data_notation_edit['text_notation'],
                       'notation_edit_date' => Carbon::now()]);
 
             if($upd)
                 return true;
             else return false;
-        }   
-       
+        }
+
     }
 
     protected function notationDelete(int $notation_delete)
@@ -224,7 +225,7 @@ class NotationModel extends Model
                     }
                     return $data;
             }
-        }   
+        }
     }
 
     protected function notationPhotoDelete(array $photo_data)
@@ -249,8 +250,8 @@ class NotationModel extends Model
                 else
                     return $check_added_photo->answer = 'Ошибка удаления';
             }
-            else 
-            {    
+            else
+            {
                 return $check_added_photo->answer = 'Не совпадает id пользователя';
             }
     }
@@ -267,10 +268,10 @@ class NotationModel extends Model
                 $imageName = uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path("img/notation_photos/{$request->notation_id}"), $imageName);
 
-                $ins =  
+                $ins =
                 DB::table('notation_photos')->insert(
-                    array('id_user' => Auth::user()->id, 
-                        'notation_id' => $request->notation_id, 
+                    array('id_user' => Auth::user()->id,
+                        'notation_id' => $request->notation_id,
                         'path_photo' => "img/notation_photos/{$request->notation_id}/{$imageName}",
                         'photo_edit_date' =>  Carbon::now())
                 );

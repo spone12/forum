@@ -12,4 +12,8 @@ class DialogModel extends Model
     protected $table = 'dialog';
     protected $dates = ['date_create'];
     protected $primaryKey = 'dialog_id';
+
+    public function messages () {
+        return $this->hasMany('\App\Http\Model\Chat\ChatModel', 'dialog', 'dialog_id');
+    }
 }

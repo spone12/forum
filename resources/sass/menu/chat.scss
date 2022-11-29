@@ -2,6 +2,15 @@
     @extend .search-marker;
 }
 
+.isRead {
+    background: #fbe4b8;
+    border: 1px solid black;
+    border-radius: 50%;
+    height: 7px;
+    width: 7px;
+    float: right;
+}
+
 .Chat-search {
     display: none;
     .Chat-search__photo {
@@ -18,7 +27,7 @@
     .Chat-search__name {
         @extend .c_p;
 
-        .Chat-search__lin {
+        .Chat-search__link {
             @extend .no_decor;
 
             color: #603737;
@@ -144,6 +153,7 @@
     }
 
     .chatLs__move-edit {
+        display: none;
         @extend .c_p;
     }
 
@@ -158,6 +168,7 @@
     opacity: 100% !important;
     border: 1px dotted black;
 }
+
 .chatMenuLeft {
     background-image: linear-gradient(to bottom, #f6ebeb 0%, #f4f4f4 100%);
     border: 1px dotted;
@@ -169,10 +180,18 @@
     .row {
         @extend .no_decor;
         opacity: 70%;
-        cursor: pointer !important;
         border-radius: 5px;
         padding-top: 3px;
         padding-bottom: 3px;
+    }
+
+    .row:hover {
+        opacity: 70%;
+        background: #fbe4b8;
+    }
+
+    .row * {
+        cursor: pointer !important;
     }
 
     .chatLs__photo {

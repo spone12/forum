@@ -34,7 +34,7 @@ class ChatController extends Controller
     }
 
     /**
-     * Controller dialog this user
+     * Controller Current user dialogs
      * @param $value int value - mix (dialogId or userId)
      * @param Request $request
      * @return view

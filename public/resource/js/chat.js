@@ -45,6 +45,17 @@
      // var chatLsHeight = $(".chatLs").height();
      // $('.chatLs').scrollTop(chatLsHeight);
 
+      $('.chatLs__chat').hover(
+           function () {
+               $(this).find('.chatLs__move-edit').show();
+               $(this).find('.chatLs__move-delete').show();
+           },
+           function () {
+               $(this).find('.chatLs__move-edit').hide();
+               $(this).find('.chatLs__move-delete').hide();
+           }
+      );
+
       $(".search_chat").on("click", function()
       {
          if($(this).attr('isQuery') == 0)
