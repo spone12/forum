@@ -1,15 +1,24 @@
-DG.then(function () 
-{
-    map = DG.map('map', 
-    {
+DG.then(function() {
+    var map;
+
+    map = DG.map('map', {
         center: [55.748460, 37.533355],
-        zoom: 15,
+        zoom: 14,
         minZoom: 3,
         maxZoom: 18
     });
 
-    DG.marker([55.748460, 37.533355]).addTo(map).bindPopup('Moscow city!');
-    
+    map.locate({setView: true, watch: true})
+        .on('locationfound', function(e) {
+            DG.marker([e.latitude, e.longitude]).addTo(map);
+        })
+        .on('locationerror', function(e) {
+            DG.popup()
+                .setLatLng(map.getCenter())
+                .setContent('Доступ к определению местоположения отключён')
+                .openOn(map);
+        });
+
     DG.control.location({position: 'bottomright'}).addTo(map);
     DG.control.scale().addTo(map);
     DG.control.ruler({position: 'bottomleft'}).addTo(map);
