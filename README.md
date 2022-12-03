@@ -32,6 +32,15 @@
     <p>Создайте базу данных с кодировкой utf8_general_ci</p>
     <p>Перейдите в корень проекта и в файле .env заполните поля DB_DATABASE=**,DB_USERNAME=**,DB_PASSWORD=** (Имя базы данных, логин и пароль)</p>
     <p>Далее в консоли выполните команду <code>php artisan migrate:refresh --seed</code> для создания миграций с сидерами</p>
+    <p>Прописать alias на /folder_site/public </p>
+    <p>
+        <ul><b>При необходимости выполнить команды:</b>
+            <li>Перегенерировать ключ <code>php artisan key:generate</code></li>
+            <li><code>php artisan route:clear</code></li>
+            <li><code>php artisan config:clear</code></li>
+            <li><code>php artisan cache:clear</code></li>
+        </ul>
+    </p>
 </div>
 
 <div>
