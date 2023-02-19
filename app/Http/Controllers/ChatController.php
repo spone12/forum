@@ -3,52 +3,73 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Model\Chat\ChatModel;
-use Illuminate\Support\Facades\Auth;
+use App\Service\Chat\ChatService;
 
 class ChatController extends Controller
 {
-    protected function chat() {
-        $userChats = ChatModel::getUserChats();
-        return view('menu.Chat.chat', ['userChats' => $userChats]);
+    protected $chatService;
+
+    function __construct(ChatService $chatService) {
+        $this->chatService = $chatService;
     }
 
+    /**
+     * Controller user chats
+     * @param Request $request
+     * @return
+     */
+    protected function chat() {
+
+        return view('menu.Chat.chat', ['userChats' => $this->chatService->chat()]);
+    }
+
+    /**
+     * Controller search chat
+     * @param Request $request
+     * @return
+     */
     protected function searchChat(Request $request) {
+
         $word = $request->only(['word']);
-        $data = ChatModel::searchChat(addslashes($word['word']));
+        $data = $this->chatService->search($word);
 
         return response()->json(['searched'=> $data]);
     }
 
+    /**
+     * Controller message send
+     * @param Request $request
+     * @return
+     */
     protected function sendMessage(Request $request) {
+
         $data = $request->only([
             'message',
             'dialogId',
             'dialogWithId'
         ]);
 
-        $sendMessage = ChatModel::sendMessage(
-            addslashes($data['message']), (INT) $data['dialogId'], (INT) $data['dialogWithId']
-        );
-        return response()->json(['message' => $sendMessage]);
+        return response()->json(['message' => $this->chatService->message($data)]);
     }
 
     /**
-     * Controller Current user dialogs
+     * Controller current user dialogs
      * @param $value int value - mix (dialogId or userId)
      * @param Request $request
-     * @return view
+     * @return
      */
     protected function dialog(int $value, Request $request) {
 
         $dialogId = $value;
         $fromProfile = $request->get('fromProfile');
         if(!is_null($fromProfile)) {
-            $dialogId = ChatModel::getDialogId($value);
-            $userDialog = ChatModel::getUserDialog($dialogId, $value);
+
+            $dialogId = $this->chatService->dialogId($value);
+            $userDialog =  $this->chatService->userDialog($dialogId, $value);
         }
         else {
-            $userDialog = ChatModel::getUserDialog($dialogId);
+
+            $userDialog =  $this->chatService->userDialog($dialogId);
         }
 
         if (isset($userDialog['error'])) {
@@ -59,7 +80,7 @@ class ChatController extends Controller
             'dialogWithId' =>  $userDialog['recive'],
             'dialogObj' => $userDialog['dialogMessages'],
             'dialogId' => $dialogId,
-            'lastDialogs' => ChatModel::getUserChats(5)
+            'lastDialogs' => $this->chatService->chat(5)
         ]);
     }
 }
