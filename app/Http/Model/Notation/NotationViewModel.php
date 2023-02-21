@@ -31,7 +31,7 @@ class NotationViewModel extends Model
                                 ->where('notation_id', '=', $notationId)
                             ->increment('counter_views');
         }
-        else 
+        else
         {
             $add = new NotationViewModel();
 
@@ -40,8 +40,8 @@ class NotationViewModel extends Model
                 $add->view_date =  Carbon::now()->format('Y-m-d');
             $add->save();
         }
-           
+
     }
 
-   
+
 }

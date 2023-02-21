@@ -24,7 +24,8 @@ class DescriptionProfile extends Migration
             $table->string('phone', 20)->nullable();
             $table->text('about')->nullable();
 
-            $table->foreign('id_user')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('id_user')->references('id')
+                ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

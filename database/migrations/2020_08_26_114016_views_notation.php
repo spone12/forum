@@ -18,9 +18,10 @@ class ViewsNotation extends Migration
             $table->integer('notation_id')->comment('id news');
             $table->text('counter_views')->comment('View counter');
             $table->date('view_date');
-           
+
             $table->unique(['notation_id', 'view_date']);
-            $table->foreign('notation_id')->references('notation_id')->on('notations')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('notation_id')->references('notation_id')
+                ->on('notations')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

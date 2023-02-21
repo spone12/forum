@@ -13,4 +13,6 @@ $factory->define(NotationViewModel::class, function (Faker $faker) {
         'counter_views' => rand(100, 500),
         'view_date' => $faker->dateTimeBetween('-9 months', '-1 days')
     ];
-}, 'views_notation');
+});
+
+$factory->state(NotationViewModel::class, 'now', ['view_date' => now()]);

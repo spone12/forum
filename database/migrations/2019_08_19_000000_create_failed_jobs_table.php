@@ -21,6 +21,10 @@ class CreateFailedJobsTable extends Migration
             $table->longText('exception');
             $table->timestamp('failed_at')->useCurrent();
         });
+
+        Schema::table('failed_jobs', function (Blueprint $table) {
+            $table->string('uuid')->after('id')->nullable()->unique();
+        });
     }
 
     /**

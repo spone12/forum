@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Http\Model\ProfileModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class NotationModel extends Model
 {
+    use hasFactory;
     protected $table = 'notations';
 
     /*protected $fillable = [

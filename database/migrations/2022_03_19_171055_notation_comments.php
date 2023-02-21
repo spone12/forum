@@ -21,8 +21,11 @@ class NotationComments extends Migration
             $table->timestamp('comment_add_date')->useCurrent(); //CURRENTTIMESTAMP
             $table->timestamp('comment_edit_date')->nullable();
 
-            $table->foreign('id_user')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('notation_id')->references('notation_id')->on('notations')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('id_user')->references('id')
+                ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+
+            $table->foreign('notation_id')->references('notation_id')
+                ->on('notations')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

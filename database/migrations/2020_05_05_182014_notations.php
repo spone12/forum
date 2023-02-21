@@ -25,7 +25,8 @@ class Notations extends Migration
             $table->timestamp('notation_add_date')->useCurrent(); //CURRENTTIMESTAMP
             $table->timestamp('notation_edit_date')->nullable();
 
-            $table->foreign('id_user')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('id_user')->references('id')
+                ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
 
     }

@@ -30,14 +30,3 @@ $factory->define(User::class, function (Faker $faker) {
         'browser_user' =>  \Faker\Provider\UserAgent::userAgent()
     ];
 });
-
-$factory->defineAs(App\Http\Model\NotationModel::class, 'notation', function(Faker $faker){
-    $faker = \Faker\Factory::create('ru_RU');
-
-    return [
-        'id_user' => \App\User::query()->inRandomOrder()->first()->id,
-        'name_notation' => Str::random(10),
-        'text_notation' => $faker->realText(rand(100,500)),
-        'notation_add_date' => $faker->dateTimeBetween('-9 months', '-1 days')
-    ];
-});

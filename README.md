@@ -11,7 +11,7 @@
 </p>
 
 ## Установка ( Installation )
-#<b>Version PHP-7.2 +, Apache-2.2 +, MySQL-5.6 +</b>
+#<b>Version PHP-7.3 +, Apache-2.2 +, MySQL-5.6 +</b>
 
 <div>
     <div> <i><blockquote>Required programms:</blockquote></i> </div>
