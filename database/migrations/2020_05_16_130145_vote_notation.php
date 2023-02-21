@@ -22,11 +22,13 @@ class VoteNotation extends Migration
             $table->timestamp('vote_date')->nullable();
 
             //$table->primary('vote_notation_id');
-            $table->foreign('id_user', 'vote_notation_user_id')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('notation_id')->references('notation_id')->on('notations')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('id_user', 'vote_notation_user_id')->references('id')
+                ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('notation_id')->references('notation_id')
+                ->on('notations')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
 
-        
+
 
     }
 

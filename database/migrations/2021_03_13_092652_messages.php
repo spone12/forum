@@ -24,9 +24,12 @@ class Messages extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('dialog')->references('dialog_id')->on('dialog')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('send')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('recive')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('dialog')->references('dialog_id')
+                ->on('dialog')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('send')->references('id')
+                ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('recive')->references('id')
+                ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

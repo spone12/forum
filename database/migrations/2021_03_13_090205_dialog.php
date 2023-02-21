@@ -21,8 +21,10 @@ class Dialog extends Migration
             $table->timestamp('date_create')->comment('Date the dialog was created ')->useCurrent = true;
 
             $table->unique(['send', 'recive']);
-            $table->foreign('send')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign('recive')->references('id')->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('send')->references('id')
+                ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('recive')->references('id')
+                ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
