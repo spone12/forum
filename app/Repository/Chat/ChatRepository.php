@@ -2,10 +2,10 @@
 
 namespace App\Repository\Chat;
 
-use App\Http\Model\Chat\DialogModel as DialogModel;
+use App\Models\Chat\DialogModel as DialogModel;
 use App\User;
 use Carbon\Carbon;
-use App\Http\Model\Chat\ChatModel;
+use App\Models\Chat\ChatModel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -30,11 +30,11 @@ class ChatRepository
             })
             ->get();
 
-        if($limit) {
+        if ($limit) {
             $userDialogs = $userDialogs->take($limit);
         }
 
-        foreach($userDialogs as $k => $chat) {
+        foreach ($userDialogs as $k => $chat) {
 
             $lastMessage = ChatModel::where('dialog', $chat->dialog_id)->orderBy('created_at', 'DESC')->first();
             if(is_null($lastMessage)) {
@@ -119,7 +119,6 @@ class ChatRepository
     public function sendMessage(string $message, int $dialogId, int $userId) {
 
         $dialogId = $this->getDialogId($userId, $dialogId);
-
         try {
 
             $messageId = DB::table('messages')->insertGetId(
@@ -153,7 +152,8 @@ class ChatRepository
      */
     public function getDialogId($userId, $dialogId = 0): int {
 
-        if($dialogId == 0) {
+        if ($dialogId == 0) {
+
             $dialogExist = DB::table('dialog AS d')
                 ->select('d.dialog_id')
                 ->where(function($query) use ($userId)
@@ -172,13 +172,12 @@ class ChatRepository
             $dialogExist = DialogModel::where('dialog_id', $dialogId)->exists();
         }
 
-        if(empty($dialogExist) || $dialogExist == false)
-        {
-            $dialogId = DB::table('dialog')->insertGetId(
-                [
-                    'send' =>  Auth::user()->id,
-                    'recive' => $userId
-                ]);
+        if(empty($dialogExist) || $dialogExist == false) {
+
+            $dialogId = DB::table('dialog')->insertGetId([
+                'send' =>  Auth::user()->id,
+                'recive' => $userId
+            ]);
         }
 
         return $dialogId;
@@ -198,9 +197,9 @@ class ChatRepository
 
         if (!$dialogCheck->exists()) {
             return ['error' => 'Chat not exist'];
-        }
-        else {
-            if($dialogCheck->first()->send != $currentUserId && $dialogCheck->first()->recive != $currentUserId) {
+        } else {
+
+            if ($dialogCheck->first()->send != $currentUserId && $dialogCheck->first()->recive != $currentUserId) {
                 return ['error' => 'Chat not exist'];
             }
         }
@@ -215,7 +214,7 @@ class ChatRepository
             ->orderBy('created_at', 'asc')
             ->get();
 
-        if(count($dialogMessages)) {
+        if (count($dialogMessages)) {
 
             // get id of the user we are talking to
             $anotherUserId = ($dialogMessages[0]->send == $currentUserId) ?
@@ -232,7 +231,7 @@ class ChatRepository
 
                 $this->formatChatDate($dialog);
 
-                if($dialog->send == $currentUserId) {
+                if ($dialog->send == $currentUserId) {
                     $dialog->name = Auth::user()->name;
                     $dialog->avatar = $currentUserAvatar;
                     $dialog->id = $currentUserId;

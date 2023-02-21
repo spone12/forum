@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Factories\Http\Model;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Http\Model\NotationModel;
+use App\Models\NotationModel;
 
 class NotationModelFactory extends Factory
 {

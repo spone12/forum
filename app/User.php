@@ -21,7 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'ip_user','browser_user'
     ];
-    
+
     protected $table = 'users';
 
     /**
@@ -30,7 +30,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 
+        'password', 'remember_token',
     ];
 
     /**
@@ -58,10 +58,10 @@ class User extends Authenticatable
     }
 
     public function descriptionProfile() {
-        return $this->hasOne('\App\Http\Model\ProfileModel', 'id_user', 'id');
+        return $this->hasOne('\App\Models\ProfileModel', 'id_user', 'id');
     }
 
     public function notations() {
-        return $this->hasMany('\App\Http\Model\NotationModel', 'id_user', 'id');
+        return $this->hasMany('\App\Models\NotationModel', 'id_user', 'id');
     }
 }

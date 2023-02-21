@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Model\Notation;
+namespace App\Models\Notation;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-
 
 class NotationViewModel extends Model
 {
@@ -25,23 +24,18 @@ class NotationViewModel extends Model
                                         ->where('notation_id', '=', $notationId)
                                         ->exists();
 
-        if($check_note)
-        {
+        if($check_note) {
+
             NotationViewModel::where('view_date', '=', Carbon::now()->format('Y-m-d'))
                                 ->where('notation_id', '=', $notationId)
                             ->increment('counter_views');
-        }
-        else
-        {
-            $add = new NotationViewModel();
+        } else {
 
+            $add = new NotationViewModel();
                 $add->notation_id = $notationId;
                 $add->counter_views  = $add->counter_views + 1;
                 $add->view_date =  Carbon::now()->format('Y-m-d');
             $add->save();
         }
-
     }
-
-
 }

@@ -3,7 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use Faker\Generator as Faker;
-use App\Http\Model\Notation\NotationViewModel;
+use App\Models\Notation\NotationViewModel;
 
 $factory->define(NotationViewModel::class, function (Faker $faker) {
 

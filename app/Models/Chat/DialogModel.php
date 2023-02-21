@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Model\Chat;
+namespace App\Models\Chat;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +14,6 @@ class DialogModel extends Model
     protected $primaryKey = 'dialog_id';
 
     public function messages () {
-        return $this->hasMany('\App\Http\Model\Chat\ChatModel', 'dialog', 'dialog_id');
+        return $this->hasMany('\App\Models\Chat\ChatModel', 'dialog', 'dialog_id');
     }
 }

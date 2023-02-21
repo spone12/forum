@@ -17,7 +17,7 @@ use App\User as User;
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index');
 Route::put('/generate_api_key', [User::class, 'generateApiKey'])->name('generateApiKey')->middleware('auth');
 
 Route::match(['get', 'post'], '/search', 'SearchController@getDataSearch')->name('search');
