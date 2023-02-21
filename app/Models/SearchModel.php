@@ -1,20 +1,19 @@
 <?php
 
-namespace  App\Http\Model;
+namespace  App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
-use App\Http\Model\NotationModel;
+use App\Models\NotationModel;
 
 class SearchModel extends Model
 {
-   
 
     protected static function searchByUser ($query)
     {
         $result = User::select(
             'name',
-            'id', 
+            'id',
             'avatar')
             ->where('name', 'LIKE', $query->search.'%')
         ->orderBy('name', 'ASC')
@@ -29,7 +28,7 @@ class SearchModel extends Model
     protected static function searchByNotation ($query)
     {
         $result = NotationModel::select(
-            'notation_id', 
+            'notation_id',
             'name_notation',
             'rating',
             'text_notation')

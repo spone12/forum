@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ class ProfileModel extends Model
 
     protected static function getUserData() {
 
-        if (Auth::check()) 
+        if (Auth::check())
         {
             $data = DB::table('users AS u')
                 ->select(
@@ -33,20 +33,20 @@ class ProfileModel extends Model
                     'dp.date_born',
                     'dp.town',
                     'dp.about',
-                    'dp.phone', 
+                    'dp.phone',
                     'dp.lvl',
                     'dp.exp'
                 )
                 ->leftJoin('description_profile AS dp', 'dp.id_user', '=', 'u.id')
                 ->where('id', '=', Auth::user()->id)
             ->first();
-        
+
             if($data){
                 if(is_null($data->exp))
                     $data->exp = 0;
                 $data->expNeed = self::expGeneration($data);
                 $data->created_at =  date_create($data->created_at)->Format('d.m.y H:i');
-                
+
                 if(!is_null($data->date_born)) {
                    $data->date_born = date_create($data->date_born)->Format('d.m.Y');
                 }
@@ -67,7 +67,7 @@ class ProfileModel extends Model
     }
 
     protected static function expAdd($action, $concretelyExp = 0) {
-        
+
         $addedExp = static::$typesAddExp[$action];
 
         if($concretelyExp){
@@ -87,7 +87,7 @@ class ProfileModel extends Model
         $exp = self::expGeneration($userData);
 
         $userData->exp += $addedExp;
-    
+
         if($userData->exp >= $exp) {
             $userData->lvl++;
             $userData->exp -= $exp;
@@ -95,7 +95,7 @@ class ProfileModel extends Model
 
         ProfileModel::where('id_user',  Auth::user()->id)
             ->update([
-                'exp' => $userData->exp, 
+                'exp' => $userData->exp,
                 'lvl' => $userData->lvl
         ]);
 
@@ -130,7 +130,7 @@ class ProfileModel extends Model
             ->select('users.name','users.id', 'users.email','users.created_at',
                     'description_profile.real_name', 'users.gender',
                     'description_profile.town','description_profile.date_born',
-                    'description_profile.about', 'users.avatar', 'users.last_online_at', 
+                    'description_profile.about', 'users.avatar', 'users.last_online_at',
                     'description_profile.phone', 'description_profile.lvl',  'description_profile.exp')
             ->leftJoin('description_profile', 'description_profile.id_user', '=', 'users.id')
             ->where('users.id', '=', $id)
@@ -144,7 +144,7 @@ class ProfileModel extends Model
             $data->last_online_at =  date_create($data->last_online_at)->Format('d.m.Y H:i');
             $data->created_at =  date_create($data->created_at)->Format('d.m.Y H:i');
             $data->gender == 1 ?  $data->genderName = 'Мужской':  $data->genderName = 'Женский';
-            
+
             if(is_null($data->avatar)) {
                 $data->avatar = static::$noAvatarPath;
             }
@@ -152,7 +152,7 @@ class ProfileModel extends Model
 
         return $data;
     }
-    
+
     protected static function checkAvatar(&$userData) {
 
         if(is_null($userData->avatar)) {
@@ -162,7 +162,7 @@ class ProfileModel extends Model
 
     protected static function getUserDataChange(int $userId = 0) {
 
-        if (Auth::check()) 
+        if (Auth::check())
         {
             if(!$userId)
                 $userId = Auth::user()->id;
@@ -175,7 +175,7 @@ class ProfileModel extends Model
                     'users.gender',
                     'description_profile.town',
                     'description_profile.date_born',
-                    'description_profile.about', 
+                    'description_profile.about',
                     'users.avatar',
                     'description_profile.phone',
                     'users.api_key'
@@ -187,7 +187,7 @@ class ProfileModel extends Model
             if($userData) {
                 self::checkAvatar($userData);
             }
-           
+
             return $userData;
         }
         else $userData = false;
@@ -199,16 +199,14 @@ class ProfileModel extends Model
         {
             $userId = Auth::user()->id;
 
-            if($userId === (INT)$userData['data_send']['id_user']){
+            if($userId === (INT)$userData['data_send']['id_user']) {
 
                 $updateProfile = 0;
-
                 if(preg_match("/[\d]+/", $userData['data_send']['name'])) {
                     throw new \Exception('Имя не должно содержать цифры!');
                 }
-                
-                if(Auth::user()->descriptionProfile->gender !== (INT)$userData['data_send']['gender']) {
 
+                if(Auth::user()->descriptionProfile->gender !== (INT)$userData['data_send']['gender']) {
                     $profile = DB::table('users')
                         ->where('id', '=', $userId)
                     ->update(['gender' => $userData['data_send']['gender']]);
@@ -223,8 +221,9 @@ class ProfileModel extends Model
                             'date_born' =>  $userData['data_send']['date_user'],
                             'town'      => $userData['data_send']['town_user'],
                             'phone'     => $userData['data_send']['phone'],
-                            'about'     => $userData['data_send']['about_user']) 
+                            'about'     => $userData['data_send']['about_user'])
                     );
+
                     $updateProfile = 1;
                 }
                 else  {
@@ -238,6 +237,7 @@ class ProfileModel extends Model
                             'phone'     => $userData['data_send']['phone'],
                             'about'     => $userData['data_send']['about_user']
                     ]);
+
                     $updateProfile = 1;
                 }
 
@@ -247,7 +247,7 @@ class ProfileModel extends Model
                         'message' => 'OK'
                     ]);
                 }
-            
+
             }
             else{
                 throw new \Exception('Не совпадает ID!');
@@ -259,7 +259,7 @@ class ProfileModel extends Model
                 'status' => 0,
                 'errors'  =>  $e->getMessage(),
             ], 400);
-           
+
         }
     }
 
@@ -268,8 +268,8 @@ class ProfileModel extends Model
         if($request->hasFile('avatar'))
         {
             $userId = Auth::user()->id;
-            $imageName = uniqid() .'.'. $request->avatar->extension();  
-        
+            $imageName = uniqid() .'.'. $request->avatar->extension();
+
             DB::table('users')
                 ->where('id', $userId)
             ->update(['avatar' => "/img/avatar/user_avatar/".$userId."/".$imageName]);

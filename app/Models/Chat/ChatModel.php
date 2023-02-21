@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Model\Chat;
+namespace App\Models\Chat;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +11,6 @@ class ChatModel extends Model
     protected $primaryKey = 'message_id';
 
     public function dialogObject() {
-        return $this->hasOne('\App\Http\Model\Chat\DialogModel', 'dialog_id', 'dialog');
+        return $this->hasOne('\App\Models\Chat\DialogModel', 'dialog_id', 'dialog');
     }
 }

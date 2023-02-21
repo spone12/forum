@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Model\Api\v1\ApiNotationModel;
-use App\Http\Model\NotationModel;
+use App\Models\NotationModel;
 use Illuminate\Support\Str;
 use App\User;
 use Auth;

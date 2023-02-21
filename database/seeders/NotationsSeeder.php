@@ -2,8 +2,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Http\Model\NotationModel;
-use App\Http\Model\Notation\NotationViewModel;
+use App\Models\NotationModel;
+use App\Models\Notation\NotationViewModel;
 
 class NotationsSeeder extends Seeder
 {

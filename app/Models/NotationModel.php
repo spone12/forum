@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use App\Http\Model\ProfileModel;
+use App\Models\ProfileModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
@@ -290,6 +290,6 @@ class NotationModel extends Model
     }
 
     public function notationViews() {
-        return $this->hasOne('\App\Http\Model\Notation\NotationViewModel', 'notation_id', 'notation_id');
+        return $this->hasOne('\App\Models\Notation\NotationViewModel', 'notation_id', 'notation_id');
     }
 }

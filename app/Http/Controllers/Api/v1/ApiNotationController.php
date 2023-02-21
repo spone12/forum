@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Model\Api\v1\ApiNotationModel;
-use App\Http\Model\NotationModel;
+use App\Models\Api\v1\ApiNotationModel;
+use App\Models\NotationModel;
 use App\User;
 
 class ApiNotationController extends Controller

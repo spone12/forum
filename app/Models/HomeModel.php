@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -18,14 +18,14 @@ class HomeModel extends Model
                      ->orderBy('notation_add_date', 'DESC')
                      ->paginate(5)
                      ->onEachSide(2);
-        
+
         if($notations)
         {
             foreach($notations as $k => $v)
             {
-                $notations[$k]->date_n = 
+                $notations[$k]->date_n =
                     Carbon::createFromFormat('Y-m-d H:i:s', $notations[$k]->date_n)->diffForHumans();
-                
+
                 if(is_null($v->avatar))
                     $notations[$k]->avatar = 'img/avatar/no_avatar.png';
 
@@ -36,5 +36,5 @@ class HomeModel extends Model
         else $notations = 0;
 
         return $notations;
-    } 
+    }
 }
