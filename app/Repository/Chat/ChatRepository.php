@@ -9,7 +9,7 @@ use App\Models\Chat\ChatModel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Enums\Avatar\AvatarEnum;
+use App\Enums\Profile\ProfileEnum;
 use \Illuminate\Support\Str;
 
 class ChatRepository
@@ -101,7 +101,7 @@ class ChatRepository
 
             $userObj = User::where('id', $search->send)->first();
 
-            $search->avatar = $userObj->avatar ?: AvatarEnum::NO_AVATAR_PATH;
+            $search->avatar = $userObj->avatar ?: ProfileEnum::NO_AVATAR;
             $search->id = $userObj->id;
             $search->name = $userObj->name;
         }
@@ -204,7 +204,7 @@ class ChatRepository
             }
         }
 
-        $currentUserAvatar = Auth::user()->avatar ?: AvatarEnum::NO_AVATAR_PATH;
+        $currentUserAvatar = Auth::user()->avatar ?: ProfileEnum::NO_AVATAR;
 
         $dialogMessages = DB::table('messages')
             ->select( 'messages.text', 'messages.dialog', 'messages.created_at',
@@ -281,6 +281,6 @@ class ChatRepository
     private function checkAvatarExist($obj) {
 
         if(!$obj->avatar)
-            $obj->avatar = AvatarEnum::NO_AVATAR_PATH;
+            $obj->avatar = ProfileEnum::NO_AVATAR;
     }
 }

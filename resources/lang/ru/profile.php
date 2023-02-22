@@ -19,5 +19,6 @@ return [
     'offline' => 'Оффлайн',
     'wasOnlineMale' => 'Был в сети',
     'wasOnlineFemale' => 'Была в сети',
-    'writeMessage' => 'Написать сообщение'
+    'writeMessage' => 'Написать сообщение',
+    'goToProfile' => 'Перейти в профиль'
 ];

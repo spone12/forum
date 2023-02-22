@@ -14,10 +14,12 @@ return [
     */
     'lang' => 'en',
 
+    'mainPage' => 'Main page',
     'profile' => 'Profile',
     'messages' => 'Messages',
     'logout' => 'Logout',
     'search' => 'Search..',
     'lang_src' => '/img/icons/lang/en.png',
     'map' => 'Map',
+    'rating' => 'Rating',
 ];

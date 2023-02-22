@@ -14,11 +14,12 @@ return [
     */
     'lang' => 'ru',
 
+    'mainPage' => 'Главная страница',
     'profile' => 'Профиль',
     'messages' => 'Сообщения',
     'logout' => 'Выход',
     'search' => 'Поиск..',
     'lang_src' => '/img/icons/lang/ru.png',
     'map' => 'Карта',
-
+    'rating' => 'Рейтинг'
 ];
