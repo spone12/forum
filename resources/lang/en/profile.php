@@ -19,5 +19,6 @@ return [
     'offline' => 'Offline',
     'wasOnlineMale' => 'Was online',
     'wasOnlineFemale' => 'Was online',
-    'writeMessage' => 'Write message'
+    'writeMessage' => 'Write message',
+    'goToProfile' => 'Go to profile'
 ];

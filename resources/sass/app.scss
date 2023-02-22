@@ -5,50 +5,45 @@
 @import 'menu/notation';
 @import 'menu/chat';
 @import 'profile/profile';
+@import "general";
 
 $c: center;
 
-.bold {font-weight: bold;}
-.c {text-align: $c;}
-.i {font-style: italic;}
-.t_a {text-align: $c;}
-.c_p {cursor: pointer;}
+.bold { font-weight: bold; }
+.c { text-align: $c; }
+.i { font-style: italic; }
+.t_a { text-align: $c; }
+.c_p { cursor: pointer; }
 
-.profile_bg
-{
+.profile_bg {
     background: #fffaf0;
     border-radius: 10px;
 }
 
 .no_decor{text-decoration: none !important;}
 
-.a_header
-{
+.a_header {
     @extend .no_decor;
     color: black;
-    &:hover{color: #b03535;}
+    &:hover{ color: #b03535; }
 }
 
-.logo:hover
-{
+.logo:hover {
     opacity: 1;
     background: url('/img/logo/logo_hover.png');
 	background-size: 100% 100%;
     transition: 1s;
 }
 
-
 /*INPUT*/
-:root 
-{
+:root {
     --input-color: #99A3BA;
     --input-border: #6d8067;
     --input-background: #fff;
     --input-placeholder: #CBD1DC;
 }
 
-.textarea_field
-{
+.textarea_field {
     display: block;
     height: 350px;
     margin: 0 auto;
@@ -63,8 +58,7 @@ $c: center;
     padding: 10px
 }
 
-.input_field 
-{
+.input_field {
     display: block;
     width: 100%;
     padding: 8px 16px;
@@ -81,17 +75,15 @@ $c: center;
     color:black;
 }
 
-.text_mg{ margin-top:8px;}
+.text_mg{ margin-top:8px; }
 /*input*/
 
-.icon-text
-{
+.icon-text {
     padding-left: 10px;
 }
 
 /* SEARCH*/
-.search-marker
-{
+.search-marker {
     border-radius: 3px;
     border: 1px solid #acb1b4;
     bottom: 10px;
@@ -107,20 +99,17 @@ $c: center;
     padding: 1px 4px 0px 6px;
 }
 
-.search-button :hover
-{
+.search-button :hover {
     background: #645c48;
     transition: all 0.3s;
 }
 
 /* Show / hide password */
 
-.password 
-{
+.password {
     position: relative;
 
-    .password-control 
-    {
+    .password-control {
         position: absolute;
         top: 11px;
         right: 20px;
@@ -129,25 +118,23 @@ $c: center;
         height: 20px;
         background: url('/img/icons/password-show.svg') 0 0 no-repeat;
     }
-    .password-control.view {background: url('/img/icons/password-hide.svg') 0 0 no-repeat;}
+    .password-control.view { background: url('/img/icons/password-hide.svg') 0 0 no-repeat; }
 }
 
-.name_profile
-{
+.name_profile {
     font-size: 16px;
     font-family: initial;
     font-weight: bold;
     margin-right: 5px;
 }
 
-.profileGender{
+.profileGender {
     width: 14px !important;
 }
 
-.level {text-shadow: 1px 1px 0 #b95e5e;}
+.level { text-shadow: 1px 1px 0 #b95e5e; }
 
-.button-native
-{
+.button-native {
     border: none;
     background: none;
     padding: 0;
@@ -168,38 +155,33 @@ $c: center;
     margin: 5px 0px 30px 0px;
 }
 
-.couter_likes1
-{
-    text-align: $c; 
+.couter_likes1 {
+    text-align: $c;
     margin-bottom: 10px;
 }
 
 /* RATING */
-.rating_like
-{
+.rating_like {
     background: #99fb99;
     border-radius: 30%;
 }
 
-.rating_dislike
-{
+.rating_dislike {
     background: #fb9e99;
     border-radius: 30%;
 }
 /* END RATING*/
 
-.link_prevDefault{@extend .no_decor;}
+.link_prevDefault{ @extend .no_decor; }
 
-.lock
-{
+.lock {
     height: 20px !important;
     cursor: pointer;
 }
 
-.status_user{width: 10px;}
+.status_user { width: 10px; }
 
-.status_user_text
-{
+.status_user_text {
     font-style: italic;
     font-size: 12px;
     text-align: center;

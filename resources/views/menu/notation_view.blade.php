@@ -13,33 +13,33 @@
          Form::hidden('hidden_id', $view[0]->notation_id,
                      ['id' => 'id_notation'])
     }}
-    
+
     <div class='container'>
         <div class='row justify-content-center'>
 
         <div class="col-sm-12 col-lg-1 col-md-1" style='text-align: center;'>
-            
+
             @auth
                 <button class='button-native' onclick='change_rating(0)'>
                     <img width=15 src="{{ url('/img/icons/arrow-down.svg') }}" />
                 </button>
-            @endauth   
-           
+            @endauth
+
 
             @if(isset($view[0]->vote))
-            <img id='rating' class="{{ $view[0]->vote == 1 ? 'rating_like' : 'rating_dislike' }}" 
+
+                <img id='rating' class="{{ $view[0]->vote == 1 ? 'rating_like' : 'rating_dislike' }}"
                 width=25 src="{{ $view[0]->vote == 1 ? '/img/icons/like.svg' : '/img/icons/dislike.svg' }}" />
-           
             @else
-            <img id='rating' width=25 src="{{ url('/img/icons/like.svg') }}" />
+                <img id='rating' width=25 src="{{ url('/img/icons/like.svg') }}" />
             @endif
 
             @auth
                 <button class='button-native' onclick='change_rating(1)'>
                     <img width=15 src="{{ url('/img/icons/arrow-up.svg') }}" />
-                </button> 
-            @endauth   
-          
+                </button>
+            @endauth
+
 
             <div class='row justify-content-center' style='margin-bottom: 10px;'>
                 <div id='rating_voted'>{{ $view[0]->rating}}</div>
@@ -51,15 +51,15 @@
                 <div class="card-header">
                     <div class="row no-gutters">
                         <div class='col-10 align-self-start'>
-                            <strong class='notation_tema'>  {{ $view[0]->name_notation}}</strong>
+                            <strong class='notation_tema'> {{ $view[0]->name_notation}} </strong>
                         </div>
                         @auth
-                            @if(Auth::user()->id === $view[0]->id_user) 
+                            @if(Auth::user()->id === $view[0]->id_user)
                             <div class='col-2 align-self-end'>
                                 <a class='no_decor' href="{{ route('notation_edit_id', $view[0]->notation_id) }}">
                                     <img id="notation_edit" class='marker' width=20 data-toggle="tooltip" data-placement="bottom" title='Редактировать запись' alt='Редактировать запись' src="{{ asset('img/icons/edit.png') }}">
                                 </a>
-                                
+
                                 <img id="notation_delete" onclick='notation_delete();' data-toggle="tooltip" data-placement="bottom" class='marker' width=20 title='Удалить запись' alt='Удалить запись' src="{{ asset('img/icons/delete.png') }}">
                             </div>
                             @endif
@@ -74,11 +74,11 @@
                         <div class='col-4 col-sm-3 add_notation_who'>Дата создания:</div>
                         <div class='col-4 col-sm-3 add_notation_who'>{{$view[0]->notation_add_date}}</div>
                     </div>
-                   
+
                 </div>
                     <div class='text-center mt-2'>
-                        <span id='v_notation' onclick='viewGraph(this.id);' class='nav_notation mr-1'>Статья</span> 
-                        <span id='views' onclick='viewGraph(this.id);'  class='nav_notation'>Просмотры</span> 
+                        <span id='v_notation' onclick='viewGraph(this.id);' class='nav_notation mr-1'>Статья</span>
+                        <span id='views' onclick='viewGraph(this.id);'  class='nav_notation'>Просмотры</span>
                     </div>
 
                 <div id="notation_views" style="height: 250px;display:none;"></div>
@@ -92,7 +92,7 @@
                                     @foreach($view as $v)
                                      @if(!empty($v->path_photo))
                                         <li data-target = "#carousel" data-slide-to = "{{$loop->index}}" class="
-                                        
+
                                         @if($loop->first)
                                             active
                                         @endif
@@ -105,7 +105,7 @@
 
                                 @foreach($view as $v)
                                     @if(!empty($v->path_photo))
-                                    <div class="carousel-item 
+                                    <div class="carousel-item
 
                                     @if($loop->first)
                                         active
@@ -129,12 +129,12 @@
                             </div>
                         @endif
 
-                        </div>    
+                        </div>
                     </div>
                     <div class='row justify-content-center'>
                         <div  class='col-10'>
                                 &emsp; {!! $view[0]->text_notation!!}
-                        </div>    
+                        </div>
                     </div>
 
                 </div>
@@ -162,16 +162,16 @@
                 <div class="row notationCommentAdd justify-content-center align-items-center">
                     <div class='col-8'>
                         <div class="row no-gutters notationCommentAdd">
-                            <div class="col-8 col-sm-8"> 
+                            <div class="col-8 col-sm-8">
                                 <textarea type='text' id='notationCommentAdd_text' class='input_field' placeholder="{{trans('notation.writeComment')}}" ></textarea>
                             </div>
-                            <div class="col-3 col-sm-2 justify-content-start d-flex"> 
+                            <div class="col-3 col-sm-2 justify-content-start d-flex">
                                 <img class='notationCommentAdd__send align-middle' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{{trans('chat.sendMessage')}}">
                             </div>
                         </div>
-                    </div>  
-                </div> 
-            @endauth   
+                    </div>
+                </div>
+            @endauth
 
           </div>
         </div>
@@ -203,7 +203,7 @@
                 lineColors:['#5cb85c','#867b1e'],
                 labels: ['Просмотры','Всего просмотров на текущий день'],
 
-                
+
             });
         }
     }

@@ -1,10 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\HomeModel;
+use App\Service\HomeService;
 
 class HomeController extends Controller
 {
+
+    protected $homeService;
+
+    function __construct(HomeService $homeService) {
+        $this->homeService = $homeService;
+    }
 
     /**
      * Show the home page
@@ -13,7 +19,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-       $notations = HomeModel::take_notations();
+
+        try {
+            $notations = $this->homeService->notations();
+        } catch (\Throwable $e) {
+            return abort(404);
+        }
 
         return view('home', compact('notations'));
     }
