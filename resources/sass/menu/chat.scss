@@ -116,6 +116,7 @@
             opacity: 0.9;
         }
     }
+
     .chatLs__text {
         color: black;
         background: aliceblue;
@@ -125,6 +126,7 @@
             opacity: 0.9;
         }
     }
+
     .chatLs__photo {
         @extend .mini_avatar;
         width: 50px;
@@ -134,6 +136,7 @@
             transform: scale(1.03);
         }
     }
+
     .chatLs__link {
         @extend .no_decor;
     }
@@ -219,7 +222,7 @@
         background: #eedec4 none repeat scroll 0% 0%;
     }
 
-    &:hover{
+    &:hover {
        opacity: 1;
        cursor: pointer;
     }
@@ -234,8 +237,7 @@
     vertical-align: middle;
     opacity: 0.7;
 
-    &:hover
-    {
+    &:hover {
         background: #d5d5d5;
         opacity: 1;
     }

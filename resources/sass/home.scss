@@ -1,0 +1,24 @@
+.verticalMenu {
+    & > div {
+        padding: 3px;
+        border-radius: 3px;
+    }
+
+    .verticalMenu__addNotation {
+        .verticalMenu__addNotationBtn {
+            &:hover {
+                background-color: #e8fbff;
+            }
+            background-color: #f7f7f7;
+        }
+    }
+
+    .verticalMenu__sort-menu {
+        width: 100%;
+
+        &:hover {
+            background-color: #e8fbff;
+        }
+        background-color: #f7f7f7;
+    }
+}

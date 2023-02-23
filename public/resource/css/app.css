@@ -565,6 +565,28 @@
   color: #0660a2;
 }
 
+.verticalMenu > div {
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.verticalMenu .verticalMenu__addNotation .verticalMenu__addNotationBtn {
+  background-color: #f7f7f7;
+}
+
+.verticalMenu .verticalMenu__addNotation .verticalMenu__addNotationBtn:hover {
+  background-color: #e8fbff;
+}
+
+.verticalMenu .verticalMenu__sort-menu {
+  width: 100%;
+  background-color: #f7f7f7;
+}
+
+.verticalMenu .verticalMenu__sort-menu:hover {
+  background-color: #e8fbff;
+}
+
 .bold {
   font-weight: bold;
 }
