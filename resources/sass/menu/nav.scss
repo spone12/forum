@@ -1,28 +1,24 @@
-.no_mark
-{
+.no_mark {
     list-style-type: none;
-    &:last-child{margin-left:5px;}
+    &:last-child{ margin-left:5px; }
 }
 
-.marker{cursor: pointer;}
+.marker { cursor: pointer; }
 
-.menu_user:hover
-{
+.menu_user:hover {
     background: #ae3232;
     border-radius: 4px;
     color:white;
 }
 
-.fix_nav
-{
+.fix_nav {
     position: fixed !important;
     z-index: 999;
     width: 100%;
     opacity: .98;
 }
 
-.fix_main 
-{
+.fix_main {
     position: relative;
     top: 50px;
 }

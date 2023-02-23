@@ -1,28 +1,22 @@
-.lang
-{
+.lang {
     border-radius: 5px !important;
     background: none !important;
 
-    &:hover
-    {
+    &:hover {
         background: #396858 !important;
     }
 }
 
-.lang__flag
-{
+.lang__flag {
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-.lang__drop
-{
-    & > div:hover
-    {
+.lang__drop {
+    & > div:hover {
         background-color: #f8f9fa;
     }
 
-    & > div > a
-    {
+    & > div > a {
         color:#261010;
         text-decoration: none;
     }
