@@ -31,8 +31,8 @@
                     <div class='col-3 align-self-start text_mg'>
                         <a href='/notation/view/{{ $data_notation->notation_id}}' class='link_prevDefault'>
                             <img alt='back' title='Вернуться обратно' src="{{asset('img/icons/back-arrow.svg')}}" width=15 />
-                        </a> 
-                        Тема новости 
+                        </a>
+                        Тема новости
                     </div>
                     <div  class='col-9 align-self-end'>
                          {{ Form::text('name_tema',  $data_notation->name_notation,
@@ -54,11 +54,11 @@
                                              'id' => 'text_notation']
                                           )
                         }}
-                    </div>    
+                    </div>
 
                     <form action="{{route('notationAddPhotos', $data_notation->notation_id)}}" enctype="multipart/form-data" method="POST">
                         {{ csrf_field() }}
-                       
+
                         <div class="d-row justify-content-center">
                             <div class="col-md-12">
                             Добавить фотографии:
@@ -78,7 +78,7 @@
                             </span>
                             @endforeach
                     </div>
-                    
+
                 </div>
                 <div class='row justify-content-center m-1'>
                     {{
@@ -88,7 +88,7 @@
                                      'onclick' => 'edit_notation();',
                                      'type' => 'submit'])
                     }}
-                </div>     
+                </div>
             </div>
         </div>
      </div>

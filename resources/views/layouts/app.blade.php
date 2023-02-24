@@ -24,11 +24,10 @@
 
     <script src="{{ asset('resource/libraries/TataJs/tata.js') }}"></script>
     <script src="{{ asset('resource/libraries/TataJs/index.js') }}"></script>
-    
+
     @stack('scripts')
 </head>
 <body>
-
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm fix_nav">
             <div class="container">
             <a class="navbar-brand" href="{{ route('home')}}"><img width=30 class='logo' src="{{ asset('img/logo/logo.png') }}" /></a>
@@ -40,7 +39,7 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    
+
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                     </ul>
@@ -56,11 +55,11 @@
                                 </div>
                                 <input id='search' name="search" type="text" class="form-control" placeholder="{{ __('app.search') }}" aria-label="search" aria-describedby="search-button">
                                     <span class="search-marker">/</span>
-                                <input type='hidden' name='search-by' value='search-by__user' id='search-by' />    
+                                <input type='hidden' name='search-by' value='search-by__user' id='search-by' />
                             </div>
                         </form>
                     </ul>
-                    
+
                     <ul class="mb-3 btn-group">
                         <button class="btn btn-secondary btn-sm lang" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class='lang__flag' src="{{ url( __('app.lang_src') ) }}" width="30">
@@ -92,43 +91,40 @@
                         @else
                             <li class="nav-item dropdown menu_user">
                                     <!--dropdown-toggle class-->
-                                <a id="navbarDropdown" class="nav-link  c" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <span class='name_profile'>{{ Auth::user()->name }} </span>
-                                    <img class='mini_avatar' style='margin-right: 5px;' width=30 src=@getSessValue('avatar') />
+                                <a id="navbarDropdown" class="nav-link c" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <span class='name_profile'> {{ Auth::user()->name }} </span>
+                                    <img class='mini_avatar mr-2' width=30 src=@getSessValue('avatar') />
                                     <span class="caret">
-                                     <img id='navigation_arrow' width=10 src="{{ url('/img/icons/arrow.svg') }}" /> 
+                                        <img id='navigation_arrow' width=10 src="{{ url('/img/icons/arrow.svg') }}" />
                                     </span>
                                 </a>
-                               
+
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                   
                                     <a class="dropdown-item" href="{{ route('profile')}}" onclick="">
                                         <div>
-                                            <img width=20 src="{{ url('/img/icons/profile.png') }}" /> 
+                                            <img width=20 src="{{ url('/img/icons/profile.png') }}" />
                                             <span class='icon-text'>{{ trans('app.profile') }}</span>
                                         </div>
                                     </a>
 
-                                    <a class="dropdown-item" href="{{ url('/chat') }}"
-                                       onclick=''>
+                                    <a class="dropdown-item" href="{{ url('/chat') }}">
                                         <div>
-                                            <img width=20 src="{{ url('/img/icons/message.png') }}" /> 
+                                            <img width=20 src="{{ url('/img/icons/message.png') }}" />
                                             <span class='icon-text'>{{ trans('app.messages') }}</span>
                                         </div>
                                     </a>
 
                                     <a class="dropdown-item" href="{{ route('map') }}" >
                                         <div>
-                                            <img width=20 src="{{ url('/img/icons/map.svg') }}" /> 
+                                            <img width=20 src="{{ url('/img/icons/map.svg') }}" />
                                             <span class='icon-text'>{{ trans('app.map') }}</span>
                                         </div>
                                     </a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <div>
-                                            <img width=20 src="{{ url('/img/icons/logout.png') }}" /> 
+                                            <img width=20 src="{{ url('/img/icons/logout.png') }}" />
                                             <span class='icon-text'>{{ trans('app.logout') }}</span>
                                         </div>
                                     </a>
@@ -147,23 +143,21 @@
         <div id='modal_window' class="modal fade">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">
-                        <a href='#' id='modal_window_close'>
-                            &times;
-                        </a>
-                    </span>
-                    </button>
-                 </div>
-                <div class="modal-body row justify-content-center"> 
-                    <div class='col-8'><p class='c' id='modal_window_text'>&hellip;</p></div>
-                    <div class='col-2'>
-                        <input type='hidden' class='btn btn-danger' value='Удалить' id='modal_window_button' />
+                    <div class="modal-header">
+                        <button type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            <a href='#' id='modal_window_close'>
+                                &times;
+                            </a>
+                        </span>
+                        </button>
+                     </div>
+                    <div class="modal-body row justify-content-center">
+                        <div class='col-8'><p class='c' id='modal_window_text'>&hellip;</p></div>
+                        <div class='col-2'>
+                            <input type='hidden' class='btn btn-danger' value='Удалить' id='modal_window_button' />
+                        </div>
                     </div>
-                </div>
-
                 </div>
             </div>
         </div>
@@ -172,6 +166,5 @@
             @include('layouts.messages')
             @yield('content')
         </main>
-    
 </body>
 </html>
