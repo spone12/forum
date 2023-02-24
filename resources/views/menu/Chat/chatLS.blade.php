@@ -20,9 +20,10 @@
     <div class="row justify-content-center align-items-center">
         <div class='chatMenuLeft col-lg-2 col-sm-12 align-items-center justify-content-center'>
             @foreach($lastDialogs as $chat)
-                <a class="
-                    row align-items-center justify-content-center
-                @if($chat->dialog_id == $dialogId) currentChatSelectionInMenu @endif
+                <a class="row align-items-center justify-content-center
+                    @if($chat->dialog_id == $dialogId)
+                        currentChatSelectionInMenu
+                    @endif
                 " href='/chat/dialog/{{$chat->dialog_id}}'>
                     <div class='chatLs__link col-sm-4'>
                         <img class='chatLs__photo' src="{{ asset($chat->avatar) }}" />
@@ -63,7 +64,6 @@
                     </div>
                 </div>
             @endforeach
-
         @else
             <div class="chatLs__chat noMessages">
                 <div class='col-sm-12 row t_a'>
@@ -93,14 +93,12 @@
                             <a class="dropdown-item dialogClip__audio" href="#">Аудио</a>
                         </div>
                     </div>
-                    <img class='dialog__send' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{{trans('chat.sendMessage')}}">
+                    <img class='btn btn-light dialog__send' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{{trans('chat.sendMessage')}}">
                 </div>
             </div>
         </div>
     </div>
-
 </div>
-
 
 <div class="modal fade" id="modalUploadPhoto" tabindex="-1" role="dialog" aria-labelledby="modalUploadPhotoLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">

@@ -60,9 +60,18 @@ $c: center;
 }
 
 .input_field {
+    border: 1px solid #d5dddf;
+    max-width: 100%;
+    padding-right: 6px;
+    padding-left: 6px;
+    padding-left: 20px;
+    padding-right: 0;
+    margin: 0;
+    box-sizing: border-box;
+    z-index: 1;
+    height: 100%;
     display: block;
     width: 100%;
-    padding: 8px 16px;
     /*line-height: 25px;*/
     font-size: 14px;
     font-weight: 500;
@@ -70,7 +79,6 @@ $c: center;
     border-radius: 6px;
     -webkit-appearance: none;
     color: var(--input-color);
-    border: 1px solid var(--input-border);
     background: var(--input-background);
     transition: border .3s ease;
     color:black;

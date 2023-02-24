@@ -267,20 +267,32 @@
 }
 
 .notationCommentAdd {
-  margin-left: 90px !important;
+  height: 140px;
   margin-top: 10px !important;
+  background: #f6f8fb;
+  border-radius: 10px;
+  margin-bottom: 3px;
+}
+
+.notationCommentAdd__title {
+  color: black;
+  font-weight: bold;
+  padding: 3px;
+  margin-left: 5%;
+  font-size: 12px;
 }
 
 .notationCommentAdd__send {
-  height: 7%;
+  width: 50px;
   border: 3px solid;
-  margin-left: 5px;
+  margin-left: 4%;
   border-radius: 50%;
   vertical-align: middle;
   opacity: 0.7;
   -o-object-fit: contain;
      object-fit: contain;
-  margin-top: 20px;
+  margin-top: 3px;
+  background-color: #d7d7d7 !important;
 }
 
 .notationCommentAdd__send:hover {
@@ -534,12 +546,13 @@
 }
 
 .dialog__send {
-  width: 40px;
+  width: 50px;
   border: 3px solid;
   margin-left: 5px;
   border-radius: 50%;
   vertical-align: middle;
   opacity: 0.7;
+  background-color: #d7d7d7 !important;
 }
 
 .dialog__send:hover {
@@ -671,9 +684,18 @@
 }
 
 .input_field {
+  border: 1px solid #d5dddf;
+  max-width: 100%;
+  padding-right: 6px;
+  padding-left: 6px;
+  padding-left: 20px;
+  padding-right: 0;
+  margin: 0;
+  box-sizing: border-box;
+  z-index: 1;
+  height: 100%;
   display: block;
   width: 100%;
-  padding: 8px 16px;
   /*line-height: 25px;*/
   font-size: 14px;
   font-weight: 500;
@@ -681,7 +703,6 @@
   border-radius: 6px;
   -webkit-appearance: none;
   color: var(--input-color);
-  border: 1px solid var(--input-border);
   background: var(--input-background);
   transition: border 0.3s ease;
   color: black;

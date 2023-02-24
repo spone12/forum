@@ -171,6 +171,7 @@ class ProfileModel extends Model
                 ->select(
                     'users.name',
                     'users.id',
+                    'users.email',
                     'description_profile.real_name',
                     'users.gender',
                     'description_profile.town',
