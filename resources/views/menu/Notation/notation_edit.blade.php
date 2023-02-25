@@ -23,23 +23,30 @@
 
 <div class='container'>
     <div class='row justify-content-center'>
+
+        <div class="col-lg-1 col-md-1 text-center notataionMenu p-1">
+            <a href='{{ route("home") }}' class='btn btn-info mt-1 notataionMenu__home'>
+                <img alt='back' data-toggle="tooltip" title='На главную страницу' src="{{asset('img/icons/back-arrow.svg')}}" width=25 />
+            </a>
+        </div>
         <div class="col-md-10">
-        <div class="card">
+            <div class="card">
 
             <div class="card-header">
                 <div class="row no-gutters">
                     <div class='col-3 align-self-start text_mg'>
-                        <a href='/notation/view/{{ $data_notation->notation_id}}' class='link_prevDefault'>
-                            <img alt='back' title='Вернуться обратно' src="{{asset('img/icons/back-arrow.svg')}}" width=15 />
-                        </a>
                         Тема новости
                     </div>
                     <div  class='col-9 align-self-end'>
-                         {{ Form::text('name_tema',  $data_notation->name_notation,
-                             ['id' => 'name_tema',
-                                   'class' => 'input_field',
-                                   'style' => 'width:100%',
-                                   'placeholder' => 'Тема']) }}
+                         {{
+                             Form::text('name_tema',  $data_notation->name_notation,
+                             [
+                                'id' => 'name_tema',
+                               'class' => 'input_field',
+                               'style' => 'width:100%',
+                               'placeholder' => 'Тема'
+                              ])
+                         }}
                     </div>
                 </div>
             </div>

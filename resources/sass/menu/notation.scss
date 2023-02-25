@@ -190,6 +190,37 @@ $border-nav: 25px;
     margin-top: 10px;
 }
 
+.notataionMenu {
+
+    .btn {
+        padding: 3px;
+        width: 100%;
+        color: black;
+        background-color: #f7f7f7;
+
+        &:hover {
+            color: black;
+            background-color: #e8fbff
+        }
+    }
+
+    .button-native {
+        &:focus {
+            outline:0;
+        }
+    }
+
+    .notataionMenu__like {
+        &:active {
+            background-color: #e8fbff !important;
+        }
+    }
+
+    .notataionMenu__views, .notataionMenu__like, .notataionMenu__count-likes {
+        cursor: default;
+    }
+}
+
 .countComments {
     text-align: right;
 }
