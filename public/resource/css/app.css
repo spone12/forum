@@ -310,6 +310,32 @@
   margin-top: 10px;
 }
 
+.notataionMenu .btn {
+  padding: 3px;
+  width: 100%;
+  color: black;
+  background-color: #f7f7f7;
+}
+
+.notataionMenu .btn:hover {
+  color: black;
+  background-color: #e8fbff;
+}
+
+.notataionMenu .button-native:focus {
+  outline: 0;
+}
+
+.notataionMenu .notataionMenu__like:active {
+  background-color: #e8fbff !important;
+}
+
+.notataionMenu .notataionMenu__views,
+.notataionMenu .notataionMenu__like,
+.notataionMenu .notataionMenu__count-likes {
+  cursor: default;
+}
+
 .countComments {
   text-align: right;
 }

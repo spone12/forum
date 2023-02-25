@@ -15,27 +15,45 @@
 
     <div class='container'>
         <div class='row justify-content-center'>
-            <div class="col-sm-12 col-lg-1 col-md-1 text-center">
-                @auth
-                    <button class='button-native' onclick='change_rating(0)'>
-                        <img width=15 src="{{ url('/img/icons/arrow-down.svg') }}" />
-                    </button>
-                @endauth
 
-                @if(isset($view[0]->vote))
-                    <img id='rating' class="{{ $view[0]->vote == 1 ? 'rating_like' : 'rating_dislike' }}"
-                    width=25 src="{{ $view[0]->vote == 1 ? '/img/icons/like.svg' : '/img/icons/dislike.svg' }}" />
-                @else
-                    <img id='rating' width=25 src="{{ url('/img/icons/like.svg') }}" />
-                @endif
+            <div class="col-lg-1 col-md-1 text-center notataionMenu p-1">
+                <a href='{{ route("home") }}' class='btn btn-info mt-1 notataionMenu__home'>
+                    <img alt='back' data-toggle="tooltip" title='На главную страницу' src="{{asset('img/icons/back-arrow.svg')}}" width=25 />
+                </a>
 
-                @auth
-                    <button class='button-native' onclick='change_rating(1)'>
-                        <img width=15 src="{{ url('/img/icons/arrow-up.svg') }}" />
-                    </button>
-                @endauth
+                <div class='row btn btn-info mt-2 notataionMenu__views'>
+                    <div>
+                        <img width=25 src="{{ asset('img/icons/Notation/eye.png') }}" data-toggle="tooltip" data-placement="bottom" title='{{ trans('notation.countViews') }}' />
+                        <span>134</span>
+                    </div>
+                </div>
 
-                <div class='row justify-content-center'>
+                <a href="#notationComments" class='row btn btn-info mt-2 notataionMenu__comments'>
+                    <img width=25 src="{{ asset('img/icons/Notation/comment.png') }}" data-toggle="tooltip" data-placement="bottom" title='{{ trans('notation.comments') }}' />
+                    <span>134</span>
+                </a>
+
+                <div class='row justify-content-center mt-2 btn btn-info notataionMenu__like'>
+                    @auth
+                        <button class='button-native' onclick='change_rating(0)'>
+                            <img width=15 src="{{ url('/img/icons/arrow-down.svg') }}" />
+                        </button>
+                    @endauth
+
+                    @if(isset($view[0]->vote))
+                        <img id='rating' class="{{ $view[0]->vote == 1 ? 'rating_like' : 'rating_dislike' }}"
+                             width=25 src="{{ $view[0]->vote == 1 ? '/img/icons/like.svg' : '/img/icons/dislike.svg' }}" />
+                    @else
+                        <img id='rating' width=25 src="{{ url('/img/icons/like.svg') }}" />
+                    @endif
+
+                    @auth
+                        <button class='button-native' onclick='change_rating(1)'>
+                            <img width=15 src="{{ url('/img/icons/arrow-up.svg') }}" />
+                        </button>
+                    @endauth
+                </div>
+                <div class='row justify-content-center btn btn-light notataionMenu__count-likes'>
                     <div id='rating_voted'>{{ $view[0]->rating}}</div>
                 </div>
             </div>
@@ -135,11 +153,9 @@
                     </div>
                 @endauth
 
-            <div class="card col-12 countComments">
-                <div><b>{{ trans('notation.comments') }}:</b><span class="countComments__count"> count_comments </span></div>
-            </div>
+            <div class="card mb-1"></div>
 
-            <div class="container notationComment">
+            <div id="notationComments" class="container notationComment">
                 <div class="row justify-content-start">
                     <div class='col-6 card'>
                         <div>
