@@ -25,8 +25,8 @@
     <div class='row justify-content-center'>
 
         <div class="col-lg-1 col-md-1 text-center notataionMenu p-1">
-            <a href='{{ route("home") }}' class='btn btn-info mt-1 notataionMenu__home'>
-                <img alt='back' data-toggle="tooltip" title='На главную страницу' src="{{asset('img/icons/back-arrow.svg')}}" width=25 />
+            <a href='/notation/view/{{ $data_notation->notation_id}}' class='btn btn-info mt-1 notataionMenu__home'>
+                <img alt='back' data-toggle="tooltip" title='Обратно к новости' src="{{asset('img/icons/back-arrow.svg')}}" width=25 />
             </a>
         </div>
         <div class="col-md-10">

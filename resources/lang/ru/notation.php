@@ -19,8 +19,10 @@ return [
     'countNotations' => 'Всего новостей',
     'countViews' => 'Кол-во просмотров новости',
     'notationRating' => 'Рейтинг новости',
+
     'sort' => 'Отсортировать',
     'sortName' => 'Наименованию',
     'sortViews' => 'Просмотрам',
     'sortRating' => 'Рейтингу',
+    'sortDate' => 'Дате',
 ];

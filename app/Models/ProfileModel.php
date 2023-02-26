@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Profile\ProfileEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,13 +15,11 @@ class ProfileModel extends Model
         'id_user'
     ];
     public $timestamps = false;
-    public static $noAvatarPath = 'img/avatar/no_avatar.png';
     private static $typesAddExp = ['addNotation' => 10];
 
     protected static function getUserData() {
 
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             $data = DB::table('users AS u')
                 ->select(
                     'u.id',
@@ -41,7 +40,7 @@ class ProfileModel extends Model
                 ->where('id', '=', Auth::user()->id)
             ->first();
 
-            if($data){
+            if ($data) {
                 if(is_null($data->exp))
                     $data->exp = 0;
                 $data->expNeed = self::expGeneration($data);
@@ -51,13 +50,13 @@ class ProfileModel extends Model
                    $data->date_born = date_create($data->date_born)->Format('d.m.Y');
                 }
 
-                if(!is_null($data->about)){
+                if (!is_null($data->about)) {
                    $data->about = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $data->about);
                 }
 
-                $data->gender == 1 ?  $data->genderName = 'Мужской':  $data->genderName = 'Женский';
-                if(is_null($data->avatar)) {
-                    $data->avatar = static::$noAvatarPath;
+                $data->gender == 1 ? $data->genderName = 'Мужской' : $data->genderName = 'Женский';
+                if (is_null($data->avatar)) {
+                    $data->avatar = ProfileEnum::NO_AVATAR;
                 }
             }
         }
@@ -70,33 +69,32 @@ class ProfileModel extends Model
 
         $addedExp = static::$typesAddExp[$action];
 
-        if($concretelyExp){
+        if ($concretelyExp) {
             $addedExp = $concretelyExp;
         }
 
         $userData = DB::table('users AS u')
-                ->select(
-                    'u.id',
-                    'dp.lvl',
-                    'dp.exp'
-                )
-                ->leftJoin('description_profile AS dp', 'dp.id_user', '=', 'u.id')
-                ->where('id', '=', Auth::user()->id)
-            ->first();
+            ->select(
+                'u.id',
+                'dp.lvl',
+                'dp.exp'
+            )
+            ->leftJoin('description_profile AS dp', 'dp.id_user', '=', 'u.id')
+            ->where('id', '=', Auth::user()->id)
+        ->first();
 
         $exp = self::expGeneration($userData);
-
         $userData->exp += $addedExp;
 
-        if($userData->exp >= $exp) {
+        if ($userData->exp >= $exp) {
             $userData->lvl++;
             $userData->exp -= $exp;
         }
 
         ProfileModel::where('id_user',  Auth::user()->id)
-            ->update([
-                'exp' => $userData->exp,
-                'lvl' => $userData->lvl
+        ->update([
+            'exp' => $userData->exp,
+            'lvl' => $userData->lvl
         ]);
 
         return $addedExp;
@@ -104,23 +102,22 @@ class ProfileModel extends Model
 
     protected static function lvlAdd(int $userId = 0) {
 
-        if(!$userId)
+        if (!$userId) {
             $userId = Auth::user()->id;
+        }
 
         ProfileModel::where('id_user', '=', $userId)->increment('lvl');
     }
 
     protected static function expGeneration(&$userData) {
 
-        if(is_null($userData->lvl)){
+        if (is_null($userData->lvl)) {
 
             ProfileModel::firstOrCreate([
                 'id_user' => $userData->id
             ]);
-
             $userData->lvl = 1;
         }
-
         return  $userData->lvl * 10;
     }
 
@@ -136,8 +133,8 @@ class ProfileModel extends Model
             ->where('users.id', '=', $id)
         ->first();
 
-        if(!empty($data)) {
-            if(is_null($data->exp))
+        if (!empty($data)) {
+            if (is_null($data->exp))
                 $data->exp = 0;
 
             $data->expNeed = self::expGeneration($data, Auth::user()->id);
@@ -145,27 +142,27 @@ class ProfileModel extends Model
             $data->created_at =  date_create($data->created_at)->Format('d.m.Y H:i');
             $data->gender == 1 ?  $data->genderName = 'Мужской':  $data->genderName = 'Женский';
 
-            if(is_null($data->avatar)) {
-                $data->avatar = static::$noAvatarPath;
+            if (is_null($data->avatar)) {
+                $data->avatar = ProfileEnum::NO_AVATAR;
             }
         }
-
         return $data;
     }
 
     protected static function checkAvatar(&$userData) {
 
-        if(is_null($userData->avatar)) {
-            $userData->avatar = static::$noAvatarPath;
+        if (is_null($userData->avatar)) {
+            $userData->avatar = ProfileEnum::NO_AVATAR;
         }
     }
 
     protected static function getUserDataChange(int $userId = 0) {
 
-        if (Auth::check())
-        {
-            if(!$userId)
+        if (Auth::check()) {
+
+            if (!$userId) {
                 $userId = Auth::user()->id;
+            }
 
             $userData = DB::table('users')
                 ->select(
@@ -185,7 +182,7 @@ class ProfileModel extends Model
                 ->where('users.id', '=', $userId)
             ->first();
 
-            if($userData) {
+            if ($userData) {
                 self::checkAvatar($userData);
             }
 
@@ -200,15 +197,15 @@ class ProfileModel extends Model
         {
             $userId = Auth::user()->id;
 
-            if($userId === (INT)$userData['data_send']['id_user']) {
+            if ($userId === (INT)$userData['data_send']['id_user']) {
 
                 $updateProfile = 0;
-                if(preg_match("/[\d]+/", $userData['data_send']['name'])) {
+                if (preg_match("/[\d]+/", $userData['data_send']['name'])) {
                     throw new \Exception('Имя не должно содержать цифры!');
                 }
 
-                if(Auth::user()->descriptionProfile->gender !== (INT)$userData['data_send']['gender']) {
-                    $profile = DB::table('users')
+                if (Auth::user()->descriptionProfile->gender !== (INT)$userData['data_send']['gender']) {
+                    DB::table('users')
                         ->where('id', '=', $userId)
                     ->update(['gender' => $userData['data_send']['gender']]);
                     $updateProfile = 1;
@@ -216,41 +213,38 @@ class ProfileModel extends Model
 
                 if (!ProfileModel::where('id_user', '=', $userId)->exists()) {
 
-                    DB::table('description_profile')->insert(
-                        array('id_user' => $userId,
-                            'real_name' => $userData['data_send']['name'],
-                            'date_born' =>  $userData['data_send']['date_user'],
-                            'town'      => $userData['data_send']['town_user'],
-                            'phone'     => $userData['data_send']['phone'],
-                            'about'     => $userData['data_send']['about_user'])
-                    );
-
-                    $updateProfile = 1;
-                }
-                else  {
-
-                    DB::table('description_profile')
-                    ->where('id_user', '=', $userId)
-                    ->update([
+                    DB::table('description_profile')->insert([
+                            'id_user' => $userId,
                             'real_name' => $userData['data_send']['name'],
                             'date_born' =>  $userData['data_send']['date_user'],
                             'town'      => $userData['data_send']['town_user'],
                             'phone'     => $userData['data_send']['phone'],
                             'about'     => $userData['data_send']['about_user']
+                        ]);
+
+                    $updateProfile = 1;
+                } else {
+
+                    DB::table('description_profile')
+                    ->where('id_user', '=', $userId)
+                    ->update([
+                        'real_name' => $userData['data_send']['name'],
+                        'date_born' =>  $userData['data_send']['date_user'],
+                        'town'      => $userData['data_send']['town_user'],
+                        'phone'     => $userData['data_send']['phone'],
+                        'about'     => $userData['data_send']['about_user']
                     ]);
 
                     $updateProfile = 1;
                 }
 
-                if($updateProfile) {
+                if ($updateProfile) {
                     return response()->json([
                         'status' => 1,
                         'message' => 'OK'
                     ]);
                 }
-
-            }
-            else{
+            } else {
                 throw new \Exception('Не совпадает ID!');
             }
         }
@@ -260,14 +254,13 @@ class ProfileModel extends Model
                 'status' => 0,
                 'errors'  =>  $e->getMessage(),
             ], 400);
-
         }
     }
 
     protected static function changeAvatar($request) {
 
-        if($request->hasFile('avatar'))
-        {
+        if ($request->hasFile('avatar')) {
+
             $userId = Auth::user()->id;
             $imageName = uniqid() .'.'. $request->avatar->extension();
 
@@ -278,7 +271,7 @@ class ProfileModel extends Model
             $request->avatar->move(public_path("img/avatar/user_avatar/".$userId), $imageName);
             $request->session()->put('avatar', "/img/avatar/user_avatar/". $userId ."/". $imageName);
 
-            if(file_exists($request->session()->get('avatar'))){
+            if (file_exists($request->session()->get('avatar'))) {
                 return true;
             }
         }

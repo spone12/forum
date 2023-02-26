@@ -24,7 +24,7 @@
                 <div class='row btn btn-info mt-2 notataionMenu__views'>
                     <div>
                         <img width=25 src="{{ asset('img/icons/Notation/eye.png') }}" data-toggle="tooltip" data-placement="bottom" title='{{ trans('notation.countViews') }}' />
-                        <span>134</span>
+                        <span>{{$view[0]->countViews}}</span>
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@
                         </button>
                     @endauth
 
-                    @if(isset($view[0]->vote))
+                    @if (isset($view[0]->vote))
                         <img id='rating' class="{{ $view[0]->vote == 1 ? 'rating_like' : 'rating_dislike' }}"
                              width=25 src="{{ $view[0]->vote == 1 ? '/img/icons/like.svg' : '/img/icons/dislike.svg' }}" />
                     @else

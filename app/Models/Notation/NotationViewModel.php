@@ -18,17 +18,17 @@ class NotationViewModel extends Model
 
     public $timestamps = false;
 
-    protected static function addViewNotation(int $notationId)
-    {
-       $check_note = NotationViewModel::where('view_date', '=', Carbon::now()->format('Y-m-d'))
-                                        ->where('notation_id', '=', $notationId)
-                                        ->exists();
+    protected static function addViewNotation(int $notationId) {
 
-        if($check_note) {
+       $check_note = NotationViewModel::where('view_date', '=', Carbon::now()->format('Y-m-d'))
+            ->where('notation_id', '=', $notationId)
+        ->exists();
+
+        if ($check_note) {
 
             NotationViewModel::where('view_date', '=', Carbon::now()->format('Y-m-d'))
-                                ->where('notation_id', '=', $notationId)
-                            ->increment('counter_views');
+                ->where('notation_id', '=', $notationId)
+            ->increment('counter_views');
         } else {
 
             $add = new NotationViewModel();
