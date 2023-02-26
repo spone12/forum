@@ -1,5 +1,6 @@
 <?php namespace App\Listeners;
 
+use App\Enums\Profile\ProfileEnum;
 use Illuminate\Auth\Events\Login;
 use Session;
 
@@ -7,8 +8,8 @@ class AddDataToUserSession
 {
   public function handle(Login $loginEvent)
   {
-    if(!empty($loginEvent->user->avatar))
-      Session::put('avatar', $loginEvent->user->avatar);
-    else  Session::put('avatar', '/img/avatar/no_avatar.png');
+
+      $avatarUrl = !empty($loginEvent->user->avatar) ? $loginEvent->user->avatar : ProfileEnum::NO_AVATAR;
+      Session::put('avatar', $avatarUrl);
   }
 }

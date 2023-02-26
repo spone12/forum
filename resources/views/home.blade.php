@@ -21,6 +21,13 @@
                 <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">
                         <div>
+                            <img width=20 src="{{ url('img/icons/date.png') }}" />
+                            <span class='icon-text'>{{ trans('notation.sortDate') }}</span>
+                        </div>
+                    </a>
+
+                    <a class="dropdown-item" href="#">
+                        <div>
                             <img width=20 src="{{ url('img/icons/title.png') }}" />
                             <span class='icon-text'>{{ trans('notation.sortName') }}</span>
                         </div>
