@@ -3,21 +3,25 @@
 namespace App\Models\Notation;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class NotationViewModel extends Model
 {
+    /** @var string */
     protected $table = 'views_notation';
+    /** @var string */
+    protected $primaryKey = 'views_notation_id';
+    /** @var bool */
+    public $timestamps = false;
 
+    /** @var string[] */
     protected $fillable = [
         'notation_id', 'counter_views', 'view_date'
     ];
-    protected $primaryKey = 'views_notation_id';
 
-    public $timestamps = false;
-
+    /**
+     * @param int $notationId
+     */
     protected static function addViewNotation(int $notationId) {
 
        $check_note = NotationViewModel::where('view_date', '=', Carbon::now()->format('Y-m-d'))

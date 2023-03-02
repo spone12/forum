@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Notation;
 
 use App\Enums\Profile\ProfileEnum;
 use Illuminate\Database\Eloquent\Model;
@@ -15,15 +15,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class NotationModel extends Model
 {
     use hasFactory;
+
+    /** @var string  */
     protected $table = 'notations';
+    /** @var string  */
+    protected $primaryKey = 'notation_id';
+    /** @var bool  */
+    public $timestamps = false;
 
     /*protected $fillable = [
         'id_user', 'name_notation', 'text_notation','notation_add_date'
     ];*/
 
-    public $timestamps = false;
-
-    protected static function createNotation(Array $dataNotation) {
+    protected static function createNotation(Array $dataNotation)
+    {
 
         if (Auth::check() && $dataNotation['method'] == 'add') {
             $notationId = DB::table('notations')->insertGetId([
@@ -40,7 +45,8 @@ class NotationModel extends Model
         else $notationId = false;
     }
 
-    protected function viewNotation(int $notationId) {
+    protected function viewNotation(int $notationId)
+    {
 
         $notation = DB::table('notations')
             ->select('notations.notation_id', 'notations.id_user',
@@ -94,7 +100,8 @@ class NotationModel extends Model
         return $notation;
     }
 
-    protected function dataEditNotation(int $notation_id) {
+    protected function dataEditNotation(int $notation_id)
+    {
 
         $data = array();
         $data['notation'] = DB::table('notations')
@@ -110,7 +117,8 @@ class NotationModel extends Model
         return $data;
     }
 
-    protected function notationRating(int $notation_id, int $action) {
+    protected function notationRating(int $notation_id, int $action)
+    {
 
         if (Auth::check()) {
             $checkRating = DB::table('vote_notation')
@@ -158,7 +166,8 @@ class NotationModel extends Model
       else return null;
     }
 
-    protected function notationEdit(Array $data_notation_edit) {
+    protected function notationEdit(Array $data_notation_edit)
+    {
 
         if (Auth::check()) {
             $upd = DB::table('notations')
@@ -178,7 +187,8 @@ class NotationModel extends Model
         }
     }
 
-    protected function notationDelete(int $notation_delete) {
+    protected function notationDelete(int $notation_delete)
+    {
 
         if (Auth::check())  {
             $notation = DB::table('notations')
@@ -213,7 +223,8 @@ class NotationModel extends Model
         }
     }
 
-    protected function notationPhotoDelete(array $photo_data) {
+    protected function notationPhotoDelete(array $photo_data)
+    {
 
         $check_added_photo = DB::table('notation_photos')
             ->select('id_user', 'path_photo')
@@ -238,7 +249,8 @@ class NotationModel extends Model
         }
     }
 
-    protected static function notationAddPhotos($request) {
+    protected static function notationAddPhotos($request)
+    {
 
         $paths = array();
         if ($request->hasFile('images')) {

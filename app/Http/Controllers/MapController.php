@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\NotationModel;
+use App\Models\Notation\NotationModel;
 
 class MapController extends Controller
 {

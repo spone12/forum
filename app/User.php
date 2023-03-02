@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use App\Models\Notation\NotationModel;
+use App\Models\ProfileModel;
 use Cache;
 use Auth;
 
@@ -15,13 +17,14 @@ class User extends Authenticatable
 
     /**
      * The attributes that are mass assignable.
-     * массив данных при создании пользователя user_create
+     * array fillable fields
      * @var array
      */
     protected $fillable = [
         'name', 'email', 'password', 'ip_user','browser_user'
     ];
 
+    /** @var string  */
     protected $table = 'users';
 
     /**
@@ -40,7 +43,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        "last_online_at" => "datetime"
+        'last_online_at' => "datetime"
     ];
 
     public function generateApiKey() {
@@ -58,10 +61,10 @@ class User extends Authenticatable
     }
 
     public function descriptionProfile() {
-        return $this->hasOne('\App\Models\ProfileModel', 'id_user', 'id');
+        return $this->hasOne(ProfileModel::class, 'id_user', 'id');
     }
 
     public function notations() {
-        return $this->hasMany('\App\Models\NotationModel', 'id_user', 'id');
+        return $this->hasMany(NotationModel::class, 'id_user', 'id');
     }
 }

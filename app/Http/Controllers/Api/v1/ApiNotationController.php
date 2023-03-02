@@ -4,42 +4,47 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Api\v1\ApiNotationModel;
-use App\Models\NotationModel;
+use App\Models\Notation\NotationModel;
 use App\User;
 
 class ApiNotationController extends Controller
 {
+    /** @var @var $userObj */
     private $userObj;
 
-    function __construct(Request $request) {
+    function __construct(Request $request)
+    {
 
         $apiKey  =  request()->only('api_key');
         $apiToken = $request->bearerToken();
-        $this->userObj = User::where('api_token', $apiToken)->where('api_key', $apiKey)->first();
+        $this->userObj = User::where('api_token', $apiToken)
+            ->where('api_key', $apiKey)
+            ->first();
     }
 
-    protected function list() {
+    protected function list()
+    {
         return response()->json(['notations' => $this->userObj->notations]);
     }
 
-    protected function getNotationById(Request $request) {
+    protected function getNotationById(Request $request)
+    {
 
         $notationObj = $this->getNotationObj($request)->get();
         return $notationObj;
     }
 
-    protected function updateNotation(Request $request) {
+    protected function updateNotation(Request $request)
+    {
 
         $notationObj = $this->getNotationObj($request);
         $isUpdate = $notationObj->update([
             'text_notation' => $request->input('text')
         ]);
 
-        if($isUpdate){
+        if ($isUpdate) {
             return response()->json([ 'success' => 'Notation update successfuly']);
-        }
-        else {
+        } else {
             return response()->json([ 'error' => 'Notation not updated!']);
         }
     }
@@ -50,10 +55,9 @@ class ApiNotationController extends Controller
         $notation = NotationModel::where('notation_id', $notationId)
             ->where('id_user', $this->userObj->id);
 
-        if(count($notation->get())) {
+        if (count($notation->get())) {
             return $notation;
-        }
-        else {
+        } else {
             return response()->json([ 'error' => 'Notation not found' ], 404 );
         }
     }

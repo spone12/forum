@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\NotationModel;
+use App\Models\Notation\NotationModel;
 use App\Models\Notation\NotationViewModel;
 use App\Http\Requests\NotationRequest;
 use App\Http\Requests\NotationPhotoRequest;
@@ -34,7 +34,6 @@ class NotationController extends Controller
         }
 
         return view('menu.notation_view', ['view' => $view]);
-
     }
 
     protected function NotationEditAccess(int $notationId)
@@ -43,10 +42,12 @@ class NotationController extends Controller
         {
             $data_edit = NotationModel::dataEditNotation($notationId);
 
-           if($data_edit['notation']->id_user == Auth::user()->id)
-                return view('menu.Notation.notation_edit', ['data_notation' => $data_edit['notation'],
-                        'photo_notation' => $data_edit['notation_photos']]);
-           else  return view('error_404', ['error' => ['Доступ на редактирование запрещён']]);
+           if ($data_edit['notation']->id_user == Auth::user()->id) {
+               return view('menu.Notation.notation_edit', ['data_notation' => $data_edit['notation'],
+                   'photo_notation' => $data_edit['notation_photos']]);
+           } else {
+               return view('error_404', ['error' => ['Доступ на редактирование запрещён']]);
+           }
         }
         catch (\Exception $exception)
         {
@@ -56,8 +57,8 @@ class NotationController extends Controller
 
     protected function NotationEdit(Request $request)
     {
-        if($request->ajax())
-        {
+
+        if ($request->ajax()) {
             $input = $request->only(['notation_id','name_tema','text_notation']); //получение входных данных
             $edit = NotationModel::notationEdit($input);
 
@@ -67,8 +68,7 @@ class NotationController extends Controller
 
     protected function NotationRating(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $input = $request->all();
             $back = NotationModel::notationRating($input['notation_id'], $input['action']);
 
@@ -78,8 +78,7 @@ class NotationController extends Controller
 
     protected function NotationDelete(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $input = $request->only(['notation_id']); //получение всех входных данных
             $back = NotationModel::notationDelete($input['notation_id']);
 
@@ -92,18 +91,18 @@ class NotationController extends Controller
     {
         $paths = NotationModel::notationAddPhotos($request);
 
-        if(!empty($paths))
-        {
-            return back()
-            ->with('success', "Изображения загружены успешно.")
-            ->with('paths', $paths);
-        }
-        else
+        if (!empty($paths)) {
+
+            return back()->with('success', "Изображения загружены успешно.")
+                ->with('paths', $paths);
+        } else {
             return back()->with('error', "Изображения не загружены!");
+        }
     }
 
     protected function NotationPhotoDelete(Request $request)
     {
+
         $photo_data = $request->only(['photo_id', 'notation_id']);
         $del = NotationModel::notationPhotoDelete($photo_data);
 
