@@ -24,7 +24,10 @@ class SearchService
      */
     public function byUser(object $search) {
 
-        return $this->searchRepository->searchByUser($search);
+        $searchResult = $this->searchRepository->searchByUser($search);
+        $searchResult->view = 1;
+        $searchResult->search = $search->search;
+        return $searchResult;
     }
 
     /**
@@ -33,6 +36,9 @@ class SearchService
      */
     public function byNotation(object $search) {
 
-        return $this->searchRepository->searchByNotation($search);
+        $searchResult = $this->searchRepository->searchByNotation($search);
+        $searchResult->view = 2;
+        $searchResult->search = $search->search;
+        return $searchResult;
     }
 }
