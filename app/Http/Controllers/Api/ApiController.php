@@ -9,8 +9,16 @@ use Illuminate\Support\Str;
 use App\User;
 use Auth;
 
+/**
+ * Class ApiController
+ * @package App\Http\Controllers\Api
+ */
 class ApiController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateToken(Request $request)
     {
         $token = Str::random(80);

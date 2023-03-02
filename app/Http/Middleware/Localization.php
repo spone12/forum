@@ -5,6 +5,10 @@ namespace App\Http\Middleware;
 use Closure;
 use Session;
 
+/**
+ * Class Localization
+ * @package App\Http\Middleware
+ */
 class Localization
 {
     /**
@@ -16,12 +20,10 @@ class Localization
      */
     public function handle($request, Closure $next)
     {
-        if (Session::has('locale')) 
-        {
+        if (Session::has('locale')) {
             \App::setLocale(Session::get('locale'));
-        
-        }
 
+        }
         return $next($request);
     }
 }

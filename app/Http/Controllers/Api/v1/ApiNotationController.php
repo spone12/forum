@@ -7,11 +7,19 @@ use Illuminate\Http\Request;
 use App\Models\Notation\NotationModel;
 use App\User;
 
+/**
+ * Class ApiNotationController
+ * @package App\Http\Controllers\Api\v1
+ */
 class ApiNotationController extends Controller
 {
     /** @var @var $userObj */
     private $userObj;
 
+    /**
+     * ApiNotationController constructor.
+     * @param Request $request
+     */
     function __construct(Request $request)
     {
 
@@ -22,11 +30,18 @@ class ApiNotationController extends Controller
             ->first();
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function list()
     {
         return response()->json(['notations' => $this->userObj->notations]);
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     protected function getNotationById(Request $request)
     {
 
@@ -34,6 +49,10 @@ class ApiNotationController extends Controller
         return $notationObj;
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function updateNotation(Request $request)
     {
 
@@ -49,6 +68,10 @@ class ApiNotationController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     private function getNotationObj(Request $request) {
 
         $notationId = (int)$request->input('notation_id');
