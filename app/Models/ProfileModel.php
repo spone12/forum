@@ -8,8 +8,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\User as User;
 
+/**
+ * Class ProfileModel
+ * @package App\Models
+ */
 class ProfileModel extends Model
 {
+    /** @var string */
     protected $table = 'description_profile';
     protected $fillable = [
         'id_user'

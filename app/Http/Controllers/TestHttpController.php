@@ -6,11 +6,22 @@ use Illuminate\Http\Request;
 
 class TestHttpController extends Controller
 {
+    /**
+     * @return mixed
+     */
     protected function http() {
 
         return $this->guzzleCreate('post', '/api/v1/notation/list');
     }
 
+    /**
+     * @param string $method
+     * @param $address
+     * @param array $queryParams
+     * @param array $headers
+     * @param string $baseUri
+     * @return mixed
+     */
     protected function guzzleCreate($method = 'get', $address, $queryParams = [], $headers = [], $baseUri = 'http://l.forum') {
 
         $client = new \GuzzleHttp\Client([

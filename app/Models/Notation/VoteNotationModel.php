@@ -3,19 +3,32 @@
 namespace App\Models\Notation;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\NotationModel;
+use App\Models\Notation\NotationModel;
 use App\User;
 
+/**
+ * Class VoteNotationModel
+ * @package App\Models\Notation
+ */
 class VoteNotationModel extends Model
 {
+    /** @var string */
     protected $table = 'vote_notation';
+    /** @var string */
     protected $primaryKey = 'vote_notation_id';
+    /** @var bool */
     public $timestamps = false;
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function notation() {
         return $this->belongsTo(NotationModel::class, 'notation_id', 'notation_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user() {
         return $this->belongsTo(User::class, 'id', 'id_user');
     }

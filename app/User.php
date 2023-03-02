@@ -6,22 +6,29 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use App\Models\Notation\NotationModel;
+use App\Models\ProfileModel;
 use Cache;
 use Auth;
 
+/**
+ * Class User
+ * @package App
+ */
 class User extends Authenticatable
 {
     use Notifiable;
 
     /**
      * The attributes that are mass assignable.
-     * массив данных при создании пользователя user_create
+     * array fillable fields
      * @var array
      */
     protected $fillable = [
         'name', 'email', 'password', 'ip_user','browser_user'
     ];
 
+    /** @var string  */
     protected $table = 'users';
 
     /**
@@ -40,9 +47,12 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        "last_online_at" => "datetime"
+        'last_online_at' => "datetime"
     ];
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function generateApiKey() {
 
         $userId = Auth::user()->id;
@@ -53,15 +63,25 @@ class User extends Authenticatable
         return response()->json([ 'api_key' => $apiKey ]);
     }
 
+    /**
+     * @param int $id_user
+     * @return mixed
+     */
     public function isOnline(int $id_user) {
         return Cache::get('User_is_online-' . $id_user);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function descriptionProfile() {
-        return $this->hasOne('\App\Models\ProfileModel', 'id_user', 'id');
+        return $this->hasOne(ProfileModel::class, 'id_user', 'id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function notations() {
-        return $this->hasMany('\App\Models\NotationModel', 'id_user', 'id');
+        return $this->hasMany(NotationModel::class, 'id_user', 'id');
     }
 }

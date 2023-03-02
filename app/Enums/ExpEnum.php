@@ -2,6 +2,10 @@
 
 namespace App\Enums;
 
+/**
+ * Class ExpEnum
+ * @package App\Enums
+ */
 class ExpEnum
 {
     /*

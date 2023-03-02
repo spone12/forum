@@ -5,30 +5,45 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Service\Chat\ChatService;
 
+/**
+ * Class ChatController
+ * @package App\Http\Controllers
+ */
 class ChatController extends Controller
 {
+    /** @var ChatService */
     protected $chatService;
 
-    function __construct(ChatService $chatService) {
+    /**
+     * ChatController constructor.
+     * @param ChatService $chatService
+     */
+    function __construct(ChatService $chatService)
+    {
         $this->chatService = $chatService;
     }
 
     /**
      * Controller user chats
-     * @param Request $request
-     * @return
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|
+     * \Illuminate\Contracts\View\Factory|
+     * \Illuminate\Contracts\View\View
      */
-    protected function chat() {
+    protected function chat()
+    {
 
         return view('menu.Chat.chat', ['userChats' => $this->chatService->chat()]);
     }
 
     /**
      * Controller search chat
+     *
      * @param Request $request
-     * @return
+     * @return \Illuminate\Http\JsonResponse
      */
-    protected function searchChat(Request $request) {
+    protected function searchChat(Request $request)
+    {
 
         $word = $request->only(['word']);
         $data = $this->chatService->search($word);
@@ -38,10 +53,12 @@ class ChatController extends Controller
 
     /**
      * Controller message send
+     *
      * @param Request $request
-     * @return
+     * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendMessage(Request $request) {
+    protected function sendMessage(Request $request)
+    {
 
         $data = $request->only([
             'message',
@@ -54,20 +71,23 @@ class ChatController extends Controller
 
     /**
      * Controller current user dialogs
-     * @param $value int value - mix (dialogId or userId)
+     *
+     * @param int $value - mix (dialogId or userId)
      * @param Request $request
-     * @return
+     * @return \Illuminate\Contracts\Foundation\Application|
+     * \Illuminate\Contracts\View\Factory|
+     * \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    protected function dialog(int $value, Request $request) {
+    protected function dialog(int $value, Request $request)
+    {
 
         $dialogId = $value;
         $fromProfile = $request->get('fromProfile');
-        if(!is_null($fromProfile)) {
+        if (!is_null($fromProfile)) {
 
             $dialogId = $this->chatService->dialogId($value);
             $userDialog =  $this->chatService->userDialog($dialogId, $value);
-        }
-        else {
+        } else {
 
             $userDialog =  $this->chatService->userDialog($dialogId);
         }

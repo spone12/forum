@@ -1,13 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Service\HomeService;
 
+/**
+ * Class HomeController
+ * @package App\Http\Controllers
+ */
 class HomeController extends Controller
 {
-
+    /** @var HomeService */
     protected $homeService;
 
+    /**
+     * HomeController constructor.
+     * @param HomeService $homeService
+     */
     function __construct(HomeService $homeService) {
         $this->homeService = $homeService;
     }
@@ -15,8 +24,10 @@ class HomeController extends Controller
     /**
      * Show the home page
      *
-     * @return
-     */
+     * @return \Illuminate\Contracts\Foundation\Application|
+     * \Illuminate\Contracts\View\Factory|
+     * \Illuminate\Contracts\View\View|\never
+    */
     public function index()
     {
 

@@ -3,17 +3,26 @@
 namespace App\Models\Chat;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use App\Models\Chat\ChatModel;
 
+/**
+ * Class DialogModel
+ * @package App\Models\Chat
+ */
 class DialogModel extends Model
 {
+    /** @var string */
     protected $table = 'dialog';
-    protected $dates = ['date_create'];
+    /** @var string */
     protected $primaryKey = 'dialog_id';
+    /** @var string[] */
+    protected $dates = ['date_create'];
 
-    public function messages () {
-        return $this->hasMany('\App\Models\Chat\ChatModel', 'dialog', 'dialog_id');
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages ()
+    {
+        return $this->hasMany(ChatModel::class, 'dialog', 'dialog_id');
     }
 }
