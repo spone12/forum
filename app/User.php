@@ -11,6 +11,10 @@ use App\Models\ProfileModel;
 use Cache;
 use Auth;
 
+/**
+ * Class User
+ * @package App
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -46,6 +50,9 @@ class User extends Authenticatable
         'last_online_at' => "datetime"
     ];
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function generateApiKey() {
 
         $userId = Auth::user()->id;
@@ -56,14 +63,24 @@ class User extends Authenticatable
         return response()->json([ 'api_key' => $apiKey ]);
     }
 
+    /**
+     * @param int $id_user
+     * @return mixed
+     */
     public function isOnline(int $id_user) {
         return Cache::get('User_is_online-' . $id_user);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function descriptionProfile() {
         return $this->hasOne(ProfileModel::class, 'id_user', 'id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function notations() {
         return $this->hasMany(NotationModel::class, 'id_user', 'id');
     }
