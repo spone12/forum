@@ -11,7 +11,10 @@ use App\Models\ProfileModel;
 use App\Models\Notation\VoteNotationModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-
+/**
+ * Class NotationModel
+ * @package App\Models\Notation
+ */
 class NotationModel extends Model
 {
     use hasFactory;

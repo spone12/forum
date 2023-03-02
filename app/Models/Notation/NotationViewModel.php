@@ -5,6 +5,10 @@ namespace App\Models\Notation;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
+/**
+ * Class NotationViewModel
+ * @package App\Models\Notation
+ */
 class NotationViewModel extends Model
 {
     /** @var string */

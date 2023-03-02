@@ -4,6 +4,10 @@ namespace App\Models\Chat;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class ChatModel
+ * @package App\Models\Chat
+ */
 class ChatModel extends Model
 {
     /** @var string */

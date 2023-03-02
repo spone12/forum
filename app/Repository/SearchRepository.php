@@ -5,6 +5,10 @@ namespace App\Repository;
 use App\Models\Notation\NotationModel;
 use App\User;
 
+/**
+ * Class SearchRepository
+ * @package App\Repository
+ */
 class SearchRepository
 {
 

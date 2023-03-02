@@ -4,9 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Notation\NotationModel;
 
+/**
+ * Class MapController
+ * @package App\Http\Controllers
+ */
 class MapController extends Controller
 {
-    protected function view_map()
+    /**
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|
+     * \Illuminate\Contracts\View\Factory|
+     * \Illuminate\Contracts\View\View
+     */
+    protected function viewMap()
     {
         return view('map');
     }

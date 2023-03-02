@@ -45,7 +45,7 @@ Route::prefix('notation')->group(function()
     ->where('photo_id','[0-9]{1,11}')->middleware('auth');
 });
 
-Route::get('/map', 'MapController@view_map')->name('map')->middleware('auth');
+Route::get('/map', 'MapController@viewMap')->name('map')->middleware('auth');
 
 //Integrations
 Route::match(['get', 'post'], "/vk_bot_callback", function (Request $request)

@@ -6,8 +6,13 @@ use App\Repository\Chat\ChatRepository;
 
 class ChatService
 {
+    /** @var ChatRepository */
     protected $chatRepository;
 
+    /**
+     * ChatService constructor.
+     * @param ChatRepository $chatRepository
+     */
     function __construct(ChatRepository $chatRepository) {
 
         $this->chatRepository = $chatRepository;
@@ -15,6 +20,7 @@ class ChatService
 
     /**
      * Chat service
+     *
      * @param int $limit
      * @return
      */
@@ -25,6 +31,7 @@ class ChatService
 
     /**
      * Dialog id service
+     *
      * @param int $value
      * @return
      */
@@ -35,6 +42,7 @@ class ChatService
 
     /**
      * Search service
+     *
      * @param array $word
      * @return
      */
@@ -45,6 +53,7 @@ class ChatService
 
     /**
      * Message service
+     *
      * @param array $data
      * @return
      */
@@ -57,6 +66,7 @@ class ChatService
 
     /**
      * User dialog service
+     *
      * @param int $dialogId
      * @param int $userMessageWithId
      * @return array

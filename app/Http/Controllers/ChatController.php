@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Service\Chat\ChatService;
 
+/**
+ * Class ChatController
+ * @package App\Http\Controllers
+ */
 class ChatController extends Controller
 {
     /** @var ChatService */

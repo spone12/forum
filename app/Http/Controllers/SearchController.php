@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Service\SearchService;
 
+/**
+ * Class SearchController
+ * @package App\Http\Controllers
+ */
 class SearchController extends Controller
 {
 

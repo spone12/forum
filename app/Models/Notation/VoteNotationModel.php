@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Notation\NotationModel;
 use App\User;
 
+/**
+ * Class VoteNotationModel
+ * @package App\Models\Notation
+ */
 class VoteNotationModel extends Model
 {
     /** @var string */

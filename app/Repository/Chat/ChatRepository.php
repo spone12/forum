@@ -12,13 +12,18 @@ use Illuminate\Support\Facades\DB;
 use App\Enums\Profile\ProfileEnum;
 use \Illuminate\Support\Str;
 
+/**
+ * Class ChatRepository
+ * @package App\Repository\Chat
+ */
 class ChatRepository
 {
     /**
      * Get current user's dialogs
+     *
      * @param int $limit
      * @return Collection
-     */
+    */
     public function getUserChats(int $limit = 0): Collection {
 
         $userDialogs = DB::table('dialog')
@@ -37,7 +42,7 @@ class ChatRepository
         foreach ($userDialogs as $k => $chat) {
 
             $lastMessage = ChatModel::where('dialog', $chat->dialog_id)->orderBy('created_at', 'DESC')->first();
-            if(is_null($lastMessage)) {
+            if (is_null($lastMessage)) {
                 unset($userDialogs[$k]);
                 continue;
             }
@@ -59,7 +64,7 @@ class ChatRepository
 
             $this->checkAvatarExist($userDialogs[$k]);
 
-            if(strlen($lastMessage->text) >= 50) {
+            if (strlen($lastMessage->text) >= 50) {
                 $lastMessage->text = Str::limit($chat->text, 50);
             }
         }
@@ -68,10 +73,11 @@ class ChatRepository
     }
 
     /**
-     * search word in the chats
+     * Search word in the chats
+     *
      * @param $word string
      * @return Collection
-     */
+    */
     public function search(string $word, $limit = 10): Collection {
 
         $searchResult = DB::table('dialog')
@@ -97,7 +103,7 @@ class ChatRepository
             ->limit($limit)
             ->get();
 
-        foreach($searchResult as $search) {
+        foreach ($searchResult as $search) {
 
             $userObj = User::where('id', $search->send)->first();
 
@@ -111,11 +117,12 @@ class ChatRepository
 
     /**
      * Send message in dialog
+     *
      * @param $message string
      * @param $dialogId int
      * @param $userId int
-     * @return array
-     */
+     * @return array|string
+    */
     public function sendMessage(string $message, int $dialogId, int $userId) {
 
         $dialogId = $this->getDialogId($userId, $dialogId);
@@ -129,8 +136,7 @@ class ChatRepository
                     'text' => $message,
                     'created_at' => Carbon::now()
                 ]);
-        }
-        catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             #### repair
             return $exception->getMessage();
         }
@@ -146,10 +152,11 @@ class ChatRepository
 
     /**
      * Get dialog Id or create new
+     *
      * @param $userId int
      * @param $dialogId int
      * @return int
-     */
+    */
     public function getDialogId($userId, $dialogId = 0): int {
 
         if ($dialogId == 0) {
@@ -167,12 +174,11 @@ class ChatRepository
                         ->where('d.recive', Auth::user()->id);
                 })
                 ->first();
-        }
-        else {
+        } else {
             $dialogExist = DialogModel::where('dialog_id', $dialogId)->exists();
         }
 
-        if(empty($dialogExist) || $dialogExist == false) {
+        if (empty($dialogExist) || $dialogExist == false) {
 
             $dialogId = DB::table('dialog')->insertGetId([
                 'send' =>  Auth::user()->id,
@@ -184,12 +190,13 @@ class ChatRepository
     }
 
     /**
-     * get user dialog by ID
+     * Get user dialog by ID
+     *
      * @param $userId int
      * @param $dialogId int
      * @param $message string
      * @return array
-     */
+    */
     public function getUserDialog(int $dialogId, $userMessageWithId = 0): array {
 
         $currentUserId =  Auth::user()->id;
@@ -216,7 +223,7 @@ class ChatRepository
 
         if (count($dialogMessages)) {
 
-            // get id of the user we are talking to
+            // Get id of the user we are talking to
             $anotherUserId = ($dialogMessages[0]->send == $currentUserId) ?
                 $dialogMessages[0]->recive :
                 $dialogMessages[0]->send;
@@ -241,8 +248,7 @@ class ChatRepository
                     $dialog->id = $anotherUserObj->id;
                 }
             }
-        }
-        else {
+        } else {
             $anotherUserId = $userMessageWithId;
         }
 
@@ -255,18 +261,19 @@ class ChatRepository
 
     /**
      * Formate create date message value
+     *
      * @param $obj
      * @param $currentDate string
      * @return void
-     */
+    */
     private function formatChatDate($obj, $currentDate = '') {
-        $chatDate = Carbon::parse($obj->created_at);
 
-        if(empty($currentDate)) {
+        $chatDate = Carbon::parse($obj->created_at);
+        if (empty($currentDate)) {
             $currentDate = Carbon::now()->format('d.m.Y');
         }
 
-        if($currentDate == $chatDate->format('d.m.Y')) {
+        if ($currentDate == $chatDate->format('d.m.Y')) {
             $obj->created_at =  $chatDate->format('H:i');
         } else {
             $obj->created_at = $chatDate->format('d.m.Y H:i');
@@ -275,12 +282,13 @@ class ChatRepository
 
     /**
      * If empty avatar then set No avatar IMG
+     *
      * @param $obj
      * @return void
      */
     private function checkAvatarExist($obj) {
 
-        if(!$obj->avatar)
+        if (!$obj->avatar)
             $obj->avatar = ProfileEnum::NO_AVATAR;
     }
 }
