@@ -3,6 +3,7 @@
 namespace App\Models\Chat;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Chat\ChatModel;
 
 /**
  * Class DialogModel
@@ -22,6 +23,6 @@ class DialogModel extends Model
      */
     public function messages ()
     {
-        return $this->hasMany('\App\Models\Chat\ChatModel', 'dialog', 'dialog_id');
+        return $this->hasMany(ChatModel::class, 'dialog', 'dialog_id');
     }
 }

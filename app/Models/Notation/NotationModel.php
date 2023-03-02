@@ -15,6 +15,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class NotationModel
+ *
+ * @property int $notation_id
+ * @property int $id_user
+ * @property smallint $category
+ * @property string $name_notation
+ * @property string $text_notation
+ * @property int $rating
+ * @property double $star_rating
+ * @property timestamp $notation_add_date
+ * @property timestamp|null $notation_edit_date
+ *
  * @package App\Models\Notation
  */
 class NotationModel extends Model
@@ -178,11 +189,12 @@ class NotationModel extends Model
             }
 
             if($action) {
-                $string = "SET `rating` =  `rating` + 1";
+                $set = "SET `rating` = `rating` + 1";
+            } else {
+                $set = "SET `rating` = `rating` - 1";
             }
-            else  $string = "SET `rating` =  `rating` - 1";
 
-            DB::statement("UPDATE `notations` {$string} WHERE `notation_id` =  {$notationId}");
+            DB::statement("UPDATE `notations` {$set} WHERE `notation_id` = {$notationId}");
             return $dbMove;
       }
       else return null;
