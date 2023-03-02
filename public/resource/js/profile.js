@@ -1,44 +1,40 @@
 jQuery(function()
 {
-  $('#page_avatar_edit').on('click', function()
-  {
+  $('#page_avatar_edit').on('click', function() {
     $('#user_avatar').click();
   });
 
-  $("#user_avatar").change(function()
-  { 
-    $("#form_change_avatar").submit(); 
+  $("#user_avatar").change(function() {
+    $("#form_change_avatar").submit();
   });
-  
 });
 
 function generateApiKey() {
 
     $.ajax(
+    {
+        url: '/generate_api_key/',
+        type: "PUT",
+        dataType: "JSON",
+        headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+        success: function (data)
         {
-            url: '/generate_api_key/',
-            type: "PUT",
-            dataType: "JSON",
-            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-            success: function (data) 
-            {
-                $('#apiKey').val(data.api_key);
-                tata.success('', 'Api ключ успешно установлен', {
-                    duration: 2000,
-                    animate: 'slide',
-                    position: 'tr',
-                    onClose: function() {
-                       
-                    }
-                });
-              
-            },
-            error: function(data) 
-            {
-                var errors = data.responseJSON;
-                console.log(data.responseText);
-            }
-        });
+            $('#apiKey').val(data.api_key);
+            tata.success('', 'Api ключ успешно установлен', {
+                duration: 2000,
+                animate: 'slide',
+                position: 'tr',
+                onClose: function() {
+
+                }
+            });
+        },
+        error: function(data)
+        {
+            var errors = data.responseJSON;
+            console.log(data.responseText);
+        }
+    });
 }
 
 function edit_profile()
@@ -51,32 +47,29 @@ function edit_profile()
     let id_user = $('#id_user').val();
     let phone = $('#phone_user').val();
 
-    let data_send = {name, gender, town_user, date_user, about_user, id_user, phone};
-    
+    let data_send = { name, gender, town_user, date_user, about_user, id_user, phone };
+
     $.ajax(
         {
             url: '/change_profile_confirm/' + id_user,
             type: "PUT",
             data: {
-                    data_send: data_send
-                  },
+                data_send: data_send
+            },
             dataType: "JSON",
             headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-            success: function (data) 
+            success: function (data)
             {
-              if(!data.data_user.original.status)
-              {
+              if (!data.data_user.original.status) {
 
                 let errorsHtml = '<div class="alert alert-primary">' +
                                     '<ul>' +
                                     '<li>Вы не изменили ни одного поля</li>' +
                                     '</ul>' +
                                 '</div>';
-                                
+
                 $('#form-errors').html( errorsHtml );
-              }
-              else
-              {
+              } else {
                 tata.success('', 'Профиль успешно изменён', {
                     duration: 2000,
                     animate: 'slide',
@@ -87,7 +80,7 @@ function edit_profile()
                 });
               }
             },
-            error: function(data) 
+            error: function(data)
             {
                 var errors = data.responseJSON;
                 console.log(data.responseText);
@@ -107,6 +100,6 @@ function updateConfidentiality(id)
                                     "</div>" +
                                   "<div class='row align-items-center'><button class='col-12 btn btn-primary'>Готово</button></div>"
                                   );
-                    
+
     $('#modal_window').modal('show');
 }

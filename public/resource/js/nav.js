@@ -1,24 +1,21 @@
-$(function() 
+$(function()
 {
     //ROTATED//
     $rotated = false;
     $('#navbarDropdown').hover(function()
     {
-        if($rotated == false)
-        {
+        if ($rotated == false) {
             $('#navigation_arrow').css({
                 'transform': 'rotate(' + 90 + 'deg)',
                 'transition': 'all 0.5s ease 0s'
              });
              $rotated = true;
-        }
-        else
-        {
+        } else {
             $('#navigation_arrow').css({
                 'transform': 'rotate(' + 0 + 'deg)',
                 'transition': 'all 0.5s ease 0s'
-             });
-             $rotated = false;
+            });
+            $rotated = false;
         }
     });
     //END ROTATED
@@ -26,13 +23,10 @@ $(function()
     //PASSWORD VIEW //
     $('body').on('click', '.password-control', function()
     {
-        if ($('#password').attr('type') == 'password')
-        {
+        if ($('#password').attr('type') == 'password') {
             $(this).addClass('view');
             $('#password').attr('type', 'text');
-        } 
-        else
-        {
+        } else {
             $(this).removeClass('view');
             $('#password').attr('type', 'password');
         }
