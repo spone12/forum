@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\ProfileModel;
 use App\Models\Notation\VoteNotationModel;
-use App\Models\Notation\NotationViewModel;
 use App\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

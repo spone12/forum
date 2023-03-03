@@ -3,10 +3,20 @@
 namespace App\Models\Chat;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Chat\DialogModel;
 
 /**
  * Class ChatModel
+ *
+ * @property int $message_id
+ * @property int $dialog
+ * @property int $send
+ * @property int $recive
+ * @property text $text
+ * @property tinyint $read
+ * @property timestamp|null $created_at
+ * @property timestamp|null $updated_at
+ * @property timestamp|null $deleted_at
+ *
  * @package App\Models\Chat
  */
 class ChatModel extends Model

@@ -2,29 +2,27 @@
 
 namespace App\Models\Notation;
 
-use Illuminate\Database\Eloquent\Model;
 use App\User;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class VoteNotationModel
+ * Class NotationPhotosModel
  *
- * @property int $vote_notation_id
- * @property int $id_user
- * @property int $notation_id
- * @property smallint $vote
- * @property double $start
- * @property timestamp|null $vote_date
+ * @property int  $notation_photo_id
+ * @property int  $id_user
+ * @property int  $notation_id
+ * @property string $path_photo
+* @property date $photo_add_date
+* @property date $photo_edit_date
  *
  * @package App\Models\Notation
  */
-class VoteNotationModel extends Model
+class NotationPhotosModel extends Model
 {
     /** @var string */
-    protected $table = 'vote_notation';
+    protected $table = 'notation_photos';
     /** @var string */
-    protected $primaryKey = 'vote_notation_id';
-    /** @var bool */
-    public $timestamps = false;
+    protected $primaryKey = 'notation_photo_id';
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

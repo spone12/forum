@@ -16,7 +16,7 @@ class ViewsNotation extends Migration
         Schema::create('views_notation', function (Blueprint $table) {
             $table->increments('views_notation_id')->unsigned(false);
             $table->integer('notation_id')->comment('id news');
-            $table->text('counter_views')->comment('View counter');
+            $table->integer('counter_views')->comment('View counter');
             $table->date('view_date');
 
             $table->unique(['notation_id', 'view_date']);

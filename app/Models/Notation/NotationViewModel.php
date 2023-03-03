@@ -7,6 +7,12 @@ use Carbon\Carbon;
 
 /**
  * Class NotationViewModel
+ *
+ * @property int  $views_notation_id
+ * @property int  $notation_id
+ * @property int  $counter_views
+ * @property date $view_date
+ *
  * @package App\Models\Notation
  */
 class NotationViewModel extends Model
@@ -24,26 +30,19 @@ class NotationViewModel extends Model
     ];
 
     /**
+     * Create or increment view count
+     *
      * @param int $notationId
      */
-    protected static function addViewNotation(int $notationId) {
+    protected static function addViewNotation(int $notationId)
+    {
 
-       $check_note = NotationViewModel::where('view_date', '=', Carbon::now()->format('Y-m-d'))
-            ->where('notation_id', '=', $notationId)
-        ->exists();
-
-        if ($check_note) {
-
-            NotationViewModel::where('view_date', '=', Carbon::now()->format('Y-m-d'))
-                ->where('notation_id', '=', $notationId)
-            ->increment('counter_views');
-        } else {
-
-            $add = new NotationViewModel();
-                $add->notation_id = $notationId;
-                $add->counter_views  = $add->counter_views + 1;
-                $add->view_date =  Carbon::now()->format('Y-m-d');
-            $add->save();
-        }
+        $today = Carbon::today();
+        $notationView = NotationViewModel::firstOrNew([
+            'notation_id' => $notationId,
+            'view_date' => $today->toDateString()
+        ]);
+        $notationView->counter_views++;
+        $notationView->save();
     }
 }
