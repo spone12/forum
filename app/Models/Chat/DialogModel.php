@@ -3,10 +3,15 @@
 namespace App\Models\Chat;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Chat\ChatModel;
 
 /**
  * Class DialogModel
+ *
+ * @property int $dialog_id
+ * @property int $send
+ * @property int $recive
+ * @property timestamp $date_create
+ *
  * @package App\Models\Chat
  */
 class DialogModel extends Model

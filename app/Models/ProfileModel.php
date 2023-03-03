@@ -10,6 +10,17 @@ use App\User as User;
 
 /**
  * Class ProfileModel
+ *
+ * @property int $description_profile_id
+ * @property int $id_user
+ * @property smallint $lvl
+ * @property int $exp
+ * @property string|null $real_name
+ * @property date|null $date_born
+ * @property string|null $town
+ * @property string|null $phone
+ * @property string|null $about
+ *
  * @package App\Models
  */
 class ProfileModel extends Model

@@ -13,6 +13,24 @@ use Auth;
 
 /**
  * Class User
+ *
+ * @property int  $id
+ * @property string $name
+ * @property string $email
+ * @property string $email_verified_at
+ * @property string $password
+ * @property string $api_key
+ * @property string $api_token
+ * @property smallint $gender
+ * @property string $avatar
+ * @property string $remember_token
+ * @property date $created_at
+ * @property date $updated_at
+ * @property date $last_online_at
+ * @property date $date_change_profile
+ * @property string $ip_user
+ * @property string $browser_user
+ *
  * @package App
  */
 class User extends Authenticatable

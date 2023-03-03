@@ -15,10 +15,10 @@ class NotationPhotos extends Migration
     {
         Schema::create('notation_photos', function (Blueprint $table) {
             $table->increments('notation_photo_id')->unsigned(false);
-            $table->integer('id_user')->comment('id of the user who added the photo ');
-            $table->integer('notation_id')->comment('id news');
+            $table->integer('id_user')->comment('Id of the user who added the photo ');
+            $table->integer('notation_id')->comment('News id');
             $table->text('path_photo')->comment('Photo path');
-            $table->timestamp('photo_add_date')->useCurrent(); //CURRENTTIMESTAMP
+            $table->timestamp('photo_add_date')->useCurrent();
             $table->timestamp('photo_edit_date')->nullable();
 
             $table->foreign('id_user')->references('id')
