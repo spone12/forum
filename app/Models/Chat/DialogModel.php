@@ -28,6 +28,6 @@ class DialogModel extends Model
      */
     public function messages ()
     {
-        return $this->hasMany(ChatModel::class, 'dialog', 'dialog_id');
+        return $this->hasMany(MessagesModel::class, 'dialog', 'dialog_id');
     }
 }

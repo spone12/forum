@@ -66,7 +66,7 @@
                                 <strong class='notation_tema'> {{ $view[0]->name_notation}} </strong>
                             </div>
                             @auth
-                                @if (Auth::user()->id === $view[0]->id_user)
+                                @if (Auth::user()->id === $view[0]->user_id)
                                 <div class='col-2 align-self-end'>
                                     <a class='no_decor' href="{{ route('notation_edit_id', $view[0]->notation_id) }}">
                                         <img id="notation_edit" class='marker' width=20 data-toggle="tooltip" data-placement="bottom" title='{{ trans('notation.edit') }}' alt='{{ trans('notation.edit') }}' src="{{ asset('img/icons/edit.png') }}">
@@ -81,7 +81,7 @@
                             <div class='col-4 col-sm-3 add_notation_who'>{{ trans('notation.added') }}:</div>
                             <div class='col-5 col-sm-3 add_notation_who'>
                                 <img class='mini_avatar' data-toggle="tooltip" data-placement="bottom" title='{{$view[0]->name}}' width=30 src="{{ asset($view[0]->avatar) }}" />
-                                <a href='/profile/{{$view[0]->id_user}}'  class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='{{ trans('profile.goToProfile') }}'>{{$view[0]->name}}</a>
+                                <a href='/profile/{{$view[0]->user_id}}'  class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='{{ trans('profile.goToProfile') }}'>{{$view[0]->name}}</a>
                             </div>
                             <div class='col-4 col-sm-3 add_notation_who'>{{ trans('notation.dateAdd') }}:</div>
                             <div class='col-4 col-sm-3 add_notation_who'>{{$view[0]->notation_add_date}}</div>
@@ -161,7 +161,7 @@
                         <div>
                             <div class='col-12 add_notation_who'>
                                 <img class='commentProfilePhoto' data-toggle="tooltip" data-placement="bottom" title='{{$view[0]->name}}' width=30 src="{{ asset($view[0]->avatar) }}" />
-                                <a href='/profile/{{$view[0]->id_user}}' class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='{{ trans('profile.goToProfile') }}'>{{$view[0]->name}}</a>
+                                <a href='/profile/{{$view[0]->user_id}}' class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='{{ trans('profile.goToProfile') }}'>{{$view[0]->name}}</a>
                                 <span>10:12</span>
                             </div>
                         </div>

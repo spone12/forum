@@ -27,9 +27,8 @@ use Auth;
  * @property date $created_at
  * @property date $updated_at
  * @property date $last_online_at
- * @property date $date_change_profile
- * @property string $ip_user
- * @property string $browser_user
+ * @property string $registration_ip
+ * @property string $user_agent
  *
  * @package App
  */
@@ -43,7 +42,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'ip_user','browser_user'
+        'name', 'email', 'password', 'registration_ip', 'user_agent'
     ];
 
     /** @var string  */
@@ -82,24 +81,24 @@ class User extends Authenticatable
     }
 
     /**
-     * @param int $id_user
+     * @param int $userId
      * @return mixed
      */
-    public function isOnline(int $id_user) {
-        return Cache::get('User_is_online-' . $id_user);
+    public function isOnline(int $userId) {
+        return Cache::get('User_is_online-' . $userId);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function descriptionProfile() {
-        return $this->hasOne(ProfileModel::class, 'id_user', 'id');
+        return $this->hasOne(ProfileModel::class, 'user_id', 'id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function notations() {
-        return $this->hasMany(NotationModel::class, 'id_user', 'id');
+        return $this->hasMany(NotationModel::class, 'user_id', 'id');
     }
 }

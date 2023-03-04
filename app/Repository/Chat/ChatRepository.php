@@ -5,7 +5,7 @@ namespace App\Repository\Chat;
 use App\Models\Chat\DialogModel as DialogModel;
 use App\User;
 use Carbon\Carbon;
-use App\Models\Chat\ChatModel;
+use App\Models\Chat\MessagesModel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -41,7 +41,7 @@ class ChatRepository
 
         foreach ($userDialogs as $k => $chat) {
 
-            $lastMessage = ChatModel::where('dialog', $chat->dialog_id)->orderBy('created_at', 'DESC')->first();
+            $lastMessage = MessagesModel::where('dialog', $chat->dialog_id)->orderBy('created_at', 'DESC')->first();
             if (is_null($lastMessage)) {
                 unset($userDialogs[$k]);
                 continue;

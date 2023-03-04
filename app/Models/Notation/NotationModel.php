@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * Class NotationModel
  *
  * @property int $notation_id
- * @property int $id_user
+ * @property int $user_id
  * @property smallint $category
  * @property string $name_notation
  * @property string $text_notation
@@ -39,7 +39,7 @@ class NotationModel extends Model
     public $timestamps = false;
 
     /*protected $fillable = [
-        'id_user', 'name_notation', 'text_notation','notation_add_date'
+        'user_id', 'name_notation', 'text_notation','notation_add_date'
     ];*/
 
     /**
@@ -51,7 +51,7 @@ class NotationModel extends Model
 
         if (Auth::check() && $dataNotation['method'] == 'add') {
             $notationId = DB::table('notations')->insertGetId([
-                'id_user' =>  Auth::user()->id,
+                'user_id' =>  Auth::user()->id,
                 'name_notation' =>  trim(addslashes($dataNotation['name_tema'])),
                 'text_notation' =>  trim(addslashes($dataNotation['text_notation'])),
                 'notation_add_date' =>  Carbon::now(),
@@ -72,12 +72,12 @@ class NotationModel extends Model
     {
 
         $notation = DB::table('notations')
-            ->select('notations.notation_id', 'notations.id_user',
+            ->select('notations.notation_id', 'notations.user_id',
                 'notations.name_notation', 'notations.text_notation',
                 'notations.rating','users.name', 'users.avatar',
                 'notations.notation_add_date', 'np.path_photo')
-            ->join('users', 'users.id', '=', 'notations.id_user')
-            ->leftJoin('notation_photos AS np', 'np.notation_id', '=', 'notations.notation_id')
+            ->join('users', 'users.id', '=', 'notations.user_id')
+            ->leftJoin('notation_photo AS np', 'np.notation_id', '=', 'notations.notation_id')
             ->where('notations.notation_id', '=', $notationId)
         ->get();
 
@@ -85,7 +85,7 @@ class NotationModel extends Model
             $vote = DB::table('vote_notation')
                 ->select('vote_notation_id')
                 ->where('notation_id', '=', $notationId)
-                ->where('id_user', '=', Auth::user()->id)
+                ->where('user_id', '=', Auth::user()->id)
             ->get();
 
             if ($vote->count()) {
@@ -100,7 +100,7 @@ class NotationModel extends Model
             $notation[0]->avatar = ProfileEnum::NO_AVATAR;
         }
 
-        $notationViews = DB::table('views_notation')
+        $notationViews = DB::table('notation_views')
             ->select('counter_views','view_date')
             ->where('notation_id', '=', $notationId)
         ->orderBy('view_date')
@@ -132,11 +132,11 @@ class NotationModel extends Model
 
         $data = array();
         $data['notation'] = DB::table('notations')
-            ->select('id_user','notation_id','category','name_notation','text_notation')
+            ->select('user_id','notation_id','category','name_notation','text_notation')
             ->where('notation_id', '=', $notationId)
         ->first();
 
-        $data['notation_photos'] = DB::table('notation_photos')
+        $data['notation_photo'] = DB::table('notation_photo')
             ->select('path_photo','notation_photo_id')
             ->where('notation_id', '=', $notationId)
         ->get();
@@ -155,7 +155,7 @@ class NotationModel extends Model
         if (Auth::check()) {
             $checkRating = DB::table('vote_notation')
             ->select('vote_notation_id', 'vote')
-                ->where('id_user', '=', Auth::user()->id)
+                ->where('user_id', '=', Auth::user()->id)
                 ->where('notation_id', '=', $notationId)
             ->first();
 
@@ -163,7 +163,7 @@ class NotationModel extends Model
             if (empty($checkRating->vote_notation_id)) {
                 $dbMove = DB::table('vote_notation')->insert(
                     array(
-                        'id_user' => Auth::user()->id,
+                        'user_id' => Auth::user()->id,
                         'notation_id' => $notationId,
                         'vote' => $action,
                         'vote_date' => Carbon::now()
@@ -179,7 +179,7 @@ class NotationModel extends Model
                     return false;
 
                 $dbMove = DB::table('vote_notation')
-                    ->where('id_user', '=', Auth::user()->id)
+                    ->where('user_id', '=', Auth::user()->id)
                     ->where('notation_id', '=', $notationId)
                 ->update([
                     'vote' => $action,
@@ -208,7 +208,7 @@ class NotationModel extends Model
 
         if (Auth::check()) {
             $upd = DB::table('notations')
-            ->where('id_user', '=', Auth::user()->id)
+            ->where('user_id', '=', Auth::user()->id)
             ->where('notation_id', '=', $dataNotationEdit['notation_id'])
             ->update([
                'name_notation' =>  $dataNotationEdit['name_tema'],
@@ -233,15 +233,15 @@ class NotationModel extends Model
 
         if (Auth::check())  {
             $notation = DB::table('notations')
-                ->select('id_user','notation_id')
+                ->select('user_id', 'notation_id')
                 ->where('notation_id', '=', $notationDelete)
             ->first();
 
-            if($notation->id_user ===  Auth::user()->id) {
+            if($notation->user_id ===  Auth::user()->id) {
 
                 $destroy = DB::table('notations')
                     ->where('notation_id', '=', $notationDelete)
-                    ->where('id_user', '=',  Auth::user()->id)
+                    ->where('user_id', '=',  Auth::user()->id)
                 ->delete();
 
                 if ($destroy) {
@@ -271,14 +271,14 @@ class NotationModel extends Model
     protected function notationPhotoDelete(array $photoData)
     {
 
-        $check_added_photo = DB::table('notation_photos')
-            ->select('id_user', 'path_photo')
+        $check_added_photo = DB::table('notation_photo')
+            ->select('user_id', 'path_photo')
                 ->where('notation_id', '=', $photoData['notation_id'])
                 ->where('notation_photo_id', '=', $photoData['photo_id'])
             ->first();
 
-        if($check_added_photo->id_user == Auth::user()->id) {
-            $delete = DB::table('notation_photos')
+        if($check_added_photo->user_id == Auth::user()->id) {
+            $delete = DB::table('notation_photo')
                 ->where('notation_id', '=', $photoData['notation_id'])
                 ->where('notation_photo_id', '=', $photoData['photo_id'])
             ->delete();
@@ -307,13 +307,13 @@ class NotationModel extends Model
             $files = $request->file('images');
             foreach($files as $file) {
                 $imageName = uniqid() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path("img/notation_photos/{$request->notation_id}"), $imageName);
+                $file->move(public_path("img/notation_photo/{$request->notation_id}"), $imageName);
 
                 $ins =
-                DB::table('notation_photos')->insert(
-                    array('id_user' => Auth::user()->id,
+                DB::table('notation_photo')->insert(
+                    array('user_id' => Auth::user()->id,
                         'notation_id' => $request->notation_id,
-                        'path_photo' => "img/notation_photos/{$request->notation_id}/{$imageName}",
+                        'path_photo' => "img/notation_photo/{$request->notation_id}/{$imageName}",
                         'photo_edit_date' =>  Carbon::now())
                 );
 
@@ -328,7 +328,7 @@ class NotationModel extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user() {
-        return $this->belongsTo(User::class, 'id', 'id_user');
+        return $this->belongsTo(User::class, 'id', 'user_id');
     }
 
     /**

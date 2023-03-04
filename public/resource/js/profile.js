@@ -44,48 +44,52 @@ function edit_profile()
     let town_user = $('#town_user').val();
     let date_user = $('#date_user').val();
     let about_user = $('#about_user').val();
-    let id_user = $('#id_user').val();
+    let user_id = $('#user_id').val();
     let phone = $('#phone_user').val();
 
-    let data_send = { name, gender, town_user, date_user, about_user, id_user, phone };
+    let data_send = { name, gender, town_user, date_user, about_user, user_id, phone };
 
     $.ajax(
+    {
+        url: '/change_profile_confirm/' + user_id,
+        type: "PUT",
+        data: {
+            data_send: data_send
+        },
+        dataType: "JSON",
+        headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+        success: function (data)
         {
-            url: '/change_profile_confirm/' + id_user,
-            type: "PUT",
-            data: {
-                data_send: data_send
-            },
-            dataType: "JSON",
-            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-            success: function (data)
-            {
-              if (!data.data_user.original.status) {
 
-                let errorsHtml = '<div class="alert alert-primary">' +
-                                    '<ul>' +
-                                    '<li>Вы не изменили ни одного поля</li>' +
-                                    '</ul>' +
-                                '</div>';
+            if (!data.data_user.original.status) {
 
-                $('#form-errors').html( errorsHtml );
-              } else {
-                tata.success('', 'Профиль успешно изменён', {
-                    duration: 2000,
-                    animate: 'slide',
-                    position: 'tr',
-                    onClose: function(){
-                        window.location.href = '/profile';
-                    }
-                });
-              }
-            },
-            error: function(data)
-            {
-                var errors = data.responseJSON;
-                console.log(data.responseText);
-            }
-        });
+               let errorsHtml = '<div class="alert alert-primary">' +
+                                   '<ul>' +
+                                   '<li>Вы не изменили ни одного поля</li>' +
+                                   '</ul>' +
+                               '</div>';
+
+               $('#form-errors').html( errorsHtml );
+             } else {
+               tata.success('', 'Профиль успешно изменён', {
+                   duration: 2000,
+                   animate: 'slide',
+                   position: 'tr',
+                   onClose: function(){
+                       window.location.href = '/profile';
+                   }
+               });
+             }
+        },
+        error: function(data)
+        {
+            tata.error('', data.responseJSON.message, {
+                duration: 2000,
+                animate: 'slide',
+                position: 'tr'
+            });
+        }
+    });
 }
 
 function updateConfidentiality(id)

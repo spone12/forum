@@ -7,7 +7,7 @@
 @endpush
 
     {{
-         Form::hidden('id_user', $data_user->id, ['id' => 'id_user'])
+         Form::hidden('user_id', $data_user->id, ['id' => 'user_id'])
     }}
 
 <div id='form-errors'>

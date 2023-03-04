@@ -19,14 +19,13 @@ class CreateUsersTable extends Migration
             $table->string('email',191)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->smallInteger('gender')->default(1)->comment('Пол');
+            $table->smallInteger('gender')->default(1)->comment('Gender');
             $table->text('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->timestamp("last_online_at")->useCurrent();
-            $table->timestamp('date_change_profile')->nullable();
-            $table->ipAddress('ip_user');
-            $table->text('browser_user');
+            $table->ipAddress('registration_ip');
+            $table->text('user_agent');
         });
     }
 

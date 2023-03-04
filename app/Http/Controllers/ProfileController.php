@@ -7,6 +7,7 @@ use App\Models\ProfileModel;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProfileAvatarRequest;
 use Validator;
+use Illuminate\Http\Response;
 
 /**
  * Class ProfileController
@@ -75,10 +76,10 @@ class ProfileController extends Controller
                     throw new \Exception($back->original['errors']);
                 }
             } catch(\Exception $e) {
-                return [
+                return new Response([
                     'success' => false,
                     'message' => $e->getMessage()
-                ];
+                ], 500);
             }
 
             return array('data_user' => $back);

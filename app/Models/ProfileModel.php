@@ -12,7 +12,7 @@ use App\User as User;
  * Class ProfileModel
  *
  * @property int $description_profile_id
- * @property int $id_user
+ * @property int $user_id
  * @property smallint $lvl
  * @property int $exp
  * @property string|null $real_name
@@ -28,7 +28,7 @@ class ProfileModel extends Model
     /** @var string */
     protected $table = 'description_profile';
     protected $fillable = [
-        'id_user'
+        'user_id'
     ];
     public $timestamps = false;
     private static $typesAddExp = ['addNotation' => 10];
@@ -52,7 +52,7 @@ class ProfileModel extends Model
                     'dp.lvl',
                     'dp.exp'
                 )
-                ->leftJoin('description_profile AS dp', 'dp.id_user', '=', 'u.id')
+                ->leftJoin('description_profile AS dp', 'dp.user_id', '=', 'u.id')
                 ->where('id', '=', Auth::user()->id)
             ->first();
 
@@ -95,7 +95,7 @@ class ProfileModel extends Model
                 'dp.lvl',
                 'dp.exp'
             )
-            ->leftJoin('description_profile AS dp', 'dp.id_user', '=', 'u.id')
+            ->leftJoin('description_profile AS dp', 'dp.user_id', '=', 'u.id')
             ->where('id', '=', Auth::user()->id)
         ->first();
 
@@ -107,7 +107,7 @@ class ProfileModel extends Model
             $userData->exp -= $exp;
         }
 
-        ProfileModel::where('id_user',  Auth::user()->id)
+        ProfileModel::where('user_id',  Auth::user()->id)
         ->update([
             'exp' => $userData->exp,
             'lvl' => $userData->lvl
@@ -122,7 +122,7 @@ class ProfileModel extends Model
             $userId = Auth::user()->id;
         }
 
-        ProfileModel::where('id_user', '=', $userId)->increment('lvl');
+        ProfileModel::where('user_id', '=', $userId)->increment('lvl');
     }
 
     protected static function expGeneration(&$userData) {
@@ -130,7 +130,7 @@ class ProfileModel extends Model
         if (is_null($userData->lvl)) {
 
             ProfileModel::firstOrCreate([
-                'id_user' => $userData->id
+                'user_id' => $userData->id
             ]);
             $userData->lvl = 1;
         }
@@ -145,7 +145,7 @@ class ProfileModel extends Model
                     'description_profile.town','description_profile.date_born',
                     'description_profile.about', 'users.avatar', 'users.last_online_at',
                     'description_profile.phone', 'description_profile.lvl',  'description_profile.exp')
-            ->leftJoin('description_profile', 'description_profile.id_user', '=', 'users.id')
+            ->leftJoin('description_profile', 'description_profile.user_id', '=', 'users.id')
             ->where('users.id', '=', $id)
         ->first();
 
@@ -194,7 +194,7 @@ class ProfileModel extends Model
                     'description_profile.phone',
                     'users.api_key'
                 )
-                ->leftJoin('description_profile', 'description_profile.id_user', '=', 'users.id')
+                ->leftJoin('description_profile', 'description_profile.user_id', '=', 'users.id')
                 ->where('users.id', '=', $userId)
             ->first();
 
@@ -213,7 +213,7 @@ class ProfileModel extends Model
         {
             $userId = Auth::user()->id;
 
-            if ($userId === (INT)$userData['data_send']['id_user']) {
+            if ($userId === (INT)$userData['data_send']['user_id']) {
 
                 $updateProfile = 0;
                 if (preg_match("/[\d]+/", $userData['data_send']['name'])) {
@@ -227,10 +227,10 @@ class ProfileModel extends Model
                     $updateProfile = 1;
                 }
 
-                if (!ProfileModel::where('id_user', '=', $userId)->exists()) {
+                if (!ProfileModel::where('user_id', '=', $userId)->exists()) {
 
                     DB::table('description_profile')->insert([
-                            'id_user' => $userId,
+                            'user_id' => $userId,
                             'real_name' => $userData['data_send']['name'],
                             'date_born' =>  $userData['data_send']['date_user'],
                             'town'      => $userData['data_send']['town_user'],
@@ -242,7 +242,7 @@ class ProfileModel extends Model
                 } else {
 
                     DB::table('description_profile')
-                    ->where('id_user', '=', $userId)
+                    ->where('user_id', '=', $userId)
                     ->update([
                         'real_name' => $userData['data_send']['name'],
                         'date_born' =>  $userData['data_send']['date_user'],

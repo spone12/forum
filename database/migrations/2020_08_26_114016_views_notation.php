@@ -13,8 +13,8 @@ class ViewsNotation extends Migration
      */
     public function up()
     {
-        Schema::create('views_notation', function (Blueprint $table) {
-            $table->increments('views_notation_id')->unsigned(false);
+        Schema::create('notation_views', function (Blueprint $table) {
+            $table->increments('notation_views_id')->unsigned(false);
             $table->integer('notation_id')->comment('id news');
             $table->integer('counter_views')->comment('View counter');
             $table->date('view_date');
@@ -32,6 +32,6 @@ class ViewsNotation extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('views_notation');
+        Schema::dropIfExists('notation_views');
     }
 }

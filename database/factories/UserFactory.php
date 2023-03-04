@@ -26,7 +26,7 @@ $factory->define(User::class, function (Faker $faker) {
         'last_online_at' =>  $faker->dateTimeBetween('-12 months', '-1 days'),
         'gender' => rand(1,2),
         'remember_token' => Str::random(10),
-        'ip_user' => $faker->ipv4(),
-        'browser_user' =>  \Faker\Provider\UserAgent::userAgent()
+        'registration_ip' => $faker->ipv4(),
+        'user_agent' =>  \Faker\Provider\UserAgent::userAgent()
     ];
 });

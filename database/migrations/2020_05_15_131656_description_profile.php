@@ -15,7 +15,7 @@ class DescriptionProfile extends Migration
     {
         Schema::create('description_profile', function (Blueprint $table) {
             $table->Increments('description_profile_id');
-            $table->integer('id_user')->comment('user id, from the users table ');
+            $table->integer('user_id')->comment('user id, from the users table');
             $table->smallInteger('lvl')->comment('User level')->default(1);
             $table->float('exp')->comment('Experience');
             $table->string('real_name', 100)->nullable();
@@ -24,8 +24,8 @@ class DescriptionProfile extends Migration
             $table->string('phone', 20)->nullable();
             $table->text('about')->nullable();
 
-            $table->foreign('id_user')->references('id')
-                ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign('user_id')->references('id')
+                ->on('users')->onUpdate('CASCADE')->onDelete('RESTRICT');
         });
     }
 

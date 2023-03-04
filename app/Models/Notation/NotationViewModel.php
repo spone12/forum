@@ -8,7 +8,7 @@ use Carbon\Carbon;
 /**
  * Class NotationViewModel
  *
- * @property int  $views_notation_id
+ * @property int  $notation_views_id
  * @property int  $notation_id
  * @property int  $counter_views
  * @property date $view_date
@@ -18,9 +18,9 @@ use Carbon\Carbon;
 class NotationViewModel extends Model
 {
     /** @var string */
-    protected $table = 'views_notation';
+    protected $table = 'notation_views';
     /** @var string */
-    protected $primaryKey = 'views_notation_id';
+    protected $primaryKey = 'notation_views_id';
     /** @var bool */
     public $timestamps = false;
 
