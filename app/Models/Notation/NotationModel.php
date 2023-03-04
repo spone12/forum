@@ -100,7 +100,7 @@ class NotationModel extends Model
             $notation[0]->avatar = ProfileEnum::NO_AVATAR;
         }
 
-        $notationViews = DB::table('views_notation')
+        $notationViews = DB::table('notation_views')
             ->select('counter_views','view_date')
             ->where('notation_id', '=', $notationId)
         ->orderBy('view_date')

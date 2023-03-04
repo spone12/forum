@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models\Notation
  */
-class NotationPhotosModel extends Model
+class NotationPhotoModel extends Model
 {
     /** @var string */
     protected $table = 'notation_photo';

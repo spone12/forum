@@ -5,7 +5,7 @@ namespace App\Models\Chat;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class ChatModel
+ * Class MessagesModel
  *
  * @property int $message_id
  * @property int $dialog
@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models\Chat
  */
-class ChatModel extends Model
+class MessagesModel extends Model
 {
     /** @var string */
     protected $table = 'messages';
