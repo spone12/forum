@@ -69,8 +69,8 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'gender' => 1,
-            'ip_user' => $_SERVER['REMOTE_ADDR'],
-            'browser_user' => $_SERVER['HTTP_USER_AGENT'],
+            'registration_ip' => $_SERVER['REMOTE_ADDR'],
+            'user_agent' => $_SERVER['HTTP_USER_AGENT'],
         ]);
     }
 }

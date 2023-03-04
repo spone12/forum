@@ -16,16 +16,16 @@ class Notations extends Migration
     {
         Schema::create('notations', function (Blueprint $table) {
             $table->increments('notation_id')->unsigned(false);
-            $table->integer('id_user')->comment('id of the user who added the topic ');
+            $table->integer('user_id')->comment('id of the user who added the topic');
             $table->smallInteger('category')->comment('Theme category')->default(0);
             $table->string('name_notation', 150);
             $table->text('text_notation')->comment('News text');
             $table->integer('rating')->default(0)->comment('Rating');
             $table->float('star_rating')->default(0)->comment('Star rating');
-            $table->timestamp('notation_add_date')->useCurrent(); //CURRENTTIMESTAMP
+            $table->timestamp('notation_add_date')->useCurrent();
             $table->timestamp('notation_edit_date')->nullable();
 
-            $table->foreign('id_user')->references('id')
+            $table->foreign('user_id')->references('id')
                 ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
 

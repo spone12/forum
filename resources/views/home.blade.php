@@ -84,7 +84,7 @@
                                 <div class='col-3 col-sm-2 add_notation_who'>{{ trans('notation.added') }}:</div>
                                 <div class='col-5 col-sm-5 add_notation_who'>
                                     <img class='mini_avatar' title='{{$v->name}}' width=30 src="{{ asset($v->avatar) }}" />
-                                    <a href="{{route('profile_id', $v->id_user) }}" data-toggle="tooltip" data-placement="bottom" title='{{ trans('profile.goToProfile') }}'>{{$v->name}}</a>
+                                    <a href="{{route('profile_id', $v->user_id) }}" data-toggle="tooltip" data-placement="bottom" title='{{ trans('profile.goToProfile') }}'>{{$v->name}}</a>
                                 </div>
                                 <div  class='col-4 col-sm-5 d-flex align-items-end justify-content-end'>
                                     {{$v->date_n}}

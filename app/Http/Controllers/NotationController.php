@@ -61,9 +61,9 @@ class NotationController extends Controller
         {
 
            $data_edit = NotationModel::dataEditNotation($notationId);
-           if ($data_edit['notation']->id_user == Auth::user()->id) {
+           if ($data_edit['notation']->user_id == Auth::user()->id) {
                return view('menu.Notation.notation_edit', ['data_notation' => $data_edit['notation'],
-                   'photo_notation' => $data_edit['notation_photos']]);
+                   'photo_notation' => $data_edit['notation_photo']]);
            } else {
                return view('error_404', ['error' => ['Доступ на редактирование запрещён']]);
            }

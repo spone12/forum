@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class NotationPhotosModel
  *
  * @property int  $notation_photo_id
- * @property int  $id_user
+ * @property int  $user_id
  * @property int  $notation_id
  * @property string $path_photo
 * @property date $photo_add_date
@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 class NotationPhotosModel extends Model
 {
     /** @var string */
-    protected $table = 'notation_photos';
+    protected $table = 'notation_photo';
     /** @var string */
     protected $primaryKey = 'notation_photo_id';
 
@@ -35,6 +35,6 @@ class NotationPhotosModel extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user() {
-        return $this->belongsTo(User::class, 'id', 'id_user');
+        return $this->belongsTo(User::class, 'id', 'user_id');
     }
 }

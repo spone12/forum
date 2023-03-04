@@ -17,11 +17,11 @@ class HomeRepository
     public function takeNotations() {
 
         return DB::table('notations AS n')
-            ->select('n.notation_id', 'n.id_user',
+            ->select('n.notation_id', 'n.user_id',
                 'n.name_notation', 'n.text_notation',
                 'users.name','users.avatar','n.notation_add_date as date_n',
                 'vn.counter_views', 'n.rating')
-            ->join('users', 'users.id', '=', 'n.id_user')
+            ->join('users', 'users.id', '=', 'n.user_id')
             ->leftJoin('views_notation AS vn', 'n.notation_id', '=', 'vn.notation_id')
                 ->orderBy('notation_add_date', 'DESC')
             ->paginate(10)

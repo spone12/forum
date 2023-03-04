@@ -76,7 +76,7 @@ class ApiNotationController extends Controller
 
         $notationId = (int)$request->input('notation_id');
         $notation = NotationModel::where('notation_id', $notationId)
-            ->where('id_user', $this->userObj->id);
+            ->where('user_id', $this->userObj->id);
 
         if (count($notation->get())) {
             return $notation;
