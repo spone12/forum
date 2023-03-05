@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api;
 
+use App\Enums\ResponseCodeEnum;
 use Tests\TestCase;
 use Mockery;
 use Mockery\MockInterface;
@@ -14,7 +15,9 @@ class ApiTest extends TestCase
 {
     //protected $seeder = User::class;
     use RefreshDatabase;
+    /** @var $user */
     private $user;
+    /** @var $apiKey */
     private $apiKey;
 
     public function setUp(): void
@@ -24,7 +27,7 @@ class ApiTest extends TestCase
         $this->user = factory(User::class)->create();
         $this->actingAs($this->user);
         $response = $this->put('/generate_api_key');
-        $this->apiKey =  DB::table('users')
+        $this->apiKey = DB::table('users')
              ->select('api_key')
              ->where('id', '=', $this->user->id)
          ->get();
@@ -32,42 +35,36 @@ class ApiTest extends TestCase
     }
 
     /**
-     * update Token Fail
+     * Update Token Fail
      * @return void
     */
-    public function testUpdateTokenFail()
+    public function testUpdateTokenFail():void
     {
         $response = $this->withHeaders([
             'Content-Type' => 'Application/json',
         ])->put('/api/update_token', ['api_key' => 'test']);
 
-        $response
-            ->assertStatus(403)
-            ->assertJson([
-                'error' => true
-        ]);
+        $response->assertStatus(ResponseCodeEnum::FORBIDDEN)
+            ->assertJson(['error' => true]);
     }
 
     /**
-     * generate api key
+     * Generate api key
      * @return void
     */
-    public function testGenerateApiKey()
+    public function testGenerateApiKey():void
     {
 
         $response = $this->put('/generate_api_key');
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                'api_key' => true,
-        ]);
+        $response->assertStatus(ResponseCodeEnum::OK)
+            ->assertJson(['api_key' => true]);
     }
 
     /**
-     * update Token Success
+     * Update Token Success
      * @return void
     */
-    public function testUpdateTokenSuccess()
+    public function testUpdateTokenSuccess():void
     {
 
         $response = $this->withHeaders([
@@ -78,10 +75,7 @@ class ApiTest extends TestCase
             'update_token' => true
         ]));
 
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                'api_token' => true
-        ]);
+        $response->assertStatus(ResponseCodeEnum::OK)
+            ->assertJson(['api_token' => true]);
     }
 }

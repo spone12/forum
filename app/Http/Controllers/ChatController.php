@@ -47,7 +47,6 @@ class ChatController extends Controller
 
         $word = $request->only(['word']);
         $data = $this->chatService->search($word);
-
         return response()->json(['searched'=> $data]);
     }
 

@@ -8,6 +8,7 @@ use App\Models\Notation\NotationViewModel;
 use App\Http\Requests\NotationRequest;
 use App\Http\Requests\NotationPhotoRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Enums\ResponseCodeEnum;
 
 /**
  * Class NotationController
@@ -25,7 +26,6 @@ class NotationController extends Controller
 
         $input = $request->only(['name_tema','text_notation', 'method']);
         $data = NotationModel::createNotation($input);
-
         return response()->json(['notationData' => $data]);
     }
 
@@ -41,7 +41,6 @@ class NotationController extends Controller
         {
             NotationViewModel::addViewNotation($notationId);
             $view = NotationModel::viewNotation($notationId);
-
         } catch (\Exception $exception) {
             return view('error_404', ['error' => ['Данной статьи не существует']]);
         }
@@ -62,8 +61,10 @@ class NotationController extends Controller
 
            $data_edit = NotationModel::dataEditNotation($notationId);
            if ($data_edit['notation']->user_id == Auth::user()->id) {
-               return view('menu.Notation.notation_edit', ['data_notation' => $data_edit['notation'],
-                   'photo_notation' => $data_edit['notation_photo']]);
+                return view('menu.Notation.notation_edit', [
+                    'data_notation' => $data_edit['notation'],
+                    'photo_notation' => $data_edit['notation_photo']
+               ]);
            } else {
                return view('error_404', ['error' => ['Доступ на редактирование запрещён']]);
            }
@@ -80,14 +81,15 @@ class NotationController extends Controller
     {
 
         if ($request->ajax()) {
-
             $input = $request->only(['notation_id','name_tema','text_notation']);
             $edit = NotationModel::notationEdit($input);
-
             return response()->json(['success'=> $edit]);
         }
 
-        return response()->json(['success'=> 'false', 'message' => 'This is not ajax request'], 500);
+        return response()->json([
+            'success'=> 'false',
+            'message' => 'This is not ajax request'
+        ], ResponseCodeEnum::SERVER_ERROR);
     }
 
     /**
@@ -96,14 +98,17 @@ class NotationController extends Controller
     */
     protected function NotationRating(Request $request)
     {
+
         if ($request->ajax()) {
             $input = $request->all();
             $back = NotationModel::notationRating($input['notation_id'], $input['action']);
-
             return response()->json(['success'=> $back]);
         }
 
-        return response()->json(['success'=> 'false', 'message' => 'This is not ajax request'], 500);
+        return response()->json([
+            'success'=> 'false',
+            'message' => 'This is not ajax request'
+        ], ResponseCodeEnum::SERVER_ERROR);
     }
 
     /**
@@ -112,14 +117,17 @@ class NotationController extends Controller
     */
     protected function NotationDelete(Request $request)
     {
-        if ($request->ajax()) {
-            $input = $request->only(['notation_id']); //получение всех входных данных
-            $back = NotationModel::notationDelete($input['notation_id']);
 
-            return response()->json(['success'=> $back]);
+        if ($request->ajax()) {
+            $input = $request->only(['notation_id']);
+            $response = NotationModel::notationDelete($input['notation_id']);
+            return response()->json(['success'=> $response]);
         }
 
-        return response()->json(['success'=> 'false', 'message' => 'This is not ajax request'], 500);
+        return response()->json([
+            'success'=> 'false',
+            'message' => 'This is not ajax request'
+        ], ResponseCodeEnum::SERVER_ERROR);
     }
 
 
@@ -129,8 +137,8 @@ class NotationController extends Controller
     */
     protected function NotationAddPhotos(NotationPhotoRequest $request)
     {
-        $paths = NotationModel::notationAddPhotos($request);
 
+        $paths = NotationModel::notationAddPhotos($request);
         if (!empty($paths)) {
 
             return back()->with('success', "Изображения загружены успешно.")
@@ -149,7 +157,6 @@ class NotationController extends Controller
 
         $photo_data = $request->only(['photo_id', 'notation_id']);
         $del = NotationModel::notationPhotoDelete($photo_data);
-
         return response()->json(['answer'=> $del]);
     }
 

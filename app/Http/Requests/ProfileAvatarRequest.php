@@ -28,6 +28,9 @@ class ProfileAvatarRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array
+     */
     public function attributes()
     {
         return [
@@ -35,6 +38,9 @@ class ProfileAvatarRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array
+     */
     public function messages()
     {
         return [

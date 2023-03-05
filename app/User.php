@@ -77,7 +77,7 @@ class User extends Authenticatable
         $apiKey = mb_substr(hash('sha256', config('app.salt') . Str::random($countSaltCharacter)), 44);
         User::where('id', $userId)->update(['api_key' => $apiKey]);
 
-        return response()->json([ 'api_key' => $apiKey ]);
+        return response()->json(['api_key' => $apiKey]);
     }
 
     /**
@@ -92,6 +92,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function descriptionProfile() {
+
         return $this->hasOne(ProfileModel::class, 'user_id', 'id');
     }
 
@@ -99,6 +100,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function notations() {
+
         return $this->hasMany(NotationModel::class, 'user_id', 'id');
     }
 }

@@ -231,13 +231,13 @@ class NotationModel extends Model
     protected function notationDelete(int $notationDelete)
     {
 
-        if (Auth::check())  {
+        if (Auth::check()) {
             $notation = DB::table('notations')
                 ->select('user_id', 'notation_id')
                 ->where('notation_id', '=', $notationDelete)
             ->first();
 
-            if($notation->user_id ===  Auth::user()->id) {
+            if($notation->user_id === Auth::user()->id) {
 
                 $destroy = DB::table('notations')
                     ->where('notation_id', '=', $notationDelete)
@@ -247,8 +247,8 @@ class NotationModel extends Model
                 if ($destroy) {
 
                     $data = [
-                        'status'=>'1',
-                        'msg'=>'success'
+                        'status' => '1',
+                        'msg' => 'success'
                     ];
 
                 } else {
@@ -285,10 +285,11 @@ class NotationModel extends Model
 
             unlink(public_path($check_added_photo->path_photo));
 
-            if($delete)
+            if ($delete) {
                 return $check_added_photo->answer = 'success';
-            else
+            } else {
                 return $check_added_photo->answer = 'Ошибка удаления';
+            }
         } else {
             return $check_added_photo->answer = 'Не совпадает id пользователя';
         }
@@ -309,13 +310,12 @@ class NotationModel extends Model
                 $imageName = uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path("img/notation_photo/{$request->notation_id}"), $imageName);
 
-                $ins =
-                DB::table('notation_photo')->insert(
-                    array('user_id' => Auth::user()->id,
-                        'notation_id' => $request->notation_id,
-                        'path_photo' => "img/notation_photo/{$request->notation_id}/{$imageName}",
-                        'photo_edit_date' =>  Carbon::now())
-                );
+                DB::table('notation_photo')->insert([
+                    'user_id' => Auth::user()->id,
+                    'notation_id' => $request->notation_id,
+                    'path_photo' => "img/notation_photo/{$request->notation_id}/{$imageName}",
+                    'photo_edit_date' =>  Carbon::now()
+                ]);
 
                 $paths[] = $imageName;
             }

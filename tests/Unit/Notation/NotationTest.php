@@ -2,27 +2,40 @@
 
 namespace Tests\Unit\Notation;
 
+use App\Enums\ResponseCodeEnum;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+/**
+ * Class NotationTest
+ *
+ * @package Tests\Unit\Notation
+ */
 class NotationTest extends TestCase
 {
+    /** @var $id */
     protected $id;
 
-    public function testNotationId()
+    /**
+     *
+     * @return void
+    */
+    public function testNotationId():void
     {
-        $this->id =  rand(1, 5);
-        $this
-            ->get(route('notation_view_id',  $this->id))
-            ->assertStatus(200);
+
+        $this->id = rand(1, 5);
+        $this->get(route('notation_view_id', $this->id))
+            ->assertStatus(ResponseCodeEnum::OK);
     }
 
-    public function testNotationWrong()
+    /**
+     *
+     * @return void
+    */
+    public function testNotationWrong():void
     {
-        $this
-        ->get(route('notation_view_id', 'bad'))
-        ->assertStatus(404);
-    }
 
+        $this->get(route('notation_view_id', 'bad'))
+        ->assertStatus(ResponseCodeEnum::NOT_FOUND);
+    }
 }
-
