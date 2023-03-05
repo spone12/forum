@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ResponseCodeEnum;
 use Illuminate\Http\Request;
 use App\Models\ProfileModel;
 use Illuminate\Support\Facades\Auth;
@@ -79,7 +80,7 @@ class ProfileController extends Controller
                 return new Response([
                     'success' => false,
                     'message' => $e->getMessage()
-                ], 500);
+                ], ResponseCodeEnum::SERVER_ERROR);
             }
 
             return array('data_user' => $back);
@@ -97,6 +98,5 @@ class ProfileController extends Controller
         return redirect()->route('profile_id', Auth::user()->id)
             ->with('success', 'Вы успешно изменили аватар')
             ->with('isChanged', $isChanged);
-
     }
 }

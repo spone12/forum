@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notation\NotationModel;
 use App\User;
+use App\Enums\ResponseCodeEnum;
 
 /**
  * Class ApiNotationController
@@ -23,11 +24,11 @@ class ApiNotationController extends Controller
     function __construct(Request $request)
     {
 
-        $apiKey  =  request()->only('api_key');
+        $apiKey = request()->only('api_key');
         $apiToken = $request->bearerToken();
         $this->userObj = User::where('api_token', $apiToken)
             ->where('api_key', $apiKey)
-            ->first();
+        ->first();
     }
 
     /**
@@ -81,7 +82,7 @@ class ApiNotationController extends Controller
         if (count($notation->get())) {
             return $notation;
         } else {
-            return response()->json([ 'error' => 'Notation not found' ], 404 );
+            return response()->json([ 'error' => 'Notation not found' ], ResponseCodeEnum::NOT_FOUND);
         }
     }
 }

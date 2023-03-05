@@ -4,6 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class NotationRequest
+ * @package App\Http\Requests
+ */
 class NotationRequest extends FormRequest
 {
     /**
@@ -24,12 +28,14 @@ class NotationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name_tema' => 'required|min:3|max:150',
+            'name_tema'     => 'required|min:3|max:150',
             'text_notation' => 'required|min:30'
         ];
     }
 
-    //translate concrect pole
+    /**
+     * @return array
+     */
     public function attributes()
     {
         return [
@@ -37,6 +43,9 @@ class NotationRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array
+     */
     public function messages()
     {
         return [

@@ -4,6 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class NotationPhotoRequest
+ * @package App\Http\Requests
+ */
 class NotationPhotoRequest extends FormRequest
 {
     /**
@@ -29,7 +33,9 @@ class NotationPhotoRequest extends FormRequest
         ];
     }
 
-    //translate concrect pole
+    /**
+     * @return array
+     */
     public function attributes()
     {
         return [
@@ -37,12 +43,15 @@ class NotationPhotoRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array
+     */
     public function messages()
     {
         return [
             'images.*.image' => 'Файл должен быть изображением',
             'images.*.mimes' => 'Файл должен быть расширения jpeg,png,jpg,gif или svg',
-            'images.*.max'     => 'Максимальный размер фотографии не должен превышать 2048 КБ',
+            'images.*.max'   => 'Максимальный размер фотографии не должен превышать 2048 КБ',
         ];
     }
 }

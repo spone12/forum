@@ -82,8 +82,8 @@ class ChatRepository
 
         $searchResult = DB::table('dialog')
             ->select(  'messages.send','dialog.dialog_id', 'messages.created_at','messages.text')
-            ->join('users', 'dialog.recive', '=', 'users.id')
-            ->join('users as user2', 'dialog.send', '=', 'user2.id')
+                ->join('users', 'dialog.recive', '=', 'users.id')
+                ->join('users as user2', 'dialog.send', '=', 'user2.id')
             ->leftJoin('messages','messages.dialog', '=', 'dialog.dialog_id' )
             ->where(function($query)
             {
@@ -128,14 +128,13 @@ class ChatRepository
         $dialogId = $this->getDialogId($userId, $dialogId);
         try {
 
-            $messageId = DB::table('messages')->insertGetId(
-                [
-                    'dialog' => $dialogId,
-                    'send' =>  Auth::user()->id,
-                    'recive' => $userId,
-                    'text' => $message,
-                    'created_at' => Carbon::now()
-                ]);
+            $messageId = DB::table('messages')->insertGetId([
+                'dialog' => $dialogId,
+                'send' =>  Auth::user()->id,
+                'recive' => $userId,
+                'text' => $message,
+                'created_at' => Carbon::now()
+            ]);
         } catch (\Exception $exception) {
             #### repair
             return $exception->getMessage();
@@ -199,7 +198,7 @@ class ChatRepository
     */
     public function getUserDialog(int $dialogId, $userMessageWithId = 0): array {
 
-        $currentUserId =  Auth::user()->id;
+        $currentUserId = Auth::user()->id;
         $dialogCheck = DialogModel::where('dialog_id', $dialogId);
 
         if (!$dialogCheck->exists()) {
@@ -212,7 +211,6 @@ class ChatRepository
         }
 
         $currentUserAvatar = Auth::user()->avatar ?: ProfileEnum::NO_AVATAR;
-
         $dialogMessages = DB::table('messages')
             ->select( 'messages.text', 'messages.dialog', 'messages.created_at',
                 'messages.updated_at', 'messages.send', 'messages.recive',

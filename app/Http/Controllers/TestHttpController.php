@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+/**
+ * Class TestHttpController
+ * @package App\Http\Controllers
+ */
 class TestHttpController extends Controller
 {
     /**
@@ -16,19 +20,19 @@ class TestHttpController extends Controller
 
     /**
      * @param string $method
-     * @param $address
+     * @param $url
      * @param array $queryParams
      * @param array $headers
      * @param string $baseUri
      * @return mixed
      */
-    protected function guzzleCreate($method = 'get', $address, $queryParams = [], $headers = [], $baseUri = 'http://l.forum') {
+    protected function guzzleCreate($method, $url, $queryParams = [], $headers = [], $baseUri = 'http://l.forum') {
 
         $client = new \GuzzleHttp\Client([
             'base_uri' => $baseUri
         ]);
 
-        $response = $client->$method($address, [
+        $response = $client->$method($url, [
             'headers' => [
                 'Content-Type' => 'Application/json',
                 'Authorization' => 'Bearer dT24bymNzHjnsgnx5KsGGkWOx6w3c5s9oejlWATu7AibTOIauIXtUCyr3vmxuzLhUWZzRtU6eQUsB6wP',
@@ -38,7 +42,7 @@ class TestHttpController extends Controller
             ],
         ]);
 
-       /* $response = $client->$method($address, [
+       /* $response = $client->$method($url, [
             'headers' => [
                 'Content-Type' => 'Application/json',
             ],

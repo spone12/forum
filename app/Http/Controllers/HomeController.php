@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ResponseCodeEnum;
 use App\Service\HomeService;
 
 /**
@@ -34,7 +35,7 @@ class HomeController extends Controller
         try {
             $notations = $this->homeService->notations();
         } catch (\Throwable $e) {
-            return abort(404);
+            return abort(ResponseCodeEnum::NOT_FOUND);
         }
 
         return view('home', compact('notations'));
