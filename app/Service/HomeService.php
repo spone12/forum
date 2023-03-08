@@ -7,6 +7,10 @@ use App\Repository\HomeRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
+/**
+ * Class HomeService
+ * @package App\Service
+ */
 class HomeService
 {
     /** @var HomeRepository */
