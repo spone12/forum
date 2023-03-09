@@ -17,7 +17,6 @@ use Illuminate\Http\Response;
 class ProfileController extends Controller
 {
 
-
     /** @var ProfileService */
     protected $profileService;
 

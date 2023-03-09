@@ -75,8 +75,9 @@ function add_notation()
 
 function change_rating(action = 1)
 {
-    if(action != 0 && action != 1)
+    if (action != 0 && action != 1) {
         return;
+    }
 
     let notation_id = $('#id_notation').val();
     $.ajax(
@@ -129,14 +130,14 @@ function edit_notation()
         data: {
             notation_id: notation_id,
             name_tema: name_tema,
-            text_notation, text_notation
+            text_notation: text_notation
         },
         headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
         success: function (data) {
 
            if (data.success === true) {
                 tata.success('', 'Новость успешно изменена', {
-                duration: 3000,
+                duration: 2000,
                 animate: 'slide',
                 position: 'tr',
                   onClose: function(){
@@ -205,7 +206,7 @@ function del_photo(photo_id, notation_id)
         headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
         success: function (data)
         {
-           if(data.answer === 'success') {
+           if(data.success === 'success') {
                window.location.href = '';
            }
         },
