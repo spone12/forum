@@ -22,4 +22,5 @@ return [
     'lang_src' => '/img/icons/lang/en.png',
     'map' => 'Map',
     'rating' => 'Rating',
+    'expAdd' => '+%1$d experience'
 ];

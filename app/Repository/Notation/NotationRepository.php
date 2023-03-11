@@ -4,7 +4,6 @@ namespace App\Repository\Notation;
 
 use App\Enums\Profile\ProfileEnum;
 use App\Models\Notation\VoteNotationModel;
-use App\Models\ProfileModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,25 +16,21 @@ class NotationRepository
 {
 
     /**
+     * Create a notation
+     *
      * @param array $dataNotation
-     * @return array
+     * @return int
      */
     public function create(Array $dataNotation)
     {
 
-        if (Auth::check() && $dataNotation['method'] == 'add') {
-            $notationId = DB::table('notations')->insertGetId([
-                'user_id' =>  Auth::user()->id,
-                'name_notation' =>  trim(addslashes($dataNotation['name_tema'])),
-                'text_notation' =>  trim(addslashes($dataNotation['text_notation'])),
-                'notation_add_date' =>  Carbon::now(),
-                'notation_edit_date' => Carbon::now()
-            ]);
-
-            $expAdded = ProfileModel::expAdd('addNotation');
-            return ['notationId' => $notationId, 'expAdded' => $expAdded];
-        }
-        else $notationId = false;
+        return DB::table('notations')->insertGetId([
+            'user_id' =>  Auth::user()->id,
+            'name_notation' => trim(addslashes($dataNotation['notationName'])),
+            'text_notation' => trim(addslashes($dataNotation['notationText'])),
+            'notation_add_date' => Carbon::now(),
+            'notation_edit_date' => Carbon::now()
+        ]);
     }
 
     /**

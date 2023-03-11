@@ -55,7 +55,7 @@
                             [
                                 'id' => 'notation_add',
                                 'class' => 'btn btn-success col-6',
-                                'onclick' => 'add_notation();',
+                                'onclick' => 'addNotation();',
                                 'type' => 'submit'
                             ])
                         }}

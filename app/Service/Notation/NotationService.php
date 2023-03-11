@@ -2,8 +2,10 @@
 
 namespace App\Service\Notation;
 
+use App\Enums\ExpEnum;
 use App\Http\Requests\NotationPhotoRequest;
 use App\Models\Notation\NotationViewModel;
+use App\Models\ProfileModel;
 use App\Repository\Notation\NotationRepository;
 
 /**
@@ -33,8 +35,12 @@ class NotationService
     public function create($data)
     {
 
-        $create = $this->notationRepository->create($data);
-        return $create;
+        $notationId = $this->notationRepository->create($data);
+        $expAdded = ProfileModel::expAdd(ExpEnum::NOTATION_ADD);
+        return [
+            'notationId' => $notationId,
+            'expAdded' => sprintf(trans('app.expAdd'), $expAdded)
+        ];
     }
 
     /**

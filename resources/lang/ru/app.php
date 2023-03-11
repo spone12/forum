@@ -21,5 +21,6 @@ return [
     'search' => 'Поиск..',
     'lang_src' => '/img/icons/lang/ru.png',
     'map' => 'Карта',
-    'rating' => 'Рейтинг'
+    'rating' => 'Рейтинг',
+    'expAdd' => '+%1$d опыта'
 ];
