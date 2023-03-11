@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ExpEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,19 +33,14 @@ class ProfileModel extends Model
     ];
     /** @var bool  */
     public $timestamps = false;
-    private static $typesAddExp = ['addNotation' => 10];
 
     /**
-     * @param $action
-     * @param int $concretelyExp
+     * Added exp and level to profile
+     *
+     * @param  $exp
      * @return int|mixed
-     */
-    protected static function expAdd($action, $concretelyExp = 0) {
-
-        $addedExp = static::$typesAddExp[$action];
-        if ($concretelyExp) {
-            $addedExp = $concretelyExp;
-        }
+    */
+    public static function expAdd($exp) {
 
         $userData = DB::table('users AS u')
             ->select('u.id', 'dp.lvl', 'dp.exp')
@@ -52,27 +48,26 @@ class ProfileModel extends Model
             ->where('id', '=', Auth::user()->id)
         ->first();
 
-        $exp = self::expGeneration($userData);
-        $userData->exp += $addedExp;
+        $expAll = self::expGeneration($userData);
+        $userData->exp += $exp;
 
-        if ($userData->exp >= $exp) {
+        if ($userData->exp >= $expAll) {
             $userData->lvl++;
-            $userData->exp -= $exp;
+            $userData->exp -= $expAll;
         }
 
-        ProfileModel::where('user_id',  Auth::user()->id)
+        ProfileModel::where('user_id', Auth::user()->id)
         ->update([
             'exp' => $userData->exp,
             'lvl' => $userData->lvl
         ]);
-
-        return $addedExp;
+        return $exp;
     }
 
     /**
      * @param int $userId
      */
-    protected static function lvlAdd(int $userId = 0) {
+    public static function lvlAdd(int $userId = 0) {
 
         if (!$userId) {
             $userId = Auth::user()->id;
@@ -84,7 +79,7 @@ class ProfileModel extends Model
      * @param $userData
      * @return float|int
      */
-    protected static function expGeneration(&$userData) {
+    public static function expGeneration(&$userData) {
 
         if (is_null($userData->lvl)) {
 

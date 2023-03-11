@@ -24,6 +24,7 @@
 
     <script src="{{ asset('resource/libraries/TataJs/tata.js') }}"></script>
     <script src="{{ asset('resource/libraries/TataJs/index.js') }}"></script>
+    <script src="{{ asset('resource/js/response.js') }}"></script>
 
     @stack('scripts')
 </head>

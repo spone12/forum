@@ -35,8 +35,15 @@ class NotationController extends Controller
     protected function createNotation(NotationRequest $request)
     {
 
-        $input = $request->only(['name_tema','text_notation', 'method']);
-        $response = $this->notationService->create($input);
+        $input = $request->only(['notationName', 'notationText']);
+        try {
+            $response = $this->notationService->create($input);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
         return response()->json(['notationData' => $response]);
     }
 

@@ -28,8 +28,8 @@ class NotationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name_tema'     => 'required|min:3|max:150',
-            'text_notation' => 'required|min:30'
+            'notationName'  => 'required|min:3|max:150',
+            'notationText' => 'required|min:30'
         ];
     }
 
@@ -39,7 +39,7 @@ class NotationRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name_tema' => 'имя темы'
+            'notationName' => 'Имя темы'
         ];
     }
 
@@ -49,11 +49,11 @@ class NotationRequest extends FormRequest
     public function messages()
     {
         return [
-            'name_tema.required' => 'Необходимо заполнить имя темы',
-            'text_notation.required' => 'Необходимо заполнить текст новости',
-            'name_tema.min' => 'Минимальная длина темы 5 символов',
-            'name_tema.max' => 'Максимальная длина темы 150 символов',
-            'text_notation.min' => 'Минимальная длина сообщения 30 символов'
+            'notationName.required' => 'Необходимо заполнить имя темы',
+            'notationText.required' => 'Необходимо заполнить текст новости',
+            'notationName.min' => 'Минимальная длина темы 5 символов',
+            'notationName.max' => 'Максимальная длина темы 150 символов',
+            'notationText.min' => 'Минимальная длина сообщения 30 символов'
         ];
     }
 }

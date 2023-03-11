@@ -6,10 +6,6 @@ $('.content.clossable').hover(function()
     }
 )
 
-function reyFhg() {
-    alert('ff');
-}
-
 $(document).ready(function()
 {
     $(".notation_carousel_photo").click(function()
@@ -32,43 +28,30 @@ $(document).ready(function()
     });
 });
 
-function add_notation()
+function addNotation()
 {
     $.ajax(
     {
         url: '/notation',
         type: "POST",
         data: {
-            name_tema: $('#name_tema').val(),
-            text_notation: $('#text_notation').val(),
-            method: 'add'
+            notationName: $('#name_tema').val(),
+            notationText: $('#text_notation').val()
         },
         headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
         success: function (data)
         {
-            if (typeof(data.notationData.notationId) == 'number')
-            {
-                tata.success('+' + data.notationData.expAdded + ' опыта', 'Новость успешно создана', {
-                    duration: 2000,
-                    animate: 'slide',
-                    position: 'tr',
-                    onClose: function(){
-                        window.location.href = '/notation/view/' + data.notationData.notationId;
-                    }
-                });
+            if (typeof(data.notationData.notationId) == 'number') {
+                successMsg(
+                    data.notationData.expAdded,
+                    'Новость успешно создана',
+                    2000,
+                    '/notation/view/' + data.notationData.notationId
+                )
             }
         },
         error: function(data) {
-
-            var errors = data.responseJSON;
-            errorsHtml = '<div class="alert alert-danger">' + '<ul>';
-
-             $.each( errors.errors, function( key, value ) {
-                  errorsHtml += '<li>'+ value + '</li>';
-             });
-             errorsHtml += '</ul></div>';
-
-             $( '#form-errors' ).html( errorsHtml );
+            errorMsgResponse(data, 3000);
         }
     });
 }
