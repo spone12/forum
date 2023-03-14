@@ -4,7 +4,7 @@
  * @param data
  * @param duration
  */
-function errorMsgResponse (data, duration = 2000) {
+function errorMsgResponse (data, duration = 3000) {
 
     let errorMsg = '';
     let jsonResponse = data.responseJSON;
@@ -22,7 +22,7 @@ function errorMsgResponse (data, duration = 2000) {
         errorMsg += '</ul>';
     }
 
-    tata.error(errorMsg, 'Error', {
+    tata.error(errorMsg, '', {
         duration: duration,
         animate: 'slide',
         position: 'tr'
@@ -36,7 +36,7 @@ function errorMsgResponse (data, duration = 2000) {
  * @param duration
  * @param onClose
  */
-function successMsg (message, title, duration = 2000, onClose = '') {
+function successMsg (message, title = '', duration = 2000, onClose = '') {
 
     tata.success(message, title, {
         duration: duration,

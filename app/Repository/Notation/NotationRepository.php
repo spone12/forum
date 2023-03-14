@@ -33,14 +33,9 @@ class NotationRepository
         ]);
     }
 
-    /**
-     * @param int $notationId
-     * @return \Illuminate\Support\Collection
-     */
-    public function view(int $notationId)
+    public function notationViewData(int $notationId)
     {
-
-        $notation = DB::table('notations')
+        return DB::table('notations')
             ->select('notations.notation_id', 'notations.user_id',
                 'notations.name_notation', 'notations.text_notation',
                 'notations.rating','users.name', 'users.avatar',
@@ -49,47 +44,16 @@ class NotationRepository
             ->leftJoin('notation_photo AS np', 'np.notation_id', '=', 'notations.notation_id')
             ->where('notations.notation_id', '=', $notationId)
         ->get();
+    }
 
-        if (Auth::check()) {
-            $vote = DB::table('vote_notation')
-                ->select('vote_notation_id')
-                ->where('notation_id', '=', $notationId)
-                ->where('user_id', '=', Auth::user()->id)
-                ->get();
-
-            if ($vote->count()) {
-                $notation[0]->vote = VoteNotationModel::where('vote_notation_id', '=', $vote[0]->vote_notation_id)
-                    ->first()->vote;
-            }
-        }
-
-        $notation[0]->text_notation = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $notation[0]->text_notation);
-
-        if (is_null($notation[0]->avatar)) {
-            $notation[0]->avatar = ProfileEnum::NO_AVATAR;
-        }
-
-        $notationViews = DB::table('notation_views')
-            ->select('counter_views','view_date')
+    public function voteNotation(int $notationId)
+    {
+        return DB::table('vote_notation')
+            ->select('vote_notation_id')
             ->where('notation_id', '=', $notationId)
-            ->orderBy('view_date')
-            ->get();
+            ->where('user_id', '=', Auth::user()->id)
+        ->get();
 
-        $list = array();
-        $countViews = 0;
-
-        foreach ($notationViews as $v) {
-            $countViews += $v->counter_views;
-            $list[] = array(
-                'full_date' => date('d.m.Y', strtotime($v->view_date)),
-                'sum_views' => $countViews,
-                'value' => $v->counter_views
-            );
-        }
-        $notation[0]->countViews = number_format($countViews, 0, '.', ',');
-        $notation['graph'] = json_encode($list);
-
-        return $notation;
     }
 
     /**
@@ -119,20 +83,15 @@ class NotationRepository
     public function edit(array $dataNotationEdit)
     {
 
-        $upd = DB::table('notations')
+        return DB::table('notations')
             ->where('user_id', '=', Auth::user()->id)
-            ->where('notation_id', '=', $dataNotationEdit['notation_id'])
+            ->where('notation_id', '=', $dataNotationEdit['notationId'])
         ->update([
-            'name_notation' =>  $dataNotationEdit['name_tema'],
-            'text_notation' =>  $dataNotationEdit['text_notation'],
+            'name_notation' => $dataNotationEdit['notationName'],
+            'text_notation' => $dataNotationEdit['notationText'],
             'notation_edit_date' => Carbon::now()
         ]);
 
-        if ($upd) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**

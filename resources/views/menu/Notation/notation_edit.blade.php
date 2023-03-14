@@ -92,7 +92,7 @@
                         Form::button('Изменить', [
                             'class' => 'btn btn-info',
                             'id' => 'notation_add',
-                            'onclick' => 'edit_notation();',
+                            'onclick' => 'editNotation();',
                             'type' => 'submit'
                         ])
                     }}

@@ -51,7 +51,7 @@ function addNotation()
             }
         },
         error: function(data) {
-            errorMsgResponse(data, 3000);
+            errorMsgResponse(data);
         }
     });
 }
@@ -100,43 +100,38 @@ function change_rating(action = 1)
     });
 }
 
-function edit_notation()
+function editNotation()
 {
-    let notation_id = $('#id_notation').val();
-    let name_tema = $('#name_tema').val();
-    let text_notation = $('#text_notation').val();
+    let notationId = $('#id_notation').val();
+    let notationName = $('#name_tema').val();
+    let notationText = $('#text_notation').val();
 
     $.ajax(
     {
-        url: '/notation/edit_upd/' + notation_id,
+        url: '/notation/edit_upd/' + notationId,
         type: "PUT",
         data: {
-            notation_id: notation_id,
-            name_tema: name_tema,
-            text_notation: text_notation
+            notationId: notationId,
+            notationName: notationName,
+            notationText: notationText
         },
         headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
         success: function (data) {
 
            if (data.success === true) {
-                tata.success('', 'Новость успешно изменена', {
-                duration: 2000,
-                animate: 'slide',
-                position: 'tr',
-                  onClose: function(){
-                     window.location.href = '/notation/view/' + notation_id;
-                 }
-              });
+               successMsg(
+                   'Новость успешно изменена',
+                   '', 2000,
+                   '/notation/view/' + notationId
+               );
            }
         },
         error: function(data)
         {
-            var errors = data.responseJSON;
-            console.log(errors);
+            errorMsgResponse(data);
         }
     });
 }
-
 
 function notation_delete()
 {
