@@ -6,6 +6,8 @@ return [
     'login' => 'Логин',
     'name' => 'Имя',
     'gender' => 'Пол',
+    'male' => 'Мужской',
+    'female' => 'Женский',
     'town' => 'Город',
     'email' => 'E-mail',
     'phone' => 'Телефон',
@@ -13,6 +15,7 @@ return [
     'regDate' => 'Дата регистрации',
     'about' => 'О себе',
     'edit' => 'Редактировать',
+    'profileEdit' => 'Редактирование профиля',
     'exp' => 'Опыт',
     'lvl' => 'Уровень',
     'online' => 'Онлайн',
@@ -20,5 +23,8 @@ return [
     'wasOnlineMale' => 'Был в сети',
     'wasOnlineFemale' => 'Была в сети',
     'writeMessage' => 'Написать сообщение',
-    'goToProfile' => 'Перейти в профиль'
+    'goToProfile' => 'Перейти в профиль',
+    'privacySettings' => 'Настройки конфиденциальности',
+    'changeAvatar' => 'Изменить аватар',
+    'updateApiKey' => 'Обновить API ключ'
 ];

@@ -32,13 +32,12 @@ class ProfileRepository
             ->first();
 
         if (!empty($data)) {
-            if (is_null($data->exp))
-                $data->exp = 0;
-
-            $data->expNeed = ProfileModel::expGeneration($data, Auth::user()->id);
+            $data->expNeed = ProfileModel::expGeneration($data);
             $data->last_online_at = date_create($data->last_online_at)->Format('d.m.Y H:i');
             $data->created_at = date_create($data->created_at)->Format('d.m.Y H:i');
-            $data->gender == 1 ? $data->genderName = 'Мужской': $data->genderName = 'Женский';
+            $data->gender == ProfileEnum::MALE ?
+                $data->genderName = trans('profile.male') :
+                $data->genderName = trans('profile.female');
 
             if (is_null($data->avatar)) {
                 $data->avatar = ProfileEnum::NO_AVATAR;
@@ -71,11 +70,9 @@ class ProfileRepository
                 )
                 ->leftJoin('description_profile AS dp', 'dp.user_id', '=', 'u.id')
                 ->where('id', '=', Auth::user()->id)
-                ->first();
+            ->first();
 
             if ($data) {
-                if (is_null($data->exp))
-                    $data->exp = 0;
                 $data->expNeed = ProfileModel::expGeneration($data);
                 $data->created_at = date_create($data->created_at)->Format('d.m.y H:i');
 
@@ -87,7 +84,10 @@ class ProfileRepository
                     $data->about = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $data->about);
                 }
 
-                $data->gender == 1 ? $data->genderName = 'Мужской' : $data->genderName = 'Женский';
+                $data->gender == ProfileEnum::MALE ?
+                    $data->genderName = trans('profile.male') :
+                    $data->genderName = trans('profile.female');
+
                 if (is_null($data->avatar)) {
                     $data->avatar = ProfileEnum::NO_AVATAR;
                 }
@@ -98,43 +98,35 @@ class ProfileRepository
         return $data;
     }
 
+
     /**
      * @param int $userId
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
      */
     public function getUserDataChange(int $userId = 0) {
 
-        if (Auth::check()) {
+        $userData = DB::table('users')
+            ->select(
+                'users.name',
+                'users.id',
+                'users.email',
+                'description_profile.real_name',
+                'users.gender',
+                'description_profile.town',
+                'description_profile.date_born',
+                'description_profile.about',
+                'users.avatar',
+                'description_profile.phone',
+                'users.api_key'
+            )
+            ->leftJoin('description_profile', 'description_profile.user_id', '=', 'users.id')
+            ->where('users.id', '=', $userId ?: Auth::user()->id)
+        ->first();
 
-            if (!$userId) {
-                $userId = Auth::user()->id;
-            }
-
-            $userData = DB::table('users')
-                ->select(
-                    'users.name',
-                    'users.id',
-                    'users.email',
-                    'description_profile.real_name',
-                    'users.gender',
-                    'description_profile.town',
-                    'description_profile.date_born',
-                    'description_profile.about',
-                    'users.avatar',
-                    'description_profile.phone',
-                    'users.api_key'
-                )
-                ->leftJoin('description_profile', 'description_profile.user_id', '=', 'users.id')
-                ->where('users.id', '=', $userId)
-                ->first();
-
-            if ($userData) {
-                self::checkAvatar($userData);
-            }
-
-            return $userData;
+        if ($userData) {
+            self::checkAvatar($userData);
         }
-        else $userData = false;
+        return $userData;
     }
 
     /**
@@ -144,9 +136,9 @@ class ProfileRepository
     public function changeProfile(array $userData) {
 
         try {
+
             $userId = Auth::user()->id;
             if ($userId === (INT)$userData['data_send']['user_id']) {
-
                 $updateProfile = 0;
                 if (preg_match("/[\d]+/", $userData['data_send']['name'])) {
                     throw new \Exception('Имя не должно содержать цифры!');
@@ -161,7 +153,6 @@ class ProfileRepository
 
                 # @todo Refactor to insert or update
                 if (!ProfileModel::where('user_id', '=', $userId)->exists()) {
-
                     DB::table('description_profile')->insert([
                         'user_id'   => $userId,
                         'real_name' => $userData['data_send']['name'],
@@ -173,7 +164,6 @@ class ProfileRepository
 
                     $updateProfile = 1;
                 } else {
-
                     DB::table('description_profile')
                         ->where('user_id', '=', $userId)
                         ->update([
@@ -212,16 +202,15 @@ class ProfileRepository
     public function changeAvatar($request) {
 
         if ($request->hasFile('avatar')) {
-
             $userId = Auth::user()->id;
             $imageName = uniqid() . '.' . $request->avatar->extension();
 
             DB::table('users')
                 ->where('id', $userId)
-                ->update(['avatar' => '/img/avatar/user_avatar/'. $userId . '/' . $imageName]);
+                ->update(['avatar' => ProfileEnum::USER_AVATAR_PATH . $userId . '/' . $imageName]);
 
-            $request->avatar->move(public_path('img/avatar/user_avatar/'. $userId), $imageName);
-            $request->session()->put('avatar', '/img/avatar/user_avatar/'. $userId . '/' . $imageName);
+            $request->avatar->move(public_path(ProfileEnum::USER_AVATAR_PATH . $userId), $imageName);
+            $request->session()->put('avatar', ProfileEnum::USER_AVATAR_PATH . $userId . '/' . $imageName);
 
             if (file_exists($request->session()->get('avatar'))) {
                 return true;
