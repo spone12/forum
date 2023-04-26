@@ -76,16 +76,20 @@ class NotationController extends Controller
         try {
 
            $dataEdit = $this->notationService->getDataEdit($notationId);
-           if ($dataEdit['notation']->user_id == Auth::user()->id) {
-                return view('menu.Notation.notation_edit', [
-                    'notationData' => $dataEdit['notation'],
-                    'notationPhoto' => $dataEdit['notation_photo']
-               ]);
-           } else {
-               return view('error_404', ['error' => ['Доступ на редактирование запрещён']]);
+           if ($dataEdit['notation']->user_id !== Auth::user()->id) {
+               return view('error_404', ['error' => [
+                   trans('notation.errors.edit_access_denied')
+               ]]);
            }
+
+           return view('menu.Notation.notation_edit', [
+              'notationData' => $dataEdit['notation'],
+              'notationPhoto' => $dataEdit['notation_photo']
+           ]);
         } catch (\Exception $exception) {
-            return view('error_404', ['error' => ['Данной статьи не существует']]);
+            return view('error_404', ['error' => [
+                trans('notation.errors.notation_not_found')
+            ]]);
         }
     }
 
@@ -109,7 +113,7 @@ class NotationController extends Controller
             $edit = $this->notationService->update($input);
             return response()->json([
                 'success' => $edit,
-                'message' => 'Notation update successfully'
+                'message' => trans('notation.success.update')
             ]);
         } catch (\Throwable $exception) {
             return response()->json([
@@ -159,7 +163,7 @@ class NotationController extends Controller
             $response = $this->notationService->delete($input['notation_id']);
             return response()->json([
                 'success' => $response,
-                'message' => 'Новость успешно удалена!'
+                'message' => trans('notation.success.delete')
             ]);
         } catch (\Throwable $exception) {
             return response()->json([
@@ -178,10 +182,10 @@ class NotationController extends Controller
 
         $photoPath = $this->notationService->addPhoto($request);
         if (!empty($photoPath)) {
-            return back()->with('success', "Изображения загружены успешно.")
+            return back()->with('success', trans('notation.success.image_uploaded'))
                 ->with('paths', $photoPath);
         } else {
-            return back()->with('error', "Изображения не загружены!");
+            return back()->with('error', trans('notation.errors.image_upload'));
         }
     }
 
@@ -197,7 +201,7 @@ class NotationController extends Controller
             $isDelete = $this->notationService->removePhoto($photoData);
             return response()->json([
                 'success' => $isDelete,
-                'message' => 'Фотография успешно удалена'
+                'message' => trans('notation.success.image_delete')
             ]);
         } catch (\Throwable $exception) {
             return response()->json([
