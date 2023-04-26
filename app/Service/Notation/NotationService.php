@@ -173,7 +173,7 @@ class NotationService
     public function removePhoto(array $photoData)
     {
 
-        $delete = $this->notationRepository->removePhoto($photoData);
+        $delete = $this->notationRepository->removePhotoCheck($photoData);
         return $delete;
     }
 }

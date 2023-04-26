@@ -143,10 +143,20 @@ class NotationController extends Controller
             ], ResponseCodeEnum::SERVER_ERROR);
         }
 
-        $input = $request->only(['notation_id']);
-        $response = $this->notationService->delete($input['notation_id']);
+        try {
 
-        return response()->json(['success'=> $response]);
+            $input = $request->only(['notation_id']);
+            $response = $this->notationService->delete($input['notation_id']);
+            return response()->json([
+                'success' => $response,
+                'message' => 'Новость успешно удалена!'
+            ]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], ResponseCodeEnum::SERVER_ERROR);
+        }
     }
 
     /**

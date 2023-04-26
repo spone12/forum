@@ -147,7 +147,7 @@ class NotationRepository
 
     /**
      * @param int $notationDelete
-     * @return string[]
+     * @return bool
      */
     public function delete(int $notationId)
     {
@@ -157,28 +157,28 @@ class NotationRepository
             ->where('notation_id', '=', $notationId)
         ->first();
 
-        if ($notation->user_id === Auth::user()->id) {
-
-            $destroy = DB::table('notations')
-                ->where('notation_id', '=', $notationId)
-                ->where('user_id', '=',  Auth::user()->id)
-            ->delete();
-
-            if ($destroy) {
-
-                $data = [
-                    'status' => '1',
-                    'msg' => 'success'
-                ];
-            } else {
-
-                $data = [
-                    'status' => '0',
-                    'msg' => 'fail'
-                ];
-            }
-            return $data;
+        if ($notation->user_id !== Auth::user()->id) {
+            throw new \Exception('Ошибка удаления: нет доступа на удаление новости!');
         }
+
+        $currentNotationPhotos = DB::table('notation_photo')
+            ->select('notation_photo_id', 'path_photo')
+            ->where('notation_id', '=', $notationId)
+        ->get();
+
+        foreach ($currentNotationPhotos as $photo) {
+            $removeData = [
+                'path' => $photo->path_photo,
+                'notationId' => $notationId,
+                'photoId' => $photo->notation_photo_id
+            ];
+            $this->removePhoto($removeData);
+        }
+
+        return DB::table('notations')
+            ->where('notation_id', '=', $notationId)
+            ->where('user_id', '=', Auth::user()->id)
+        ->delete();
     }
 
     /**
@@ -213,7 +213,7 @@ class NotationRepository
      * @return bool
      * @throws \Exception
      */
-    public function removePhoto(array $photoData)
+    public function removePhotoCheck(array $photoData)
     {
 
         $ownerPhotoCheck = DB::table('notation_photo')
@@ -230,16 +230,25 @@ class NotationRepository
             throw new \Exception('Ошибка удаления: нет доступа на удаление фотографии!');
         }
 
-        $delete = File::delete(public_path($ownerPhotoCheck->path_photo));
+        $removeData = [
+            'path' => $ownerPhotoCheck->path_photo,
+            'notationId' => $photoData['notationId'],
+            'photoId' => $photoData['photoId']
+        ];
+        return $this->removePhoto($removeData);
+    }
+
+    private function removePhoto(array $removeData)
+    {
+
+        $delete = File::delete(public_path($removeData['path']));
         if ($delete) {
             return DB::table('notation_photo')
-                ->where('notation_id', '=', $photoData['notationId'])
-                ->where('notation_photo_id', '=', $photoData['photoId'])
-            ->delete();
+                ->where('notation_id', '=', $removeData['notationId'])
+                ->where('notation_photo_id', '=', $removeData['photoId'])
+                ->delete();
         } else {
             throw new \Exception('Ошибка удаления');
         }
-
-        return false;
     }
 }

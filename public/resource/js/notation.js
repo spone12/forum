@@ -133,7 +133,7 @@ function editNotation()
     });
 }
 
-function notation_delete()
+function deleteNotation()
 {
     let notation_id = $('#id_notation').val();
     $('#modal_window_text').text('Вы действительно хотите удалить новость?');
@@ -151,21 +151,13 @@ function notation_delete()
             success: function (data)
             {
                 $('#modal_window').modal('hide');
-                if (data.success.status == 1) {
-                    tata.text('', 'Новость успешно удалена', {
-                        duration: 2000,
-                        animate: 'slide',
-                        position: 'tr',
-                        onClose: function(){
-                            window.location.href = '/';
-                        }
-                    });
+                if (data.success) {
+                    successMsg(data.message, '', 2000, '/');
                 }
             },
             error: function(data)
             {
-                var errors = data.responseJSON;
-                console.log(errors);
+                errorMsgResponse(data);
             }
         });
      })
