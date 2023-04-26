@@ -22,5 +22,8 @@ return [
     'lang_src' => '/img/icons/lang/ru.png',
     'map' => 'Карта',
     'rating' => 'Рейтинг',
-    'expAdd' => '+%1$d опыта'
+    'expAdd' => '+%1$d опыта',
+    'returnBack' => 'Вернуться обратно',
+    'save' => 'Сохранить',
+    'update' => 'Обновить',
 ];
