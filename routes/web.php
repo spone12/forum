@@ -37,7 +37,7 @@ Route::prefix('notation')->group(function()
         ->where('notation_id','[0-9]{1,11}')->middleware('auth');
     Route::post('/add_photos/{notation_id}', 'NotationController@notationAddPhotos')
         ->name('notationAddPhotos')->where('notation_id','[0-9]{1,11}')->middleware('auth');
-    Route::put('/edit_upd/{notation_id}', 'NotationController@notationEdit')
+    Route::put('/update/{notation_id}', 'NotationController@notationEdit')
         ->where('notation_id','[0-9]{1,11}')->middleware('auth');
     Route::delete('/delete/{notation_id}', 'NotationController@notationDelete')
         ->where('notation_id','[0-9]{1,11}')->middleware('auth');

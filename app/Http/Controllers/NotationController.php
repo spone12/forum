@@ -103,10 +103,20 @@ class NotationController extends Controller
             ], ResponseCodeEnum::SERVER_ERROR);
         }
 
-        $input = $request->only(['notationId', 'notationName', 'notationText']);
-        $edit = $this->notationService->edit($input);
+        try {
 
-        return response()->json(['success' => $edit]);
+            $input = $request->only(['notationId', 'notationName', 'notationText']);
+            $edit = $this->notationService->update($input);
+            return response()->json([
+                'success' => $edit,
+                'message' => 'Notation update successfully'
+            ]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], ResponseCodeEnum::SERVER_ERROR);
+        }
     }
 
     /**

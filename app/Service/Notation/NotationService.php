@@ -114,10 +114,10 @@ class NotationService
      * @param array $input
      * @return bool
      */
-    public function edit(array $input)
+    public function update(array $input)
     {
 
-        $edit = $this->notationRepository->edit($input);
+        $edit = $this->notationRepository->update($input);
         if (!$edit) {
             throw new \Exception('Notation has not been changed');
         }

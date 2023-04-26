@@ -108,7 +108,7 @@ function editNotation()
 
     $.ajax(
     {
-        url: '/notation/edit_upd/' + notationId,
+        url: '/notation/update/' + notationId,
         type: "PUT",
         data: {
             notationId: notationId,
@@ -120,7 +120,7 @@ function editNotation()
 
            if (data.success === true) {
                successMsg(
-                   'Новость успешно изменена',
+                   data.message,
                    '', 2000,
                    '/notation/view/' + notationId
                );

@@ -2,6 +2,7 @@
 
 namespace App\Repository\Notation;
 
+use App\Contracts\CrudRepositoryInterface;
 use App\Enums\Profile\ProfileEnum;
 use App\Models\Notation\VoteNotationModel;
 use Carbon\Carbon;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\File;
  * Class NotationRepository
  * @package App\Repository\Notation
  */
-class NotationRepository
+class NotationRepository implements CrudRepositoryInterface
 {
 
     /**
@@ -81,7 +82,7 @@ class NotationRepository
      * @param array $dataNotationEdit
      * @return bool
      */
-    public function edit(array $dataNotationEdit)
+    public function update(array $dataNotationEdit)
     {
 
         return DB::table('notations')
@@ -92,7 +93,6 @@ class NotationRepository
             'text_notation' => $dataNotationEdit['notationText'],
             'notation_edit_date' => Carbon::now()
         ]);
-
     }
 
     /**
