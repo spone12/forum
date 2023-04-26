@@ -51,7 +51,7 @@ function addNotation()
             }
         },
         error: function(data) {
-            errorMsgResponse(data, 3000);
+            errorMsgResponse(data);
         }
     });
 }
@@ -100,45 +100,40 @@ function change_rating(action = 1)
     });
 }
 
-function edit_notation()
+function editNotation()
 {
-    let notation_id = $('#id_notation').val();
-    let name_tema = $('#name_tema').val();
-    let text_notation = $('#text_notation').val();
+    let notationId = $('#id_notation').val();
+    let notationName = $('#name_tema').val();
+    let notationText = $('#text_notation').val();
 
     $.ajax(
     {
-        url: '/notation/edit_upd/' + notation_id,
+        url: '/notation/update/' + notationId,
         type: "PUT",
         data: {
-            notation_id: notation_id,
-            name_tema: name_tema,
-            text_notation: text_notation
+            notationId: notationId,
+            notationName: notationName,
+            notationText: notationText
         },
         headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
         success: function (data) {
 
            if (data.success === true) {
-                tata.success('', 'Новость успешно изменена', {
-                duration: 2000,
-                animate: 'slide',
-                position: 'tr',
-                  onClose: function(){
-                     window.location.href = '/notation/view/' + notation_id;
-                 }
-              });
+               successMsg(
+                   data.message,
+                   '', 2000,
+                   '/notation/view/' + notationId
+               );
            }
         },
         error: function(data)
         {
-            var errors = data.responseJSON;
-            console.log(errors);
+            errorMsgResponse(data);
         }
     });
 }
 
-
-function notation_delete()
+function deleteNotation()
 {
     let notation_id = $('#id_notation').val();
     $('#modal_window_text').text('Вы действительно хотите удалить новость?');
@@ -156,47 +151,39 @@ function notation_delete()
             success: function (data)
             {
                 $('#modal_window').modal('hide');
-                if (data.success.status == 1) {
-                    tata.text('', 'Новость успешно удалена', {
-                        duration: 2000,
-                        animate: 'slide',
-                        position: 'tr',
-                        onClose: function(){
-                            window.location.href = '/';
-                        }
-                    });
+                if (data.success) {
+                    successMsg(data.message, '', 2000, '/');
                 }
             },
             error: function(data)
             {
-                var errors = data.responseJSON;
-                console.log(errors);
+                errorMsgResponse(data);
             }
         });
      })
 }
 
-function del_photo(photo_id, notation_id)
+function removeNotationPhoto(photoId, notationId)
 {
     $.ajax(
     {
-        url: '/notation/delete_photo/' + notation_id,
+        url: '/notation/delete_photo/' + notationId,
         type: "DELETE",
         data: {
-            photo_id: photo_id,
-            notation_id: notation_id
+            photoId: photoId,
+            notationId: notationId
         },
         headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
         success: function (data)
         {
-           if(data.success === 'success') {
-               window.location.href = '';
+           if (data.success) {
+               $('#notationPhoto' + photoId).remove();
+               successMsg(data.message);
            }
         },
         error: function(data)
         {
-            var errors = data.responseJSON;
-            console.log(errors);
+            errorMsgResponse(data);
         }
     });
 }

@@ -1,6 +1,17 @@
 <?php
 
 return [
+    'errors' => [
+        'notation_not_found' => 'Notation not found',
+        'edit_access_denied' => 'Notation edit access denied',
+        'image_upload' => 'Image were not uploaded due to an error',
+    ],
+    'success' => [
+        'update' => 'Notation update successfully',
+        'delete' => 'Notation delete successfully',
+        'image_uploaded' => 'Image upload successfully',
+        'image_delete' => 'Image successfully deleted',
+    ],
     'view' => 'view',
     'edit' => 'Edit notation',
     'delete' => 'Delete notation',
@@ -25,4 +36,5 @@ return [
     'sortViews' => 'Views',
     'sortRating' => 'Rating',
     'sortDate' => 'Date',
+
 ];

@@ -2,17 +2,19 @@
 
 namespace App\Repository\Notation;
 
+use App\Contracts\CrudRepositoryInterface;
 use App\Enums\Profile\ProfileEnum;
 use App\Models\Notation\VoteNotationModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 /**
  * Class NotationRepository
  * @package App\Repository\Notation
  */
-class NotationRepository
+class NotationRepository implements CrudRepositoryInterface
 {
 
     /**
@@ -33,14 +35,9 @@ class NotationRepository
         ]);
     }
 
-    /**
-     * @param int $notationId
-     * @return \Illuminate\Support\Collection
-     */
-    public function view(int $notationId)
+    public function notationViewData(int $notationId)
     {
-
-        $notation = DB::table('notations')
+        return DB::table('notations')
             ->select('notations.notation_id', 'notations.user_id',
                 'notations.name_notation', 'notations.text_notation',
                 'notations.rating','users.name', 'users.avatar',
@@ -49,47 +46,16 @@ class NotationRepository
             ->leftJoin('notation_photo AS np', 'np.notation_id', '=', 'notations.notation_id')
             ->where('notations.notation_id', '=', $notationId)
         ->get();
+    }
 
-        if (Auth::check()) {
-            $vote = DB::table('vote_notation')
-                ->select('vote_notation_id')
-                ->where('notation_id', '=', $notationId)
-                ->where('user_id', '=', Auth::user()->id)
-                ->get();
-
-            if ($vote->count()) {
-                $notation[0]->vote = VoteNotationModel::where('vote_notation_id', '=', $vote[0]->vote_notation_id)
-                    ->first()->vote;
-            }
-        }
-
-        $notation[0]->text_notation = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $notation[0]->text_notation);
-
-        if (is_null($notation[0]->avatar)) {
-            $notation[0]->avatar = ProfileEnum::NO_AVATAR;
-        }
-
-        $notationViews = DB::table('notation_views')
-            ->select('counter_views','view_date')
+    public function voteNotation(int $notationId)
+    {
+        return DB::table('vote_notation')
+            ->select('vote_notation_id')
             ->where('notation_id', '=', $notationId)
-            ->orderBy('view_date')
-            ->get();
+            ->where('user_id', '=', Auth::user()->id)
+        ->get();
 
-        $list = array();
-        $countViews = 0;
-
-        foreach ($notationViews as $v) {
-            $countViews += $v->counter_views;
-            $list[] = array(
-                'full_date' => date('d.m.Y', strtotime($v->view_date)),
-                'sum_views' => $countViews,
-                'value' => $v->counter_views
-            );
-        }
-        $notation[0]->countViews = number_format($countViews, 0, '.', ',');
-        $notation['graph'] = json_encode($list);
-
-        return $notation;
     }
 
     /**
@@ -116,23 +82,17 @@ class NotationRepository
      * @param array $dataNotationEdit
      * @return bool
      */
-    public function edit(array $dataNotationEdit)
+    public function update(array $dataNotationEdit)
     {
 
-        $upd = DB::table('notations')
+        return DB::table('notations')
             ->where('user_id', '=', Auth::user()->id)
-            ->where('notation_id', '=', $dataNotationEdit['notation_id'])
+            ->where('notation_id', '=', $dataNotationEdit['notationId'])
         ->update([
-            'name_notation' =>  $dataNotationEdit['name_tema'],
-            'text_notation' =>  $dataNotationEdit['text_notation'],
+            'name_notation' => $dataNotationEdit['notationName'],
+            'text_notation' => $dataNotationEdit['notationText'],
             'notation_edit_date' => Carbon::now()
         ]);
-
-        if ($upd) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -152,10 +112,10 @@ class NotationRepository
         $dbMove = null;
         if (empty($checkRating->vote_notation_id)) {
             $dbMove = DB::table('vote_notation')->insert([
-                    'user_id' => Auth::user()->id,
-                    'notation_id' => $notationId,
-                    'vote' => $action,
-                    'vote_date' => Carbon::now()
+                'user_id' => Auth::user()->id,
+                'notation_id' => $notationId,
+                'vote' => $action,
+                'vote_date' => Carbon::now()
             ]);
         } else {
 
@@ -187,7 +147,7 @@ class NotationRepository
 
     /**
      * @param int $notationDelete
-     * @return string[]
+     * @return bool
      */
     public function delete(int $notationId)
     {
@@ -197,28 +157,28 @@ class NotationRepository
             ->where('notation_id', '=', $notationId)
         ->first();
 
-        if ($notation->user_id === Auth::user()->id) {
-
-            $destroy = DB::table('notations')
-                ->where('notation_id', '=', $notationId)
-                ->where('user_id', '=',  Auth::user()->id)
-            ->delete();
-
-            if ($destroy) {
-
-                $data = [
-                    'status' => '1',
-                    'msg' => 'success'
-                ];
-            } else {
-
-                $data = [
-                    'status' => '0',
-                    'msg' => 'fail'
-                ];
-            }
-            return $data;
+        if ($notation->user_id !== Auth::user()->id) {
+            throw new \Exception('Ошибка удаления: нет доступа на удаление новости!');
         }
+
+        $currentNotationPhotos = DB::table('notation_photo')
+            ->select('notation_photo_id', 'path_photo')
+            ->where('notation_id', '=', $notationId)
+        ->get();
+
+        foreach ($currentNotationPhotos as $photo) {
+            $removeData = [
+                'path' => $photo->path_photo,
+                'notationId' => $notationId,
+                'photoId' => $photo->notation_photo_id
+            ];
+            $this->removePhoto($removeData);
+        }
+
+        return DB::table('notations')
+            ->where('notation_id', '=', $notationId)
+            ->where('user_id', '=', Auth::user()->id)
+        ->delete();
     }
 
     /**
@@ -239,7 +199,7 @@ class NotationRepository
                     'user_id' => Auth::user()->id,
                     'notation_id' => $request->notation_id,
                     'path_photo' => "img/notation_photo/{$request->notation_id}/{$imageName}",
-                    'photo_edit_date' =>  Carbon::now()
+                    'photo_edit_date' => Carbon::now()
                 ]);
 
                 $paths[] = $imageName;
@@ -250,31 +210,45 @@ class NotationRepository
 
     /**
      * @param array $photoData
-     * @return string
+     * @return bool
+     * @throws \Exception
      */
-    public function removePhoto(array $photoData)
+    public function removePhotoCheck(array $photoData)
     {
+
         $ownerPhotoCheck = DB::table('notation_photo')
             ->select('user_id', 'path_photo')
-            ->where('notation_id', '=', $photoData['notation_id'])
-            ->where('notation_photo_id', '=', $photoData['photo_id'])
+            ->where('notation_id', '=', $photoData['notationId'])
+            ->where('notation_photo_id', '=', $photoData['photoId'])
         ->first();
 
-        if($ownerPhotoCheck->user_id == Auth::user()->id) {
-            $delete = DB::table('notation_photo')
-                ->where('notation_id', '=', $photoData['notation_id'])
-                ->where('notation_photo_id', '=', $photoData['photo_id'])
+        if (is_null($ownerPhotoCheck)) {
+            throw new \Exception('Ошибка удаления: Данной фотографии не существует!');
+        }
+
+        if ($ownerPhotoCheck->user_id !== Auth::user()->id) {
+            throw new \Exception('Ошибка удаления: нет доступа на удаление фотографии!');
+        }
+
+        $removeData = [
+            'path' => $ownerPhotoCheck->path_photo,
+            'notationId' => $photoData['notationId'],
+            'photoId' => $photoData['photoId']
+        ];
+        return $this->removePhoto($removeData);
+    }
+
+    private function removePhoto(array $removeData)
+    {
+
+        $delete = File::delete(public_path($removeData['path']));
+        if ($delete) {
+            return DB::table('notation_photo')
+                ->where('notation_id', '=', $removeData['notationId'])
+                ->where('notation_photo_id', '=', $removeData['photoId'])
                 ->delete();
-
-            unlink(public_path($ownerPhotoCheck->path_photo));
-
-            if ($delete) {
-                return $ownerPhotoCheck->answer = 'success';
-            } else {
-                return $ownerPhotoCheck->answer = 'Ошибка удаления';
-            }
         } else {
-            return $ownerPhotoCheck->answer = 'Не совпадает id пользователя';
+            throw new \Exception('Ошибка удаления');
         }
     }
 }

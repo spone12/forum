@@ -3,10 +3,13 @@
 namespace App\Service\Notation;
 
 use App\Enums\ExpEnum;
+use App\Enums\Profile\ProfileEnum;
 use App\Http\Requests\NotationPhotoRequest;
 use App\Models\Notation\NotationViewModel;
+use App\Models\Notation\VoteNotationModel;
 use App\Models\ProfileModel;
 use App\Repository\Notation\NotationRepository;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class NotationService
@@ -53,8 +56,43 @@ class NotationService
     {
 
         NotationViewModel::addViewNotation($notationId);
-        $view = $this->notationRepository->view($notationId);
-        return $view;
+        $notation = $this->notationRepository->notationViewData($notationId);
+
+        if (Auth::check()) {
+
+            $vote = $this->notationRepository->voteNotation($notationId);
+            if ($vote->count()) {
+                $notation[0]->vote = VoteNotationModel::where('vote_notation_id', '=', $vote[0]->vote_notation_id)
+                    ->first()->vote;
+            }
+        }
+
+        $notation[0]->text_notation = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $notation[0]->text_notation);
+
+        if (is_null($notation[0]->avatar)) {
+            $notation[0]->avatar = ProfileEnum::NO_AVATAR;
+        }
+
+        $notationViews = NotationViewModel::select('counter_views', 'view_date')
+            ->where('notation_id', '=', $notationId)
+            ->orderBy('view_date')
+        ->get();
+
+        $list = array();
+        $countViews = 0;
+
+        foreach ($notationViews as $v) {
+            $countViews += $v->counter_views;
+            $list[] = array(
+                'full_date' => date('d.m.Y', strtotime($v->view_date)),
+                'sum_views' => $countViews,
+                'value' => $v->counter_views
+            );
+        }
+        $notation[0]->countViews = number_format($countViews, 0, '.', ',');
+        $notation['graph'] = json_encode($list);
+
+        return $notation;
     }
 
     /**
@@ -76,11 +114,14 @@ class NotationService
      * @param array $input
      * @return bool
      */
-    public function edit(array $input)
+    public function update(array $input)
     {
 
-        $edit = $this->notationRepository->edit($input);
-        return $edit;
+        $edit = $this->notationRepository->update($input);
+        if (!$edit) {
+            throw new \Exception('Notation has not been changed');
+        }
+        return true;
     }
 
     /**
@@ -132,7 +173,7 @@ class NotationService
     public function removePhoto(array $photoData)
     {
 
-        $delete = $this->notationRepository->removePhoto($photoData);
+        $delete = $this->notationRepository->removePhotoCheck($photoData);
         return $delete;
     }
 }

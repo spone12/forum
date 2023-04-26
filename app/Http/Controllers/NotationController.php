@@ -76,16 +76,20 @@ class NotationController extends Controller
         try {
 
            $dataEdit = $this->notationService->getDataEdit($notationId);
-           if ($dataEdit['notation']->user_id == Auth::user()->id) {
-                return view('menu.Notation.notation_edit', [
-                    'data_notation' => $dataEdit['notation'],
-                    'photo_notation' => $dataEdit['notation_photo']
-               ]);
-           } else {
-               return view('error_404', ['error' => ['Доступ на редактирование запрещён']]);
+           if ($dataEdit['notation']->user_id !== Auth::user()->id) {
+               return view('error_404', ['error' => [
+                   trans('notation.errors.edit_access_denied')
+               ]]);
            }
+
+           return view('menu.Notation.notation_edit', [
+              'notationData' => $dataEdit['notation'],
+              'notationPhoto' => $dataEdit['notation_photo']
+           ]);
         } catch (\Exception $exception) {
-            return view('error_404', ['error' => ['Данной статьи не существует']]);
+            return view('error_404', ['error' => [
+                trans('notation.errors.notation_not_found')
+            ]]);
         }
     }
 
@@ -103,10 +107,20 @@ class NotationController extends Controller
             ], ResponseCodeEnum::SERVER_ERROR);
         }
 
-        $input = $request->only(['notation_id', 'name_tema', 'text_notation']);
-        $edit = $this->notationService->edit($input);
+        try {
 
-        return response()->json(['success'=> $edit]);
+            $input = $request->only(['notationId', 'notationName', 'notationText']);
+            $edit = $this->notationService->update($input);
+            return response()->json([
+                'success' => $edit,
+                'message' => trans('notation.success.update')
+            ]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], ResponseCodeEnum::SERVER_ERROR);
+        }
     }
 
     /**
@@ -143,10 +157,20 @@ class NotationController extends Controller
             ], ResponseCodeEnum::SERVER_ERROR);
         }
 
-        $input = $request->only(['notation_id']);
-        $response = $this->notationService->delete($input['notation_id']);
+        try {
 
-        return response()->json(['success'=> $response]);
+            $input = $request->only(['notation_id']);
+            $response = $this->notationService->delete($input['notation_id']);
+            return response()->json([
+                'success' => $response,
+                'message' => trans('notation.success.delete')
+            ]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], ResponseCodeEnum::SERVER_ERROR);
+        }
     }
 
     /**
@@ -158,11 +182,10 @@ class NotationController extends Controller
 
         $photoPath = $this->notationService->addPhoto($request);
         if (!empty($photoPath)) {
-
-            return back()->with('success', "Изображения загружены успешно.")
+            return back()->with('success', trans('notation.success.image_uploaded'))
                 ->with('paths', $photoPath);
         } else {
-            return back()->with('error', "Изображения не загружены!");
+            return back()->with('error', trans('notation.errors.image_upload'));
         }
     }
 
@@ -173,10 +196,19 @@ class NotationController extends Controller
     protected function removeNotationPhoto(Request $request)
     {
 
-        $photoData = $request->only(['photo_id', 'notation_id']);
-        $delete = $this->notationService->removePhoto($photoData);
-
-        return response()->json(['success' => $delete]);
+        try {
+            $photoData = $request->only(['photoId', 'notationId']);
+            $isDelete = $this->notationService->removePhoto($photoData);
+            return response()->json([
+                'success' => $isDelete,
+                'message' => trans('notation.success.image_delete')
+            ]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], ResponseCodeEnum::SERVER_ERROR);
+        }
     }
 
     /**

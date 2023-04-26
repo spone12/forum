@@ -72,7 +72,7 @@
                                         <img id="notation_edit" class='marker' width=20 data-toggle="tooltip" data-placement="bottom" title='{{ trans('notation.edit') }}' alt='{{ trans('notation.edit') }}' src="{{ asset('img/icons/edit.png') }}">
                                     </a>
 
-                                    <img id="notation_delete" onclick='notation_delete();' data-toggle="tooltip" data-placement="bottom" class='marker' width=20 title='{{ trans('notation.delete') }}' alt='{{ trans('notation.delete') }}' src="{{ asset('img/icons/delete.png') }}">
+                                    <img onclick='deleteNotation();' data-toggle="tooltip" data-placement="bottom" class='marker' width=20 title='{{ trans('notation.delete') }}' alt='{{ trans('notation.delete') }}' src="{{ asset('img/icons/delete.png') }}">
                                 </div>
                                 @endif
                             @endauth
