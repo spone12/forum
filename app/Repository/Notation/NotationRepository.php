@@ -7,6 +7,7 @@ use App\Models\Notation\VoteNotationModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 /**
  * Class NotationRepository
@@ -111,10 +112,10 @@ class NotationRepository
         $dbMove = null;
         if (empty($checkRating->vote_notation_id)) {
             $dbMove = DB::table('vote_notation')->insert([
-                    'user_id' => Auth::user()->id,
-                    'notation_id' => $notationId,
-                    'vote' => $action,
-                    'vote_date' => Carbon::now()
+                'user_id' => Auth::user()->id,
+                'notation_id' => $notationId,
+                'vote' => $action,
+                'vote_date' => Carbon::now()
             ]);
         } else {
 
@@ -198,7 +199,7 @@ class NotationRepository
                     'user_id' => Auth::user()->id,
                     'notation_id' => $request->notation_id,
                     'path_photo' => "img/notation_photo/{$request->notation_id}/{$imageName}",
-                    'photo_edit_date' =>  Carbon::now()
+                    'photo_edit_date' => Carbon::now()
                 ]);
 
                 $paths[] = $imageName;
@@ -209,31 +210,36 @@ class NotationRepository
 
     /**
      * @param array $photoData
-     * @return string
+     * @return bool
+     * @throws \Exception
      */
     public function removePhoto(array $photoData)
     {
+
         $ownerPhotoCheck = DB::table('notation_photo')
             ->select('user_id', 'path_photo')
-            ->where('notation_id', '=', $photoData['notation_id'])
-            ->where('notation_photo_id', '=', $photoData['photo_id'])
+            ->where('notation_id', '=', $photoData['notationId'])
+            ->where('notation_photo_id', '=', $photoData['photoId'])
         ->first();
 
-        if($ownerPhotoCheck->user_id == Auth::user()->id) {
-            $delete = DB::table('notation_photo')
-                ->where('notation_id', '=', $photoData['notation_id'])
-                ->where('notation_photo_id', '=', $photoData['photo_id'])
-                ->delete();
-
-            unlink(public_path($ownerPhotoCheck->path_photo));
-
-            if ($delete) {
-                return $ownerPhotoCheck->answer = 'success';
-            } else {
-                return $ownerPhotoCheck->answer = 'Ошибка удаления';
-            }
-        } else {
-            return $ownerPhotoCheck->answer = 'Не совпадает id пользователя';
+        if (is_null($ownerPhotoCheck)) {
+            throw new \Exception('Ошибка удаления: Данной фотографии не существует!');
         }
+
+        if ($ownerPhotoCheck->user_id !== Auth::user()->id) {
+            throw new \Exception('Ошибка удаления: нет доступа на удаление фотографии!');
+        }
+
+        $delete = File::delete(public_path($ownerPhotoCheck->path_photo));
+        if ($delete) {
+            return DB::table('notation_photo')
+                ->where('notation_id', '=', $photoData['notationId'])
+                ->where('notation_photo_id', '=', $photoData['photoId'])
+            ->delete();
+        } else {
+            throw new \Exception('Ошибка удаления');
+        }
+
+        return false;
     }
 }

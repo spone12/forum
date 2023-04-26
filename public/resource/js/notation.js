@@ -171,27 +171,27 @@ function notation_delete()
      })
 }
 
-function del_photo(photo_id, notation_id)
+function removeNotationPhoto(photoId, notationId)
 {
     $.ajax(
     {
-        url: '/notation/delete_photo/' + notation_id,
+        url: '/notation/delete_photo/' + notationId,
         type: "DELETE",
         data: {
-            photo_id: photo_id,
-            notation_id: notation_id
+            photoId: photoId,
+            notationId: notationId
         },
         headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
         success: function (data)
         {
-           if(data.success === 'success') {
-               window.location.href = '';
+           if (data.success) {
+               $('#notationPhoto' + photoId).remove();
+               successMsg(data.message);
            }
         },
         error: function(data)
         {
-            var errors = data.responseJSON;
-            console.log(errors);
+            errorMsgResponse(data);
         }
     });
 }

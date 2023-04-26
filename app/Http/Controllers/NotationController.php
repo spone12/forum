@@ -78,8 +78,8 @@ class NotationController extends Controller
            $dataEdit = $this->notationService->getDataEdit($notationId);
            if ($dataEdit['notation']->user_id == Auth::user()->id) {
                 return view('menu.Notation.notation_edit', [
-                    'data_notation' => $dataEdit['notation'],
-                    'photo_notation' => $dataEdit['notation_photo']
+                    'notationData' => $dataEdit['notation'],
+                    'notationPhoto' => $dataEdit['notation_photo']
                ]);
            } else {
                return view('error_404', ['error' => ['Доступ на редактирование запрещён']]);
@@ -158,7 +158,6 @@ class NotationController extends Controller
 
         $photoPath = $this->notationService->addPhoto($request);
         if (!empty($photoPath)) {
-
             return back()->with('success', "Изображения загружены успешно.")
                 ->with('paths', $photoPath);
         } else {
@@ -173,10 +172,19 @@ class NotationController extends Controller
     protected function removeNotationPhoto(Request $request)
     {
 
-        $photoData = $request->only(['photo_id', 'notation_id']);
-        $delete = $this->notationService->removePhoto($photoData);
-
-        return response()->json(['success' => $delete]);
+        try {
+            $photoData = $request->only(['photoId', 'notationId']);
+            $isDelete = $this->notationService->removePhoto($photoData);
+            return response()->json([
+                'success' => $isDelete,
+                'message' => 'Фотография успешно удалена'
+            ]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], ResponseCodeEnum::SERVER_ERROR);
+        }
     }
 
     /**

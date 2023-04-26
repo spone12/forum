@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title-block'){{ $data_notation->name_notation }} / Редакирование@endsection
+@section('title-block'){{ $notationData->name_notation }} / Редакирование@endsection
 @section('content')
 
 @push('scripts')
@@ -19,13 +19,13 @@
 @endif
 
 <!-- name, value, id -->
-{{ Form::hidden('invisible', $data_notation->notation_id, array('id' => 'id_notation')) }}
+{{ Form::hidden('invisible', $notationData->notation_id, array('id' => 'id_notation')) }}
 
 <div class='container'>
     <div class='row justify-content-center'>
 
         <div class="col-lg-1 col-md-1 text-center notataionMenu p-1">
-            <a href='/notation/view/{{ $data_notation->notation_id}}' class='btn btn-info mt-1 notataionMenu__home'>
+            <a href='/notation/view/{{ $notationData->notation_id}}' class='btn btn-info mt-1 notataionMenu__home'>
                 <img alt='back' data-toggle="tooltip" title='Обратно к новости' src="{{ asset('img/icons/back-arrow.svg') }}" width=25 />
             </a>
         </div>
@@ -39,7 +39,7 @@
                     </div>
                     <div  class='col-9 align-self-end'>
                          {{
-                             Form::text('name_tema',  $data_notation->name_notation,
+                             Form::text('name_tema',  $notationData->name_notation,
                              [
                                 'id' => 'name_tema',
                                'class' => 'input_field',
@@ -55,7 +55,7 @@
                 <div class='row justify-content-center'>
                     <div  class='col-10'>
                         {{
-                            Form::textarea('text_notation',$data_notation->text_notation, [
+                            Form::textarea('text_notation',$notationData->text_notation, [
                                 'class' => 'textarea_field',
                                 'style' => 'width:100%',
                                 'id' => 'text_notation'
@@ -63,13 +63,13 @@
                         }}
                     </div>
 
-                    <form action="{{ route('notationAddPhotos', $data_notation->notation_id) }}" enctype="multipart/form-data" method="POST">
+                    <form action="{{ route('notationAddPhotos', $notationData->notation_id) }}" enctype="multipart/form-data" method="POST">
 
                         {{ csrf_field() }}
                         <div class="d-row justify-content-center">
                             <div class="col-md-12">
                                 Добавить фотографии:
-                                <input type="file" id='notation_images' accept="image/*" class='btn btn-info mt-2' name="images[]" multiple />
+                                <input type="file" title="Выбрать фотографии для загрузки" data-toggle="tooltip" id='notation_images' accept="image/*" class='btn btn-info mt-2' name="images[]" multiple />
                             </div>
                             <div class="col-md-12 mt-1 text-center">
                                 <button type="submit" class="btn btn-success">Добавить</button>
@@ -78,11 +78,11 @@
                     </form>
 
                     <div class='row col-10 mt-1 notation_photo justify-content-center'>
-                        @foreach ($photo_notation as $v)
-                            <span class="content clossable" >
-                                <div title='Удалить фотографию' class="close" onclick="del_photo({{$v->notation_photo_id}}, {{$data_notation->notation_id}});"></div>
+                        @foreach ($notationPhoto as $v)
+                            <div class="content clossable" id="notationPhoto{{ $v->notation_photo_id }}">
+                                <div data-toggle="tooltip" title='Удалить фотографию' class="close" onclick="removeNotationPhoto({{ $v->notation_photo_id }}, {{ $notationData->notation_id }});"></div>
                                 <img src="{{ asset($v->path_photo) }}" height=50 />
-                            </span>
+                            </div>
                         @endforeach
                     </div>
                 </div>
