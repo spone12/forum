@@ -55,7 +55,6 @@ class NotationRepository implements CrudRepositoryInterface
             ->where('notation_id', '=', $notationId)
             ->where('user_id', '=', Auth::user()->id)
         ->get();
-
     }
 
     /**
@@ -66,7 +65,7 @@ class NotationRepository implements CrudRepositoryInterface
     {
 
         $data['notation'] = DB::table('notations')
-            ->select('user_id','notation_id','category','name_notation','text_notation')
+            ->select('user_id', 'notation_id', 'category', 'name_notation', 'text_notation')
             ->where('notation_id', '=', $notationId)
         ->first();
 

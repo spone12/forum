@@ -1,20 +1,20 @@
-$('.content.clossable').hover(function()
-{
-    $(this).find('.close').animate({opacity:1}, 100)},
-    function() {
-        $(this).find('.close').animate({opacity:0}, 100)
-    }
-)
-
 $(document).ready(function()
 {
+    $('#notationImages').on('click', function() {
+        $('#notationImagesUpload').click();
+    });
+
+    $("#notationImagesUpload").change(function() {
+        $("#formImageUpload").submit();
+    });
+
     $(".notation_carousel_photo").click(function()
     {
         var img = $(this);
         var src = img.attr('src');
-        $("body").append("<div class='popup'>"+
-                         "<div class='popup_bg'></div>"+
-                         "<img src='"+ src +"' class='popup_img' />"+
+        $("body").append("<div class='popup'>" +
+                         "<div class='popup_bg'></div>" +
+                         "<img src='" + src + "' class='popup_img' />" +
                          "</div>");
 
         $(".popup").fadeIn(800);
@@ -27,6 +27,15 @@ $(document).ready(function()
         });
     });
 });
+
+$('.content.clossable').hover(function()
+    {
+        $(this).find('.close').animate({ opacity:1 }, 100)
+    },
+    function() {
+        $(this).find('.close').animate({ opacity:0 }, 100)
+    }
+)
 
 function addNotation()
 {

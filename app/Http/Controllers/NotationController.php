@@ -29,6 +29,8 @@ class NotationController extends Controller
     }
 
     /**
+     * Create notation
+     *
      * @param NotationRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -48,6 +50,8 @@ class NotationController extends Controller
     }
 
     /**
+     * Get view notation
+     *
      * @param int $notationId
      * @return \Illuminate\Contracts\Foundation\Application|
      * \Illuminate\Contracts\View\Factory|
@@ -59,19 +63,21 @@ class NotationController extends Controller
         try {
             $view = $this->notationService->view($notationId);
         } catch (\Exception $exception) {
-            return view('error_404', ['error' => ['Данной статьи не существует']]);
+            return view('error_404', ['error' => [ trans('notation.errors.not_exist')]]);
         }
 
         return view('menu.notation_view', ['view' => $view]);
     }
 
     /**
+     * Edit the notation
+     *
      * @param int $notationId
      * @return \Illuminate\Contracts\Foundation\Application|
      * \Illuminate\Contracts\View\Factory|
      * \Illuminate\Contracts\View\View
     */
-    protected function notationEditAccess(int $notationId)
+    protected function notationEdit(int $notationId)
     {
         try {
 
@@ -94,10 +100,12 @@ class NotationController extends Controller
     }
 
     /**
+     * Update notation
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
     */
-    protected function notationEdit(Request $request)
+    protected function notationUpdate(Request $request)
     {
 
         if (!$request->ajax()) {
@@ -124,6 +132,8 @@ class NotationController extends Controller
     }
 
     /**
+     * Change notation rating
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
     */
@@ -144,6 +154,8 @@ class NotationController extends Controller
     }
 
     /**
+     * Delete notation
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
     */
@@ -174,10 +186,12 @@ class NotationController extends Controller
     }
 
     /**
+     * Add photo to notation
+     *
      * @param NotationPhotoRequest $request
      * @return \Illuminate\Http\RedirectResponse
     */
-    protected function notationAddPhotos(NotationPhotoRequest $request)
+    protected function notationAddPhoto(NotationPhotoRequest $request)
     {
 
         $photoPath = $this->notationService->addPhoto($request);
@@ -190,6 +204,8 @@ class NotationController extends Controller
     }
 
     /**
+     * Remove photo from notation
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
     */

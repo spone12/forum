@@ -5,6 +5,7 @@ return [
         'notation_not_found' => 'Notation not found',
         'edit_access_denied' => 'Notation edit access denied',
         'image_upload' => 'Image were not uploaded due to an error',
+        'not_exist' => 'This notation does not exist'
     ],
     'success' => [
         'update' => 'Notation update successfully',
@@ -12,8 +13,16 @@ return [
         'image_uploaded' => 'Image upload successfully',
         'image_delete' => 'Image successfully deleted',
     ],
+    'edit' => [
+        'topic' => 'Notation topic',
+        'edit_title' => 'Notation edit',
+        'back' => 'Back to the notaiton',
+        'edit' => 'Edit notation',
+        'change' => 'Change',
+        'select_image_upload' => 'Select photos to upload',
+        'remove_image' => 'Remove image'
+    ],
     'view' => 'view',
-    'edit' => 'Edit notation',
     'delete' => 'Delete notation',
     'dateAdd' => 'Date add',
     'article' => 'Article',
@@ -36,5 +45,4 @@ return [
     'sortViews' => 'Views',
     'sortRating' => 'Rating',
     'sortDate' => 'Date',
-
 ];
