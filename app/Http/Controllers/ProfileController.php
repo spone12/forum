@@ -40,7 +40,7 @@ class ProfileController extends Controller
 
         $anotherUserData = $this->profileService->getAnotherUser($id);
         if (!empty($anotherUserData->name)) {
-            return view('menu.profile', ['data_user' => $anotherUserData]);
+            return view('menu.Profile.profile', ['data_user' => $anotherUserData]);
         } else {
             return view('error_404', ['error' => ['Данного пользователя не существует']]);
         }
@@ -56,7 +56,7 @@ class ProfileController extends Controller
     {
 
         $userData = $this->profileService->getUserData();
-        return view('menu.profile', ['data_user' => $userData]);
+        return view('menu.Profile.profile', ['data_user' => $userData]);
     }
 
     /**
@@ -69,7 +69,7 @@ class ProfileController extends Controller
     {
 
         $userData = $this->profileService->getUserDataChange($userId);
-        return view('menu.profile.change_profile', ['data_user' => $userData]);
+        return view('menu.Profile.change_profile', ['data_user' => $userData]);
     }
 
     /**

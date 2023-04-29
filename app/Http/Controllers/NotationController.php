@@ -66,7 +66,7 @@ class NotationController extends Controller
             return view('error_404', ['error' => [ trans('notation.errors.not_exist')]]);
         }
 
-        return view('menu.notation_view', ['view' => $view]);
+        return view('menu.Notation.notation_view', ['view' => $view]);
     }
 
     /**
@@ -235,6 +235,6 @@ class NotationController extends Controller
     */
     public function notation(Request $request)
     {
-        return view('menu.notation');
+        return view('menu.Notation.notation');
     }
 }
