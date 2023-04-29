@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title-block'){{ $notationData->name_notation }} / Редакирование@endsection
+@section('title-block'){{ $notationData->name_notation }} / {{ trans('notation.edit.edit_title') }}@endsection
 @section('content')
 
 @push('scripts')
@@ -26,25 +26,37 @@
 
         <div class="col-lg-1 col-md-1 text-center notataionMenu p-1">
             <a href='/notation/view/{{ $notationData->notation_id}}' class='btn btn-info mt-1 notataionMenu__home'>
-                <img alt='back' data-toggle="tooltip" title='Обратно к новости' src="{{ asset('img/icons/back-arrow.svg') }}" width=25 />
+                <img alt='back' data-toggle="tooltip" title='{{ trans('notation.edit.back') }}' src="{{ asset('img/icons/back-arrow.svg') }}" width=25 />
             </a>
+
+            <form id='formImageUpload' action="{{ route('notationAddPhoto', $notationData->notation_id) }}" enctype="multipart/form-data" method="POST">
+                <a href='#' class='btn btn-info mt-1'>
+                    {{ csrf_field() }}
+                    <img id='notationImages' width="25" data-toggle="tooltip" src="{{ asset('img/icons/Notation/image-upload.png')}}" title='{{ trans('notation.edit.select_image_upload') }}' alt='Images upload' />
+                    <input id='notationImagesUpload' accept="image/*" name="images[]" multiple type="file" hidden>
+                </a>
+            </form>
+
+            <button class='btn btn-info mt-1' onclick="editNotation();">
+                <img alt='{{ trans('notation.edit.change') }}' data-toggle="tooltip" title='{{ trans('notation.edit.change') }}' type="submit" src="{{ asset('img/icons/edit.png') }}" width=25 />
+            </button>
         </div>
 
-        <div class="col-md-10">
+        <div class="col-md-11">
             <div class="card">
             <div class="card-header">
                 <div class="row no-gutters">
                     <div class='col-3 align-self-start text_mg'>
-                        Тема новости
+                        {{ trans('notation.edit.topic') }}
                     </div>
                     <div  class='col-9 align-self-end'>
                          {{
-                             Form::text('name_tema',  $notationData->name_notation,
+                             Form::text('name_tema', $notationData->name_notation,
                              [
                                 'id' => 'name_tema',
-                               'class' => 'input_field',
-                               'style' => 'width:100%',
-                               'placeholder' => 'Тема'
+                                'class' => 'input_field',
+                                'style' => 'width:100%',
+                                'placeholder' => trans('notation.edit.topic')
                              ])
                          }}
                     </div>
@@ -55,7 +67,7 @@
                 <div class='row justify-content-center'>
                     <div  class='col-10'>
                         {{
-                            Form::textarea('text_notation',$notationData->text_notation, [
+                            Form::textarea('text_notation', $notationData->text_notation, [
                                 'class' => 'textarea_field',
                                 'style' => 'width:100%',
                                 'id' => 'text_notation'
@@ -63,41 +75,15 @@
                         }}
                     </div>
 
-                    <form action="{{ route('notationAddPhotos', $notationData->notation_id) }}" enctype="multipart/form-data" method="POST">
-
-                        {{ csrf_field() }}
-                        <div class="d-row justify-content-center">
-                            <div class="col-md-12">
-                                Добавить фотографии:
-                                <input type="file" title="Выбрать фотографии для загрузки" data-toggle="tooltip" id='notation_images' accept="image/*" class='btn btn-info mt-2' name="images[]" multiple />
-                            </div>
-                            <div class="col-md-12 mt-1 text-center">
-                                <button type="submit" class="btn btn-success">Добавить</button>
-                            </div>
-                        </div>
-                    </form>
-
                     <div class='row col-10 mt-1 notation_photo justify-content-center'>
                         @foreach ($notationPhoto as $v)
                             <div class="content clossable" id="notationPhoto{{ $v->notation_photo_id }}">
-                                <div data-toggle="tooltip" title='Удалить фотографию' class="close" onclick="removeNotationPhoto({{ $v->notation_photo_id }}, {{ $notationData->notation_id }});"></div>
+                                <div data-toggle="tooltip" title='{{ trans('notation.edit.remove_image') }}' class="close" onclick="removeNotationPhoto({{ $v->notation_photo_id }}, {{ $notationData->notation_id }});"></div>
                                 <img src="{{ asset($v->path_photo) }}" height=50 />
                             </div>
                         @endforeach
                     </div>
                 </div>
-
-                <div class='row justify-content-center m-1'>
-                    {{
-                        Form::button('Изменить', [
-                            'class' => 'btn btn-info',
-                            'id' => 'notation_add',
-                            'onclick' => 'editNotation();',
-                            'type' => 'submit'
-                        ])
-                    }}
-                </div>
-
             </div>
          </div>
       </div>

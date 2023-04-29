@@ -59,7 +59,6 @@ class NotationService
         $notation = $this->notationRepository->notationViewData($notationId);
 
         if (Auth::check()) {
-
             $vote = $this->notationRepository->voteNotation($notationId);
             if ($vote->count()) {
                 $notation[0]->vote = VoteNotationModel::where('vote_notation_id', '=', $vote[0]->vote_notation_id)

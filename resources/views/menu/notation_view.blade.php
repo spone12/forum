@@ -18,13 +18,13 @@
 
             <div class="col-lg-1 col-md-1 text-center notataionMenu p-1">
                 <a href='{{ route("home") }}' class='btn btn-info mt-1 notataionMenu__home'>
-                    <img alt='back' data-toggle="tooltip" title='На главную страницу' src="{{asset('img/icons/back-arrow.svg')}}" width=25 />
+                    <img alt='back' data-toggle="tooltip" title='На главную страницу' src="{{ asset('img/icons/back-arrow.svg') }}" width=25 />
                 </a>
 
                 <div class='row btn btn-info mt-2 notataionMenu__views'>
                     <div>
                         <img width=25 src="{{ asset('img/icons/Notation/eye.png') }}" data-toggle="tooltip" data-placement="bottom" title='{{ trans('notation.countViews') }}' />
-                        <span>{{$view[0]->countViews}}</span>
+                        <span>{{ $view[0]->countViews }}</span>
                     </div>
                 </div>
 
@@ -69,7 +69,7 @@
                                 @if (Auth::user()->id === $view[0]->user_id)
                                 <div class='col-2 align-self-end'>
                                     <a class='no_decor' href="{{ route('notation_edit_id', $view[0]->notation_id) }}">
-                                        <img id="notation_edit" class='marker' width=20 data-toggle="tooltip" data-placement="bottom" title='{{ trans('notation.edit') }}' alt='{{ trans('notation.edit') }}' src="{{ asset('img/icons/edit.png') }}">
+                                        <img id="notation_edit" class='marker' width=20 data-toggle="tooltip" data-placement="bottom" title='{{ trans('notation.edit.edit') }}' alt='{{ trans('notation.edit.edit') }}' src="{{ asset('img/icons/edit.png') }}">
                                     </a>
 
                                     <img onclick='deleteNotation();' data-toggle="tooltip" data-placement="bottom" class='marker' width=20 title='{{ trans('notation.delete') }}' alt='{{ trans('notation.delete') }}' src="{{ asset('img/icons/delete.png') }}">
@@ -80,11 +80,11 @@
                         <div class='row justify-content-start'>
                             <div class='col-4 col-sm-3 add_notation_who'>{{ trans('notation.added') }}:</div>
                             <div class='col-5 col-sm-3 add_notation_who'>
-                                <img class='mini_avatar' data-toggle="tooltip" data-placement="bottom" title='{{$view[0]->name}}' width=30 src="{{ asset($view[0]->avatar) }}" />
-                                <a href='/profile/{{$view[0]->user_id}}'  class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='{{ trans('profile.goToProfile') }}'>{{$view[0]->name}}</a>
+                                <img class='mini_avatar' data-toggle="tooltip" data-placement="bottom" title='{{ $view[0]->name }}' width=30 src="{{ asset($view[0]->avatar) }}" />
+                                <a href='/profile/{{ $view[0]->user_id }}' class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='{{ trans('profile.goToProfile') }}'>{{ $view[0]->name }}</a>
                             </div>
                             <div class='col-4 col-sm-3 add_notation_who'>{{ trans('notation.dateAdd') }}:</div>
-                            <div class='col-4 col-sm-3 add_notation_who'>{{$view[0]->notation_add_date}}</div>
+                            <div class='col-4 col-sm-3 add_notation_who'>{{ $view[0]->notation_add_date }}</div>
                         </div>
                     </div>
                         <div class='text-center mt-2'>
@@ -100,7 +100,7 @@
                                     <ol class="carousel-indicators">
                                         @foreach ($view as $v)
                                              @if (!empty($v->path_photo))
-                                                <li data-target="#carousel" data-slide-to="{{$loop->index}}"
+                                                <li data-target='#carousel' data-slide-to="{{ $loop->index }}"
                                                     class="@if ($loop->first) active @endif">
                                                 </li>
                                              @endif
@@ -110,7 +110,7 @@
                                     @foreach ($view as $v)
                                         @if (!empty($v->path_photo))
                                             <div class="carousel-item @if ($loop->first) active @endif">
-                                                <img class="d-block w-100 notation_carousel_photo" src="{{asset($v->path_photo)}}" alt="{{ trans('notation.firstSlide') }}">
+                                                <img class="d-block w-100 notation_carousel_photo" src="{{ asset($v->path_photo )}}" alt="{{ trans('notation.firstSlide') }}">
                                             </div>
                                         @endif
                                     @endforeach
@@ -147,7 +147,7 @@
                         </div>
                         <div class="row no-gutters">
                             <div class="col-12 justify-content-start ">
-                                <img class='btn btn-light notationCommentAdd__send align-middle' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{{trans('notation.sendComment')}}">
+                                <img class='btn btn-light notationCommentAdd__send align-middle' data-toggle="tooltip" onclick="sendMessage();" alt="trans('notation.sendComment')" src="{{ asset('img/chat/send_message.png') }}" title="{{ trans('notation.sendComment') }}">
                             </div>
                         </div>
                     </div>
@@ -160,13 +160,13 @@
                     <div class='col-6 card'>
                         <div>
                             <div class='col-12 add_notation_who'>
-                                <img class='commentProfilePhoto' data-toggle="tooltip" data-placement="bottom" title='{{$view[0]->name}}' width=30 src="{{ asset($view[0]->avatar) }}" />
-                                <a href='/profile/{{$view[0]->user_id}}' class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='{{ trans('profile.goToProfile') }}'>{{$view[0]->name}}</a>
+                                <img class='commentProfilePhoto' data-toggle="tooltip" data-placement="bottom" title='{{ $view[0]->name }}' width=30 src="{{ asset($view[0]->avatar) }}" />
+                                <a href='/profile/{{ $view[0]->user_id }}' class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='{{ trans('profile.goToProfile') }}'>{{ $view[0]->name }}</a>
                                 <span>10:12</span>
                             </div>
                         </div>
                         <div class="commentText">
-                            <small class=""> По крайней мере — в прошедший четверг. Очень приятно провели там время? — сделал наконец, в свою — очередь, вопрос Чичиков. — Ну, семнадцать бутылок — шампанского! — Ну, послушай, чтоб доказать тебе, что я тебе положу этот кусочек“. Само собою разумеется, что полюбопытствовал узнать, какие в окружности находятся у них были такого рода, что с тобою не стану снимать — плевы с черт знает что дали, трех аршин с вершком. </small>
+                            <small class=''> По крайней мере — в прошедший четверг. Очень приятно провели там время? — сделал наконец, в свою — очередь, вопрос Чичиков. — Ну, семнадцать бутылок — шампанского! — Ну, послушай, чтоб доказать тебе, что я тебе положу этот кусочек“. Само собою разумеется, что полюбопытствовал узнать, какие в окружности находятся у них были такого рода, что с тобою не стану снимать — плевы с черт знает что дали, трех аршин с вершком. </small>
                         </div>
                     </div>
                 </div>
@@ -203,6 +203,3 @@
         }
     </script>
 @endsection
-
-
-

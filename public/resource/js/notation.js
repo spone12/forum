@@ -1,13 +1,13 @@
-$('.content.clossable').hover(function()
-{
-    $(this).find('.close').animate({opacity:1}, 100)},
-    function() {
-        $(this).find('.close').animate({opacity:0}, 100)
-    }
-)
-
 $(document).ready(function()
 {
+    $('#notationImages').on('click', function() {
+        $('#notationImagesUpload').click();
+    });
+
+    $("#notationImagesUpload").change(function() {
+        $("#formImageUpload").submit();
+    });
+
     $(".notation_carousel_photo").click(function()
     {
         var img = $(this);
@@ -27,6 +27,15 @@ $(document).ready(function()
         });
     });
 });
+
+$('.content.clossable').hover(function()
+    {
+        $(this).find('.close').animate({ opacity:1 }, 100)
+    },
+    function() {
+        $(this).find('.close').animate({ opacity:0 }, 100)
+    }
+)
 
 function addNotation()
 {
