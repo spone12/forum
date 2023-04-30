@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ResponseCodeEnum;
 use Illuminate\Http\Request;
 use App\Service\Chat\ChatService;
 
@@ -59,47 +60,50 @@ class ChatController extends Controller
     protected function sendMessage(Request $request)
     {
 
-        $data = $request->only([
-            'message',
-            'dialogId',
-            'dialogWithId'
-        ]);
+        try {
 
-        return response()->json(['message' => $this->chatService->message($data)]);
+            $data = $request->only([
+                'message',
+                'dialogId',
+                'dialogWithId'
+            ]);
+
+            return response()->json(['message' => $this->chatService->message($data)]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], ResponseCodeEnum::SERVER_ERROR);
+        }
     }
 
     /**
      * Controller current user dialogs
      *
      * @param int $value - mix (dialogId or userId)
+     * @param int $value
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|
-     * \Illuminate\Contracts\View\Factory|
-     * \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
     protected function dialog(int $value, Request $request)
     {
 
-        $dialogId = $value;
-        $fromProfile = $request->get('fromProfile');
-        if (!is_null($fromProfile)) {
+        try {
 
-            $dialogId = $this->chatService->dialogId($value);
-            $userDialog =  $this->chatService->userDialog($dialogId, $value);
-        } else {
+            $dialogId = $request->get('fromProfile') ?
+                $this->chatService->dialogId($value) :
+                $value;
+            $userDialog = $this->chatService->userDialog($dialogId, $value);
 
-            $userDialog =  $this->chatService->userDialog($dialogId);
+            return view('menu.chat.chatLS', [
+                'dialogWithId' =>  $userDialog['recive'],
+                'dialogObj' => $userDialog['dialogMessages'],
+                'dialogId' => $dialogId,
+                'lastDialogs' => $this->chatService->chat(5)
+            ]);
+        } catch (\Throwable $exception) {
+            return redirect()->route('chat')->with('errors', collect($exception->getMessage()));
         }
-
-        if (isset($userDialog['error'])) {
-            return redirect()->route('chat')->with('error', $userDialog['error']);
-        }
-
-        return view('menu.chat.chatLS', [
-            'dialogWithId' =>  $userDialog['recive'],
-            'dialogObj' => $userDialog['dialogMessages'],
-            'dialogId' => $dialogId,
-            'lastDialogs' => $this->chatService->chat(5)
-        ]);
     }
 }

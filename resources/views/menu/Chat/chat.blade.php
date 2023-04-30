@@ -1,10 +1,20 @@
 @extends('layouts.app')
-@section('title-block') {{trans('chat.chat')}} @endsection
+@section('title-block') {{ trans('chat.chat') }} @endsection
 @section('content')
 
 @push('scripts')
     <script src="{{ asset('resource/js/chat.js') }}"></script>
 @endpush
+
+@if (count($errors) > 0)
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
 <div class="container p-3">
     <div class="row justify-content-center align-items-center">
@@ -17,23 +27,23 @@
                             <span class="search_chat" isQuery=0>
                                 <span>/</span>
                             </span>
-                        <div class='btn btn-outline-primary'> {{trans('chat.writeMessage')}}</div>
+                        <div class='btn btn-outline-primary'> {{ trans('chat.writeMessage') }}</div>
                     </div>
                 </div>
             </div>
             <div class='card card-body justify-content-center align-items-center'>
                 <div class='mainData col-lg-12'>
-                    @if(isset($userChats))
-                        @foreach($userChats as $chat)
+                    @if (isset($userChats))
+                        @foreach ($userChats as $chat)
                             <div class="mainData__chat">
-                                <a class='mainData__link' href='/chat/dialog/{{$chat->dialog_id}}'>
+                                <a class='mainData__link' href='/chat/dialog/{{ $chat->dialog_id }}'>
                                     <div class='col-sm-12 row'>
                                         <div class='col-lg-2 col-sm-3'>
                                             <img class='mainData__photo' src="{{ asset($chat->avatar) }}" />
                                             <div class="col-sm-12 mainData__name">{{ $chat->name }}</div>
                                         </div>
-                                        <div class='col-lg-8 col-sm-6 mainData__text'>{{$chat->text}}</div>
-                                        <div class='col-lg-2 col-sm-3 mainData__date align-items-center justify-content-end d-flex' data-toggle="tooltip" title='{{$chat->difference}}'>{{$chat->created_at}}</div>
+                                        <div class='col-lg-8 col-sm-6 mainData__text'>{{ $chat->text }}</div>
+                                        <div class='col-lg-2 col-sm-3 mainData__date align-items-center justify-content-end d-flex' data-toggle="tooltip" title='{{ $chat->difference }}'>{{ $chat->created_at }}</div>
                                     </div>
                                 </a>
                             </div>
@@ -63,5 +73,4 @@
 
     </div>
 </div>
-
 @endsection

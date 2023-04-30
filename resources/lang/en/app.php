@@ -26,4 +26,11 @@ return [
     'returnBack' => 'Return back',
     'save' => 'Save',
     'update' => 'Update',
+    'buttons' => [
+        'return' => 'Return',
+        'save' => 'Save',
+        'close' => 'Close',
+        'update' => 'Update',
+        'delete' => 'Delete'
+    ],
 ];
