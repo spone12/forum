@@ -122,7 +122,7 @@ $( document ).ready(function()
   // If press Enter -> run send message function
   $(document).keypress(function (e)
   {
-     if (e.which == 13) {
+     if (e.which === 13) {
         if ($('input').hasClass("dialog__message")) {
            sendMessage();
         }

@@ -3,8 +3,22 @@
 return [
 
     'chat' => 'Chat',
-    'writeMessage' => 'Write message..',
     'chatLS' => 'Dialog',
-    'sendMessage' => 'Send message',
+    'back' => 'To the list of dialogues',
+    'message' => [
+       'send' => 'Send message',
+       'no_messaeges' => 'No messages',
+       'edit' => 'Edit message',
+       'delete' => 'Delete message',
+       'write' => 'Write message..',
+    ],
+    'attachment' => [
+        'photo' => 'Photo',
+        'video' => 'Video',
+        'audio' => 'Audio',
+        'upload' => 'Upload',
+    ],
+    'error' => [
 
+    ]
 ];

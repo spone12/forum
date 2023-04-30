@@ -24,7 +24,8 @@ class ChatRepository
      * @param int $limit
      * @return Collection
     */
-    public function getUserChats(int $limit = 0): Collection {
+    public function getUserChats(int $limit = 0): Collection
+    {
 
         $userDialogs = DB::table('dialog')
             ->select('dialog_id', 'send', 'recive')
@@ -78,7 +79,8 @@ class ChatRepository
      * @param $word string
      * @return Collection
     */
-    public function search(string $word, $limit = 10): Collection {
+    public function search(string $word, $limit = 10): Collection
+    {
 
         $searchResult = DB::table('dialog')
             ->select(  'messages.send','dialog.dialog_id', 'messages.created_at','messages.text')
@@ -123,26 +125,25 @@ class ChatRepository
      * @param $userId int
      * @return array|string
     */
-    public function sendMessage(string $message, int $dialogId, int $userId) {
+    public function sendMessage(string $message, int $dialogId, int $userId)
+    {
 
         $dialogId = $this->getDialogId($userId, $dialogId);
-        try {
+        $messageId = DB::table('messages')->insertGetId([
+            'dialog' => $dialogId,
+            'send' =>  Auth::user()->id,
+            'recive' => $userId,
+            'text' => $message,
+            'created_at' => Carbon::now()
+        ]);
 
-            $messageId = DB::table('messages')->insertGetId([
-                'dialog' => $dialogId,
-                'send' =>  Auth::user()->id,
-                'recive' => $userId,
-                'text' => $message,
-                'created_at' => Carbon::now()
-            ]);
-        } catch (\Exception $exception) {
-            #### repair
-            return $exception->getMessage();
+        if (!$messageId) {
+            throw new \Exception('Message not send');
         }
 
         return [
             'messageId' => $messageId,
-            'created_at' =>  Carbon::now()->format('H:i'),
+            'created_at' => Carbon::now()->format('H:i'),
             'avatar' => session('avatar'),
             'name' => Auth::user()->name,
             'userId' => Auth::user()->id
@@ -156,7 +157,8 @@ class ChatRepository
      * @param $dialogId int
      * @return int
     */
-    public function getDialogId($userId, $dialogId = 0): int {
+    public function getDialogId($userId, $dialogId = 0): int
+    {
 
         if ($dialogId == 0) {
 
@@ -173,16 +175,19 @@ class ChatRepository
                         ->where('d.recive', Auth::user()->id);
                 })
                 ->first();
+
         } else {
-            $dialogExist = DialogModel::where('dialog_id', $dialogId)->exists();
+            $dialogExist = DialogModel::where('dialog_id', $dialogId)->first();
         }
 
-        if (empty($dialogExist) || $dialogExist == false) {
+        if (empty($dialogExist) || is_null($dialogExist)) {
 
             $dialogId = DB::table('dialog')->insertGetId([
                 'send' =>  Auth::user()->id,
                 'recive' => $userId
             ]);
+        } else {
+            $dialogId = $dialogExist->dialog_id;
         }
 
         return $dialogId;
@@ -196,18 +201,15 @@ class ChatRepository
      * @param $message string
      * @return array
     */
-    public function getUserDialog(int $dialogId, $userMessageWithId = 0): array {
+    public function getUserDialog(int $dialogId, $userMessageWithId = 0): array
+    {
 
         $currentUserId = Auth::user()->id;
         $dialogCheck = DialogModel::where('dialog_id', $dialogId);
 
-        if (!$dialogCheck->exists()) {
-            return ['error' => 'Chat not exist'];
-        } else {
-
-            if ($dialogCheck->first()->send != $currentUserId && $dialogCheck->first()->recive != $currentUserId) {
-                return ['error' => 'Chat not exist'];
-            }
+        if (!$dialogCheck->exists() ||
+            ($dialogCheck->first()->send != $currentUserId && $dialogCheck->first()->recive != $currentUserId)) {
+            throw new \Exception('Chat not exist');
         }
 
         $currentUserAvatar = Auth::user()->avatar ?: ProfileEnum::NO_AVATAR;
@@ -264,7 +266,8 @@ class ChatRepository
      * @param $currentDate string
      * @return void
     */
-    private function formatChatDate($obj, $currentDate = '') {
+    private function formatChatDate($obj, $currentDate = '')
+    {
 
         $chatDate = Carbon::parse($obj->created_at);
         if (empty($currentDate)) {
@@ -284,7 +287,8 @@ class ChatRepository
      * @param $obj
      * @return void
      */
-    private function checkAvatarExist($obj) {
+    private function checkAvatarExist($obj)
+    {
 
         if (!$obj->avatar)
             $obj->avatar = ProfileEnum::NO_AVATAR;
