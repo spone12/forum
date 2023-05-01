@@ -4,16 +4,16 @@
 
 <div class="container pt-3">
     <div class="row justify-content-center">
-        <div class="col-1 align-items-end justify-content-end verticalMenu">
+        <div class="col-2 col-md-1 align-items-end justify-content-end verticalMenu">
             @auth
-                <div class="row verticalMenu__addNotation">
-                    <a href="{{ route('notation') }}" id='notation_add' name='notation_add' class='marker verticalMenu__addNotationBtn btn btn-info'
+                <div class="row verticalMenu__addNotation grid">
+                    <a href="{{ route('notation') }}" id='notation_add' name='notation_add' class='verticalMenu__addNotationBtn btn btn-info'
                        data-toggle="tooltip" data-placement="bottom" title='{{ trans('notation.addNotation') }}'>
-                        <img class="col" src="{{ asset('img/icons/add.png') }}" alt='{{ trans('notation.addNotation') }}'>
+                        <img width="25" src="{{ asset('img/icons/add.png') }}" alt='{{ trans('notation.addNotation') }}'>
                     </a>
                 </div>
             @endauth
-            <div class="row verticalMenu__sort">
+            <div class="row verticalMenu__sort grid">
                 <a class="nav-link c btn btn-info verticalMenu__sort-menu" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                    <img id='navigation_arrow' width=30 src="{{ url('img/icons/sort.png') }}" />
                 </a>
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-    <div class="col-11 p-0">
+    <div class="col-10 p-0">
     @foreach ($notations as $v)
         <div class="container">
             <div class="row justify-content-center">

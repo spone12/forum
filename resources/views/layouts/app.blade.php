@@ -1,19 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>@yield('title-block')</title>
-    <!-- Scripts -->
-    <!--script src="{{ asset('js/app.js') }}" defer></script-->
 
-    <!-- Styles -->
-    <!--link href="{{ asset('resource/css/forum.css') }}" rel="stylesheet"-->
     <link href="{{ asset('resource/css/app.css') }}" rel="stylesheet" type='text/css'>
     <link rel="stylesheet" type="text/css" href="{{ asset('resource/libraries/bootstrap/css/bootstrap.min.css') }}" />
 
@@ -31,8 +25,8 @@
 <body>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm fix_nav">
             <div class="container">
-            <a class="navbar-brand" href="{{ route('home')}}"><img width=30 class='logo' src="{{ asset('img/logo/logo.png') }}" /></a>
-                <a class="navbar-brand" href="{{ route('home')}}">
+            <a class="navbar-brand" href="{{ route('home') }}"><img width=30 class='logo' src="{{ asset('img/logo/logo.png') }}" /></a>
+                <a class="navbar-brand" href="{{ route('home') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -42,10 +36,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                    </ul>
-
-                    <ul>
+                    <ul class="btn-group mt-2">
                         <form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('search') }}">
                          @csrf
                             <div class="input-group">
@@ -61,7 +52,7 @@
                         </form>
                     </ul>
 
-                    <ul class="mb-3 btn-group">
+                    <ul class="btn-group ml-0">
                         <button class="btn btn-secondary btn-sm lang" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class='lang__flag' src="{{ url( __('app.lang_src') ) }}" width="30">
                         </button>
@@ -101,7 +92,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('profile')}}" onclick="">
+                                    <a class="dropdown-item" href="{{ route('profile') }}" onclick="">
                                         <div>
                                             <img width=20 src="{{ url('/img/icons/profile.png') }}" />
                                             <span class='icon-text'>{{ trans('app.profile') }}</span>

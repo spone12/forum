@@ -13,11 +13,11 @@
          Form::hidden('hidden_id', $view[0]->notation_id, ['id' => 'id_notation'])
     }}
 
-    <div class='container'>
+    <div class='container pt-3'>
         <div class='row justify-content-center'>
 
-            <div class="col-lg-1 col-md-1 text-center notataionMenu p-1">
-                <a href='{{ route("home") }}' class='btn btn-info mt-1 notataionMenu__home'>
+            <div class="col-xl-1 col-md-2 col-sm-11 text-center notataionMenu">
+                <a href='{{ route("home") }}' class='btn btn-info notataionMenu__home'>
                     <img alt='back' data-toggle="tooltip" title='На главную страницу' src="{{ asset('img/icons/back-arrow.svg') }}" width=25 />
                 </a>
 
@@ -36,7 +36,7 @@
                 <div class='row justify-content-center mt-2 btn btn-info notataionMenu__like'>
                     @auth
                         <button class='button-native' onclick='change_rating(0)'>
-                            <img width=15 src="{{ url('/img/icons/arrow-down.svg') }}" />
+                            <img width=10 src="{{ url('/img/icons/arrow-down.svg') }}" />
                         </button>
                     @endauth
 
@@ -44,12 +44,12 @@
                         <img id='rating' class="{{ $view[0]->vote == 1 ? 'rating_like' : 'rating_dislike' }}"
                              width=25 src="{{ $view[0]->vote == 1 ? '/img/icons/like.svg' : '/img/icons/dislike.svg' }}" />
                     @else
-                        <img id='rating' width=25 src="{{ url('/img/icons/like.svg') }}" />
+                        <img id='rating' width=20 src="{{ url('/img/icons/like.svg') }}" />
                     @endif
 
                     @auth
                         <button class='button-native' onclick='change_rating(1)'>
-                            <img width=15 src="{{ url('/img/icons/arrow-up.svg') }}" />
+                            <img width=10 src="{{ url('/img/icons/arrow-up.svg') }}" />
                         </button>
                     @endauth
                 </div>
@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            <div class="col-md-11">
+            <div class="col-xl-11 col-md-10 col-sm-10">
                 <div class="card">
                     <div class="card-header">
                         <div class="row no-gutters">

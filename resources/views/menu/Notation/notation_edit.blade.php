@@ -18,10 +18,9 @@
   </div>
 @endif
 
-<!-- name, value, id -->
 {{ Form::hidden('invisible', $notationData->notation_id, array('id' => 'id_notation')) }}
 
-<div class='container'>
+<div class='container pt-3'>
     <div class='row justify-content-center'>
 
         <div class="col-lg-1 col-md-1 text-center notataionMenu p-1">

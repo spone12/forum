@@ -659,6 +659,10 @@
   border-radius: 10px;
 }
 
+.grid {
+  display: grid !important;
+}
+
 .no_decor,
 .link_prevDefault,
 .a_header,
