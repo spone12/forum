@@ -11,6 +11,7 @@ return [
        'edit' => 'Edit message',
        'delete' => 'Delete message',
        'write' => 'Write message..',
+       'edit_stop' => 'Stop edit message'
     ],
     'attachment' => [
         'photo' => 'Photo',

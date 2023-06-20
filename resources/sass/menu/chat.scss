@@ -243,3 +243,21 @@
         opacity: 1;
     }
 }
+
+.dialog__message {
+    text-indent: 10px;
+}
+.edit_msg_stop {
+    display: none;
+    z-index: 10;
+    position: absolute;
+    width: 15px;
+    padding-top: 12px;
+    margin-left: 5px;
+    cursor: pointer;
+    opacity: 0.7;
+
+    &:hover {
+        opacity: 1;
+    }
+}

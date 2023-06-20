@@ -50,7 +50,7 @@
                         <div class='col-lg-8 col-4 col-xl-8 col-sm-5 col-6 col-md-7 chatLs__text'>{!! $chat->text !!}</div>
                         <div class='chatLs__move col-2 col-lg-1 col-sm-2 col-md-1 align-items-start justify-content-end d-flex'>
                             <div class='chatLs__move-edit'>
-                                <img class='' width=20 data-toggle="tooltip" data-placement="bottom" title='{{ trans('chat.message.edit') }}' alt='{{ trans('chat.message.edit') }}' src="{{ asset('img/icons/edit.png') }}">
+                                <img class='chatLs__message-edit-{{ $chat->message_id }}' width=20 data-toggle="tooltip" data-placement="bottom" title='{{ trans('chat.message.edit') }}' alt='{{ trans('chat.message.edit') }}' src="{{ asset('img/icons/edit.png') }}">
                             </div>
                             <div class="chatLs__move-delete">
                                 <img data-toggle="tooltip" data-placement="bottom" class='' width=20 title='{{ trans('chat.message.delete') }}' alt='{{ trans('chat.message.delete') }}' src="{{ asset('img/icons/delete.png') }}">
@@ -78,7 +78,8 @@
                     <img alt='back' data-toggle="tooltip" title='{{ trans('chat.back') }}' src="{{ asset('img/icons/back-arrow.svg') }}" width=30 />
                 </a>
                 <div class="col-8 col-sm-8">
-                    <input type='text' id='dialog__message' class='input_field dialog__message' placeholder="{{ trans('chat.message.write') }}" />
+                    <img alt='{{ trans('chat.message.edit_stop') }}' class='edit_msg_stop' data-toggle="tooltip" title='{{ trans('chat.message.edit_stop') }}' src="{{ asset('img/icons/delete.png') }}" width=15 />
+                    <input type='text' id='dialog__message' isEdit=false class='input_field dialog__message' placeholder="{{ trans('chat.message.write') }}" />
                 </div>
                 <div class="col-3 col-sm-2 justify-content-start d-flex">
                     <div class="dropdown dialogClip">

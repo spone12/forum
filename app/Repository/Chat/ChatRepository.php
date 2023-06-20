@@ -214,7 +214,7 @@ class ChatRepository
 
         $currentUserAvatar = Auth::user()->avatar ?: ProfileEnum::NO_AVATAR;
         $dialogMessages = DB::table('messages')
-            ->select( 'messages.text', 'messages.dialog', 'messages.created_at',
+            ->select( 'messages.message_id', 'messages.text', 'messages.dialog', 'messages.created_at',
                 'messages.updated_at', 'messages.send', 'messages.recive',
                 'messages.text' )
             ->where('dialog', $dialogId)

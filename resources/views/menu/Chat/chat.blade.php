@@ -27,7 +27,7 @@
                             <span class="search_chat" isQuery=0>
                                 <span>/</span>
                             </span>
-                        <div class='btn btn-outline-primary'> {{ trans('chat.writeMessage') }}</div>
+                        <div class='btn btn-outline-primary'> {{ trans('chat.message.write') }}</div>
                     </div>
                 </div>
             </div>
