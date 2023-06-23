@@ -30,11 +30,14 @@ function sendMessage() {
             $('#dialog__message').val('');
 
             var newMessage = $('.chatLs__chat:eq(0)').clone();
+            newMessage.attr('id', 'chatLs__chat-' + data.message.messageId);
             newMessage.find('.chatLs__text').text(message);
             newMessage.find('.chatLs__photo').attr('src', data.message.avatar);
             newMessage.find('.chatLs__name').text(data.message.name);
             newMessage.find('.chatLs__link').attr('href', '/profile/' + data.message.userId);
-            newMessage.find('.chatLs__message-time').text(data.message.created_at);
+            newMessage.find('.chatLs__message-time')
+                .text(data.message.created_at)
+                .attr('title', data.message.diff);
 
             newMessage.appendTo('.chatLs');
             $('.chatLs').scrollTop($('.chatLs').prop('scrollHeight'));
@@ -84,9 +87,9 @@ $( document ).ready(function()
     /**
      * Message edit view function
      */
-    $('img[class^=chatLs__message-edit-]').on('click', function()
+    $('body').on('click', 'div[class=chatLs__move-edit]', function (e)
     {
-        let messageId = $(this).attr('class').split('edit-')[1];
+        let messageId = $(this).closest('.chatLs__chat').attr('id').split('chat-')[1];
         let message = $(this).closest('.chatLs__chat').find('.chatLs__text').text();
         $('#dialog__message').val(message).attr('isEdit', true);
         $('.dialog__send')
@@ -97,14 +100,14 @@ $( document ).ready(function()
     });
 
     /**
-     * Message delete view function
+     * Message delete function
      */
-    $('img[class^=chatLs__message-delete-]').on('click', function()
+    $('body').on('click', 'div[class=chatLs__move-delete]', function (e)
     {
 
-        let messageId = $(this).attr('class').split('delete-')[1];
         let dialogId = $('#dialogId').val();
         let mainBlock = $(this).closest('.chatLs__chat');
+        let messageId = mainBlock.attr('id').split('chat-')[1];
         mainBlock
             .addClass('delete_message')
             .find('.chatLs__move-edit, .chatLs__move-delete').addClass('hide_message_btn');
@@ -127,13 +130,14 @@ $( document ).ready(function()
     });
 
     /**
-     * Message recover view function
+     * Message recover function
      */
-    $('img[class^=chatLs__message-recover-]').on('click', function()
+    $('body').on('click', 'div[class=chatLs__move-recover]', function (e)
     {
-        let messageId = $(this).attr('class').split('recover-')[1];
+
         let dialogId = $('#dialogId').val();
         let mainBlock = $(this).closest('.chatLs__chat');
+        let messageId = mainBlock.attr('id').split('chat-')[1];
         mainBlock
             .removeClass('delete_message')
             .find('.chatLs__move-edit, .chatLs__move-delete').removeClass('hide_message_btn');
@@ -162,16 +166,16 @@ $( document ).ready(function()
         stopEditMessage();
     });
 
-    $('.chatLs__chat').hover(
-       function () {
-           $(this).find('.chatLs__move-edit').show();
-           $(this).find('.chatLs__move-delete').show();
-       },
-       function () {
-           $(this).find('.chatLs__move-edit').hide();
-           $(this).find('.chatLs__move-delete').hide();
-       }
-    );
+    $('body').on('mouseover', '.chatLs__chat', function (e) {
+
+        $(this).find('.chatLs__move-edit').show();
+        $(this).find('.chatLs__move-delete').show();
+    });
+    $('body').on('mouseout', '.chatLs__chat', function (e) {
+
+        $(this).find('.chatLs__move-edit').hide();
+        $(this).find('.chatLs__move-delete').hide();
+    });
 
     $(".search_chat").on("click", function()
     {

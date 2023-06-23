@@ -50,13 +50,13 @@
                         <div class='col-lg-8 col-4 col-xl-8 col-sm-5 col-6 col-md-7 chatLs__text'>{!! $chat->text !!}</div>
                         <div class='chatLs__move col-2 col-lg-1 col-sm-2 col-md-1 align-items-start justify-content-end d-flex'>
                             <div class='chatLs__move-edit'>
-                                <img class='chatLs__message-edit-{{ $chat->message_id }}' width=20 data-toggle="tooltip" data-placement="bottom" title='{{ trans('chat.message.edit') }}' alt='{{ trans('chat.message.edit') }}' src="{{ asset('img/icons/edit.png') }}">
+                                <img width=20 data-toggle="tooltip" data-placement="bottom" title='{{ trans('chat.message.edit') }}' alt='{{ trans('chat.message.edit') }}' src="{{ asset('img/icons/edit.png') }}">
                             </div>
                             <div class="chatLs__move-delete">
-                                <img class='chatLs__message-delete-{{ $chat->message_id }}' data-toggle="tooltip" data-placement="bottom" width=20 title='{{ trans('chat.message.delete') }}' alt='{{ trans('chat.message.delete') }}' src="{{ asset('img/icons/delete.png') }}">
+                                <img data-toggle="tooltip" data-placement="bottom" width=20 title='{{ trans('chat.message.delete') }}' alt='{{ trans('chat.message.delete') }}' src="{{ asset('img/icons/delete.png') }}">
                             </div>
                             <div class="chatLs__move-recover hide_message_btn">
-                                <img class='chatLs__message-recover-{{ $chat->message_id }}' data-toggle="tooltip" data-placement="bottom" width=20 title='{{ trans('chat.message.recover') }}' alt='{{ trans('chat.message.recover') }}' src="{{ asset('img/icons/delete.png') }}">
+                                <img data-toggle="tooltip" data-placement="bottom" width=20 title='{{ trans('chat.message.recover') }}' alt='{{ trans('chat.message.recover') }}' src="{{ asset('img/icons/delete.png') }}">
                             </div>
                         </div>
                         <div class='col-lg-1 col-sm-2 col-2 col-md-2 chatLs__date align-items-start justify-content-end d-flex'>

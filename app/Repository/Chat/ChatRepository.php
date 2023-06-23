@@ -142,9 +142,11 @@ class ChatRepository
             throw new \Exception('Message not send');
         }
 
+        $now = Carbon::now()->format('H:i');
         return [
             'messageId' => $messageId,
-            'created_at' => Carbon::now()->format('H:i'),
+            'created_at' => $now,
+            'diff' => $now,
             'avatar' => session('avatar'),
             'name' => Auth::user()->name,
             'userId' => Auth::user()->id
