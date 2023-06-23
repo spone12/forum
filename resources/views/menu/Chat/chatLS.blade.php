@@ -56,7 +56,7 @@
                                 <img data-toggle="tooltip" data-placement="bottom" width=20 title='{{ trans('chat.message.delete') }}' alt='{{ trans('chat.message.delete') }}' src="{{ asset('img/icons/delete.png') }}">
                             </div>
                             <div class="chatLs__move-recover hide_message_btn">
-                                <img data-toggle="tooltip" data-placement="bottom" width=20 title='{{ trans('chat.message.recover') }}' alt='{{ trans('chat.message.recover') }}' src="{{ asset('img/icons/delete.png') }}">
+                                <img data-toggle="tooltip" data-placement="bottom" width=20 title='{{ trans('chat.message.recover') }}' alt='{{ trans('chat.message.recover') }}' src="{{ asset('img/chat/recover.png') }}">
                             </div>
                         </div>
                         <div class='col-lg-1 col-sm-2 col-2 col-md-2 chatLs__date align-items-start justify-content-end d-flex'>

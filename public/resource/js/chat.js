@@ -37,7 +37,8 @@ function sendMessage() {
             newMessage.find('.chatLs__link').attr('href', '/profile/' + data.message.userId);
             newMessage.find('.chatLs__message-time')
                 .text(data.message.created_at)
-                .attr('title', data.message.diff);
+                .attr('title', '')
+                .attr('data-original-title', data.message.diff);
 
             newMessage.appendTo('.chatLs');
             $('.chatLs').scrollTop($('.chatLs').prop('scrollHeight'));
