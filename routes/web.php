@@ -70,7 +70,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/chat'], function ()
     Route::get('/dialog/{dialogId}', 'chatController@dialog')->name('dialog')->where('dialogId', '[0-9]{1,11}');
     Route::post('/search/', 'chatController@searchChat')->name('searchChat')->where('word', '[а-яА-Яa-zA-Z0-9 ]+');
     Route::post('/send_message/', 'chatController@sendMessage')->name('sendMessage');
-    Route::post('/edit_message/', 'chatController@editMessage')->name('editMessage');
+    Route::put('/edit_message/', 'chatController@editMessage')->name('editMessage');
+    Route::delete('/delete_message/', 'chatController@deleteMessage')->name('deleteMessage');
 });
 
 /**

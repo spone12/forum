@@ -78,6 +78,19 @@ class ChatService
     }
 
     /**
+     * Delete message service
+     *
+     * @param array $data
+     * @return
+     */
+    public function delete(array $data) {
+
+        return $this->chatRepository->deleteMessage(
+            (int) $data['dialogId'], (int) $data['messageId']
+        );
+    }
+
+    /**
      * User dialog service
      *
      * @param int $dialogId

@@ -3,6 +3,7 @@
 namespace App\Models\Chat;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class MessagesModel
@@ -21,6 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class MessagesModel extends Model
 {
+    use SoftDeletes;
+
     /** @var string */
     protected $table = 'messages';
     /** @var string */

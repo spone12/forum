@@ -57,26 +57,25 @@ function editMessage(messageId) {
         return;
     }
 
-    $.ajax(
-        {
-            url: '/chat/edit_message',
-            type: "POST",
-            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-            async: false,
-            data: {
-                message: message,
-                messageId: messageId,
-                dialogId: dialogId
-            }, success: function (data) {
+    $.ajax({
+        url: '/chat/edit_message',
+        type: "PUT",
+        headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+        async: false,
+        data: {
+            message: message,
+            messageId: messageId,
+            dialogId: dialogId
+        }, success: function (data) {
 
-                $('#dialog__message').val('');
-                $('#chatLs__chat-' + messageId).find('.chatLs__text').text(message);
-                stopEditMessage();
-            },
-            error: function(data) {
-                errorMsgResponse(data);
-            }
-        });
+            $('#dialog__message').val('');
+            $('#chatLs__chat-' + messageId).find('.chatLs__text').text(message);
+            stopEditMessage();
+        },
+        error: function(data) {
+            errorMsgResponse(data);
+        }
+    });
 }
 
 $( document ).ready(function()
@@ -102,11 +101,29 @@ $( document ).ready(function()
      */
     $('img[class^=chatLs__message-delete-]').on('click', function()
     {
+
+        let messageId = $(this).attr('class').split('delete-')[1];
+        let dialogId = $('#dialogId').val();
         let mainBlock = $(this).closest('.chatLs__chat');
         mainBlock
             .addClass('delete_message')
             .find('.chatLs__move-edit, .chatLs__move-delete').addClass('hide_message_btn');
         mainBlock.find('.chatLs__move-recover').removeClass('hide_message_btn');
+
+        $.ajax({
+            url: '/chat/delete_message',
+            type: "DELETE",
+            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+            async: false,
+            data: {
+                messageId: messageId,
+                dialogId: dialogId
+            }, success: function (data) {
+            },
+            error: function(data) {
+                errorMsgResponse(data);
+            }
+        });
     });
 
     /**
