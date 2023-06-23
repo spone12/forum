@@ -605,6 +605,22 @@
   opacity: 1;
 }
 
+.delete_message {
+  opacity: 0.4;
+}
+
+.hide_message_btn {
+  display: none !important;
+}
+
+.chatLs__move-recover {
+  cursor: pointer;
+}
+
+.chatLs__move-recover:hover {
+  opacity: 1;
+}
+
 /* colors */
 
 .red {

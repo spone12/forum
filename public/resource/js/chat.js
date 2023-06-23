@@ -81,9 +81,10 @@ function editMessage(messageId) {
 
 $( document ).ready(function()
 {
- // var chatLsHeight = $(".chatLs").height();
- // $('.chatLs').scrollTop(chatLsHeight);
 
+    /**
+     * Message edit view function
+     */
     $('img[class^=chatLs__message-edit-]').on('click', function()
     {
         let messageId = $(this).attr('class').split('edit-')[1];
@@ -96,6 +97,34 @@ $( document ).ready(function()
         $('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 300);
     });
 
+    /**
+     * Message delete view function
+     */
+    $('img[class^=chatLs__message-delete-]').on('click', function()
+    {
+        let mainBlock = $(this).closest('.chatLs__chat');
+        mainBlock
+            .addClass('delete_message')
+            .find('.chatLs__move-edit, .chatLs__move-delete').addClass('hide_message_btn');
+        mainBlock.find('.chatLs__move-recover').removeClass('hide_message_btn');
+    });
+
+    /**
+     * Message recover view function
+     */
+    $('img[class^=chatLs__message-recover-]').on('click', function()
+    {
+        let messageId = $(this).attr('class').split('delete-')[1];
+        let mainBlock = $(this).closest('.chatLs__chat');
+        mainBlock
+            .removeClass('delete_message')
+            .find('.chatLs__move-edit, .chatLs__move-delete').removeClass('hide_message_btn');
+        mainBlock.find('.chatLs__move-recover').addClass('hide_message_btn');
+    });
+
+    /**
+     * Stop edit message
+     */
     $('.edit_msg_stop').on('click', function () {
         stopEditMessage();
     });
@@ -177,7 +206,7 @@ $( document ).ready(function()
          });
     });
 
-    // If press Enter -> run send message function
+    // If press Enter -> run send and edit message function
     $(document).keypress(function (e)
     {
         if (e.which === 13) {
