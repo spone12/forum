@@ -39,7 +39,7 @@
         <div class='chatLs col-lg-10'>
          @if (!empty($dialogObj[0]))
             @foreach ($dialogObj as $chat)
-                <div class="chatLs__chat">
+                <div class="chatLs__chat" id="chatLs__chat-{{ $chat->message_id }}">
                     <div class='col-sm-12 row'>
                         <div class='col-lg-2 col-2 col-xl-1 col-sm-2 col-md-2'>
                             <a class='chatLs__link' target='_blank' href='{{ route("profile_id", $chat->id) }}'>

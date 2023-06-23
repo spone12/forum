@@ -1,3 +1,10 @@
+function stopEditMessage() {
+    $('.edit_msg_stop').hide();
+    $('#dialog__message').val('').attr('isEdit', false);
+    $('.dialog__send')
+        .attr('src', '/img/chat/send_message.png')
+        .attr('onclick', 'sendMessage();');
+}
 
 function sendMessage() {
   let message = $.trim($('.dialog__message').val());
@@ -30,12 +37,46 @@ function sendMessage() {
             newMessage.find('.chatLs__message-time').text(data.message.created_at);
 
             newMessage.appendTo('.chatLs');
+            $('.chatLs').scrollTop($('.chatLs').prop('scrollHeight'));
         },
         error: function(data) {
-           var errors = data.responseJSON;
-           console.log(errors);
+            errorMsgResponse(data);
         }
      });
+}
+
+/**
+ *
+ * @param messageId
+ */
+function editMessage(messageId) {
+    let message = $.trim($('.dialog__message').val());
+    let dialogId = $('#dialogId').val();
+
+    if (jQuery.isEmptyObject(message)) {
+        return;
+    }
+
+    $.ajax(
+        {
+            url: '/chat/edit_message',
+            type: "POST",
+            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+            async: false,
+            data: {
+                message: message,
+                messageId: messageId,
+                dialogId: dialogId
+            }, success: function (data) {
+
+                $('#dialog__message').val('');
+                $('#chatLs__chat-' + messageId).find('.chatLs__text').text(message);
+                stopEditMessage();
+            },
+            error: function(data) {
+                errorMsgResponse(data);
+            }
+        });
 }
 
 $( document ).ready(function()
@@ -48,14 +89,15 @@ $( document ).ready(function()
         let messageId = $(this).attr('class').split('edit-')[1];
         let message = $(this).closest('.chatLs__chat').find('.chatLs__text').text();
         $('#dialog__message').val(message).attr('isEdit', true);
-        $('.dialog__send').attr('src', '/img/icons/edit.png');
+        $('.dialog__send')
+            .attr('src', '/img/icons/edit.png')
+            .attr('onclick', 'editMessage(' + messageId + ');');
         $('.edit_msg_stop').show();
+        $('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 300);
     });
 
-    $('.edit_msg_stop').on('click', function (){
-        $('.edit_msg_stop').hide();
-        $('#dialog__message').val('').attr('isEdit', false);
-        $('.dialog__send').attr('src', '/img/chat/send_message.png');
+    $('.edit_msg_stop').on('click', function () {
+        stopEditMessage();
     });
 
     $('.chatLs__chat').hover(
@@ -140,7 +182,7 @@ $( document ).ready(function()
     {
         if (e.which === 13) {
            if ($('input').hasClass("dialog__message")) {
-              sendMessage();
+              $('.dialog__send').click();
            }
         }
     });

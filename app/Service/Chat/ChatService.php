@@ -52,7 +52,7 @@ class ChatService
     }
 
     /**
-     * Message service
+     * Send message service
      *
      * @param array $data
      * @return
@@ -61,6 +61,19 @@ class ChatService
 
         return $this->chatRepository->sendMessage(
             addslashes($data['message']), (int) $data['dialogId'], (int) $data['dialogWithId']
+        );
+    }
+
+    /**
+     * Edit message service
+     *
+     * @param array $data
+     * @return
+     */
+    public function edit(array $data) {
+
+        return $this->chatRepository->editMessage(
+            addslashes($data['message']), (int) $data['dialogId'], (int) $data['messageId']
         );
     }
 

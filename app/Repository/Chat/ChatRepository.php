@@ -151,6 +151,34 @@ class ChatRepository
     }
 
     /**
+     * Edit message in dialog
+     *
+     * @param $message string
+     * @param $dialogId int
+     * @param $messageId int
+     * @return array|string
+     */
+    public function editMessage(string $message, int $dialogId, int $messageId)
+    {
+
+        $dialog = DialogModel::where('dialog_id', $dialogId)->first();
+        if (!$dialog->exists()) {
+            throw new \Exception('Dialog not found');
+        }
+
+        if ($dialog->send !== Auth::user()->id && $dialog->recive !== Auth::user()->id) {
+            throw new \Exception('Message edition error');
+        }
+        $messageObj = MessagesModel::where('message_id', $messageId)->firstOrFail();
+        $messageObj->text = $message;
+        $messageObj->save();
+
+        return [
+            'messageId' => $messageId
+        ];
+    }
+
+    /**
      * Get dialog Id or create new
      *
      * @param $userId int
