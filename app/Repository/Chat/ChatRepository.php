@@ -98,6 +98,7 @@ class ChatRepository
                     ->orWhere('users.name', 'like', '%'. $word .'%')
                     ->orWhere('user2.name', 'like', '%'. $word .'%');
             })
+            ->whereNull('messages.deleted_at')
             //->groupBy('users.id')
             ->orderBy('messages.created_at', 'DESC')
             ->orderBy('users.name', 'ASC')
@@ -141,12 +142,86 @@ class ChatRepository
             throw new \Exception('Message not send');
         }
 
+        $now = Carbon::now()->format('H:i');
         return [
             'messageId' => $messageId,
-            'created_at' => Carbon::now()->format('H:i'),
+            'created_at' => $now,
+            'diff' => $now,
             'avatar' => session('avatar'),
             'name' => Auth::user()->name,
             'userId' => Auth::user()->id
+        ];
+    }
+
+    /**
+     * Edit message in dialog
+     *
+     * @param $message string
+     * @param $dialogId int
+     * @param $messageId int
+     * @return array
+     */
+    public function editMessage(string $message, int $dialogId, int $messageId)
+    {
+
+        $this->checkAccess($dialogId);
+        $messageObj = MessagesModel::where('message_id', $messageId)->firstOrFail();
+        $messageObj->text = $message;
+
+        if (!$messageObj->save()) {
+            throw new \Exception('Message not edited!');
+        }
+
+        return [
+            'success' => true
+        ];
+    }
+
+    /**
+     * Delete message in dialog
+     *
+     * @param $dialogId int
+     * @param $messageId int
+     * @return array
+     */
+    public function deleteMessage(int $dialogId, int $messageId)
+    {
+
+        $this->checkAccess($dialogId);
+        $messageObj = MessagesModel::where('message_id', $messageId)->firstOrFail();
+        $messageObj->delete();
+
+        if (!$messageObj->save()) {
+            throw new \Exception('Message not deleted!');
+        }
+
+        return [
+            'success' => true
+        ];
+    }
+
+    /**
+     * Recover message in dialog
+     *
+     * @param $dialogId int
+     * @param $messageId int
+     * @return array
+     */
+    public function recoverMessage(int $dialogId, int $messageId)
+    {
+
+        $this->checkAccess($dialogId);
+        $messageObj = MessagesModel::onlyTrashed()
+            ->where('message_id', $messageId)
+        ->firstOrFail();
+        $messageObj->restore();
+
+        if (!$messageObj->save()) {
+            throw new \Exception('Message not recovered!');
+        }
+
+        return [
+            'success' => true
         ];
     }
 
@@ -214,12 +289,13 @@ class ChatRepository
 
         $currentUserAvatar = Auth::user()->avatar ?: ProfileEnum::NO_AVATAR;
         $dialogMessages = DB::table('messages')
-            ->select( 'messages.text', 'messages.dialog', 'messages.created_at',
+            ->select( 'messages.message_id', 'messages.text', 'messages.dialog', 'messages.created_at',
                 'messages.updated_at', 'messages.send', 'messages.recive',
                 'messages.text' )
             ->where('dialog', $dialogId)
+            ->whereNull('deleted_at')
             ->orderBy('created_at', 'asc')
-            ->get();
+        ->get();
 
         if (count($dialogMessages)) {
 
@@ -292,5 +368,23 @@ class ChatRepository
 
         if (!$obj->avatar)
             $obj->avatar = ProfileEnum::NO_AVATAR;
+    }
+
+    /**
+     * Check access to dialog
+     *
+     * @param int $dialogId
+     * @throws \Exception
+     */
+    private function checkAccess(int $dialogId) {
+
+        $dialog = DialogModel::where('dialog_id', $dialogId)->first();
+        if (!$dialog->exists()) {
+            throw new \Exception('Dialog not found!');
+        }
+
+        if ($dialog->send !== Auth::user()->id && $dialog->recive !== Auth::user()->id) {
+            throw new \Exception('Not access to message edit!');
+        }
     }
 }

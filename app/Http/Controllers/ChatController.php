@@ -78,6 +78,69 @@ class ChatController extends Controller
     }
 
     /**
+     * Edit message send
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function editMessage(Request $request)
+    {
+
+        try {
+
+            $data = $request->only(['message', 'dialogId', 'messageId']);
+            return response()->json(['edit' => $this->chatService->edit($data)]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], ResponseCodeEnum::SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Delete message
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function deleteMessage(Request $request)
+    {
+
+        try {
+
+            $data = $request->only(['dialogId', 'messageId']);
+            return response()->json(['delete' => $this->chatService->delete($data)]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], ResponseCodeEnum::SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Recover message
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function recoverMessage(Request $request)
+    {
+
+        try {
+
+            $data = $request->only(['dialogId', 'messageId']);
+            return response()->json(['recover' => $this->chatService->recover($data)]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], ResponseCodeEnum::SERVER_ERROR);
+        }
+    }
+
+    /**
      * Controller current user dialogs
      *
      * @param int $value - mix (dialogId or userId)

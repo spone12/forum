@@ -67,9 +67,12 @@ Route::match(['get', 'post'], "/vk_bot_callback", function (Request $request)
 Route::group(['middleware' => ['auth'], 'prefix' => '/chat'], function ()
 {
     Route::get('/', 'chatController@chat')->name('chat');
-    Route::get('/dialog/{dialogId}', 'chatController@dialog')->name('dialog')->where('dialogId','[0-9]{1,11}');
-    Route::post('/search/', 'chatController@searchChat')->name('searchChat')->where('word','[а-яА-Яa-zA-Z0-9 ]+');
+    Route::get('/dialog/{dialogId}', 'chatController@dialog')->name('dialog')->where('dialogId', '[0-9]{1,11}');
+    Route::post('/search/', 'chatController@searchChat')->name('searchChat')->where('word', '[а-яА-Яa-zA-Z0-9 ]+');
     Route::post('/send_message/', 'chatController@sendMessage')->name('sendMessage');
+    Route::put('/edit_message/', 'chatController@editMessage')->name('editMessage');
+    Route::delete('/delete_message/', 'chatController@deleteMessage')->name('deleteMessage');
+    Route::put('/recover_message/', 'chatController@recoverMessage')->name('recoverMessage');
 });
 
 /**

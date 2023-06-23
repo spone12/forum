@@ -586,6 +586,41 @@
   opacity: 1;
 }
 
+.dialog__message {
+  text-indent: 10px;
+}
+
+.edit_msg_stop {
+  display: none;
+  z-index: 10;
+  position: absolute;
+  width: 15px;
+  padding-top: 12px;
+  margin-left: 5px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.edit_msg_stop:hover {
+  opacity: 1;
+}
+
+.delete_message {
+  opacity: 0.4;
+}
+
+.hide_message_btn {
+  display: none !important;
+}
+
+.chatLs__move-recover {
+  cursor: pointer;
+}
+
+.chatLs__move-recover:hover {
+  opacity: 1;
+}
+
 /* colors */
 
 .red {
