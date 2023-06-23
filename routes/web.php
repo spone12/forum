@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/chat'], function ()
     Route::post('/send_message/', 'chatController@sendMessage')->name('sendMessage');
     Route::put('/edit_message/', 'chatController@editMessage')->name('editMessage');
     Route::delete('/delete_message/', 'chatController@deleteMessage')->name('deleteMessage');
+    Route::put('/recover_message/', 'chatController@recoverMessage')->name('recoverMessage');
 });
 
 /**

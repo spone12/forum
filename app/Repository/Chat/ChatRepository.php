@@ -165,10 +165,13 @@ class ChatRepository
         $this->checkAccess($dialogId);
         $messageObj = MessagesModel::where('message_id', $messageId)->firstOrFail();
         $messageObj->text = $message;
-        $messageObj->save();
+
+        if (!$messageObj->save()) {
+            throw new \Exception('Message not edited!');
+        }
 
         return [
-            'messageId' => $messageId
+            'success' => true
         ];
     }
 
@@ -185,10 +188,38 @@ class ChatRepository
         $this->checkAccess($dialogId);
         $messageObj = MessagesModel::where('message_id', $messageId)->firstOrFail();
         $messageObj->delete();
-        $messageObj->save();
+
+        if (!$messageObj->save()) {
+            throw new \Exception('Message not deleted!');
+        }
 
         return [
-            'messageId' => $messageId
+            'success' => true
+        ];
+    }
+
+    /**
+     * Recover message in dialog
+     *
+     * @param $dialogId int
+     * @param $messageId int
+     * @return array
+     */
+    public function recoverMessage(int $dialogId, int $messageId)
+    {
+
+        $this->checkAccess($dialogId);
+        $messageObj = MessagesModel::onlyTrashed()
+            ->where('message_id', $messageId)
+        ->firstOrFail();
+        $messageObj->restore();
+
+        if (!$messageObj->save()) {
+            throw new \Exception('Message not recovered!');
+        }
+
+        return [
+            'success' => true
         ];
     }
 

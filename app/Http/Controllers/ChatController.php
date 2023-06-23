@@ -120,6 +120,27 @@ class ChatController extends Controller
     }
 
     /**
+     * Recover message
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function recoverMessage(Request $request)
+    {
+
+        try {
+
+            $data = $request->only(['dialogId', 'messageId']);
+            return response()->json(['recover' => $this->chatService->recover($data)]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ], ResponseCodeEnum::SERVER_ERROR);
+        }
+    }
+
+    /**
      * Controller current user dialogs
      *
      * @param int $value - mix (dialogId or userId)

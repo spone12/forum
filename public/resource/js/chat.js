@@ -80,7 +80,7 @@ function editMessage(messageId) {
 
 $( document ).ready(function()
 {
-
+    $('.chatLs').scrollTop($('.chatLs').prop('scrollHeight'));
     /**
      * Message edit view function
      */
@@ -131,12 +131,28 @@ $( document ).ready(function()
      */
     $('img[class^=chatLs__message-recover-]').on('click', function()
     {
-        let messageId = $(this).attr('class').split('delete-')[1];
+        let messageId = $(this).attr('class').split('recover-')[1];
+        let dialogId = $('#dialogId').val();
         let mainBlock = $(this).closest('.chatLs__chat');
         mainBlock
             .removeClass('delete_message')
             .find('.chatLs__move-edit, .chatLs__move-delete').removeClass('hide_message_btn');
         mainBlock.find('.chatLs__move-recover').addClass('hide_message_btn');
+
+        $.ajax({
+            url: '/chat/recover_message',
+            type: "PUT",
+            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+            async: false,
+            data: {
+                messageId: messageId,
+                dialogId: dialogId
+            }, success: function (data) {
+            },
+            error: function(data) {
+                errorMsgResponse(data);
+            }
+        });
     });
 
     /**
@@ -223,7 +239,7 @@ $( document ).ready(function()
          });
     });
 
-    // If press Enter -> run send and edit message function
+    // If press Enter -> run send or edit message function
     $(document).keypress(function (e)
     {
         if (e.which === 13) {
