@@ -111,6 +111,8 @@ $( document ).ready(function()
         let dialogId = $('#dialogId').val();
         let mainBlock = $(this).closest('.chatLs__chat');
         let messageId = mainBlock.attr('id').split('chat-')[1];
+
+        stopEditMessage();
         mainBlock
             .addClass('delete_message')
             .find('.chatLs__move-edit, .chatLs__move-delete').addClass('hide_message_btn');
