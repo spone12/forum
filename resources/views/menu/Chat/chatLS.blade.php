@@ -82,7 +82,7 @@
                 </a>
                 <div class="col-8 col-sm-8">
                     <img alt='{{ trans('chat.message.edit_stop') }}' class='edit_msg_stop' data-toggle="tooltip" title='{{ trans('chat.message.edit_stop') }}' src="{{ asset('img/icons/delete.png') }}" width=15 />
-                    <input type='text' id='dialog__message' isEdit=false class='input_field dialog__message' placeholder="{{ trans('chat.message.write') }}" />
+                    <div type='text' id='dialog__message' isEdit=false class='input_field dialog__message' placeholder="{{ trans('chat.message.write') }}" contenteditable="true"></div>
                 </div>
                 <div class="col-3 col-sm-2 justify-content-start d-flex">
                     <div class="dropdown dialogClip">

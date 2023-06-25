@@ -231,6 +231,7 @@
 .dialog__send {
     @extend .c_p;
     width: 50px;
+    height: 40px;
     border: 3px solid;
     margin-left: 5px;
     border-radius: 50%;
@@ -246,6 +247,26 @@
 
 .dialog__message {
     text-indent: 10px;
+    outline: 0;
+    min-height: 36px;
+    width: 100%;
+    resize: none;
+    padding-right: 10px !important;
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 6px;
+    line-height: 17px;
+    padding-top: 9px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    margin-bottom: 0;
+    word-wrap: break-word;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 0;
+    -webkit-transition: border-bottom-color .3s linear;
+    transition: border-bottom-color .3s linear;
 }
 
 .edit_msg_stop {
@@ -278,4 +299,3 @@
         opacity: 1;
     }
 }
-

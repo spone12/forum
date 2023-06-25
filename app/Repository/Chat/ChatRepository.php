@@ -309,6 +309,7 @@ class ChatRepository
 
             foreach($dialogMessages as $dialog) {
 
+                $dialog->text = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $dialog->text);
                 $dialog->difference =
                     Carbon::createFromFormat('Y-m-d H:i:s', $dialog->created_at)->diffForHumans();
 

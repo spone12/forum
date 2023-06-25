@@ -1,13 +1,14 @@
 function stopEditMessage() {
     $('.edit_msg_stop').hide();
-    $('#dialog__message').val('').attr('isEdit', false);
+    $('#dialog__message').text('').attr('isEdit', false);
     $('.dialog__send')
         .attr('src', '/img/chat/send_message.png')
         .attr('onclick', 'sendMessage();');
 }
 
 function sendMessage() {
-  let message = $.trim($('.dialog__message').val());
+
+  let message = $.trim($('.dialog__message').html());
   let dialogWithId = $('#dialogWithId').val();
   let dialogId = $('#dialogId').val();
 
@@ -27,11 +28,11 @@ function sendMessage() {
            dialogId: dialogId
         }, success: function (data) {
 
-            $('#dialog__message').val('');
+            $('#dialog__message').text('');
 
             var newMessage = $('.chatLs__chat:eq(0)').clone();
             newMessage.attr('id', 'chatLs__chat-' + data.message.messageId);
-            newMessage.find('.chatLs__text').text(message);
+            newMessage.find('.chatLs__text').html(message);
             newMessage.find('.chatLs__photo').attr('src', data.message.avatar);
             newMessage.find('.chatLs__name').text(data.message.name);
             newMessage.find('.chatLs__link').attr('href', '/profile/' + data.message.userId);
@@ -54,7 +55,8 @@ function sendMessage() {
  * @param messageId
  */
 function editMessage(messageId) {
-    let message = $.trim($('.dialog__message').val());
+
+    let message = $.trim($('.dialog__message').html());
     let dialogId = $('#dialogId').val();
 
     if (jQuery.isEmptyObject(message)) {
@@ -72,8 +74,8 @@ function editMessage(messageId) {
             dialogId: dialogId
         }, success: function (data) {
 
-            $('#dialog__message').val('');
-            $('#chatLs__chat-' + messageId).find('.chatLs__text').text(message);
+            $('#dialog__message').text('');
+            $('#chatLs__chat-' + messageId).find('.chatLs__text').html(message);
             stopEditMessage();
         },
         error: function(data) {
@@ -91,8 +93,8 @@ $( document ).ready(function()
     $('body').on('click', 'div[class=chatLs__move-edit]', function (e)
     {
         let messageId = $(this).closest('.chatLs__chat').attr('id').split('chat-')[1];
-        let message = $(this).closest('.chatLs__chat').find('.chatLs__text').text();
-        $('#dialog__message').val(message).attr('isEdit', true);
+        let message = $(this).closest('.chatLs__chat').find('.chatLs__text').html();
+        $('#dialog__message').html(message).attr('isEdit', true);
         $('.dialog__send')
             .attr('src', '/img/icons/edit.png')
             .attr('onclick', 'editMessage(' + messageId + ');');
@@ -238,19 +240,20 @@ $( document ).ready(function()
                $('.Chat-search').show();
             },
             error: function(data) {
-               var errors = data.responseJSON;
-               console.log(errors);
+                errorMsgResponse(data);
             }
          });
     });
 
-    // If press Enter -> run send or edit message function
-    $(document).keypress(function (e)
-    {
-        if (e.which === 13) {
-           if ($('input').hasClass("dialog__message")) {
-              $('.dialog__send').click();
-           }
+    /**
+     * If press Ctrl + Enter -> run send or edit message function
+    */
+    $(document).keypress("c", function(e) {
+
+        if (e.ctrlKey) {
+            if ($('#dialog__message').hasClass("dialog__message")) {
+                $('.dialog__send').click();
+            }
         }
     });
 });
