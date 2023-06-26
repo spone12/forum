@@ -232,7 +232,7 @@ $( document ).ready(function()
 
                $.each(data.searched, function(key, searchItem) {
                   var elements = chat.clone();
-                  elements.find('.Chat-search_body').text(searchItem.text).attr('href', '/chat/dialog/' + searchItem.dialog_id);
+                  elements.find('.Chat-search_body').html(searchItem.text).attr('href', '/chat/dialog/' + searchItem.dialog_id);
                   elements.find('.Chat-search__photo').attr('src', searchItem.avatar);
                   elements.find('.Chat-search__link').text(searchItem.name).attr('href', '/profile/' + searchItem.id);
 
@@ -248,12 +248,19 @@ $( document ).ready(function()
     });
 
     /**
-     * If press Ctrl + Enter -> run send or edit message function
+     * If press Shift + Enter -> run send or edit message function
     */
-    $(document).keypress("c", function(e) {
+    const dialogMessage = document.getElementById('dialog__message');
 
-        if (e.ctrlKey) {
-            if ($('#dialog__message').hasClass("dialog__message")) {
+    dialogMessage.addEventListener('keydown', function (e) {
+        // Get the code of pressed key
+        const keyCode = e.which || e.keyCode;
+
+        // Don't generate a new line
+        if (keyCode === 13 && !e.shiftKey) {
+
+            e.preventDefault();
+            if ($(dialogMessage).hasClass("dialog__message")) {
                 $('.dialog__send').click();
             }
         }

@@ -42,7 +42,7 @@
                                             <img class='mainData__photo' src="{{ asset($chat->avatar) }}" />
                                             <div class="col-sm-12 mainData__name">{{ $chat->name }}</div>
                                         </div>
-                                        <div class='col-lg-8 col-sm-6 mainData__text'>{{ $chat->text }}</div>
+                                        <div class='col-lg-8 col-sm-6 mainData__text'>{!! $chat->text !!}</div>
                                         <div class='col-lg-2 col-sm-3 mainData__date align-items-center justify-content-end d-flex' data-toggle="tooltip" title='{{ $chat->difference }}'>{{ $chat->created_at }}</div>
                                     </div>
                                 </a>

@@ -6,7 +6,7 @@ return [
     'chatLS' => 'Dialog',
     'back' => 'To the list of dialogues',
     'message' => [
-       'send' => 'Send message',
+       'send' => "'Enter' - Send message, 'Shift + Enter' line break",
        'no_messaeges' => 'No messages',
        'edit' => 'Edit message',
        'delete' => 'Delete message',

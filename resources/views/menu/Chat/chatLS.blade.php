@@ -93,7 +93,7 @@
                             <a class="dropdown-item dialogClip__audio" href="#">{{ trans('chat.attachment.audio') }}</a>
                         </div>
                     </div>
-                    <img class='btn btn-light dialog__send' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{{ trans('chat.message.send') }}">
+                    <img class='btn btn-light dialog__send' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{!! trans('chat.message.send') !!}">
                 </div>
             </div>
         </div>

@@ -42,7 +42,11 @@ class ChatRepository
 
         foreach ($userDialogs as $k => $chat) {
 
-            $lastMessage = MessagesModel::where('dialog', $chat->dialog_id)->orderBy('created_at', 'DESC')->first();
+            $lastMessage = MessagesModel::where('dialog', $chat->dialog_id)
+                ->whereNull('deleted_at')
+                ->orderBy('created_at', 'DESC')
+            ->first();
+
             if (is_null($lastMessage)) {
                 unset($userDialogs[$k]);
                 continue;
@@ -52,7 +56,7 @@ class ChatRepository
             $user = DB::table('users')
                 ->select('users.id AS userId', 'users.name',  'users.avatar')
                 ->where( 'users.id', $dialogWithId)
-                ->first();
+            ->first();
 
             $userDialogs[$k]->id = $user->userId;
             $userDialogs[$k]->name = $user->name;
@@ -65,8 +69,9 @@ class ChatRepository
 
             $this->checkAvatarExist($userDialogs[$k]);
 
-            if (strlen($lastMessage->text) >= 50) {
-                $lastMessage->text = Str::limit($chat->text, 50);
+            if (strlen($userDialogs[$k]->text) >= 50) {
+                $chat->text = str_ireplace(['</div>'], '<br>', $chat->text);
+                $userDialogs[$k]->text = Str::limit(strip_tags($chat->text, '<br>'), 50);
             }
         }
 
@@ -108,6 +113,7 @@ class ChatRepository
 
         foreach ($searchResult as $search) {
 
+            $search->text = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $search->text);
             $userObj = User::where('id', $search->send)->first();
 
             $search->avatar = $userObj->avatar ?: ProfileEnum::NO_AVATAR;
