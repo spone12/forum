@@ -1,5 +1,4 @@
-var messagePage = 2,
-stopScrolling = false;
+var messagePage = 2;
 
 function stopEditMessage() {
     $('.edit_msg_stop').hide();
@@ -87,50 +86,52 @@ function editMessage(messageId) {
     });
 }
 
+/**
+ * Load AJAX messages
+ */
 function loadMessages() {
 
-    const height = $('.chatLs').outerHeight();
-    //const screenHeight = $('.chatLs').innerHeight();
-    const screenHeight = window.innerHeight;
+    split = $('#nextMessages').val().split('page=');
+    $.ajax({
+        url: split[0] + 'page=' + messagePage,
+        type: "GET",
+        headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+        async: false,
+        success: function (data) {
 
-    const scrolled = window.scrollY;
-    const threshold = height - screenHeight / 4;
-    const position = scrolled + screenHeight;
+            if (data.includes('Нет сообщений')) {
 
-    console.log(position + ' ' + threshold)
-    if (position >= threshold) {
+                $('.chatLs').off('scroll');
+            } else {
 
-        split = $('#nextMessages').val().split('page=');
-        $.ajax({
-            url: split[0] + 'page=' + messagePage,
-            type: "GET",
-            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-            async: false,
-            success: function (data) {
-
-                if (data.includes('Нет сообщений')) {
-                    stopScrolling = true;
-                } else {
-                    $('.chatLs').append($(data).find('.chatLs').children());
-                    messagePage++;
-                }
-            },
-            error: function(data) {
-                errorMsgResponse(data);
+                $('.chatLs').prepend($(data).find('.chatLs').children());
+                messagePage++;
             }
-        });
-    }
+        },
+        error: function(data) {
+            errorMsgResponse(data);
+        }
+    });
 }
 
 $( document ).ready(function()
 {
+
+    /**
+     * Event of loading new messages when scrolling to the top of the page
+     */
     $('.chatLs').scroll(function () {
 
-        if (!stopScrolling)
+        const screenHeight = $('.chatLs').innerHeight();
+        let   scrolled = $('.chatLs').scrollTop() + screenHeight;
+
+        if (screenHeight === scrolled) {
             loadMessages();
+            $('.chatLs').scrollTop(screenHeight + scrolled);
+        }
     });
 
-    //$('.chatLs').scrollTop($('.chatLs').prop('scrollHeight'));
+    $('.chatLs').scrollTop($('.chatLs').prop('scrollHeight'));
     /**
      * Message edit view function
      */

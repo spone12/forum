@@ -300,7 +300,7 @@ class ChatRepository
                 'messages.text' )
             ->where('dialog', $dialogId)
             ->whereNull('deleted_at')
-            ->orderBy('created_at', 'asc')
+            ->orderBy('created_at', 'desc')
         ->simplePaginate(10);
 
         if (count($dialogMessages)) {
