@@ -448,6 +448,14 @@
 .chatMenuLeft {
   height: 400px;
   overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.chatLs ::-webkit-scrollbar,
+.chatMenuLeft ::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .chatLs .chatLs__chat,

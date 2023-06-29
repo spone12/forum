@@ -14,6 +14,10 @@
     Form::hidden('dialogId', $dialogId, ['id' => 'dialogId'])
 }}
 
+{{
+    Form::hidden('nextMessages', $dialogObj->nextPageUrl(), ['id' => 'nextMessages'])
+}}
+
 <div class="container p-3">
     <div class="row justify-content-center align-items-center">
         <div class='chatMenuLeft col-lg-2 col-sm-12 align-items-center justify-content-center'>
