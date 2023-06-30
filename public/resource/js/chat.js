@@ -96,10 +96,9 @@ function loadMessages() {
         url: split[0] + 'page=' + messagePage,
         type: "GET",
         headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
-        async: false,
         success: function (data) {
 
-            if (data.includes('Нет сообщений')) {
+            if (data.includes('chatLs__chat noMessages')) {
 
                 $('.chatLs').off('scroll');
             } else {
@@ -107,6 +106,8 @@ function loadMessages() {
                 $('.chatLs').prepend($(data).find('.chatLs').children());
                 messagePage++;
             }
+
+            $('.loader').addClass('none');
         },
         error: function(data) {
             errorMsgResponse(data);
@@ -126,8 +127,10 @@ $( document ).ready(function()
         let   scrolled = $('.chatLs').scrollTop() + screenHeight;
 
         if (screenHeight === scrolled) {
+
+            $('.loader').removeClass('none');
             loadMessages();
-            $('.chatLs').scrollTop(screenHeight + scrolled);
+            $('.chatLs').scrollTop(scrolled - screenHeight + 30);
         }
     });
 

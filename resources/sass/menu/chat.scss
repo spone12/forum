@@ -108,7 +108,8 @@
 .chatLs {
     height: 400px;
     overflow-y: auto;
-    -ms-overflow-style: none;
+    -ms-overflow-style: none !important;
+    scrollbar-width:none;
 
     ::-webkit-scrollbar {
         width: 0;

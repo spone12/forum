@@ -7,6 +7,7 @@
 @import 'profile/profile';
 @import "general";
 @import "home";
+@import "movableObjects";
 
 $c: center;
 
@@ -22,7 +23,7 @@ $c: center;
 }
 
 .grid { display: grid !important; }
-.no_decor{text-decoration: none !important;}
+.no_decor { text-decoration: none !important; }
 
 .a_header {
     @extend .no_decor;
@@ -197,4 +198,8 @@ $c: center;
     text-align: center;
     color: #4a1c1c;
     font-weight: 400;
+}
+
+.none {
+    display: none !important;
 }

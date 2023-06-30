@@ -448,7 +448,7 @@
 .chatMenuLeft {
   height: 400px;
   overflow-y: auto;
-  -ms-overflow-style: none;
+  -ms-overflow-style: none !important;
   scrollbar-width: none;
 }
 
@@ -688,6 +688,39 @@
   background-color: #e8fbff;
 }
 
+.loader {
+  z-index: 100;
+  position: absolute;
+  border: 8px solid #c8c8c8;
+  border-radius: 50%;
+  border-top: 8px solid #e6262f;
+  width: 80px;
+  height: 80px;
+  -webkit-animation: spin 1.5s linear infinite;
+  animation: spin 1.5s linear infinite;
+  opacity: 0.5;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
 .bold {
   font-weight: bold;
 }
@@ -922,5 +955,9 @@
   text-align: center;
   color: #4a1c1c;
   font-weight: 400;
+}
+
+.none {
+  display: none !important;
 }
 

@@ -80,6 +80,7 @@
             </div>
         @endif
         </div>
+        <div class="loader none"></div>
     </div>
 
     <hr>
