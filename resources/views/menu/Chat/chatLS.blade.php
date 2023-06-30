@@ -42,6 +42,11 @@
 
         <div class='chatLs col-lg-10'>
          @if (!empty($dialogObj[0]))
+
+            @php
+                $dialogObj = $dialogObj->reverse();
+            @endphp
+
             @foreach ($dialogObj as $chat)
                 <div class="chatLs__chat" id="chatLs__chat-{{ $chat->message_id }}">
                     <div class='col-sm-12 row'>
