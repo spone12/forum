@@ -300,10 +300,10 @@ class ChatRepository
                 'messages.text' )
             ->where('dialog', $dialogId)
             ->whereNull('deleted_at')
-            ->orderBy('created_at', 'asc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+        ->simplePaginate(10);
 
-        if (count($dialogMessages)) {
+        if ($dialogMessages->count()) {
 
             // Get id of the user we are talking to
             $anotherUserId = ($dialogMessages[0]->send == $currentUserId) ?

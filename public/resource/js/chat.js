@@ -1,3 +1,5 @@
+var messagePage = 2;
+
 function stopEditMessage() {
     $('.edit_msg_stop').hide();
     $('#dialog__message').text('').attr('isEdit', false);
@@ -84,8 +86,54 @@ function editMessage(messageId) {
     });
 }
 
+/**
+ * Load AJAX messages
+ */
+function loadMessages() {
+
+    split = $('#nextMessages').val().split('page=');
+    $.ajax({
+        url: split[0] + 'page=' + messagePage,
+        type: "GET",
+        headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+        success: function (data) {
+
+            if (data.includes('chatLs__chat noMessages')) {
+
+                $('.chatLs').off('scroll');
+            } else {
+
+                $('.chatLs').prepend($(data).find('.chatLs').children());
+                messagePage++;
+            }
+
+            $('.loader').addClass('none');
+        },
+        error: function(data) {
+            errorMsgResponse(data);
+        }
+    });
+}
+
 $( document ).ready(function()
 {
+
+    /**
+     * Event of loading new messages when scrolling to the top of the page
+     */
+    $('.chatLs').scroll(function () {
+
+        const screenHeight = $('.chatLs').innerHeight();
+        let   scrolled = $('.chatLs').scrollTop() + screenHeight;
+
+        if (screenHeight === scrolled) {
+
+            $('.loader').removeClass('none');
+            loadMessages();
+            $('.chatLs').scrollTop(scrolled - screenHeight + 30);
+        }
+    });
+
     $('.chatLs').scrollTop($('.chatLs').prop('scrollHeight'));
     /**
      * Message edit view function

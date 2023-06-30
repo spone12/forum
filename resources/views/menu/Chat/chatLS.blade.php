@@ -14,6 +14,10 @@
     Form::hidden('dialogId', $dialogId, ['id' => 'dialogId'])
 }}
 
+{{
+    Form::hidden('nextMessages', $dialogObj->nextPageUrl(), ['id' => 'nextMessages'])
+}}
+
 <div class="container p-3">
     <div class="row justify-content-center align-items-center">
         <div class='chatMenuLeft col-lg-2 col-sm-12 align-items-center justify-content-center'>
@@ -38,6 +42,11 @@
 
         <div class='chatLs col-lg-10'>
          @if (!empty($dialogObj[0]))
+
+            @php
+                $dialogObj = $dialogObj->reverse();
+            @endphp
+
             @foreach ($dialogObj as $chat)
                 <div class="chatLs__chat" id="chatLs__chat-{{ $chat->message_id }}">
                     <div class='col-sm-12 row'>
@@ -71,6 +80,7 @@
             </div>
         @endif
         </div>
+        <div class="loader none"></div>
     </div>
 
     <hr>
