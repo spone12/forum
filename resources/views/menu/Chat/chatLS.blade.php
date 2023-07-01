@@ -104,6 +104,7 @@
                         </div>
                     </div>
                     <img class='btn btn-light dialog__send' data-toggle="tooltip" onclick="sendMessage();" src="{{ asset('img/chat/send_message.png') }}" title="{!! trans('chat.message.send') !!}">
+                    <img class="dialog__scroll-down ml-2" data-toggle="tooltip" title='{{ trans('chat.message.scroll_down') }}' src="{{ asset('img/chat/down.png') }}" width="30">
                 </div>
             </div>
         </div>

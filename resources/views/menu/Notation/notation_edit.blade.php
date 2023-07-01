@@ -37,7 +37,7 @@
             </form>
 
             <button class='btn btn-info mt-1' onclick="editNotation();">
-                <img alt='{{ trans('notation.edit.change') }}' data-toggle="tooltip" title='{{ trans('notation.edit.change') }}' type="submit" src="{{ asset('img/icons/edit.png') }}" width=25 />
+                <img alt='{{ trans('notation.edit.change') }}' data-toggle="tooltip" title='{{ trans('notation.edit.change') }}' type="submit" src="{{ asset('img/icons/save.png') }}" width=25 />
             </button>
         </div>
 

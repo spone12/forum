@@ -12,7 +12,8 @@ return [
        'delete' => 'Delete message',
        'write' => 'Write message..',
        'edit_stop' => 'Stop edit message',
-       'recover' => 'Recover'
+       'recover' => 'Recover',
+       'scroll_down' => 'Scroll down',
     ],
     'attachment' => [
         'photo' => 'Photo',

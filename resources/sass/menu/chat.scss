@@ -213,8 +213,10 @@
 .MessageBlock {
     margin-top: 3px;
 
-    .MessageBlock__back{
+    .MessageBlock__back {
         opacity: 0.7;
+        padding-right: 35px !important;
+
         &:hover{
             opacity: 1;
         }
@@ -302,6 +304,17 @@
 .chatLs__move-recover {
 
     cursor: pointer;
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.dialog__scroll-down {
+    height: 30px;
+    margin-top: 5px;
+    cursor: pointer;
+    opacity: 0.7;
+
     &:hover {
         opacity: 1;
     }

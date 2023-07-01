@@ -18,8 +18,7 @@ function sendMessage() {
     return;
   }
 
-  $.ajax(
-  {
+  $.ajax({
         url: '/chat/send_message',
         type: "POST",
         headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
@@ -44,7 +43,7 @@ function sendMessage() {
                 .attr('data-original-title', data.message.diff);
 
             newMessage.appendTo('.chatLs');
-            $('.chatLs').scrollTop($('.chatLs').prop('scrollHeight'));
+            scrollDown();
         },
         error: function(data) {
             errorMsgResponse(data);
@@ -115,8 +114,17 @@ function loadMessages() {
     });
 }
 
+/**
+ * Scroll down
+ */
+function scrollDown() {
+    $('.chatLs').scrollTop($('.chatLs').prop('scrollHeight'));
+}
+
 $( document ).ready(function()
 {
+
+    scrollDown();
 
     /**
      * Event of loading new messages when scrolling to the top of the page
@@ -134,7 +142,10 @@ $( document ).ready(function()
         }
     });
 
-    $('.chatLs').scrollTop($('.chatLs').prop('scrollHeight'));
+    $('.dialog__scroll-down').click(function () {
+       scrollDown();
+    });
+
     /**
      * Message edit view function
      */

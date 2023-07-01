@@ -559,6 +559,7 @@
 
 .MessageBlock .MessageBlock__back {
   opacity: 0.7;
+  padding-right: 35px !important;
 }
 
 .MessageBlock .MessageBlock__back:hover {
@@ -645,6 +646,17 @@
 }
 
 .chatLs__move-recover:hover {
+  opacity: 1;
+}
+
+.dialog__scroll-down {
+  height: 30px;
+  margin-top: 5px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.dialog__scroll-down:hover {
   opacity: 1;
 }
 
