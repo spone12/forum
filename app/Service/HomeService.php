@@ -21,7 +21,6 @@ class HomeService
      * @param HomeRepository $homeRepository
      */
     function __construct(HomeRepository $homeRepository) {
-
         $this->homeRepository = $homeRepository;
     }
 
@@ -30,12 +29,11 @@ class HomeService
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function notations() {
-
+    public function notations()
+    {
         $notations = $this->homeRepository->takeNotations();
         if ($notations) {
             foreach ($notations as $k => $v) {
-
                 $notations[$k]->date_n =
                     Carbon::createFromFormat('Y-m-d H:i:s', $notations[$k]->date_n)->diffForHumans();
 

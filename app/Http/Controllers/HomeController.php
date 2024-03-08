@@ -7,18 +7,23 @@ use App\Service\HomeService;
 
 /**
  * Class HomeController
+ *
  * @package App\Http\Controllers
  */
 class HomeController extends Controller
 {
-    /** @var HomeService */
+    /**
+     * @var HomeService 
+     */
     protected $homeService;
 
     /**
      * HomeController constructor.
+     *
      * @param HomeService $homeService
      */
-    function __construct(HomeService $homeService) {
+    function __construct(HomeService $homeService)
+    {
         $this->homeService = $homeService;
     }
 
@@ -28,10 +33,9 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|
      * \Illuminate\Contracts\View\Factory|
      * \Illuminate\Contracts\View\View|\never
-    */
+     */
     public function index()
     {
-
         try {
             $notations = $this->homeService->notations();
         } catch (\Throwable $e) {

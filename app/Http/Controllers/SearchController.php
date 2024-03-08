@@ -7,16 +7,20 @@ use App\Service\SearchService;
 
 /**
  * Class SearchController
+ *
  * @package App\Http\Controllers
  */
 class SearchController extends Controller
 {
 
-    /** @var SearchService */
+    /**
+     * @var SearchService 
+     */
     protected $searchService;
 
     /**
      * SearchController constructor.
+     *
      * @param SearchService $searchService
      */
     function __construct(SearchService $searchService)
@@ -25,16 +29,15 @@ class SearchController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request $request
      * @return \Illuminate\Contracts\Foundation\Application|
      * \Illuminate\Contracts\View\Factory|
      * \Illuminate\Contracts\View\View
      */
     public function getDataSearch(Request $request)
     {
-
         $search = $request->only(['search', 'search-by']);
-        if (stripos($search['search-by'], 'user' ) !== false) {
+        if (stripos($search['search-by'], 'user') !== false) {
             $result = $this->searchService->byUser((object)$search);
             $result->search_by = 1;
         } else {

@@ -10,23 +10,27 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Class ProfileRepository
+ *
  * @package App\Repository\Profile
  */
 class ProfileRepository
 {
 
     /**
-     * @param int $id
+     * @param  int $id
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
      */
-    public function getAnotherUser(int $id) {
+    public function getAnotherUser(int $id)
+    {
 
         $data = DB::table('users')
-            ->select('users.name','users.id', 'users.email','users.created_at',
+            ->select(
+                'users.name', 'users.id', 'users.email', 'users.created_at',
                 'description_profile.real_name', 'users.gender',
-                'description_profile.town','description_profile.date_born',
+                'description_profile.town', 'description_profile.date_born',
                 'description_profile.about', 'users.avatar', 'users.last_online_at',
-                'description_profile.phone', 'description_profile.lvl',  'description_profile.exp')
+                'description_profile.phone', 'description_profile.lvl',  'description_profile.exp'
+            )
             ->leftJoin('description_profile', 'description_profile.user_id', '=', 'users.id')
             ->where('users.id', '=', $id)
             ->first();
@@ -49,7 +53,8 @@ class ProfileRepository
     /**
      * @return false|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
      */
-    public function getUserData() {
+    public function getUserData()
+    {
 
         if (Auth::check()) {
             $data = DB::table('users AS u')
@@ -70,7 +75,7 @@ class ProfileRepository
                 )
                 ->leftJoin('description_profile AS dp', 'dp.user_id', '=', 'u.id')
                 ->where('id', '=', Auth::user()->id)
-            ->first();
+                ->first();
 
             if ($data) {
                 $data->expNeed = ProfileModel::expGeneration($data);
@@ -93,17 +98,19 @@ class ProfileRepository
                 }
             }
         }
-        else $data = false;
+        else { $data = false;
+        }
 
         return $data;
     }
 
 
     /**
-     * @param int $userId
+     * @param  int $userId
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
      */
-    public function getUserDataChange(int $userId = 0) {
+    public function getUserDataChange(int $userId = 0)
+    {
 
         $userData = DB::table('users')
             ->select(
@@ -121,7 +128,7 @@ class ProfileRepository
             )
             ->leftJoin('description_profile', 'description_profile.user_id', '=', 'users.id')
             ->where('users.id', '=', $userId ?: Auth::user()->id)
-        ->first();
+            ->first();
 
         if ($userData) {
             self::checkAvatar($userData);
@@ -130,10 +137,11 @@ class ProfileRepository
     }
 
     /**
-     * @param array $userData
+     * @param  array $userData
      * @return \Illuminate\Http\JsonResponse
      */
-    public function changeProfile(array $userData) {
+    public function changeProfile(array $userData)
+    {
 
         try {
 
@@ -151,55 +159,64 @@ class ProfileRepository
                     $updateProfile = 1;
                 }
 
-                # @todo Refactor to insert or update
+                // @todo Refactor to insert or update
                 if (!ProfileModel::where('user_id', '=', $userId)->exists()) {
-                    DB::table('description_profile')->insert([
+                    DB::table('description_profile')->insert(
+                        [
                         'user_id'   => $userId,
                         'real_name' => $userData['data_send']['name'],
                         'date_born' => $userData['data_send']['date_user'],
                         'town'      => $userData['data_send']['town_user'],
                         'phone'     => $userData['data_send']['phone'],
                         'about'     => $userData['data_send']['about_user']
-                    ]);
+                        ]
+                    );
 
                     $updateProfile = 1;
                 } else {
                     DB::table('description_profile')
                         ->where('user_id', '=', $userId)
-                        ->update([
+                        ->update(
+                            [
                             'real_name' => $userData['data_send']['name'],
                             'date_born' => $userData['data_send']['date_user'],
                             'town'      => $userData['data_send']['town_user'],
                             'phone'     => $userData['data_send']['phone'],
                             'about'     => $userData['data_send']['about_user']
-                        ]);
+                            ]
+                        );
 
                     $updateProfile = 1;
                 }
 
                 if ($updateProfile) {
-                    return response()->json([
+                    return response()->json(
+                        [
                         'status' => 1,
                         'message' => 'OK'
-                    ]);
+                        ]
+                    );
                 }
             } else {
                 throw new \Exception('Не совпадает ID!');
             }
         } catch (\Exception $e) {
 
-            return response()->json([
+            return response()->json(
+                [
                 'status' => 0,
                 'errors'  =>  $e->getMessage(),
-            ], ResponseCodeEnum::BAD_REQUEST);
+                ], ResponseCodeEnum::BAD_REQUEST
+            );
         }
     }
 
     /**
-     * @param $request
+     * @param  $request
      * @return bool
      */
-    public function changeAvatar($request) {
+    public function changeAvatar($request)
+    {
 
         if ($request->hasFile('avatar')) {
             $userId = Auth::user()->id;
@@ -223,7 +240,8 @@ class ProfileRepository
     /**
      * @param $userData
      */
-    protected static function checkAvatar(&$userData) {
+    protected static function checkAvatar(&$userData)
+    {
 
         if (is_null($userData->avatar)) {
             $userData->avatar = ProfileEnum::NO_AVATAR;

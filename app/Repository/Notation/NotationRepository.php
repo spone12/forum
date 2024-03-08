@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\File;
 
 /**
  * Class NotationRepository
+ *
  * @package App\Repository\Notation
  */
 class NotationRepository implements CrudRepositoryInterface
@@ -20,32 +21,36 @@ class NotationRepository implements CrudRepositoryInterface
     /**
      * Create a notation
      *
-     * @param array $dataNotation
+     * @param  array $dataNotation
      * @return int
      */
     public function create(Array $dataNotation)
     {
 
-        return DB::table('notations')->insertGetId([
+        return DB::table('notations')->insertGetId(
+            [
             'user_id' =>  Auth::user()->id,
             'name_notation' => trim(addslashes($dataNotation['notationName'])),
             'text_notation' => trim(addslashes($dataNotation['notationText'])),
             'notation_add_date' => Carbon::now(),
             'notation_edit_date' => Carbon::now()
-        ]);
+            ]
+        );
     }
 
     public function notationViewData(int $notationId)
     {
         return DB::table('notations')
-            ->select('notations.notation_id', 'notations.user_id',
+            ->select(
+                'notations.notation_id', 'notations.user_id',
                 'notations.name_notation', 'notations.text_notation',
-                'notations.rating','users.name', 'users.avatar',
-                'notations.notation_add_date', 'np.path_photo')
+                'notations.rating', 'users.name', 'users.avatar',
+                'notations.notation_add_date', 'np.path_photo'
+            )
             ->join('users', 'users.id', '=', 'notations.user_id')
             ->leftJoin('notation_photo AS np', 'np.notation_id', '=', 'notations.notation_id')
             ->where('notations.notation_id', '=', $notationId)
-        ->get();
+            ->get();
     }
 
     public function voteNotation(int $notationId)
@@ -54,11 +59,11 @@ class NotationRepository implements CrudRepositoryInterface
             ->select('vote_notation_id')
             ->where('notation_id', '=', $notationId)
             ->where('user_id', '=', Auth::user()->id)
-        ->get();
+            ->get();
     }
 
     /**
-     * @param int $notationId
+     * @param  int $notationId
      * @return array
      */
     public function getDataEdit(int $notationId)
@@ -67,18 +72,18 @@ class NotationRepository implements CrudRepositoryInterface
         $data['notation'] = DB::table('notations')
             ->select('user_id', 'notation_id', 'category', 'name_notation', 'text_notation')
             ->where('notation_id', '=', $notationId)
-        ->first();
+            ->first();
 
         $data['notation_photo'] = DB::table('notation_photo')
-            ->select('path_photo','notation_photo_id')
+            ->select('path_photo', 'notation_photo_id')
             ->where('notation_id', '=', $notationId)
-        ->get();
+            ->get();
 
         return $data;
     }
 
     /**
-     * @param array $dataNotationEdit
+     * @param  array $dataNotationEdit
      * @return bool
      */
     public function update(array $dataNotationEdit)
@@ -87,16 +92,18 @@ class NotationRepository implements CrudRepositoryInterface
         return DB::table('notations')
             ->where('user_id', '=', Auth::user()->id)
             ->where('notation_id', '=', $dataNotationEdit['notationId'])
-        ->update([
-            'name_notation' => $dataNotationEdit['notationName'],
-            'text_notation' => $dataNotationEdit['notationText'],
-            'notation_edit_date' => Carbon::now()
-        ]);
+            ->update(
+                [
+                'name_notation' => $dataNotationEdit['notationName'],
+                'text_notation' => $dataNotationEdit['notationText'],
+                'notation_edit_date' => Carbon::now()
+                ]
+            );
     }
 
     /**
-     * @param int $notationId
-     * @param int $action
+     * @param  int $notationId
+     * @param  int $action
      * @return bool|int
      */
     public function changeRating(int $notationId, int $action)
@@ -106,32 +113,38 @@ class NotationRepository implements CrudRepositoryInterface
             ->select('vote_notation_id', 'vote')
             ->where('user_id', '=', Auth::user()->id)
             ->where('notation_id', '=', $notationId)
-        ->first();
+            ->first();
 
         $dbMove = null;
         if (empty($checkRating->vote_notation_id)) {
-            $dbMove = DB::table('vote_notation')->insert([
+            $dbMove = DB::table('vote_notation')->insert(
+                [
                 'user_id' => Auth::user()->id,
                 'notation_id' => $notationId,
                 'vote' => $action,
                 'vote_date' => Carbon::now()
-            ]);
+                ]
+            );
         } else {
 
             // checking for already set vote
-            if ($checkRating->vote == 1 && $action == 1)
+            if ($checkRating->vote == 1 && $action == 1) {
                 return false;
+            }
 
-            if ($checkRating->vote == 0 && $action == 0)
+            if ($checkRating->vote == 0 && $action == 0) {
                 return false;
+            }
 
             $dbMove = DB::table('vote_notation')
                 ->where('user_id', '=', Auth::user()->id)
                 ->where('notation_id', '=', $notationId)
-            ->update([
-                'vote' => $action,
-                'vote_date' => Carbon::now()
-            ]);
+                ->update(
+                    [
+                    'vote' => $action,
+                    'vote_date' => Carbon::now()
+                    ]
+                );
         }
 
         if($action) {
@@ -145,7 +158,7 @@ class NotationRepository implements CrudRepositoryInterface
     }
 
     /**
-     * @param int $notationDelete
+     * @param  int $notationDelete
      * @return bool
      */
     public function delete(int $notationId)
@@ -154,7 +167,7 @@ class NotationRepository implements CrudRepositoryInterface
         $notation = DB::table('notations')
             ->select('user_id', 'notation_id')
             ->where('notation_id', '=', $notationId)
-        ->first();
+            ->first();
 
         if ($notation->user_id !== Auth::user()->id) {
             throw new \Exception('Ошибка удаления: нет доступа на удаление новости!');
@@ -163,7 +176,7 @@ class NotationRepository implements CrudRepositoryInterface
         $currentNotationPhotos = DB::table('notation_photo')
             ->select('notation_photo_id', 'path_photo')
             ->where('notation_id', '=', $notationId)
-        ->get();
+            ->get();
 
         foreach ($currentNotationPhotos as $photo) {
             $removeData = [
@@ -177,11 +190,11 @@ class NotationRepository implements CrudRepositoryInterface
         return DB::table('notations')
             ->where('notation_id', '=', $notationId)
             ->where('user_id', '=', Auth::user()->id)
-        ->delete();
+            ->delete();
     }
 
     /**
-     * @param $request
+     * @param  $request
      * @return array
      */
     public function addPhoto($request)
@@ -194,12 +207,14 @@ class NotationRepository implements CrudRepositoryInterface
                 $imageName = uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path("img/notation_photo/{$request->notation_id}"), $imageName);
 
-                DB::table('notation_photo')->insert([
+                DB::table('notation_photo')->insert(
+                    [
                     'user_id' => Auth::user()->id,
                     'notation_id' => $request->notation_id,
                     'path_photo' => "img/notation_photo/{$request->notation_id}/{$imageName}",
                     'photo_edit_date' => Carbon::now()
-                ]);
+                    ]
+                );
 
                 $paths[] = $imageName;
             }
@@ -208,7 +223,7 @@ class NotationRepository implements CrudRepositoryInterface
     }
 
     /**
-     * @param array $photoData
+     * @param  array $photoData
      * @return bool
      * @throws \Exception
      */
@@ -219,7 +234,7 @@ class NotationRepository implements CrudRepositoryInterface
             ->select('user_id', 'path_photo')
             ->where('notation_id', '=', $photoData['notationId'])
             ->where('notation_photo_id', '=', $photoData['photoId'])
-        ->first();
+            ->first();
 
         if (is_null($ownerPhotoCheck)) {
             throw new \Exception('Ошибка удаления: Данной фотографии не существует!');

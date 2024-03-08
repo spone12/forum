@@ -11,16 +11,20 @@ use App\Enums\ResponseCodeEnum;
 
 /**
  * Class NotationController
+ *
  * @package App\Http\Controllers
  */
 class NotationController extends Controller
 {
 
-    /** @var NotationService */
+    /**
+     * @var NotationService 
+     */
     protected $notationService;
 
     /**
      * NotationController constructor
+     *
      * @param NotationService $notationService
      */
     function __construct(NotationService $notationService)
@@ -31,7 +35,7 @@ class NotationController extends Controller
     /**
      * Create notation
      *
-     * @param NotationRequest $request
+     * @param  NotationRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     protected function createNotation(NotationRequest $request)
@@ -41,10 +45,12 @@ class NotationController extends Controller
         try {
             $response = $this->notationService->create($input);
         } catch (\Exception $e) {
-            return response()->json([
+            return response()->json(
+                [
                 'success' => false,
                 'message' => $e->getMessage()
-            ]);
+                ]
+            );
         }
         return response()->json(['notationData' => $response]);
     }
@@ -52,99 +58,108 @@ class NotationController extends Controller
     /**
      * Get view notation
      *
-     * @param int $notationId
+     * @param  int $notationId
      * @return \Illuminate\Contracts\Foundation\Application|
      * \Illuminate\Contracts\View\Factory|
      * \Illuminate\Contracts\View\View
      */
     protected function notationView(int $notationId)
     {
-
         try {
             $view = $this->notationService->view($notationId);
         } catch (\Exception $exception) {
             return view('error_404', ['error' => [ trans('notation.errors.not_exist')]]);
         }
 
-        return view('menu.Notation.notation_view', ['view' => $view]);
+        return view('menu.Notation.notationView', ['view' => $view]);
     }
 
     /**
      * Edit the notation
      *
-     * @param int $notationId
+     * @param  int $notationId
      * @return \Illuminate\Contracts\Foundation\Application|
      * \Illuminate\Contracts\View\Factory|
      * \Illuminate\Contracts\View\View
-    */
+     */
     protected function notationEdit(int $notationId)
     {
         try {
+            $dataEdit = $this->notationService->getDataEdit($notationId);
+            if ($dataEdit['notation']->user_id !== Auth::user()->id) {
+                return view(
+                    'error_404', ['error' => [
+                    trans('notation.errors.edit_access_denied')
+                    ]]
+                );
+            }
 
-           $dataEdit = $this->notationService->getDataEdit($notationId);
-           if ($dataEdit['notation']->user_id !== Auth::user()->id) {
-               return view('error_404', ['error' => [
-                   trans('notation.errors.edit_access_denied')
-               ]]);
-           }
-
-           return view('menu.Notation.notation_edit', [
-              'notationData' => $dataEdit['notation'],
-              'notationPhoto' => $dataEdit['notation_photo']
-           ]);
+            return view(
+                'menu.Notation.notationEdit', [
+                'notationData' => $dataEdit['notation'],
+                'notationPhoto' => $dataEdit['notation_photo']
+                ]
+            );
         } catch (\Exception $exception) {
-            return view('error_404', ['error' => [
+            return view(
+                'error_404', ['error' => [
                 trans('notation.errors.notation_not_found')
-            ]]);
+                ]]
+            );
         }
     }
 
     /**
      * Update notation
      *
-     * @param Request $request
+     * @param  Request $request
      * @return \Illuminate\Http\JsonResponse
-    */
+     */
     protected function notationUpdate(Request $request)
     {
-
         if (!$request->ajax()) {
-            return response()->json([
+            return response()->json(
+                [
                 'success' => false,
                 'message' => 'This is not ajax request'
-            ], ResponseCodeEnum::SERVER_ERROR);
+                ], ResponseCodeEnum::SERVER_ERROR
+            );
         }
 
         try {
-
             $input = $request->only(['notationId', 'notationName', 'notationText']);
             $edit = $this->notationService->update($input);
-            return response()->json([
+            return response()->json(
+                [
                 'success' => $edit,
                 'message' => trans('notation.success.update')
-            ]);
+                ]
+            );
         } catch (\Throwable $exception) {
-            return response()->json([
+            return response()->json(
+                [
                 'success' => false,
                 'message' => $exception->getMessage()
-            ], ResponseCodeEnum::SERVER_ERROR);
+                ], ResponseCodeEnum::SERVER_ERROR
+            );
         }
     }
 
     /**
      * Change notation rating
      *
-     * @param Request $request
+     * @param  Request $request
      * @return \Illuminate\Http\JsonResponse
-    */
+     */
     protected function notationRating(Request $request)
     {
-
         if (!$request->ajax()) {
-            return response()->json([
+            return response()->json(
+                [
                 'success' => false,
                 'message' => 'This is not ajax request'
-            ], ResponseCodeEnum::SERVER_ERROR);
+                ], ResponseCodeEnum::SERVER_ERROR
+            );
         }
 
         $input = $request->all();
@@ -156,44 +171,48 @@ class NotationController extends Controller
     /**
      * Delete notation
      *
-     * @param Request $request
+     * @param  Request $request
      * @return \Illuminate\Http\JsonResponse
-    */
+     */
     protected function notationDelete(Request $request)
     {
-
         if (!$request->ajax()) {
-            return response()->json([
+            return response()->json(
+                [
                 'success' => false,
                 'message' => 'This is not ajax request'
-            ], ResponseCodeEnum::SERVER_ERROR);
+                ], ResponseCodeEnum::SERVER_ERROR
+            );
         }
 
         try {
 
             $input = $request->only(['notation_id']);
             $response = $this->notationService->delete($input['notation_id']);
-            return response()->json([
+            return response()->json(
+                [
                 'success' => $response,
                 'message' => trans('notation.success.delete')
-            ]);
+                ]
+            );
         } catch (\Throwable $exception) {
-            return response()->json([
+            return response()->json(
+                [
                 'success' => false,
                 'message' => $exception->getMessage()
-            ], ResponseCodeEnum::SERVER_ERROR);
+                ], ResponseCodeEnum::SERVER_ERROR
+            );
         }
     }
 
     /**
      * Add photo to notation
      *
-     * @param NotationPhotoRequest $request
+     * @param  NotationPhotoRequest $request
      * @return \Illuminate\Http\RedirectResponse
-    */
+     */
     protected function notationAddPhoto(NotationPhotoRequest $request)
     {
-
         $photoPath = $this->notationService->addPhoto($request);
         if (!empty($photoPath)) {
             return back()->with('success', trans('notation.success.image_uploaded'))
@@ -206,33 +225,36 @@ class NotationController extends Controller
     /**
      * Remove photo from notation
      *
-     * @param Request $request
+     * @param  Request $request
      * @return \Illuminate\Http\JsonResponse
-    */
+     */
     protected function removeNotationPhoto(Request $request)
     {
-
         try {
             $photoData = $request->only(['photoId', 'notationId']);
             $isDelete = $this->notationService->removePhoto($photoData);
-            return response()->json([
+            return response()->json(
+                [
                 'success' => $isDelete,
                 'message' => trans('notation.success.image_delete')
-            ]);
+                ]
+            );
         } catch (\Throwable $exception) {
-            return response()->json([
+            return response()->json(
+                [
                 'success' => false,
                 'message' => $exception->getMessage()
-            ], ResponseCodeEnum::SERVER_ERROR);
+                ], ResponseCodeEnum::SERVER_ERROR
+            );
         }
     }
 
     /**
-     * @param Request $request
+     * @param  Request $request
      * @return \Illuminate\Contracts\Foundation\Application|
      * \Illuminate\Contracts\View\Factory|
      * \Illuminate\Contracts\View\View
-    */
+     */
     public function notation(Request $request)
     {
         return view('menu.Notation.notation');

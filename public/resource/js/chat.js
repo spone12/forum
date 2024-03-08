@@ -9,7 +9,6 @@ function stopEditMessage() {
 }
 
 function sendMessage() {
-
   let message = $.trim($('.dialog__message').html());
   let dialogWithId = $('#dialogWithId').val();
   let dialogId = $('#dialogId').val();
@@ -153,7 +152,7 @@ $( document ).ready(function()
     {
         let messageId = $(this).closest('.chatLs__chat').attr('id').split('chat-')[1];
         let message = $(this).closest('.chatLs__chat').find('.chatLs__text').html();
-        $('#dialog__message').html(message).attr('isEdit', true);
+        $('#dialog__message').html(message).attr('isEdit', true).trigger('focus');
         $('.dialog__send')
             .attr('src', '/img/icons/edit.png')
             .attr('onclick', 'editMessage(' + messageId + ');');

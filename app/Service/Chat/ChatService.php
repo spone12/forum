@@ -14,7 +14,6 @@ class ChatService
      * @param ChatRepository $chatRepository
      */
     function __construct(ChatRepository $chatRepository) {
-
         $this->chatRepository = $chatRepository;
     }
 
@@ -25,7 +24,6 @@ class ChatService
      * @return
      */
     public function chat(int $limit = 0) {
-
         return $this->chatRepository->getUserChats($limit);
     }
 
@@ -36,7 +34,6 @@ class ChatService
      * @return
      */
     public function dialogId(int $value) {
-
         return $this->chatRepository->getDialogId($value);
     }
 
@@ -47,7 +44,6 @@ class ChatService
      * @return
      */
     public function search(array $word) {
-
         return $this->chatRepository->search(addslashes($word['word']));
     }
 
@@ -58,9 +54,10 @@ class ChatService
      * @return
      */
     public function message(array $data) {
-
         return $this->chatRepository->sendMessage(
-            addslashes($data['message']), (int) $data['dialogId'], (int) $data['dialogWithId']
+            addslashes($data['message']),
+            (int) $data['dialogId'],
+            (int) $data['dialogWithId']
         );
     }
 
@@ -71,9 +68,10 @@ class ChatService
      * @return
      */
     public function edit(array $data) {
-
         return $this->chatRepository->editMessage(
-            addslashes($data['message']), (int) $data['dialogId'], (int) $data['messageId']
+            addslashes($data['message']),
+            (int) $data['dialogId'],
+            (int) $data['messageId']
         );
     }
 
@@ -84,9 +82,9 @@ class ChatService
      * @return
      */
     public function delete(array $data) {
-
         return $this->chatRepository->deleteMessage(
-            (int) $data['dialogId'], (int) $data['messageId']
+            (int) $data['dialogId'],
+            (int) $data['messageId']
         );
     }
 
@@ -97,9 +95,9 @@ class ChatService
      * @return
      */
     public function recover(array $data) {
-
         return $this->chatRepository->recoverMessage(
-            (int) $data['dialogId'], (int) $data['messageId']
+            (int) $data['dialogId'],
+            (int) $data['messageId']
         );
     }
 
@@ -111,7 +109,6 @@ class ChatService
      * @return array
      */
     public function userDialog(int $dialogId, $userMessageWithId = 0): array {
-
         return $this->chatRepository->getUserDialog($dialogId, $userMessageWithId);
     }
 }

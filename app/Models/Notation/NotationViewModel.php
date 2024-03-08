@@ -17,14 +17,22 @@ use Carbon\Carbon;
  */
 class NotationViewModel extends Model
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $table = 'notation_views';
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $primaryKey = 'notation_views_id';
-    /** @var bool */
+    /**
+     * @var bool 
+     */
     public $timestamps = false;
 
-    /** @var string[] */
+    /**
+     * @var string[] 
+     */
     protected $fillable = [
         'notation_id', 'counter_views', 'view_date'
     ];
@@ -36,12 +44,13 @@ class NotationViewModel extends Model
      */
     protected static function addViewNotation(int $notationId)
     {
-
         $today = Carbon::today();
-        $notationView = NotationViewModel::firstOrNew([
+        $notationView = NotationViewModel::firstOrNew(
+            [
             'notation_id' => $notationId,
             'view_date' => $today->toDateString()
-        ]);
+            ]
+        );
         $notationView->counter_views++;
         $notationView->save();
     }

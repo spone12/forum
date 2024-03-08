@@ -25,7 +25,6 @@ class NotationService
      * @param NotationRepository $notationRepository
      */
     function __construct(NotationRepository $notationRepository) {
-
         $this->notationRepository = $notationRepository;
     }
 
@@ -37,9 +36,9 @@ class NotationService
      */
     public function create($data)
     {
-
         $notationId = $this->notationRepository->create($data);
         $expAdded = ProfileModel::expAdd(ExpEnum::NOTATION_ADD);
+
         return [
             'notationId' => $notationId,
             'expAdded' => sprintf(trans('app.expAdd'), $expAdded)
@@ -54,7 +53,6 @@ class NotationService
      */
     public function view(int $notationId)
     {
-
         NotationViewModel::addViewNotation($notationId);
         $notation = $this->notationRepository->notationViewData($notationId);
 
@@ -102,9 +100,7 @@ class NotationService
      */
     public function getDataEdit(int $notationId)
     {
-
-        $editData = $this->notationRepository->getDataEdit($notationId);
-        return $editData;
+        return $this->notationRepository->getDataEdit($notationId);
     }
 
     /**
@@ -115,7 +111,6 @@ class NotationService
      */
     public function update(array $input)
     {
-
         $edit = $this->notationRepository->update($input);
         if (!$edit) {
             throw new \Exception('Notation has not been changed');
@@ -132,9 +127,7 @@ class NotationService
      */
     public function changeRating(int $notationId, int $action)
     {
-
-        $change = $this->notationRepository->changeRating($notationId, $action);
-        return $change;
+        return $this->notationRepository->changeRating($notationId, $action);
     }
 
     /**
@@ -145,9 +138,7 @@ class NotationService
      */
     public function delete(int $notationId)
     {
-
-        $delete = $this->notationRepository->delete($notationId);
-        return $delete;
+        return $this->notationRepository->delete($notationId);
     }
 
     /**
@@ -158,9 +149,7 @@ class NotationService
      */
     public function addPhoto(NotationPhotoRequest $request)
     {
-
-        $photoPath = $this->notationRepository->addPhoto($request);
-        return $photoPath;
+        return $this->notationRepository->addPhoto($request);
     }
 
     /**
@@ -171,8 +160,6 @@ class NotationService
      */
     public function removePhoto(array $photoData)
     {
-
-        $delete = $this->notationRepository->removePhotoCheck($photoData);
-        return $delete;
+        return $this->notationRepository->removePhotoCheck($photoData);
     }
 }

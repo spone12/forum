@@ -13,8 +13,8 @@ class SearchService
      * SearchService constructor.
      * @param SearchRepository $searchRepository
      */
-    function __construct(SearchRepository $searchRepository) {
-
+    function __construct(SearchRepository $searchRepository)
+    {
         $this->searchRepository = $searchRepository;
     }
 
@@ -22,8 +22,8 @@ class SearchService
      * @param object $search
      * @return mixed
      */
-    public function byUser(object $search) {
-
+    public function byUser(object $search)
+    {
         $searchResult = $this->searchRepository->searchByUser($search);
         $searchResult->view = 1;
         $searchResult->search = $search->search;
@@ -34,8 +34,8 @@ class SearchService
      * @param object $search
      * @return mixed
      */
-    public function byNotation(object $search) {
-
+    public function byNotation(object $search)
+    {
         $searchResult = $this->searchRepository->searchByNotation($search);
         $searchResult->view = 2;
         $searchResult->search = $search->search;

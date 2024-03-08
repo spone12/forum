@@ -25,11 +25,17 @@ class NotationModel extends Model
 {
     use hasFactory;
 
-    /** @var string  */
+    /**
+     * @var string  
+     */
     protected $table = 'notations';
-    /** @var string  */
+    /**
+     * @var string  
+     */
     protected $primaryKey = 'notation_id';
-    /** @var bool  */
+    /**
+     * @var bool  
+     */
     public $timestamps = false;
 
     /*protected $fillable = [
@@ -39,14 +45,16 @@ class NotationModel extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class, 'id', 'user_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function notationViews() {
+    public function notationViews()
+    {
         return $this->hasOne(NotationViewModel::class, 'notation_id', 'notation_id');
     }
 }
