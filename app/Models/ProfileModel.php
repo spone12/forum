@@ -25,13 +25,19 @@ use App\User as User;
  */
 class ProfileModel extends Model
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $table = 'description_profile';
-    /** @var array[] */
+    /**
+     * @var array[] 
+     */
     protected $fillable = [
         'user_id'
     ];
-    /** @var bool  */
+    /**
+     * @var bool  
+     */
     public $timestamps = false;
 
     /**
@@ -39,14 +45,14 @@ class ProfileModel extends Model
      *
      * @param  $exp
      * @return int|mixed
-    */
-    public static function expAdd($exp) {
-
+     */
+    public static function expAdd($exp)
+    {
         $userData = DB::table('users AS u')
             ->select('u.id', 'dp.lvl', 'dp.exp')
             ->leftJoin('description_profile AS dp', 'dp.user_id', '=', 'u.id')
             ->where('id', '=', Auth::user()->id)
-        ->first();
+            ->first();
 
         $expAll = self::expGeneration($userData);
         $userData->exp += $exp;
@@ -57,18 +63,20 @@ class ProfileModel extends Model
         }
 
         ProfileModel::where('user_id', Auth::user()->id)
-        ->update([
+        ->update(
+            [
             'exp' => $userData->exp,
             'lvl' => $userData->lvl
-        ]);
+            ]
+        );
         return $exp;
     }
 
     /**
      * @param int $userId
      */
-    public static function lvlAdd(int $userId = 0) {
-
+    public static function lvlAdd(int $userId = 0)
+    {
         if (!$userId) {
             $userId = Auth::user()->id;
         }
@@ -76,16 +84,17 @@ class ProfileModel extends Model
     }
 
     /**
-     * @param $userData
+     * @param  $userData
      * @return float|int
      */
-    public static function expGeneration(&$userData) {
-
+    public static function expGeneration(&$userData)
+    {
         if (is_null($userData->lvl)) {
-
-            ProfileModel::firstOrCreate([
+            ProfileModel::firstOrCreate(
+                [
                 'user_id' => $userData->id
-            ]);
+                ]
+            );
             $userData->lvl = 1;
         }
         return $userData->lvl * 10;
@@ -94,7 +103,8 @@ class ProfileModel extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class, 'id', 'user_id');
     }
 }

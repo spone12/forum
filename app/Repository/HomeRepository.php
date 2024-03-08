@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Class HomeRepository
+ *
  * @package App\Repository
  */
 class HomeRepository
@@ -14,7 +15,8 @@ class HomeRepository
     /**
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function takeNotations() {
+    public function takeNotations()
+    {
 
         return DB::table('notations AS n')
             ->select(
@@ -31,7 +33,7 @@ class HomeRepository
             ->join('users', 'users.id', '=', 'n.user_id')
             ->leftJoin('notation_views AS nv', 'n.notation_id', '=', 'nv.notation_id')
             ->groupBy('nv.notation_id')
-                ->orderBy('notation_add_date', 'DESC')
+            ->orderBy('notation_add_date', 'DESC')
             ->paginate(10)
             ->onEachSide(2);
     }

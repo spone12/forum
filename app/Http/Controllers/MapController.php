@@ -6,6 +6,7 @@ use App\Models\Notation\NotationModel;
 
 /**
  * Class MapController
+ *
  * @package App\Http\Controllers
  */
 class MapController extends Controller

@@ -12,16 +12,20 @@ use Illuminate\Http\Response;
 
 /**
  * Class ProfileController
+ *
  * @package App\Http\Controllers
  */
 class ProfileController extends Controller
 {
 
-    /** @var ProfileService */
+    /**
+     * @var ProfileService 
+     */
     protected $profileService;
 
     /**
      * ProfileController constructor.
+     *
      * @param ProfileService $profileService
      */
     function __construct(ProfileService $profileService)
@@ -30,14 +34,13 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param int $id
+     * @param  int $id
      * @return \Illuminate\Contracts\Foundation\Application|
      * \Illuminate\Contracts\View\Factory|
      * \Illuminate\Contracts\View\View
      */
     public function viewAnotherProfile(int $id)
     {
-
         $anotherUserData = $this->profileService->getAnotherUser($id);
         if (!empty($anotherUserData->name)) {
             return view('menu.Profile.profile', ['data_user' => $anotherUserData]);
@@ -47,38 +50,35 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param  Request $request
      * @return \Illuminate\Contracts\Foundation\Application|
      * \Illuminate\Contracts\View\Factory|
      * \Illuminate\Contracts\View\View
      */
     public function viewProfile(Request $request)
     {
-
         $userData = $this->profileService->getUserData();
         return view('menu.Profile.profile', ['data_user' => $userData]);
     }
 
     /**
-     * @param int $userId
+     * @param  int $userId
      * @return \Illuminate\Contracts\Foundation\Application|
      * \Illuminate\Contracts\View\Factory|
      * \Illuminate\Contracts\View\View
      */
     public function changeProfile(int $userId)
     {
-
         $userData = $this->profileService->getUserDataChange($userId);
-        return view('menu.Profile.change_profile', ['data_user' => $userData]);
+        return view('menu.Profile.changeProfile', ['data_user' => $userData]);
     }
 
     /**
-     * @param Request $request
+     * @param  Request $request
      * @return array
      */
     public function changeProfileConfirm(Request $request)
     {
-
         if ($request->ajax()) {
             $input = $request->only(['data_send']);
             $back = $this->profileService->changeProfile($input);
@@ -89,10 +89,12 @@ class ProfileController extends Controller
                     throw new \Exception($back->original['errors']);
                 }
             } catch(\Exception $e) {
-                return new Response([
+                return new Response(
+                    [
                     'success' => false,
                     'message' => $e->getMessage()
-                ], ResponseCodeEnum::SERVER_ERROR);
+                    ], ResponseCodeEnum::SERVER_ERROR
+                );
             }
 
             return array('data_user' => $back);
@@ -100,12 +102,11 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param ProfileAvatarRequest $request
+     * @param  ProfileAvatarRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function changeAvatar(ProfileAvatarRequest $request)
     {
-
         $isChanged = $this->profileService->changeAvatar($request);
         return redirect()->route('profile_id', Auth::user()->id)
             ->with('success', 'Вы успешно изменили аватар')

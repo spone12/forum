@@ -24,11 +24,17 @@ class MessagesModel extends Model
 {
     use SoftDeletes;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $table = 'messages';
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $primaryKey = 'message_id';
-    /** @var string[] */
+    /**
+     * @var string[] 
+     */
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     /**

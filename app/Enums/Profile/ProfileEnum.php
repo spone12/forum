@@ -4,6 +4,7 @@ namespace App\Enums\Profile;
 
 /**
  * Class ProfileEnum
+ *
  * @package App\Enums\Profile
  */
 class ProfileEnum

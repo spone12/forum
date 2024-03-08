@@ -14,6 +14,7 @@ use \Illuminate\Support\Str;
 
 /**
  * Class ChatRepository
+ *
  * @package App\Repository\Chat
  */
 class ChatRepository
@@ -21,19 +22,19 @@ class ChatRepository
     /**
      * Get current user's dialogs
      *
-     * @param int $limit
+     * @param  int $limit
      * @return Collection
-    */
+     */
     public function getUserChats(int $limit = 0): Collection
     {
-
         $userDialogs = DB::table('dialog')
             ->select('dialog_id', 'send', 'recive')
-            ->where(function($query)
-            {
-                $query->where('dialog.send', Auth::user()->id)
-                    ->orWhere('dialog.recive', Auth::user()->id);
-            })
+            ->where(
+                function ($query) {
+                    $query->where('dialog.send', Auth::user()->id)
+                        ->orWhere('dialog.recive', Auth::user()->id);
+                }
+            )
             ->get();
 
         if ($limit) {
@@ -41,7 +42,6 @@ class ChatRepository
         }
 
         foreach ($userDialogs as $k => $chat) {
-
             $lastMessage = MessagesModel::where('dialog', $chat->dialog_id)
                 ->whereNull('deleted_at')
                 ->orderBy('created_at', 'DESC')
@@ -55,8 +55,8 @@ class ChatRepository
             $dialogWithId = (Auth::user()->id == $chat->send) ? $chat->recive : $chat->send;
             $user = DB::table('users')
                 ->select('users.id AS userId', 'users.name',  'users.avatar')
-                ->where( 'users.id', $dialogWithId)
-            ->first();
+                ->where('users.id', $dialogWithId)
+                ->first();
 
             $userDialogs[$k]->id = $user->userId;
             $userDialogs[$k]->name = $user->name;
@@ -74,35 +74,35 @@ class ChatRepository
                 $userDialogs[$k]->text = Str::limit(strip_tags($chat->text, '<br>'), 50);
             }
         }
-
         return $userDialogs->sortByDesc('created_at');
     }
 
     /**
      * Search word in the chats
      *
-     * @param $word string
+     * @param  $word string
      * @return Collection
-    */
+     */
     public function search(string $word, $limit = 10): Collection
     {
-
         $searchResult = DB::table('dialog')
-            ->select(  'messages.send','dialog.dialog_id', 'messages.created_at','messages.text')
-                ->join('users', 'dialog.recive', '=', 'users.id')
-                ->join('users as user2', 'dialog.send', '=', 'user2.id')
-            ->leftJoin('messages','messages.dialog', '=', 'dialog.dialog_id' )
-            ->where(function($query)
-            {
-                $query->where('dialog.recive', Auth::user()->id)
-                    ->orWhere('dialog.send', Auth::user()->id);
-            })
-            ->where(function($query) use (&$word)
-            {
-                $query->where('messages.text', 'like', '%' . $word . '%')
-                    ->orWhere('users.name', 'like', '%'. $word .'%')
-                    ->orWhere('user2.name', 'like', '%'. $word .'%');
-            })
+            ->select('messages.send', 'dialog.dialog_id', 'messages.created_at', 'messages.text')
+            ->join('users', 'dialog.recive', '=', 'users.id')
+            ->join('users as user2', 'dialog.send', '=', 'user2.id')
+            ->leftJoin('messages', 'messages.dialog', '=', 'dialog.dialog_id')
+            ->where(
+                function ($query) {
+                    $query->where('dialog.recive', Auth::user()->id)
+                        ->orWhere('dialog.send', Auth::user()->id);
+                }
+            )
+            ->where(
+                function ($query) use (&$word) {
+                    $query->where('messages.text', 'like', '%' . $word . '%')
+                        ->orWhere('users.name', 'like', '%'. $word .'%')
+                        ->orWhere('user2.name', 'like', '%'. $word .'%');
+                }
+            )
             ->whereNull('messages.deleted_at')
             //->groupBy('users.id')
             ->orderBy('messages.created_at', 'DESC')
@@ -112,7 +112,6 @@ class ChatRepository
             ->get();
 
         foreach ($searchResult as $search) {
-
             $search->text = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $search->text);
             $userObj = User::where('id', $search->send)->first();
 
@@ -127,22 +126,23 @@ class ChatRepository
     /**
      * Send message in dialog
      *
-     * @param $message string
-     * @param $dialogId int
-     * @param $userId int
+     * @param  $message  string
+     * @param  $dialogId int
+     * @param  $userId   int
      * @return array|string
-    */
+     */
     public function sendMessage(string $message, int $dialogId, int $userId)
     {
-
         $dialogId = $this->getDialogId($userId, $dialogId);
-        $messageId = DB::table('messages')->insertGetId([
+        $messageId = DB::table('messages')->insertGetId(
+            [
             'dialog' => $dialogId,
             'send' =>  Auth::user()->id,
             'recive' => $userId,
             'text' => $message,
             'created_at' => Carbon::now()
-        ]);
+            ]
+        );
 
         if (!$messageId) {
             throw new \Exception('Message not send');
@@ -162,14 +162,13 @@ class ChatRepository
     /**
      * Edit message in dialog
      *
-     * @param $message string
-     * @param $dialogId int
-     * @param $messageId int
+     * @param  $message   string
+     * @param  $dialogId  int
+     * @param  $messageId int
      * @return array
      */
     public function editMessage(string $message, int $dialogId, int $messageId)
     {
-
         $this->checkAccess($dialogId);
         $messageObj = MessagesModel::where('message_id', $messageId)->firstOrFail();
         $messageObj->text = $message;
@@ -186,13 +185,12 @@ class ChatRepository
     /**
      * Delete message in dialog
      *
-     * @param $dialogId int
-     * @param $messageId int
+     * @param  $dialogId  int
+     * @param  $messageId int
      * @return array
      */
     public function deleteMessage(int $dialogId, int $messageId)
     {
-
         $this->checkAccess($dialogId);
         $messageObj = MessagesModel::where('message_id', $messageId)->firstOrFail();
         $messageObj->delete();
@@ -209,17 +207,16 @@ class ChatRepository
     /**
      * Recover message in dialog
      *
-     * @param $dialogId int
-     * @param $messageId int
+     * @param  $dialogId  int
+     * @param  $messageId int
      * @return array
      */
     public function recoverMessage(int $dialogId, int $messageId)
     {
-
         $this->checkAccess($dialogId);
         $messageObj = MessagesModel::onlyTrashed()
             ->where('message_id', $messageId)
-        ->firstOrFail();
+            ->firstOrFail();
         $messageObj->restore();
 
         if (!$messageObj->save()) {
@@ -234,27 +231,28 @@ class ChatRepository
     /**
      * Get dialog Id or create new
      *
-     * @param $userId int
-     * @param $dialogId int
+     * @param  $userId   int
+     * @param  $dialogId int
      * @return int
-    */
+     */
     public function getDialogId($userId, $dialogId = 0): int
     {
-
         if ($dialogId == 0) {
 
             $dialogExist = DB::table('dialog AS d')
                 ->select('d.dialog_id')
-                ->where(function($query) use ($userId)
-                {
-                    $query->where('d.send',  Auth::user()->id)
-                        ->where('d.recive', $userId);
-                })
-                ->orWhere(function($query) use ($userId)
-                {
-                    $query->where('d.send',  $userId)
-                        ->where('d.recive', Auth::user()->id);
-                })
+                ->where(
+                    function ($query) use ($userId) {
+                        $query->where('d.send',  Auth::user()->id)
+                            ->where('d.recive', $userId);
+                    }
+                )
+                ->orWhere(
+                    function ($query) use ($userId) {
+                        $query->where('d.send',  $userId)
+                            ->where('d.recive', Auth::user()->id);
+                    }
+                )
                 ->first();
 
         } else {
@@ -263,10 +261,12 @@ class ChatRepository
 
         if (empty($dialogExist) || is_null($dialogExist)) {
 
-            $dialogId = DB::table('dialog')->insertGetId([
+            $dialogId = DB::table('dialog')->insertGetId(
+                [
                 'send' =>  Auth::user()->id,
                 'recive' => $userId
-            ]);
+                ]
+            );
         } else {
             $dialogId = $dialogExist->dialog_id;
         }
@@ -277,34 +277,35 @@ class ChatRepository
     /**
      * Get user dialog by ID
      *
-     * @param $userId int
-     * @param $dialogId int
-     * @param $message string
+     * @param  $userId   int
+     * @param  $dialogId int
+     * @param  $message  string
      * @return array
-    */
+     */
     public function getUserDialog(int $dialogId, $userMessageWithId = 0): array
     {
-
         $currentUserId = Auth::user()->id;
         $dialogCheck = DialogModel::where('dialog_id', $dialogId);
 
-        if (!$dialogCheck->exists() ||
-            ($dialogCheck->first()->send != $currentUserId && $dialogCheck->first()->recive != $currentUserId)) {
+        if (!$dialogCheck->exists() 
+            || ($dialogCheck->first()->send != $currentUserId && $dialogCheck->first()->recive != $currentUserId)
+        ) {
             throw new \Exception('Chat not exist');
         }
 
         $currentUserAvatar = Auth::user()->avatar ?: ProfileEnum::NO_AVATAR;
         $dialogMessages = DB::table('messages')
-            ->select( 'messages.message_id', 'messages.text', 'messages.dialog', 'messages.created_at',
+            ->select(
+                'messages.message_id', 'messages.text', 'messages.dialog', 'messages.created_at',
                 'messages.updated_at', 'messages.send', 'messages.recive',
-                'messages.text' )
+                'messages.text' 
+            )
             ->where('dialog', $dialogId)
             ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc')
-        ->simplePaginate(10);
+            ->simplePaginate(10);
 
         if ($dialogMessages->count()) {
-
             // Get id of the user we are talking to
             $anotherUserId = ($dialogMessages[0]->send == $currentUserId) ?
                 $dialogMessages[0]->recive :
@@ -345,13 +346,12 @@ class ChatRepository
     /**
      * Formate create date message value
      *
-     * @param $obj
-     * @param $currentDate string
+     * @param  $obj
+     * @param  $currentDate string
      * @return void
-    */
+     */
     private function formatChatDate($obj, $currentDate = '')
     {
-
         $chatDate = Carbon::parse($obj->created_at);
         if (empty($currentDate)) {
             $currentDate = Carbon::now()->format('d.m.Y');
@@ -367,24 +367,24 @@ class ChatRepository
     /**
      * If empty avatar then set No avatar IMG
      *
-     * @param $obj
+     * @param  $obj
      * @return void
      */
     private function checkAvatarExist($obj)
     {
-
-        if (!$obj->avatar)
+        if (!$obj->avatar) {
             $obj->avatar = ProfileEnum::NO_AVATAR;
+        }
     }
 
     /**
      * Check access to dialog
      *
-     * @param int $dialogId
+     * @param  int $dialogId
      * @throws \Exception
      */
-    private function checkAccess(int $dialogId) {
-
+    private function checkAccess(int $dialogId)
+    {
         $dialog = DialogModel::where('dialog_id', $dialogId)->first();
         if (!$dialog->exists()) {
             throw new \Exception('Dialog not found!');

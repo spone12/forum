@@ -16,17 +16,23 @@ use Illuminate\Database\Eloquent\Model;
  */
 class DialogModel extends Model
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $table = 'dialog';
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $primaryKey = 'dialog_id';
-    /** @var string[] */
+    /**
+     * @var string[] 
+     */
     protected $dates = ['date_create'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function messages ()
+    public function messages()
     {
         return $this->hasMany(MessagesModel::class, 'dialog', 'dialog_id');
     }
