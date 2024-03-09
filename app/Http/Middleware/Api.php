@@ -8,6 +8,7 @@ use Auth;
 
 /**
  * Class Api
+ *
  * @package App\Http\Middleware
  */
 class Api
@@ -15,8 +16,8 @@ class Api
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure                 $next
      * @return mixed
      */
     public function handle( $request, Closure $next)
@@ -26,14 +27,14 @@ class Api
         }
 
         if (!$this->checkAuthorization($request)) {
-            return response()->json( [ 'error' => 'Unauthorized' ], 403 );
+            return response()->json([ 'error' => 'Unauthorized' ], 403);
         }
 
         return $next($request);
     }
 
     /**
-     * @param $request
+     * @param  $request
      * @return false
      */
     private function checkAuthorization( $request )

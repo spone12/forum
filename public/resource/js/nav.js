@@ -1,19 +1,17 @@
-$(function()
-{
+$(function () {
     //ROTATED//
     $rotated = false;
-    $('#navbarDropdown').hover(function()
-    {
+    $("#navbarDropdown").hover(function () {
         if ($rotated == false) {
-            $('#navigation_arrow').css({
-                'transform': 'rotate(' + 90 + 'deg)',
-                'transition': 'all 0.5s ease 0s'
-             });
-             $rotated = true;
+            $("#navigation_arrow").css({
+                transform: "rotate(" + 90 + "deg)",
+                transition: "all 0.5s ease 0s",
+            });
+            $rotated = true;
         } else {
-            $('#navigation_arrow').css({
-                'transform': 'rotate(' + 0 + 'deg)',
-                'transition': 'all 0.5s ease 0s'
+            $("#navigation_arrow").css({
+                transform: "rotate(" + 0 + "deg)",
+                transition: "all 0.5s ease 0s",
             });
             $rotated = false;
         }
@@ -21,19 +19,18 @@ $(function()
     //END ROTATED
 
     //PASSWORD VIEW //
-    $('body').on('click', '.password-control', function()
-    {
-        if ($('#password').attr('type') == 'password') {
-            $(this).addClass('view');
-            $('#password').attr('type', 'text');
+    $("body").on("click", ".password-control", function () {
+        if ($("#password").attr("type") == "password") {
+            $(this).addClass("view");
+            $("#password").attr("type", "text");
         } else {
-            $(this).removeClass('view');
-            $('#password').attr('type', 'password');
+            $(this).removeClass("view");
+            $("#password").attr("type", "password");
         }
 
         return false;
     });
-     //END PASSWORD VIEW //
+    //END PASSWORD VIEW //
 
-     $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 });

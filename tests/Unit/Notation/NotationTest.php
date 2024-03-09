@@ -13,16 +13,17 @@ use Tests\TestCase;
  */
 class NotationTest extends TestCase
 {
-    /** @var $id */
+    /**
+     * @var $id
+     */
     protected $id;
 
     /**
      *
      * @return void
-    */
+     */
     public function testNotationId():void
     {
-
         $this->id = rand(1, 5);
         $this->get(route('notation_view_id', $this->id))
             ->assertStatus(ResponseCodeEnum::OK);
@@ -31,11 +32,10 @@ class NotationTest extends TestCase
     /**
      *
      * @return void
-    */
+     */
     public function testNotationWrong():void
     {
-
         $this->get(route('notation_view_id', 'bad'))
-        ->assertStatus(ResponseCodeEnum::NOT_FOUND);
+            ->assertStatus(ResponseCodeEnum::NOT_FOUND);
     }
 }

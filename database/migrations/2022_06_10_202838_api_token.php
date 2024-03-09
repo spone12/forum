@@ -13,18 +13,20 @@ class ApiToken extends Migration
      */
     public function up()
     {
-        Schema::table('users', function ($table) {
+        Schema::table(
+            'users', function ($table) {
             
-            $table->string('api_key', 20)->after('password')
-                ->unique()
-                ->nullable()
-            ->default(null);
+                $table->string('api_key', 20)->after('password')
+                    ->unique()
+                    ->nullable()
+                    ->default(null);
 
-            $table->string('api_token', 80)->after('api_key')
-                ->unique()
-                ->nullable()
-            ->default(null);
-        });
+                $table->string('api_token', 80)->after('api_key')
+                    ->unique()
+                    ->nullable()
+                    ->default(null);
+            }
+        );
     }
 
     /**

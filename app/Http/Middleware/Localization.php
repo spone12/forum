@@ -7,6 +7,7 @@ use Session;
 
 /**
  * Class Localization
+ *
  * @package App\Http\Middleware
  */
 class Localization
@@ -14,8 +15,8 @@ class Localization
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure                 $next
      * @return mixed
      */
     public function handle($request, Closure $next)

@@ -6,6 +6,7 @@ use Session;
 
 /**
  * Class AddDataToUserSession
+ *
  * @package App\Listeners
  */
 class AddDataToUserSession
@@ -16,7 +17,6 @@ class AddDataToUserSession
      */
     public function handle(Login $loginEvent)
     {
-
         $avatarUrl = !empty($loginEvent->user->avatar) ? $loginEvent->user->avatar : ProfileEnum::NO_AVATAR;
         Session::put('avatar', $avatarUrl);
     }
