@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class NotationPhotoRequest
+ *
  * @package App\Http\Requests
  */
 class NotationPhotoRequest extends FormRequest

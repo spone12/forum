@@ -15,9 +15,13 @@ class ApiTest extends TestCase
 {
     //protected $seeder = User::class;
     use RefreshDatabase;
-    /** @var $user */
+    /**
+     * @var $user
+     */
     private $user;
-    /** @var $apiKey */
+    /**
+     * @var $apiKey
+     */
     private $apiKey;
 
     public function setUp(): void
@@ -28,21 +32,24 @@ class ApiTest extends TestCase
         $this->actingAs($this->user);
         $response = $this->put('/generate_api_key');
         $this->apiKey = DB::table('users')
-             ->select('api_key')
-             ->where('id', '=', $this->user->id)
-         ->get();
+            ->select('api_key')
+            ->where('id', '=', $this->user->id)
+            ->get();
         $this->apiKey = $this->apiKey[0]->api_key;
     }
 
     /**
      * Update Token Fail
+     *
      * @return void
-    */
+     */
     public function testUpdateTokenFail():void
     {
-        $response = $this->withHeaders([
+        $response = $this->withHeaders(
+            [
             'Content-Type' => 'Application/json',
-        ])->put('/api/update_token', ['api_key' => 'test']);
+            ]
+        )->put('/api/update_token', ['api_key' => 'test']);
 
         $response->assertStatus(ResponseCodeEnum::FORBIDDEN)
             ->assertJson(['error' => true]);
@@ -50,11 +57,11 @@ class ApiTest extends TestCase
 
     /**
      * Generate api key
+     *
      * @return void
-    */
+     */
     public function testGenerateApiKey():void
     {
-
         $response = $this->put('/generate_api_key');
         $response->assertStatus(ResponseCodeEnum::OK)
             ->assertJson(['api_key' => true]);
@@ -62,18 +69,24 @@ class ApiTest extends TestCase
 
     /**
      * Update Token Success
+     *
      * @return void
-    */
+     */
     public function testUpdateTokenSuccess():void
     {
-
-        $response = $this->withHeaders([
-            'Content-Type' => 'Application/json',
-        ])->json('PUT', route('updateToken',
-        [
-            'api_key' => $this->apiKey,
-            'update_token' => true
-        ]));
+        $response = $this->withHeaders(
+            [
+                'Content-Type' => 'Application/json',
+            ]
+        )->json(
+            'PUT', route(
+                'updateToken',
+                [
+                    'api_key' => $this->apiKey,
+                    'update_token' => true
+                    ]
+            )
+        );
 
         $response->assertStatus(ResponseCodeEnum::OK)
             ->assertJson(['api_token' => true]);

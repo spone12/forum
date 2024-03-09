@@ -4,9 +4,8 @@
  * @param data
  * @param duration
  */
-function errorMsgResponse (data, duration = 3000) {
-
-    let errorMsg = '';
+function errorMsgResponse(data, duration = 3000) {
+    let errorMsg = "";
     let jsonResponse = data.responseJSON;
 
     if (typeof (jsonResponse.message) != 'undefined') {
@@ -19,13 +18,13 @@ function errorMsgResponse (data, duration = 3000) {
         $.each(jsonResponse.errors, function( key, value ) {
             errorMsg += '<li>' + value + '</li>';
         });
-        errorMsg += '</ul>';
+        errorMsg += "</ul>";
     }
 
-    tata.error(errorMsg, '', {
+    tata.error(errorMsg, "", {
         duration: duration,
-        animate: 'slide',
-        position: 'tr'
+        animate: "slide",
+        position: "tr",
     });
 }
 
@@ -36,17 +35,15 @@ function errorMsgResponse (data, duration = 3000) {
  * @param duration
  * @param onClose
  */
-function successMsg (message, title = '', duration = 2000, onClose = '') {
-
+function successMsg(message, title = "", duration = 2000, onClose = "") {
     tata.success(message, title, {
         duration: duration,
-        animate: 'slide',
-        position: 'tr',
-        onClose: function() {
-
+        animate: "slide",
+        position: "tr",
+        onClose: function () {
             if (onClose) {
                 window.location.href = onClose;
             }
-        }
+        },
     });
 }

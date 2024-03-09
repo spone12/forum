@@ -11,6 +11,7 @@ use DB;
 
 /**
  * Class IsUserOnline
+ *
  * @package App\Http\Middleware
  */
 class IsUserOnline
@@ -18,8 +19,8 @@ class IsUserOnline
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure                 $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -32,8 +33,8 @@ class IsUserOnline
 
             if ($user[0]->last_online_at->diffInHours(now()) !== 0) {
                 DB::table("users")
-                  ->where("id", Auth::user()->id)
-                  ->update(["last_online_at" => now()]);
+                    ->where("id", Auth::user()->id)
+                    ->update(["last_online_at" => now()]);
             }
         }
         return $next($request);

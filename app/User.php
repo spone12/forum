@@ -39,13 +39,16 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      * array fillable fields
+     *
      * @var array
      */
     protected $fillable = [
         'name', 'email', 'password', 'registration_ip', 'user_agent'
     ];
 
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $table = 'users';
 
     /**
@@ -70,37 +73,41 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function generateApiKey() {
-
+    public function generateApiKey()
+    {
         $userId = Auth::user()->id;
         $countSaltCharacter = 20 - strlen(config('app.salt'));
-        $apiKey = mb_substr(hash('sha256', config('app.salt') . Str::random($countSaltCharacter)), 44);
+        $apiKey = mb_substr(
+            hash('sha256', config('app.salt') . Str::random($countSaltCharacter)),
+            44
+        );
         User::where('id', $userId)->update(['api_key' => $apiKey]);
 
         return response()->json(['api_key' => $apiKey]);
     }
 
     /**
-     * @param int $userId
+     * @param  int $userId
      * @return mixed
      */
-    public function isOnline(int $userId) {
+    public function isOnline(int $userId)
+    {
         return Cache::get('User_is_online-' . $userId);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function descriptionProfile() {
-
+    public function descriptionProfile()
+    {
         return $this->hasOne(ProfileModel::class, 'user_id', 'id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function notations() {
-
+    public function notations()
+    {
         return $this->hasMany(NotationModel::class, 'user_id', 'id');
     }
 }
