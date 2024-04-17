@@ -5,6 +5,7 @@
 /public/storage
 /storage/*.key
 /vendor
+/phpmyadmin
 .env
 .env.backup
 .phpunit.result.cache
