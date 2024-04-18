@@ -64,9 +64,9 @@ class ChatController extends Controller
         try {
             $data = $request->only(
                 [
-                'message',
-                'dialogId',
-                'dialogWithId'
+                    'message',
+                    'dialogId',
+                    'dialogWithId'
                 ]
             );
 

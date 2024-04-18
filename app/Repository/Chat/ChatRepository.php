@@ -129,34 +129,20 @@ class ChatRepository
      * @param  $message  string
      * @param  $dialogId int
      * @param  $userId   int
-     * @return array|string
+     * 
+     * @return int
      */
-    public function sendMessage(string $message, int $dialogId, int $userId)
+    public function sendMessage(string $message, int $dialogId, int $userId): int
     {
-        $dialogId = $this->getDialogId($userId, $dialogId);
-        $messageId = DB::table('messages')->insertGetId(
+        return DB::table('messages')->insertGetId(
             [
-            'dialog' => $dialogId,
-            'send' =>  Auth::user()->id,
-            'recive' => $userId,
-            'text' => $message,
-            'created_at' => Carbon::now()
+                'dialog'     => $dialogId,
+                'send'       =>  Auth::user()->id,
+                'recive'     => $userId,
+                'text'       => $message,
+                'created_at' => Carbon::now()
             ]
         );
-
-        if (!$messageId) {
-            throw new \Exception('Message not send');
-        }
-
-        $now = Carbon::now()->format('H:i');
-        return [
-            'messageId' => $messageId,
-            'created_at' => $now,
-            'diff' => $now,
-            'avatar' => session('avatar'),
-            'name' => Auth::user()->name,
-            'userId' => Auth::user()->id
-        ];
     }
 
     /**
@@ -235,7 +221,7 @@ class ChatRepository
      * @param  $dialogId int
      * @return int
      */
-    public function getDialogId($userId, $dialogId = 0): int
+    public function getDialogId(int $userId, int $dialogId = 0): int
     {
         if ($dialogId == 0) {
 

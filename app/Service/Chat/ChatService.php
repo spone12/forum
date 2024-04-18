@@ -3,6 +3,10 @@
 namespace App\Service\Chat;
 
 use App\Repository\Chat\ChatRepository;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\SendMessageNotification;
+use App\Models\Chat\MessagesModel;
 
 class ChatService
 {
@@ -53,12 +57,34 @@ class ChatService
      * @param array $data
      * @return
      */
-    public function message(array $data) {
-        return $this->chatRepository->sendMessage(
+    public function message(array $data): array {
+
+        $messageId = $this->chatRepository->sendMessage(
             addslashes($data['message']),
-            (int) $data['dialogId'],
-            (int) $data['dialogWithId']
+            $this->chatRepository->getDialogId($data['dialogWithId'], $data['dialogId']),
+            $data['dialogWithId']
         );
+
+        if (!$messageId) {
+            throw new \Exception('Message not send');
+        }
+
+        // Send notification of new message
+        event(
+            new \App\Events\ChatMessageNotifyEvent(
+                MessagesModel::where('message_id', $messageId)->firstOrFail()
+            )
+        );
+
+        $now = Carbon::now()->format('H:i');
+        return [
+            'messageId' => $messageId,
+            'created_at' => $now,
+            'diff' => $now,
+            'avatar' => session('avatar'),
+            'name' => Auth::user()->name,
+            'userId' => Auth::user()->id
+        ];
     }
 
     /**

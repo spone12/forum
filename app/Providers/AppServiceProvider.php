@@ -37,7 +37,6 @@ class AppServiceProvider extends ServiceProvider
             }
         );
 
-
         Blade::directive(
             'getSessValue', function ($variable) {
                 return "<?php echo session({$variable}); ?>";
