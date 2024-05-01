@@ -14,7 +14,7 @@ use App\Service\Chat\ChatService;
 class ChatController extends Controller
 {
     /**
-     * @var ChatService 
+     * @var ChatService
      */
     protected $chatService;
 
@@ -148,12 +148,11 @@ class ChatController extends Controller
      * Controller current user dialogs
      *
      * @param  int     $value   - mix (dialogId or userId)
-     * @param  int     $value
      * @param  Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|
      * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    protected function dialog(int $value, Request $request)
+    protected function dialog(Request $request, int $value)
     {
         try {
             $dialogId = $request->get('fromProfile') ?

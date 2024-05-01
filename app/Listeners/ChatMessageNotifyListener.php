@@ -5,9 +5,13 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\ChatMessageNotifyEvent;
+use Illuminate\Support\Facades\Notification;
+use App\User;
 
 class ChatMessageNotifyListener
 {
+    protected $actionDialog = '/chat/dialog/';
+
     /**
      * Create the event listener.
      *
@@ -26,6 +30,17 @@ class ChatMessageNotifyListener
      */
     public function handle(ChatMessageNotifyEvent $event)
     {
-        dd($event->messageObj->text);
+        // TODO Add a check if notification is enabled for a user
+        $recive = User::where('id', $event->messageObj->recive)
+            ->firstOrFail();
+
+        if (empty($recive->email)) {
+            return;
+        }
+
+        $recive->text = $event->messageObj->text;
+        $recive->action = $this->actionDialog . $event->messageObj->dialog;
+
+        //Notification::send($recive, new \App\Notifications\ChatMessageNorify());
     }
 }
