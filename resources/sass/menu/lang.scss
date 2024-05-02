@@ -1,10 +1,16 @@
 .lang {
     border-radius: 5px !important;
     background: none !important;
+    
 
     &:hover {
         background: #396858 !important;
     }
+}
+
+.langBtn {
+    padding-left: 5px;
+    margin-bottom: 0px;
 }
 
 .lang__flag {

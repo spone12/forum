@@ -38,6 +38,7 @@ class HomeController extends Controller
     {
         try {
             $notations = $this->homeService->notations();
+            $this->homeService->userNotifications();
         } catch (\Throwable $e) {
             return abort(ResponseCodeEnum::NOT_FOUND);
         }
