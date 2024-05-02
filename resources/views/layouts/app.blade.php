@@ -36,7 +36,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                     <!-- Left Side Of Navbar -->
-                    <ul class="btn-group mt-2">
+                    <ul class="btn-group searchField">
                         <form class="form-inline my-2 my-lg-0" method="POST" action="{{ route('search') }}">
                          @csrf
                             <div class="input-group">
@@ -52,21 +52,49 @@
                         </form>
                     </ul>
 
-                    <ul class="btn-group ml-0">
-                        <button class="btn btn-secondary btn-sm lang" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class='lang__flag' src="{{ url( __('app.lang_src') ) }}" width="30">
-                        </button>
-                        <div class="dropdown-menu lang__drop">
-                            <div class='col'>
-                                <img class='lang__flag' src="{{ url('/img/icons/lang/ru.png') }}" width="20">
-                                <a href="{{ route('locale', ['locale' => 'ru']) }}">Русский</a>
+                    <div class="additionalAppButtons">
+                        @auth
+                        @if (isset($userNorifications))
+                        <ul class="btn-group ml-1 notificationBell">
+                            <li class="nav-item dropdown">
+                                <!--dropdown-toggle class-->
+                                <a class="nav-link c" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <span class='notificationBell__countDialogs'>{{ $userNorifications->count() }}</span>
+                                    <img class="bellIcon" width=40 src="{{ url('/img/icons/bell.png') }}" />
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    @foreach ($userNorifications as $notification)
+                                        <a class="dropdown-item" href="{{ route('dialog', $notification->dialog) }}" onclick="">
+                                            <div>
+                                                <span class="notificationBell__countMessages">{{ $notification->count_notifications }}</span>
+                                                <img width=20 src="{{ url($notification->avatar) }}" />
+                                                <span>{{ $notification->name }}</span>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </li>
+                        </ul>
+                        @endif
+                        @endauth
+
+                        <ul class="btn-group ml-0 langBtn">
+                            <button class="btn btn-secondary btn-sm lang" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class='lang__flag' src="{{ url( __('app.lang_src') ) }}" width="30">
+                            </button>
+                            <div class="dropdown-menu lang__drop">
+                                <div class='col'>
+                                    <img class='lang__flag' src="{{ url('/img/icons/lang/ru.png') }}" width="20">
+                                    <a href="{{ route('locale', ['locale' => 'ru']) }}">Русский</a>
+                                </div>
+                                <div class='col'>
+                                    <img class='lang__flag' src="{{ url('/img/icons/lang/en.png') }}" width="20">
+                                    <a href="{{ route('locale', ['locale' => 'en']) }}">English</a>
+                                </div>
                             </div>
-                            <div class='col'>
-                                <img class='lang__flag' src="{{ url('/img/icons/lang/en.png') }}" width="20">
-                                <a href="{{ route('locale', ['locale' => 'en']) }}">English</a>
-                            </div>
-                        </div>
-                    </ul>
+                        </ul>
+                    </div>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">

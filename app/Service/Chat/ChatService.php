@@ -70,11 +70,11 @@ class ChatService
         }
 
         // Send notification of new message
-        /*event(
+        event(
             new \App\Events\ChatMessageNotifyEvent(
                 MessagesModel::where('message_id', $messageId)->firstOrFail()
             )
-        );*/
+        );
 
         $now = Carbon::now()->format('H:i');
         return [

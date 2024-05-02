@@ -6,6 +6,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use \Blade;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,8 +30,18 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         Paginator::useBootstrap();
 
-        //Директива @ifGuest' которая проверяет, является ли пользователем гостем
-        //Сокращённый вариант <?php echo ? >
+        // Retrieving notification data into view from the cache
+        view()->composer('layouts.app', function($view) {
+            if (Auth::check()) {
+                $view->with('userNorifications', cache()->get('userNorificationsBell' . Auth::user()->id));
+            } else {
+                $view->with('userNorifications', []);
+            }
+            
+        });
+        
+
+        // Directive @ifGuest', that checks if the user is a guest
         Blade::if(
             'ifGuest', function () {
                 return auth()->guest();
@@ -43,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
             }
         );
 
-        //Директива с параметром, вставляет HTML код разрыва строки перед каждым переводом строки
+        // Directive with parameter, inserts HTML line break code before each line break
         Blade::directive(
             'newlinesToBr', function ($expression) {
                 return "<?php echo nl2br({$expression}); ?>";

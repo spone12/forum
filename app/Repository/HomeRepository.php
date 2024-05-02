@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Enums\Profile\ProfileEnum;
 
 /**
  * Class HomeRepository
@@ -36,5 +38,29 @@ class HomeRepository
             ->orderBy('notation_add_date', 'DESC')
             ->paginate(10)
             ->onEachSide(2);
+    }
+
+    /**
+     * Get auth user notifications
+     *
+     * @return
+     */
+    public function getUserNotifications()
+    {
+        return DB::table('messages AS m')
+            ->selectRaw('COUNT(*) as count_notifications,
+                         dialog,
+                         name,
+                        (CASE WHEN avatar IS NULL THEN 
+                            "' . ProfileEnum::NO_AVATAR . '"
+                         ELSE 
+                            avatar
+                         END) as avatar'
+                )
+                ->join('users', 'users.id', '=', 'm.send')
+                ->where('m.read', '=', 0)
+                ->where('m.recive', Auth::user()->id)
+            ->groupBy('m.dialog')
+        ->get();
     }
 }

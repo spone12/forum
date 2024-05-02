@@ -110,9 +110,13 @@ $c: center;
     padding: 1px 4px 0px 6px;
 }
 
-.search-button :hover {
+.search-button:hover {
     background: #645c48;
     transition: all 0.3s;
+}
+
+.searchField {
+    margin-bottom: 0px;
 }
 
 /* Show / hide password */
@@ -202,4 +206,53 @@ $c: center;
 
 .none {
     display: none !important;
+}
+
+
+.notificationBell {
+
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 0px;
+
+    &:hover {
+        background: #0a5e4e;
+        border-radius: 4px;
+        color: white;
+    }
+
+    .notificationBell__countDialogs {
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        background: #ea3434;
+        border-radius: 5px;
+        padding: 1px;
+        color: aliceblue;
+        z-index: 1;
+        position: absolute;
+        opacity: 0.9;
+        width: 40px;
+        transform: rotate(-5deg);
+        border: 1px solid white;
+    }
+
+    .dropdown-menu-right {
+        min-width: 300px;
+    }
+
+    .notificationBell__countMessages {
+        width: 50px;
+        display: inline-block;
+        color: crimson;
+    }
+
+    .bellIcon {
+        height: 40px;
+        opacity: 0.8;
+    }
+}
+
+.additionalAppButtons {
+    text-align: center;
 }
