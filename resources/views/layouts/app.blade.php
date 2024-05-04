@@ -52,18 +52,20 @@
                         </form>
                     </ul>
 
-                    <div class="additionalAppButtons">
+                    <ul class="btn-group additionalAppButtons">
                         @auth
                         @if (isset($userNorifications))
-                        <ul class="btn-group ml-1 notificationBell">
+                        <ul class="btn-group notificationBell">
                             <li class="nav-item dropdown">
                                 <!--dropdown-toggle class-->
                                 <a class="nav-link c" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     <span class='notificationBell__countDialogs'>{{ $userNorifications->count() }}</span>
-                                    <img class="bellIcon" width=40 src="{{ url('/img/icons/bell.png') }}" />
+                                    <img class="bellIcon" width=35 src="{{ url('/img/icons/bell.png') }}" />
                                 </a>
 
+
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    @if (count($userNorifications) > 0)
                                     @foreach ($userNorifications as $notification)
                                         <a class="dropdown-item" href="{{ route('dialog', $notification->dialog) }}" onclick="">
                                             <div>
@@ -73,6 +75,13 @@
                                             </div>
                                         </a>
                                     @endforeach
+                                    @else
+                                        <div class="dropdown-item" href="#" onclick="">
+                                            <div>
+                                                <span>Нет новых уведомлений</span>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </li>
                         </ul>
@@ -94,7 +103,7 @@
                                 </div>
                             </div>
                         </ul>
-                    </div>
+                    </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">

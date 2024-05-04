@@ -117,6 +117,7 @@ $c: center;
 
 .searchField {
     margin-bottom: 0px;
+    padding-left: 5px;
 }
 
 /* Show / hide password */
@@ -231,8 +232,8 @@ $c: center;
         color: aliceblue;
         z-index: 1;
         position: absolute;
+        margin-left: 28px;
         opacity: 0.9;
-        width: 40px;
         transform: rotate(-5deg);
         border: 1px solid white;
     }
@@ -248,11 +249,13 @@ $c: center;
     }
 
     .bellIcon {
-        height: 40px;
+        height: 35px;
         opacity: 0.8;
     }
 }
 
 .additionalAppButtons {
     text-align: center;
+    padding: 0px;
+    margin: 0px;
 }
