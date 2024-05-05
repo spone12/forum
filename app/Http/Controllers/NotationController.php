@@ -18,7 +18,7 @@ class NotationController extends Controller
 {
 
     /**
-     * @var NotationService 
+     * @var NotationService
      */
     protected $notationService;
 
@@ -68,7 +68,7 @@ class NotationController extends Controller
         try {
             $view = $this->notationService->view($notationId);
         } catch (\Exception $exception) {
-            return view('error_404', ['error' => [ trans('notation.errors.not_exist')]]);
+            return view('error_404', ['error' => [trans('notation.errors.not_exist')]]);
         }
 
         return view('menu.Notation.notationView', ['view' => $view]);

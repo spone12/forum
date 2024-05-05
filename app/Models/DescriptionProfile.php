@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\User as User;
 
 /**
- * Class ProfileModel
+ * Class DescriptionProfile
  *
  * @property int $description_profile_id
  * @property int $user_id
@@ -23,20 +23,20 @@ use App\User as User;
  *
  * @package App\Models
  */
-class ProfileModel extends Model
+class DescriptionProfile extends Model
 {
     /**
-     * @var string 
+     * @var string
      */
     protected $table = 'description_profile';
     /**
-     * @var array[] 
+     * @var array[]
      */
     protected $fillable = [
         'user_id'
     ];
     /**
-     * @var bool  
+     * @var bool
      */
     public $timestamps = false;
 
@@ -62,7 +62,8 @@ class ProfileModel extends Model
             $userData->exp -= $expAll;
         }
 
-        ProfileModel::where('user_id', Auth::user()->id)
+        DescriptionProfile::query()
+            ->where('user_id', Auth::user()->id)
         ->update(
             [
             'exp' => $userData->exp,
@@ -80,7 +81,7 @@ class ProfileModel extends Model
         if (!$userId) {
             $userId = Auth::user()->id;
         }
-        ProfileModel::where('user_id', '=', $userId)->increment('lvl');
+        DescriptionProfile::where('user_id', '=', $userId)->increment('lvl');
     }
 
     /**
@@ -90,7 +91,7 @@ class ProfileModel extends Model
     public static function expGeneration(&$userData)
     {
         if (is_null($userData->lvl)) {
-            ProfileModel::firstOrCreate(
+            DescriptionProfile::firstOrCreate(
                 [
                 'user_id' => $userData->id
                 ]

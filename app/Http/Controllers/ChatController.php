@@ -48,9 +48,9 @@ class ChatController extends Controller
      */
     protected function searchChat(Request $request)
     {
-        $word = $request->only(['word']);
+        $word = $request->only('word');
         $data = $this->chatService->search($word);
-        return response()->json(['searched'=> $data]);
+        return response()->json(['searchResult' => $data]);
     }
 
     /**
@@ -74,8 +74,8 @@ class ChatController extends Controller
         } catch (\Throwable $exception) {
             return response()->json(
                 [
-                'success' => false,
-                'message' => $exception->getMessage()
+                    'success' => false,
+                    'message' => $exception->getMessage()
                 ], ResponseCodeEnum::SERVER_ERROR
             );
         }
@@ -95,8 +95,8 @@ class ChatController extends Controller
         } catch (\Throwable $exception) {
             return response()->json(
                 [
-                'success' => false,
-                'message' => $exception->getMessage()
+                    'success' => false,
+                    'message' => $exception->getMessage()
                 ], ResponseCodeEnum::SERVER_ERROR
             );
         }
@@ -116,8 +116,8 @@ class ChatController extends Controller
         } catch (\Throwable $exception) {
             return response()->json(
                 [
-                'success' => false,
-                'message' => $exception->getMessage()
+                    'success' => false,
+                    'message' => $exception->getMessage()
                 ], ResponseCodeEnum::SERVER_ERROR
             );
         }
@@ -137,8 +137,8 @@ class ChatController extends Controller
         } catch (\Throwable $exception) {
             return response()->json(
                 [
-                'success' => false,
-                'message' => $exception->getMessage()
+                    'success' => false,
+                    'message' => $exception->getMessage()
                 ], ResponseCodeEnum::SERVER_ERROR
             );
         }
@@ -160,12 +160,12 @@ class ChatController extends Controller
                 $value;
             $userDialog = $this->chatService->userDialog($dialogId, $value);
 
-            return view(
-                'menu.Chat.chatLS', [
-                'dialogWithId' =>  $userDialog['recive'],
-                'dialogObj' => $userDialog['dialogMessages'],
-                'dialogId' => $dialogId,
-                'lastDialogs' => $this->chatService->chat(5)
+            return view('menu.Chat.chatLS',
+                [
+                    'dialogWithId' =>  $userDialog['recive'],
+                    'dialogObj' => $userDialog['dialogMessages'],
+                    'dialogId' => $dialogId,
+                    'lastDialogs' => $this->chatService->chat(5)
                 ]
             );
         } catch (\Throwable $exception) {

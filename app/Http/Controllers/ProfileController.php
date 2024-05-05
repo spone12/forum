@@ -19,7 +19,7 @@ class ProfileController extends Controller
 {
 
     /**
-     * @var ProfileService 
+     * @var ProfileService
      */
     protected $profileService;
 
@@ -50,14 +50,12 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param  Request $request
      * @return \Illuminate\Contracts\Foundation\Application|
-     * \Illuminate\Contracts\View\Factory|
-     * \Illuminate\Contracts\View\View
+     * \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function viewProfile(Request $request)
+    public function viewProfile()
     {
-        $userData = $this->profileService->getUserData();
+        $userData = $this->profileService->getCurrentUserData();
         return view('menu.Profile.profile', ['data_user' => $userData]);
     }
 

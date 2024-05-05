@@ -2,7 +2,9 @@
 
 namespace App\Service\Chat;
 
+use App\Enums\Profile\ProfileEnum;
 use App\Repository\Chat\ChatRepository;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\SendMessageNotification;
@@ -48,7 +50,19 @@ class ChatService
      * @return
      */
     public function search(array $word) {
-        return $this->chatRepository->search(addslashes($word['word']));
+
+        $searchResult = $this->chatRepository->search(
+            addslashes($word['word'])
+        );
+        foreach ($searchResult as $search) {
+            $search->text = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $search->text);
+            $userObj = User::where('id', $search->send)->first();
+
+            $search->avatar = $userObj->avatar ?: ProfileEnum::NO_AVATAR;
+            $search->id = $userObj->id;
+            $search->name = $userObj->name;
+        }
+        return $searchResult;
     }
 
     /**

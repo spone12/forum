@@ -10,7 +10,7 @@ jQuery(function () {
 
 function generateApiKey() {
     $.ajax({
-        url: "/generate_api_key/",
+        url: "/profile/generate_api_key/",
         type: "PUT",
         dataType: "JSON",
         headers: {
@@ -52,7 +52,7 @@ function edit_profile() {
     };
 
     $.ajax({
-        url: "/change_profile_confirm/" + user_id,
+        url: "/profile/confirm_change/" + user_id,
         type: "PUT",
         data: {
             data_send: data_send,

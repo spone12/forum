@@ -4,7 +4,7 @@ namespace App\Repository\Profile;
 
 use App\Enums\Profile\ProfileEnum;
 use App\Enums\ResponseCodeEnum;
-use App\Models\ProfileModel;
+use App\Models\DescriptionProfile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -20,10 +20,10 @@ class ProfileRepository
      * @param  int $id
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
      */
-    public function getAnotherUser(int $id)
+    public function getAnotherUserData(int $id)
     {
 
-        $data = DB::table('users')
+        return DB::table('users')
             ->select(
                 'users.name', 'users.id', 'users.email', 'users.created_at',
                 'description_profile.real_name', 'users.gender',
@@ -34,74 +34,32 @@ class ProfileRepository
             ->leftJoin('description_profile', 'description_profile.user_id', '=', 'users.id')
             ->where('users.id', '=', $id)
             ->first();
-
-        if (!empty($data)) {
-            $data->expNeed = ProfileModel::expGeneration($data);
-            $data->last_online_at = date_create($data->last_online_at)->Format('d.m.Y H:i');
-            $data->created_at = date_create($data->created_at)->Format('d.m.Y H:i');
-            $data->gender == ProfileEnum::MALE ?
-                $data->genderName = trans('profile.male') :
-                $data->genderName = trans('profile.female');
-
-            if (is_null($data->avatar)) {
-                $data->avatar = ProfileEnum::NO_AVATAR;
-            }
-        }
-        return $data;
     }
 
     /**
-     * @return false|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
      */
-    public function getUserData()
+    public function getCurrentUserData()
     {
-
-        if (Auth::check()) {
-            $data = DB::table('users AS u')
-                ->select(
-                    'u.id',
-                    'u.name',
-                    'u.email',
-                    'u.gender',
-                    'u.avatar',
-                    'u.created_at',
-                    'dp.real_name',
-                    'dp.date_born',
-                    'dp.town',
-                    'dp.about',
-                    'dp.phone',
-                    'dp.lvl',
-                    'dp.exp'
-                )
-                ->leftJoin('description_profile AS dp', 'dp.user_id', '=', 'u.id')
-                ->where('id', '=', Auth::user()->id)
-                ->first();
-
-            if ($data) {
-                $data->expNeed = ProfileModel::expGeneration($data);
-                $data->created_at = date_create($data->created_at)->Format('d.m.y H:i');
-
-                if (!is_null($data->date_born)) {
-                    $data->date_born = date_create($data->date_born)->Format('d.m.Y');
-                }
-
-                if (!is_null($data->about)) {
-                    $data->about = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $data->about);
-                }
-
-                $data->gender == ProfileEnum::MALE ?
-                    $data->genderName = trans('profile.male') :
-                    $data->genderName = trans('profile.female');
-
-                if (is_null($data->avatar)) {
-                    $data->avatar = ProfileEnum::NO_AVATAR;
-                }
-            }
-        }
-        else { $data = false;
-        }
-
-        return $data;
+        return DB::table('users AS u')
+            ->select(
+                'u.id',
+                'u.name',
+                'u.email',
+                'u.gender',
+                'u.avatar',
+                'u.created_at',
+                'dp.real_name',
+                'dp.date_born',
+                'dp.town',
+                'dp.about',
+                'dp.phone',
+                'dp.lvl',
+                'dp.exp'
+            )
+            ->leftJoin('description_profile AS dp', 'dp.user_id', '=', 'u.id')
+            ->where('id', '=', Auth::user()->id)
+            ->first();
     }
 
 
@@ -160,7 +118,7 @@ class ProfileRepository
                 }
 
                 // @todo Refactor to insert or update
-                if (!ProfileModel::where('user_id', '=', $userId)->exists()) {
+                if (!DescriptionProfile::where('user_id', '=', $userId)->exists()) {
                     DB::table('description_profile')->insert(
                         [
                         'user_id'   => $userId,
