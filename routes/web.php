@@ -18,7 +18,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/', 'HomeController@index');
-Route::put('/generate_api_key', [User::class, 'generateApiKey'])->name('generateApiKey')->middleware('auth');
 
 Route::match(['get', 'post'], '/search', 'SearchController@getDataSearch')->name('search');
 
@@ -47,20 +46,6 @@ Route::prefix('notation')->group(function()
 
 Route::get('/map', 'MapController@viewMap')->name('map')->middleware('auth');
 
-//Integrations
-Route::match(['get', 'post'], "/vk_bot_callback", function (Request $request)
-{
-    $handler = new ServerHandler();
-    $data = json_decode(file_get_contents('php://input'));
-    $handler->parse($data);
-});
-
-/*
-  Route::group(['namespace' => 'Integrations', 'middleware' => ['auth'], 'prefix' => '/integration'], function () {
-    Route::get('/vk', 'vkController@confirmation')->name('vk');
-  });
-*/
-
 /**
  * Chat
  */
@@ -78,14 +63,17 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/chat'], function ()
 /**
  * Profile
  */
-Route::get('/profile', 'ProfileController@viewProfile')->name('profile')->middleware('auth');
- Route::get('/profile/{id}', 'ProfileController@viewAnotherProfile')->where('id','[0-9]{1,11}')
-    ->name('profile_id')->middleware('auth');
- Route::get('/change_profile/{id}', 'ProfileController@changeProfile')->where('id','[0-9]{1,11}')
-    ->name('change_profile')->middleware('auth');
- Route::put('/change_profile_confirm/{id}', 'ProfileController@changeProfileConfirm')->where('id','[0-9]{1,11}')
-    ->middleware('auth');
-Route::post('/avatar-change', 'ProfileController@changeAvatar')->name('avatar_change')->middleware('auth');
+Route::group(['middleware' => ['auth'], 'prefix' => '/profile'], function ()
+{
+    Route::get('/', 'ProfileController@viewProfile')->name('profile');
+    Route::get('/{id}', 'ProfileController@viewAnotherProfile')->where('id','[0-9]{1,11}')
+        ->name('profile_id');
+    Route::get('/change/{id}', 'ProfileController@changeProfile')->where('id','[0-9]{1,11}')
+        ->name('change_profile');
+    Route::put('/confirm_change/{id}', 'ProfileController@changeProfileConfirm')->where('id','[0-9]{1,11}');
+    Route::post('/change_avatar', 'ProfileController@changeAvatar')->name('change_avatar');
+    Route::put('/generate_api_key', [User::class, 'generateApiKey'])->name('generateApiKey');
+});
 
 /**
  * Localization
@@ -99,3 +87,17 @@ Route::get('locale/{locale}', function ($locale)
 })->name('locale');
 
 Route::get('/test_http', 'TestHttpController@http')->name('testHttp');
+
+//Integrations
+Route::match(['get', 'post'], "/vk_bot_callback", function (Request $request)
+{
+    $handler = new ServerHandler();
+    $data = json_decode(file_get_contents('php://input'));
+    $handler->parse($data);
+});
+
+/*
+  Route::group(['namespace' => 'Integrations', 'middleware' => ['auth'], 'prefix' => '/integration'], function () {
+    Route::get('/vk', 'vkController@confirmation')->name('vk');
+  });
+*/

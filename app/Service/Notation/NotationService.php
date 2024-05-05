@@ -7,7 +7,7 @@ use App\Enums\Profile\ProfileEnum;
 use App\Http\Requests\NotationPhotoRequest;
 use App\Models\Notation\NotationViewModel;
 use App\Models\Notation\VoteNotationModel;
-use App\Models\ProfileModel;
+use App\Models\DescriptionProfile;
 use App\Repository\Notation\NotationRepository;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,7 +37,7 @@ class NotationService
     public function create($data)
     {
         $notationId = $this->notationRepository->create($data);
-        $expAdded = ProfileModel::expAdd(ExpEnum::NOTATION_ADD);
+        $expAdded = DescriptionProfile::expAdd(ExpEnum::NOTATION_ADD);
 
         return [
             'notationId' => $notationId,
@@ -53,24 +53,26 @@ class NotationService
      */
     public function view(int $notationId)
     {
+
         NotationViewModel::addViewNotation($notationId);
         $notation = $this->notationRepository->notationViewData($notationId);
 
         if (Auth::check()) {
             $vote = $this->notationRepository->voteNotation($notationId);
             if ($vote->count()) {
-                $notation[0]->vote = VoteNotationModel::where('vote_notation_id', '=', $vote[0]->vote_notation_id)
+                $notation->vote = VoteNotationModel::where('vote_notation_id', '=', $vote->vote_notation_id)
                     ->first()->vote;
             }
         }
 
-        $notation[0]->text_notation = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $notation[0]->text_notation);
+        $notation->text_notation = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $notation->text_notation);
 
-        if (is_null($notation[0]->avatar)) {
-            $notation[0]->avatar = ProfileEnum::NO_AVATAR;
+        if (is_null($notation->avatar)) {
+            $notation->avatar = ProfileEnum::NO_AVATAR;
         }
 
-        $notationViews = NotationViewModel::select('counter_views', 'view_date')
+        $notationViews = NotationViewModel::query()
+            ->select('counter_views', 'view_date')
             ->where('notation_id', '=', $notationId)
             ->orderBy('view_date')
         ->get();
@@ -86,8 +88,8 @@ class NotationService
                 'value' => $v->counter_views
             );
         }
-        $notation[0]->countViews = number_format($countViews, 0, '.', ',');
-        $notation['graph'] = json_encode($list);
+        $notation->countViews = number_format($countViews, 0, '.', ',');
+        $notation->graph = json_encode($list);
 
         return $notation;
     }

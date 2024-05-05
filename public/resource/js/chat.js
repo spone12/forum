@@ -284,7 +284,7 @@ $(document).ready(function () {
             success: function (data) {
                 $(".mainData").hide();
 
-                if (jQuery.isEmptyObject(data.searched[0])) {
+                if (jQuery.isEmptyObject(data.searchResult[0])) {
                     $(".Chat-search__item:eq(0)")
                         .find(".Chat-search_body")
                         .html("Рузультатов поиска нет");
@@ -301,13 +301,13 @@ $(document).ready(function () {
                 $(".Chat-search__item:eq(0)")
                     .find(".Chat-search_body")
                     .html(
-                        "Результат поиска: " + data.searched.length + " элемент"
+                        "Результат поиска: " + data.searchResult.length + " элемент"
                     );
                 $(".Chat-search__item")
                     .not(".Chat-search__item:first")
                     .remove();
 
-                $.each(data.searched, function (key, searchItem) {
+                $.each(data.searchResult, function (key, searchItem) {
                     var elements = chat.clone();
                     elements
                         .find(".Chat-search_body")

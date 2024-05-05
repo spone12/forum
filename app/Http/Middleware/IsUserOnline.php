@@ -28,12 +28,10 @@ class IsUserOnline
         if (Auth::check()) {
 
             $expiresAt = Carbon::now()->addMinutes(5);
-            Cache::put('User_is_online-' . Auth::user()->id, true, $expiresAt);
-            $user = User::select('last_online_at')->where('id',  Auth::user()->id)->get();
+            Cache::put('UserOnline-' . Auth::user()->id, true, $expiresAt);
 
-            if ($user[0]->last_online_at->diffInHours(now()) !== 0) {
-                DB::table("users")
-                    ->where("id", Auth::user()->id)
+            if (Auth::user()->last_online_at->diffInHours(now()) !== 0) {
+                Auth::user()
                     ->update(["last_online_at" => now()]);
             }
         }

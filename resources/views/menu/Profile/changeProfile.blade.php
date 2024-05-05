@@ -134,7 +134,7 @@
         <div class='col-sm-3 col-3'>
             <div class='row justify-content-center align-items-center'>
                 <div class='col-9 t_a p-1'>
-                    <form  enctype="multipart/form-data" id='form_change_avatar' method="POST" action="{{ route('avatar_change') }}" >
+                    <form  enctype="multipart/form-data" id='form_change_avatar' method="POST" action="{{ route('change_avatar') }}" >
                         @csrf
                         <div>
                             <img id='page_avatar_edit' data-toggle="tooltip" class="page_avatar_edit" src="{{ asset($data_user->avatar )}}" title='{{ trans('profile.changeAvatar') }}' alt='avatar' />

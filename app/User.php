@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use App\Models\Notation\NotationModel;
-use App\Models\ProfileModel;
+use App\Models\DescriptionProfile;
 use Cache;
 use Auth;
 
@@ -92,7 +92,7 @@ class User extends Authenticatable
      */
     public function isOnline(int $userId)
     {
-        return Cache::get('User_is_online-' . $userId);
+        return Cache::get('UserOnline-' . $userId);
     }
 
     /**
@@ -100,7 +100,7 @@ class User extends Authenticatable
      */
     public function descriptionProfile()
     {
-        return $this->hasOne(ProfileModel::class, 'user_id', 'id');
+        return $this->hasOne(DescriptionProfile::class, 'user_id', 'id');
     }
 
     /**

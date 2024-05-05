@@ -42,7 +42,8 @@ class ChatRepository
         }
 
         foreach ($userDialogs as $k => $chat) {
-            $lastMessage = MessagesModel::where('dialog', $chat->dialog_id)
+            $lastMessage = MessagesModel::query()
+                ->where('dialog', $chat->dialog_id)
                 ->whereNull('deleted_at')
                 ->orderBy('created_at', 'DESC')
             ->first();
@@ -85,7 +86,8 @@ class ChatRepository
      */
     public function search(string $word, $limit = 10): Collection
     {
-        $searchResult = DB::table('dialog')
+
+        return DB::table('dialog')
             ->select('messages.send', 'dialog.dialog_id', 'messages.created_at', 'messages.text')
             ->join('users', 'dialog.recive', '=', 'users.id')
             ->join('users as user2', 'dialog.send', '=', 'user2.id')
@@ -110,17 +112,6 @@ class ChatRepository
             ->orderBy('user2.name', 'ASC')
             ->limit($limit)
             ->get();
-
-        foreach ($searchResult as $search) {
-            $search->text = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $search->text);
-            $userObj = User::where('id', $search->send)->first();
-
-            $search->avatar = $userObj->avatar ?: ProfileEnum::NO_AVATAR;
-            $search->id = $userObj->id;
-            $search->name = $userObj->name;
-        }
-
-        return $searchResult;
     }
 
     /**
@@ -129,7 +120,7 @@ class ChatRepository
      * @param  $message  string
      * @param  $dialogId int
      * @param  $userId   int
-     * 
+     *
      * @return int
      */
     public function sendMessage(string $message, int $dialogId, int $userId): int
@@ -178,7 +169,7 @@ class ChatRepository
     public function deleteMessage(int $dialogId, int $messageId)
     {
         $this->checkAccess($dialogId);
-        $messageObj = MessagesModel::where('message_id', $messageId)->firstOrFail();
+        $messageObj = MessagesModel::query()->where('message_id', $messageId)->firstOrFail();
         $messageObj->delete();
 
         if (!$messageObj->save()) {
@@ -273,7 +264,7 @@ class ChatRepository
         $currentUserId = Auth::user()->id;
         $dialogCheck = DialogModel::where('dialog_id', $dialogId);
 
-        if (!$dialogCheck->exists() 
+        if (!$dialogCheck->exists()
             || ($dialogCheck->first()->send != $currentUserId && $dialogCheck->first()->recive != $currentUserId)
         ) {
             throw new \Exception('Chat not exist');
@@ -284,7 +275,7 @@ class ChatRepository
             ->select(
                 'messages.message_id', 'messages.text', 'messages.dialog', 'messages.created_at',
                 'messages.updated_at', 'messages.send', 'messages.recive',
-                'messages.text' 
+                'messages.text'
             )
             ->where('dialog', $dialogId)
             ->whereNull('deleted_at')
@@ -300,14 +291,13 @@ class ChatRepository
             $anotherUserObj = User::where('id', $anotherUserId)->first();
             $this->checkAvatarExist($anotherUserObj);
 
-            foreach($dialogMessages as $dialog) {
+            foreach ($dialogMessages as $dialog) {
 
                 $dialog->text = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $dialog->text);
                 $dialog->difference =
                     Carbon::createFromFormat('Y-m-d H:i:s', $dialog->created_at)->diffForHumans();
 
                 $this->formatChatDate($dialog);
-
                 if ($dialog->send == $currentUserId) {
                     $dialog->name = Auth::user()->name;
                     $dialog->avatar = $currentUserAvatar;
@@ -371,7 +361,7 @@ class ChatRepository
      */
     private function checkAccess(int $dialogId)
     {
-        $dialog = DialogModel::where('dialog_id', $dialogId)->first();
+        $dialog = DialogModel::query()->where('dialog_id', $dialogId)->first();
         if (!$dialog->exists()) {
             throw new \Exception('Dialog not found!');
         }

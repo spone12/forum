@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title-block') {{ $view[0]->name_notation}}  / {{ trans('notation.view') }} @endsection
+@section('title-block') {{ $view->name_notation}}  / {{ trans('notation.view') }} @endsection
 @section('content')
 
 @push('scripts')
@@ -10,7 +10,7 @@
 @endpush
 
     {{
-         Form::hidden('hidden_id', $view[0]->notation_id, ['id' => 'id_notation'])
+         Form::hidden('hidden_id', $view->notation_id, ['id' => 'id_notation'])
     }}
 
     <div class='container pt-3'>
@@ -24,7 +24,7 @@
                 <div class='row btn btn-info mt-2 notataionMenu__views'>
                     <div>
                         <img width=25 src="{{ asset('img/icons/Notation/eye.png') }}" data-toggle="tooltip" data-placement="bottom" title='{{ trans('notation.countViews') }}' />
-                        <span>{{ $view[0]->countViews }}</span>
+                        <span>{{ $view->countViews }}</span>
                     </div>
                 </div>
 
@@ -40,9 +40,9 @@
                         </button>
                     @endauth
 
-                    @if (isset($view[0]->vote))
-                        <img id='rating' class="{{ $view[0]->vote == 1 ? 'rating_like' : 'rating_dislike' }}"
-                             width=25 src="{{ $view[0]->vote == 1 ? '/img/icons/like.svg' : '/img/icons/dislike.svg' }}" />
+                    @if (isset($view->vote))
+                        <img id='rating' class="{{ $view->vote == 1 ? 'rating_like' : 'rating_dislike' }}"
+                             width=25 src="{{ $view->vote == 1 ? '/img/icons/like.svg' : '/img/icons/dislike.svg' }}" />
                     @else
                         <img id='rating' width=20 src="{{ url('/img/icons/like.svg') }}" />
                     @endif
@@ -54,7 +54,7 @@
                     @endauth
                 </div>
                 <div class='row justify-content-center btn btn-light notataionMenu__count-likes'>
-                    <div id='rating_voted'>{{ $view[0]->rating}}</div>
+                    <div id='rating_voted'>{{ $view->rating}}</div>
                 </div>
             </div>
 
@@ -63,12 +63,12 @@
                     <div class="card-header">
                         <div class="row no-gutters">
                             <div class='col-10 align-self-start'>
-                                <strong class='notation_tema'> {{ $view[0]->name_notation}} </strong>
+                                <strong class='notation_tema'> {{ $view->name_notation}} </strong>
                             </div>
                             @auth
-                                @if (Auth::user()->id === $view[0]->user_id)
+                                @if (Auth::user()->id === $view->user_id)
                                 <div class='col-2 align-self-end'>
-                                    <a class='no_decor' href="{{ route('notation_edit_id', $view[0]->notation_id) }}">
+                                    <a class='no_decor' href="{{ route('notation_edit_id', $view->notation_id) }}">
                                         <img id="notation_edit" class='marker' width=20 data-toggle="tooltip" data-placement="bottom" title='{{ trans('notation.edit.edit') }}' alt='{{ trans('notation.edit.edit') }}' src="{{ asset('img/icons/edit.png') }}">
                                     </a>
 
@@ -80,11 +80,11 @@
                         <div class='row justify-content-start'>
                             <div class='col-4 col-sm-3 add_notation_who'>{{ trans('notation.added') }}:</div>
                             <div class='col-5 col-sm-3 add_notation_who'>
-                                <img class='mini_avatar' data-toggle="tooltip" data-placement="bottom" title='{{ $view[0]->name }}' width=30 src="{{ asset($view[0]->avatar) }}" />
-                                <a href='/profile/{{ $view[0]->user_id }}' class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='{{ trans('profile.goToProfile') }}'>{{ $view[0]->name }}</a>
+                                <img class='mini_avatar' data-toggle="tooltip" data-placement="bottom" title='{{ $view->name }}' width=30 src="{{ asset($view->avatar) }}" />
+                                <a href='/profile/{{ $view->user_id }}' class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='{{ trans('profile.goToProfile') }}'>{{ $view->name }}</a>
                             </div>
                             <div class='col-4 col-sm-3 add_notation_who'>{{ trans('notation.dateAdd') }}:</div>
-                            <div class='col-4 col-sm-3 add_notation_who'>{{ $view[0]->notation_add_date }}</div>
+                            <div class='col-4 col-sm-3 add_notation_who'>{{ $view->notation_add_date }}</div>
                         </div>
                     </div>
                         <div class='text-center mt-2'>
@@ -95,7 +95,7 @@
                     <div class="card-body" id='content_notation'>
                     <div class='row justify-content-center mt-3'>
                         <div  class='col-6'>
-                            @if ($view[0]->path_photo)
+                            @if ($view->path_photo)
                                 <div id="carousel" class="carousel slide" data-keyboard="true" data-wrap="true" data-ride="carousel">
                                     <ol class="carousel-indicators">
                                         @foreach ($view as $v)
@@ -128,7 +128,7 @@
                           </div>
                         </div>
                         <div class='row justify-content-center'>
-                            <div class='col-10 commentText'>{!! $view[0]->text_notation!!}</div>
+                            <div class='col-10 commentText'>{!! $view->text_notation!!}</div>
                         </div>
                     </div>
                 </div>
@@ -160,8 +160,8 @@
                     <div class='col-6 card'>
                         <div>
                             <div class='col-12 add_notation_who'>
-                                <img class='commentProfilePhoto' data-toggle="tooltip" data-placement="bottom" title='{{ $view[0]->name }}' width=30 src="{{ asset($view[0]->avatar) }}" />
-                                <a href='/profile/{{ $view[0]->user_id }}' class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='{{ trans('profile.goToProfile') }}'>{{ $view[0]->name }}</a>
+                                <img class='commentProfilePhoto' data-toggle="tooltip" data-placement="bottom" title='{{ $view->name }}' width=30 src="{{ asset($view->avatar) }}" />
+                                <a href='/profile/{{ $view->user_id }}' class="profileLink" data-toggle="tooltip" data-placement="bottom" target='_blank' title='{{ trans('profile.goToProfile') }}'>{{ $view->name }}</a>
                                 <span>10:12</span>
                             </div>
                         </div>
@@ -190,7 +190,7 @@
 
                 new Morris.Line({
                     element: 'notation_views',
-                    data: {!! $view['graph'] !!},
+                    data: {!! $view->graph !!},
                     xkey: 'full_date',
                     ykeys: ['value','sum_views'],
                     xLabelAngle: 45,

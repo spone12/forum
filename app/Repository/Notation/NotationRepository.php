@@ -50,7 +50,7 @@ class NotationRepository implements CrudRepositoryInterface
             ->join('users', 'users.id', '=', 'notations.user_id')
             ->leftJoin('notation_photo AS np', 'np.notation_id', '=', 'notations.notation_id')
             ->where('notations.notation_id', '=', $notationId)
-            ->get();
+            ->first();
     }
 
     public function voteNotation(int $notationId)
