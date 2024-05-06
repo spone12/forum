@@ -3,9 +3,11 @@
 namespace App\Service\Profile;
 
 use App\Enums\Profile\ProfileEnum;
+use App\Enums\ResponseCodeEnum;
 use App\Http\Requests\ProfileAvatarRequest;
 use App\Models\DescriptionProfile;
 use App\Repository\Profile\ProfileRepository;
+use App\Traits\ArrayHelper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -15,6 +17,8 @@ use Illuminate\Support\Facades\DB;
  */
 class ProfileService
 {
+    use ArrayHelper;
+
     /** @var ProfileRepository */
     protected $profileRepository;
 
@@ -71,9 +75,7 @@ class ProfileService
                 $userData->genderName = trans('profile.male') :
                 $userData->genderName = trans('profile.female');
 
-            if (is_null($userData->avatar)) {
-                $userData->avatar = ProfileEnum::NO_AVATAR;
-            }
+            ArrayHelper::noAvatar($userData);
         }
 
         return $userData;
@@ -85,16 +87,65 @@ class ProfileService
      */
     public function getUserDataChange(int $userId)
     {
-        return $this->profileRepository->getUserDataChange($userId);
+        $userData = $this->profileRepository->getUserDataChange($userId);
+
+        if ($userData) {
+            ArrayHelper::noAvatar($userData);
+        }
+        return $userData;
     }
 
     /**
-     * @param $input
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+     * @param array $userData
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function changeProfile($input)
+    public function changeProfile(array $userData)
     {
-        return $this->profileRepository->changeProfile($input);
+        try {
+
+            $userId = Auth::user()->id;
+            if ($userId !== (INT)$userData['data_send']['user_id']) {
+                throw new \Exception('Нельзя изменять данные чужого аккаунта!');
+            }
+
+            if (preg_match("/[\d]+/", $userData['data_send']['name'])) {
+                throw new \Exception('Имя не должно содержать цифры!');
+            }
+
+            // If change gender
+            if (Auth::user()->gender !== (INT)$userData['data_send']['gender']) {
+                \App\User::query()
+                    ->where('id', '=', $userId)
+                    ->update(['gender' => (INT)$userData['data_send']['gender']]);
+            }
+
+            DescriptionProfile::updateOrCreate(
+                ['user_id' => $userId],
+                [
+                    'real_name' => $userData['data_send']['name'],
+                    'date_born' => $userData['data_send']['date_user'],
+                    'town' => $userData['data_send']['town_user'],
+                    'phone' => $userData['data_send']['phone'],
+                    'about' => $userData['data_send']['about_user']
+                ]
+            );
+
+            return response()->json(
+                [
+                    'status' => true,
+                    'message' => 'OK'
+                ]
+            );
+
+        } catch (\Exception $e) {
+
+            return response()->json(
+                [
+                    'status' => false,
+                    'errors'  =>  $e->getMessage(),
+                ], ResponseCodeEnum::BAD_REQUEST
+            );
+        }
     }
 
     /**
@@ -103,6 +154,28 @@ class ProfileService
      */
     public function changeAvatar(ProfileAvatarRequest $request)
     {
-        return $this->profileRepository->changeAvatar($request);
+        if ($request->hasFile('avatar')) {
+            $userId = Auth::user()->id;
+            $imageName = uniqid() . '.' . $request->avatar->extension();
+
+            DB::table('users')
+                ->where('id', $userId)
+                ->update(['avatar' => ProfileEnum::USER_AVATAR_PATH . $userId . '/' . $imageName]);
+
+            $request->avatar->move(
+                public_path(ProfileEnum::USER_AVATAR_PATH . $userId),
+                $imageName
+            );
+
+            $request->session()->put(
+                'avatar', ProfileEnum::USER_AVATAR_PATH . $userId . '/' . $imageName
+            );
+
+            if (file_exists($request->session()->get('avatar'))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

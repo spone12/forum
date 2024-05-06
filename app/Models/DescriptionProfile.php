@@ -29,16 +29,36 @@ class DescriptionProfile extends Model
      * @var string
      */
     protected $table = 'description_profile';
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'description_profile_id';
+
     /**
      * @var array[]
      */
     protected $fillable = [
-        'user_id'
+        'user_id',
+        'lvl',
+        'exp',
+        'real_name',
+        'date_born',
+        'town',
+        'phone',
+        'about'
     ];
     /**
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * @var string[]
+     */
+    protected $casts = [
+        'date_born'   => 'date:d.m.Y'
+    ];
 
     /**
      * Added exp and level to profile
@@ -64,12 +84,10 @@ class DescriptionProfile extends Model
 
         DescriptionProfile::query()
             ->where('user_id', Auth::user()->id)
-        ->update(
-            [
-            'exp' => $userData->exp,
-            'lvl' => $userData->lvl
-            ]
-        );
+            ->update([
+                'exp' => $userData->exp,
+                'lvl' => $userData->lvl
+            ]);
         return $exp;
     }
 
@@ -93,7 +111,7 @@ class DescriptionProfile extends Model
         if (is_null($userData->lvl)) {
             DescriptionProfile::firstOrCreate(
                 [
-                'user_id' => $userData->id
+                    'user_id' => $userData->id
                 ]
             );
             $userData->lvl = 1;

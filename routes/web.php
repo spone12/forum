@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/profile'], function ()
 {
     Route::get('/', 'ProfileController@viewProfile')->name('profile');
     Route::get('/{id}', 'ProfileController@viewAnotherProfile')->where('id','[0-9]{1,11}')
-        ->name('profile_id');
+        ->name('profile_id')->withoutMiddleware('auth');
     Route::get('/change/{id}', 'ProfileController@changeProfile')->where('id','[0-9]{1,11}')
         ->name('change_profile');
     Route::put('/confirm_change/{id}', 'ProfileController@changeProfileConfirm')->where('id','[0-9]{1,11}');

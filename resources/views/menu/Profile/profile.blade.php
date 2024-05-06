@@ -91,22 +91,24 @@
                    {{ trans('profile.exp') }}: {{$data_user->exp}} / {{$data_user->expNeed}}
                 </div>
 
-                @if(Auth::user()->id === $data_user->id)
-                    <div class='col-12 t_a'>
-                        <a href="{{route ('change_profile', $data_user->id) }}">
-                            {{
-                                Form::button( trans('profile.edit'),
-                                        ['class'=>'btn btn-success'])
-                            }}
-                        </a>
-                    </div>
-                @else
-                    <div class='col-12 t_a'>
-                        <a href='{{ route("dialog", $data_user->id) }}?fromProfile=1'>
-                            <img alt='message' data-toggle="tooltip" title='{{trans("profile.writeMessage") }}' src="{{asset('img/icons/profile/message.svg')}}" width=30 />
-                        </a>
-                    </div>
-                @endif
+                @auth
+                    @if(Auth::user()->id === $data_user->id)
+                        <div class='col-12 t_a'>
+                            <a href="{{route ('change_profile', $data_user->id) }}">
+                                {{
+                                    Form::button( trans('profile.edit'),
+                                            ['class'=>'btn btn-success'])
+                                }}
+                            </a>
+                        </div>
+                    @else
+                        <div class='col-12 t_a'>
+                            <a href='{{ route("dialog", $data_user->id) }}?fromProfile=1'>
+                                <img alt='message' data-toggle="tooltip" title='{{trans("profile.writeMessage") }}' src="{{asset('img/icons/profile/message.svg')}}" width=30 />
+                            </a>
+                        </div>
+                    @endif
+                @endauth
         </div>
     </div>
 </div>

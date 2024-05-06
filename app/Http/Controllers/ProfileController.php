@@ -72,31 +72,33 @@ class ProfileController extends Controller
     }
 
     /**
-     * @param  Request $request
-     * @return array
+     * @param Request $request
+     * @return array|Response|void
      */
     public function changeProfileConfirm(Request $request)
     {
-        if ($request->ajax()) {
-            $input = $request->only(['data_send']);
-            $back = $this->profileService->changeProfile($input);
-
-            try
-            {
-                if (!$back->original['status']) {
-                    throw new \Exception($back->original['errors']);
-                }
-            } catch(\Exception $e) {
-                return new Response(
-                    [
-                    'success' => false,
-                    'message' => $e->getMessage()
-                    ], ResponseCodeEnum::SERVER_ERROR
-                );
+        try {
+            if (!$request->ajax()) {
+                throw new \Exception('This is not JSON request!');
             }
 
-            return array('data_user' => $back);
+            $dataToChange = $request->only(['data_send']);
+            $dataChangeResponse = $this->profileService->changeProfile($dataToChange);
+
+            if (!$dataChangeResponse->original['status']) {
+                throw new \Exception($dataChangeResponse->original['errors']);
+            }
+        } catch(\Exception $e) {
+            return new Response(
+                [
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ], ResponseCodeEnum::SERVER_ERROR
+            );
         }
+
+        return ['data_user' => $dataChangeResponse];
+
     }
 
     /**

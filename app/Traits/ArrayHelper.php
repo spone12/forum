@@ -14,18 +14,24 @@ trait ArrayHelper
     /**
      * Changing the path of empty avatars
      *
-     * @param midex $array
+     * @param midex $data
      * @return void
      */
-    public static function noAvatar(&$array): void {
-        
-        if (empty($array)) {
+    public static function noAvatar(&$data): void {
+
+        if (empty($data)) {
             return;
         }
 
-        foreach ($array as $k => $v) {
-            if (is_null($v->avatar)) {
-                $array[$k]->avatar = ProfileEnum::NO_AVATAR;
+        if (!is_array($data)) {
+            if (is_null($data->avatar)) {
+                $data->avatar = ProfileEnum::NO_AVATAR;
+            }
+        } else {
+            foreach ($data as $k => $v) {
+                if (is_null($v->avatar)) {
+                    $data[$k]->avatar = ProfileEnum::NO_AVATAR;
+                }
             }
         }
     }
