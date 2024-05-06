@@ -156,13 +156,13 @@ class NotationController extends Controller
         if (!$request->ajax()) {
             return response()->json(
                 [
-                'success' => false,
-                'message' => 'This is not ajax request'
+                    'success' => false,
+                    'message' => 'This is not ajax request'
                 ], ResponseCodeEnum::SERVER_ERROR
             );
         }
 
-        $input = $request->all();
+        $input = $request->only(['notation_id', 'action']);
         $isChange = $this->notationService->changeRating($input['notation_id'], $input['action']);
 
         return response()->json(['success'=> $isChange]);

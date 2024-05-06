@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
-use App\Models\Notation\NotationModel;
+use App\Models\Notation\{NotationModel, NotationCommentsModel, NotationPhotoModel, VoteNotationModel};
 use App\Models\DescriptionProfile;
 use Cache;
 use Auth;
@@ -70,31 +70,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function generateApiKey()
-    {
-        $userId = Auth::user()->id;
-        $countSaltCharacter = 20 - strlen(config('app.salt'));
-        $apiKey = mb_substr(
-            hash('sha256', config('app.salt') . Str::random($countSaltCharacter)),
-            44
-        );
-        User::where('id', $userId)->update(['api_key' => $apiKey]);
-
-        return response()->json(['api_key' => $apiKey]);
-    }
-
-    /**
-     * @param  int $userId
-     * @return mixed
-     */
-    public function isOnline(int $userId)
-    {
-        return Cache::get('UserOnline-' . $userId);
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function descriptionProfile()
@@ -108,5 +83,54 @@ class User extends Authenticatable
     public function notations()
     {
         return $this->hasMany(NotationModel::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notationComments()
+    {
+        return $this->hasMany(NotationCommentsModel::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notationPhoto()
+    {
+        return $this->hasMany(NotationPhotoModel::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function voteNotation()
+    {
+        return $this->hasMany(VoteNotationModel::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function generateApiKey()
+    {
+        // @ TODO Rework the api key generation logic
+        $countSaltCharacter = 20 - strlen(config('app.salt'));
+        $apiKey = mb_substr(
+            hash('sha256', config('app.salt') . Str::random($countSaltCharacter)),
+            44
+        );
+        User::where('id', Auth::user()->id)->update(['api_key' => $apiKey]);
+
+        return response()->json(['api_key' => $apiKey]);
+    }
+
+    /**
+     * @param  int $userId
+     * @return mixed
+     */
+    public function isOnline(int $userId)
+    {
+        return Cache::get('UserOnline-' . $userId);
     }
 }

@@ -95,10 +95,10 @@
                     <div class="card-body" id='content_notation'>
                     <div class='row justify-content-center mt-3'>
                         <div  class='col-6'>
-                            @if ($view->path_photo)
+                            @if ($view->photo)
                                 <div id="carousel" class="carousel slide" data-keyboard="true" data-wrap="true" data-ride="carousel">
                                     <ol class="carousel-indicators">
-                                        @foreach ($view as $v)
+                                        @foreach ($view->photo as $v)
                                              @if (!empty($v->path_photo))
                                                 <li data-target='#carousel' data-slide-to="{{ $loop->index }}"
                                                     class="@if ($loop->first) active @endif">
@@ -107,7 +107,7 @@
                                         @endforeach
                                     </ol>
                                 <div class="carousel-inner">
-                                    @foreach ($view as $v)
+                                    @foreach ($view->photo as $v)
                                         @if (!empty($v->path_photo))
                                             <div class="carousel-item @if ($loop->first) active @endif">
                                                 <img class="d-block w-100 notation_carousel_photo" src="{{ asset($v->path_photo )}}" alt="{{ trans('notation.firstSlide') }}">

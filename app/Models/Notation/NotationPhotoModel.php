@@ -20,18 +20,18 @@ use Illuminate\Database\Eloquent\Model;
 class NotationPhotoModel extends Model
 {
     /**
-     * @var string 
+     * @var string
      */
     protected $table = 'notation_photo';
     /**
-     * @var string 
+     * @var string
      */
     protected $primaryKey = 'notation_photo_id';
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function notation()
+    public function notations()
     {
         return $this->belongsTo(NotationModel::class, 'notation_id', 'notation_id');
     }

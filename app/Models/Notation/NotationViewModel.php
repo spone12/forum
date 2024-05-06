@@ -38,19 +38,25 @@ class NotationViewModel extends Model
     ];
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function notations()
+    {
+        return $this->belongsTo(NotationModel::class, 'notation_id', 'notation_id');
+    }
+
+
+    /**
      * Create or increment view count
      *
      * @param int $notationId
      */
     protected static function addViewNotation(int $notationId)
     {
-
-        $notationView = NotationViewModel::firstOrNew(
-            [
+        $notationView = NotationViewModel::firstOrNew([
             'notation_id' => $notationId,
             'view_date' => Carbon::today()->toDateString()
-            ]
-        );
+        ]);
         $notationView->counter_views++;
         $notationView->save();
     }

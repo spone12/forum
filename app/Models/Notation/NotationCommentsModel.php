@@ -21,18 +21,18 @@ use Illuminate\Database\Eloquent\Model;
 class NotationCommentsModel extends Model
 {
     /**
-     * @var string 
+     * @var string
      */
     protected $table = 'notation_comments';
     /**
-     * @var string 
+     * @var string
      */
     protected $primaryKey = 'comment_id';
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function notation()
+    public function notations()
     {
         return $this->belongsTo(NotationModel::class, 'notation_id', 'notation_id');
     }

@@ -5,10 +5,10 @@ namespace App\Service\Notation;
 use App\Enums\ExpEnum;
 use App\Enums\Profile\ProfileEnum;
 use App\Http\Requests\NotationPhotoRequest;
-use App\Models\Notation\NotationViewModel;
-use App\Models\Notation\VoteNotationModel;
+use App\Models\Notation\{NotationModel, NotationViewModel, VoteNotationModel, NotationPhotoModel};
 use App\Models\DescriptionProfile;
 use App\Repository\Notation\NotationRepository;
+use App\Traits\ArrayHelper;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class NotationService
 {
+    use ArrayHelper;
+
     /** @var NotationRepository */
     protected $notationRepository;
 
@@ -53,23 +55,27 @@ class NotationService
      */
     public function view(int $notationId)
     {
-
         NotationViewModel::addViewNotation($notationId);
         $notation = $this->notationRepository->notationViewData($notationId);
+        if (!$notation) {
+            throw new \Exception('Notation not found!');
+        }
+        $notation->photo = NotationPhotoModel::query()->where('notation_id', $notationId)->get('path_photo');
 
         if (Auth::check()) {
-            $vote = $this->notationRepository->voteNotation($notationId);
-            if ($vote->count()) {
-                $notation->vote = VoteNotationModel::where('vote_notation_id', '=', $vote->vote_notation_id)
-                    ->first()->vote;
+            $vote = NotationModel::query()
+                ->find($notationId)
+                ->notationsVote()
+                ->where('user_id', '=', Auth::user()->id)
+            ->first();
+
+            if ($vote) {
+                $notation->vote = $vote->value('vote');
             }
         }
 
         $notation->text_notation = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $notation->text_notation);
-
-        if (is_null($notation->avatar)) {
-            $notation->avatar = ProfileEnum::NO_AVATAR;
-        }
+        ArrayHelper::noAvatar($notation);
 
         $notationViews = NotationViewModel::query()
             ->select('counter_views', 'view_date')
@@ -77,7 +83,7 @@ class NotationService
             ->orderBy('view_date')
         ->get();
 
-        $list = array();
+        $list = [];
         $countViews = 0;
 
         foreach ($notationViews as $v) {
