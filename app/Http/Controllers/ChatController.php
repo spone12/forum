@@ -156,7 +156,7 @@ class ChatController extends Controller
     {
         try {
             $dialogId = $request->get('fromProfile') ?
-                $this->chatService->dialogId($value) :
+                $this->chatService->getDialogId($value) :
                 $value;
             $userDialog = $this->chatService->userDialog($dialogId, $value);
 
