@@ -213,11 +213,12 @@ class NotationController extends Controller
      */
     protected function notationAddPhoto(NotationPhotoRequest $request)
     {
-        $photoPath = $this->notationService->addPhoto($request);
-        if (!empty($photoPath)) {
-            return back()->with('success', trans('notation.success.image_uploaded'))
+        try {
+            $photoPath = $this->notationService->addPhoto($request);
+            return back()
+                ->with('success', trans('notation.success.image_uploaded'))
                 ->with('paths', $photoPath);
-        } else {
+        } catch (\Throwable $exception) {
             return back()->with('error', trans('notation.errors.image_upload'));
         }
     }
@@ -232,7 +233,7 @@ class NotationController extends Controller
     {
         try {
             $photoData = $request->only(['photoId', 'notationId']);
-            $isDelete = $this->notationService->removePhoto($photoData);
+            $isDelete = $this->notationService->removePhotoService($photoData);
             return response()->json(
                 [
                 'success' => $isDelete,

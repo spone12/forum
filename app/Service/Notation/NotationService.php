@@ -2,14 +2,15 @@
 
 namespace App\Service\Notation;
 
-use App\Enums\ExpEnum;
-use App\Enums\Profile\ProfileEnum;
+use App\Enums\{ExpEnum, NotationEnum};
 use App\Http\Requests\NotationPhotoRequest;
-use App\Models\Notation\{NotationModel, NotationViewModel, VoteNotationModel, NotationPhotoModel};
+use App\Models\Notation\{NotationModel, NotationViewModel, NotationPhotoModel, VoteNotationModel};
 use App\Models\DescriptionProfile;
 use App\Repository\Notation\NotationRepository;
 use App\Traits\ArrayHelper;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\{Auth, DB, Storage};
+use Illuminate\Support\Collection;
+
 
 /**
  * Class NotationService
@@ -48,10 +49,10 @@ class NotationService
     }
 
     /**
-     * Display notation by id
+     * Get notation data by id
      *
      * @param int $notationId
-     * @return mixed
+     * @return object
      */
     public function view(int $notationId)
     {
@@ -70,7 +71,7 @@ class NotationService
             ->first();
 
             if ($vote) {
-                $notation->vote = $vote->value('vote');
+                $notation->vote = $vote->vote;
             }
         }
 
@@ -131,43 +132,181 @@ class NotationService
      *
      * @param int $notationId
      * @param int $action
-     * @return bool|int
+     * @return bool
      */
-    public function changeRating(int $notationId, int $action)
+    public function changeRating(int $notationId, int $action):bool
     {
-        return $this->notationRepository->changeRating($notationId, $action);
+        $notation = NotationModel::query()->find($notationId);
+        if (!$notation) {
+            throw new \Exception('Deletion error: no notation with the specified identifier found!');
+        }
+
+        $voteObj = VoteNotationModel::query()
+            ->select('vote_notation_id', 'vote')
+                ->where('user_id', '=', Auth::user()->id)
+                ->where('notation_id', '=', $notationId)
+            ->first();
+
+        $dbMove = false;
+        if (!$voteObj) {
+            $dbMove = DB::table('vote_notation')->insert([
+                'user_id' => Auth::user()->id,
+                'notation_id' => $notationId,
+                'vote' => $action,
+                'vote_date' => now()
+            ]);
+        } else {
+
+            // Checking for already set vote
+            if ($voteObj->vote === 1 && $action === 1) {
+                return false;
+            }
+
+            if ($voteObj->vote === 0 && $action === 0) {
+                return false;
+            }
+
+            $dbMove = $voteObj->update([
+                'vote' => $action,
+                'vote_date' => now()
+            ]);
+        }
+
+        if ($action) {
+            $notation->increment('rating');
+        } else {
+            $notation->decrement('rating');
+        }
+
+        return $dbMove;
     }
 
     /**
      * Delete notation by id
      *
      * @param int $notationId
-     * @return mixed
+     * @return bool
      */
-    public function delete(int $notationId)
+    public function delete(int $notationId):bool
     {
-        return $this->notationRepository->delete($notationId);
+        $notation = NotationModel::query()
+            ->select('user_id', 'notation_id')
+                ->where('notation_id', '=', $notationId)
+            ->first();
+
+        if (!$notation) {
+            throw new \Exception('Deletion error: no notation with the specified identifier found!');
+        }
+
+        if ($notation->user_id !== Auth::user()->id) {
+            throw new \Exception('Deletion error: no access to delete notation!');
+        }
+
+        $currentNotationPhotos = NotationPhotoModel::query()
+            ->select('notation_photo_id', 'path_photo')
+                ->where('notation_id', '=', $notationId)
+            ->get();
+
+        foreach ($currentNotationPhotos as $photo) {
+            $removeData = collect([
+                'path' => $photo->path_photo,
+                'notationId' => $notationId,
+                'photoId' => $photo->notation_photo_id
+            ]);
+            $this->removePhoto($removeData);
+        }
+
+        return DB::table('notations')
+            ->where('notation_id', '=', $notationId)
+            ->where('user_id', '=', Auth::user()->id)
+            ->delete();
     }
 
     /**
      * Add photo to notation
      *
      * @param NotationPhotoRequest $request
-     * @return mixed
+     * @return array
      */
-    public function addPhoto(NotationPhotoRequest $request)
+    public function addPhoto(NotationPhotoRequest $request):array
     {
-        return $this->notationRepository->addPhoto($request);
+        $paths = [];
+        if (!$request->hasFile('images')) {
+            throw new \Exception('Error, file(s) not found');
+        }
+
+        $files = $request->file('images');
+        foreach ($files as $file) {
+            $path = Storage::disk('public')->putFile(
+                NotationEnum::PHOTO_PATH . $request->notation_id, $file
+            );
+
+            DB::table('notation_photo')->insert([
+                'user_id' => Auth::user()->id,
+                'notation_id' => $request->notation_id,
+                'path_photo' => $path,
+                'photo_edit_date' => now()
+            ]);
+            $paths[] = $path;
+        }
+
+        if (empty($paths)) {
+            throw new \Exception('File(s) not uploaded');
+        }
+
+         return $paths;
     }
 
     /**
      * Delete photo from notation
      *
      * @param array $photoData
-     * @return string
+     * @return bool
      */
-    public function removePhoto(array $photoData)
+    public function removePhotoService(array $photoData):bool
     {
-        return $this->notationRepository->removePhotoCheck($photoData);
+        $photoObj = NotationPhotoModel::query()
+            ->select('user_id', 'path_photo')
+                ->where('notation_id', '=', $photoData['notationId'])
+                ->where('notation_photo_id', '=', $photoData['photoId'])
+            ->first();
+
+        if (!$photoObj) {
+            throw new \Exception('Deletion error: This photo does not exist!');
+        }
+
+        if ($photoObj->user_id !== Auth::user()->id) {
+            throw new \Exception('Deletion error: no access to delete photo!');
+        }
+
+        $removeData = collect([
+            'path' => $photoObj->path_photo,
+            'notationId' => $photoData['notationId'],
+            'photoId' => $photoData['photoId']
+        ]);
+
+        return $this->removePhoto($removeData);
+    }
+
+     /**
+     * Delete photo from disk and DB
+     *
+     * @param Collection $removeData
+     * @return bool
+     */
+    private function removePhoto(Collection $removeData):bool
+    {
+        $delete = Storage::disk('public')->delete(
+            $removeData->get('path')
+        );
+
+        if ($delete) {
+            return NotationPhotoModel::query()
+                ->where('notation_id', '=', $removeData->get('notationId'))
+                ->where('notation_photo_id', '=', $removeData->get('photoId'))
+            ->delete();
+        } else {
+            throw new \Exception('Photo deletion error ');
+        }
     }
 }

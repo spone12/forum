@@ -110,7 +110,7 @@
                                     @foreach ($view->photo as $v)
                                         @if (!empty($v->path_photo))
                                             <div class="carousel-item @if ($loop->first) active @endif">
-                                                <img class="d-block w-100 notation_carousel_photo" src="{{ asset($v->path_photo )}}" alt="{{ trans('notation.firstSlide') }}">
+                                                <img class="d-block w-100 notation_carousel_photo" src="{{ asset("storage/$v->path_photo") }}" alt="{{ trans('notation.firstSlide') }}">
                                             </div>
                                         @endif
                                     @endforeach

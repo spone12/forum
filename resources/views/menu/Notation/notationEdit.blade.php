@@ -78,7 +78,7 @@
                         @foreach ($notationPhoto as $v)
                             <div class="content clossable" id="notationPhoto{{ $v->notation_photo_id }}">
                                 <div data-toggle="tooltip" title='{{ trans('notation.edit.remove_image') }}' class="close" onclick="removeNotationPhoto({{ $v->notation_photo_id }}, {{ $notationData->notation_id }});"></div>
-                                <img src="{{ asset($v->path_photo) }}" height=50 />
+                                <img src="{{ asset("storage/$v->path_photo") }}" height=50 />
                             </div>
                         @endforeach
                     </div>

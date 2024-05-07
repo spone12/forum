@@ -2,18 +2,15 @@
 
 namespace App\Repository\Notation;
 
-use App\Contracts\CrudRepositoryInterface;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\{Auth, DB};
 
 /**
  * Class NotationRepository
  *
  * @package App\Repository\Notation
  */
-class NotationRepository implements CrudRepositoryInterface
+class NotationRepository
 {
 
     /**
@@ -53,7 +50,7 @@ class NotationRepository implements CrudRepositoryInterface
      * @param  int $notationId
      * @return array
      */
-    public function getDataEdit(int $notationId)
+    public function getDataEdit(int $notationId):array
     {
         $data['notation'] = DB::table('notations')
             ->select('user_id', 'notation_id', 'category', 'name_notation', 'text_notation')
@@ -82,166 +79,5 @@ class NotationRepository implements CrudRepositoryInterface
                 'text_notation' => $dataNotationEdit['notationText'],
                 'notation_edit_date' => Carbon::now()
             ]);
-    }
-
-    /**
-     * @param  int $notationId
-     * @param  int $action
-     * @return bool|int
-     */
-    public function changeRating(int $notationId, int $action)
-    {
-        $checkRating = DB::table('vote_notation')
-            ->select('vote_notation_id', 'vote')
-            ->where('user_id', '=', Auth::user()->id)
-            ->where('notation_id', '=', $notationId)
-            ->first();
-
-        $dbMove = null;
-        if (empty($checkRating->vote_notation_id)) {
-            $dbMove = DB::table('vote_notation')->insert([
-                'user_id' => Auth::user()->id,
-                'notation_id' => $notationId,
-                'vote' => $action,
-                'vote_date' => Carbon::now()
-            ]);
-        } else {
-
-            // checking for already set vote
-            if ($checkRating->vote == 1 && $action == 1) {
-                return false;
-            }
-
-            if ($checkRating->vote == 0 && $action == 0) {
-                return false;
-            }
-
-            $dbMove = DB::table('vote_notation')
-                ->where('user_id', '=', Auth::user()->id)
-                ->where('notation_id', '=', $notationId)
-                ->update([
-                    'vote' => $action,
-                    'vote_date' => Carbon::now()
-                ]);
-        }
-
-        //dd($dbMove);
-
-        if ($action) {
-            $set = "SET `rating` = `rating` + 1";
-        } else {
-            $set = "SET `rating` = `rating` - 1";
-        }
-
-        DB::statement("UPDATE `notations` {$set} WHERE `notation_id` = {$notationId}");
-        return $dbMove;
-    }
-
-    /**
-     * @param  int $notationDelete
-     * @return bool
-     */
-    public function delete(int $notationId)
-    {
-        $notation = DB::table('notations')
-            ->select('user_id', 'notation_id')
-            ->where('notation_id', '=', $notationId)
-            ->first();
-
-        if ($notation->user_id !== Auth::user()->id) {
-            throw new \Exception('Ошибка удаления: нет доступа на удаление новости!');
-        }
-
-        $currentNotationPhotos = DB::table('notation_photo')
-            ->select('notation_photo_id', 'path_photo')
-            ->where('notation_id', '=', $notationId)
-            ->get();
-
-        foreach ($currentNotationPhotos as $photo) {
-            $removeData = [
-                'path' => $photo->path_photo,
-                'notationId' => $notationId,
-                'photoId' => $photo->notation_photo_id
-            ];
-            $this->removePhoto($removeData);
-        }
-
-        return DB::table('notations')
-            ->where('notation_id', '=', $notationId)
-            ->where('user_id', '=', Auth::user()->id)
-            ->delete();
-    }
-
-    /**
-     * @param  $request
-     * @return array
-     */
-    public function addPhoto($request)
-    {
-        // @TODO reimplement the logic on the storage
-        $paths = array();
-        if ($request->hasFile('images')) {
-
-            $files = $request->file('images');
-            foreach($files as $file) {
-                $imageName = uniqid() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path("img/notation_photo/{$request->notation_id}"), $imageName);
-
-                DB::table('notation_photo')->insert(
-                    [
-                    'user_id' => Auth::user()->id,
-                    'notation_id' => $request->notation_id,
-                    'path_photo' => "img/notation_photo/{$request->notation_id}/{$imageName}",
-                    'photo_edit_date' => Carbon::now()
-                    ]
-                );
-
-                $paths[] = $imageName;
-            }
-        }
-        return $paths;
-    }
-
-    /**
-     * @param  array $photoData
-     * @return bool
-     * @throws \Exception
-     */
-    public function removePhotoCheck(array $photoData)
-    {
-        $ownerPhotoCheck = DB::table('notation_photo')
-            ->select('user_id', 'path_photo')
-            ->where('notation_id', '=', $photoData['notationId'])
-            ->where('notation_photo_id', '=', $photoData['photoId'])
-            ->first();
-
-        if (is_null($ownerPhotoCheck)) {
-            throw new \Exception('Ошибка удаления: Данной фотографии не существует!');
-        }
-
-        if ($ownerPhotoCheck->user_id !== Auth::user()->id) {
-            throw new \Exception('Ошибка удаления: нет доступа на удаление фотографии!');
-        }
-
-        $removeData = [
-            'path' => $ownerPhotoCheck->path_photo,
-            'notationId' => $photoData['notationId'],
-            'photoId' => $photoData['photoId']
-        ];
-        return $this->removePhoto($removeData);
-    }
-
-    private function removePhoto(array $removeData)
-    {
-        // @TODO reimplement the logic on the storage
-        $delete = File::delete(public_path($removeData['path']));
-        if ($delete) {
-            return DB::table('notation_photo')
-                ->where('notation_id', '=', $removeData['notationId'])
-                ->where('notation_photo_id', '=', $removeData['photoId'])
-                ->delete();
-        } else {
-            throw new \Exception('Ошибка удаления');
-        }
     }
 }

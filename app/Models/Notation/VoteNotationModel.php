@@ -33,6 +33,13 @@ class VoteNotationModel extends Model
     public $timestamps = false;
 
     /**
+     * @var string[]
+     */
+    protected $fillable = [
+        'vote', 'vote_date'
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function notations()
