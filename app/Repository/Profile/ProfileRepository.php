@@ -12,30 +12,13 @@ use Illuminate\Support\Facades\DB;
  */
 class ProfileRepository
 {
-
     /**
-     * @param  int $id
+     * Get user data by ID
+     *
+     * @param int $userId
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
      */
-    public function getAnotherUserData(int $id)
-    {
-        return DB::table('users')
-            ->select(
-                'users.name', 'users.id', 'users.email', 'users.created_at',
-                'description_profile.real_name', 'users.gender',
-                'description_profile.town', 'description_profile.date_born',
-                'description_profile.about', 'users.avatar', 'users.last_online_at',
-                'description_profile.phone', 'description_profile.lvl',  'description_profile.exp'
-            )
-            ->leftJoin('description_profile', 'description_profile.user_id', '=', 'users.id')
-            ->where('users.id', '=', $id)
-            ->first();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
-     */
-    public function getCurrentUserData()
+    public function getUserData(int $userId = 0)
     {
         return DB::table('users AS u')
             ->select(
@@ -44,7 +27,9 @@ class ProfileRepository
                 'u.email',
                 'u.gender',
                 'u.avatar',
+                'u.api_key',
                 'u.created_at',
+                'u.last_online_at',
                 'dp.real_name',
                 'dp.date_born',
                 'dp.town',
@@ -54,32 +39,7 @@ class ProfileRepository
                 'dp.exp'
             )
             ->leftJoin('description_profile AS dp', 'dp.user_id', '=', 'u.id')
-            ->where('id', '=', Auth::user()->id)
-            ->first();
-    }
-
-    /**
-     * @param int $userId
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
-     */
-    public function getUserDataChange(int $userId = 0)
-    {
-        return DB::table('users')
-            ->select(
-                'users.name',
-                'users.id',
-                'users.email',
-                'description_profile.real_name',
-                'users.gender',
-                'description_profile.town',
-                'description_profile.date_born',
-                'description_profile.about',
-                'users.avatar',
-                'description_profile.phone',
-                'users.api_key'
-            )
-            ->leftJoin('description_profile', 'description_profile.user_id', '=', 'users.id')
-            ->where('users.id', '=', $userId ?: Auth::user()->id)
-            ->first();
+            ->where('id', '=', $userId ?: Auth::user()->id)
+        ->first();
     }
 }

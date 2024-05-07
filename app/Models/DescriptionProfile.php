@@ -61,29 +61,35 @@ class DescriptionProfile extends Model
     ];
 
     /**
-     * Added exp and level to profile
+     * Add exp to profile
      *
-     * @param  $exp
-     * @return int|mixed
+     * @param  int|float $exp
+     * @param  int|null  $userId
+     *
+     * @return int|float
      */
-    public static function expAdd($exp)
+    public static function expAdd($exp, ?int $userId = null)
     {
+        if (is_null($userId)) {
+            $userId = Auth::user()->id;
+        }
+
         $userData = DB::table('users AS u')
             ->select('u.id', 'dp.lvl', 'dp.exp')
             ->leftJoin('description_profile AS dp', 'dp.user_id', '=', 'u.id')
-            ->where('id', '=', Auth::user()->id)
-            ->first();
+            ->where('id', '=', $userId)
+        ->first();
 
-        $expAll = self::expGeneration($userData);
+        $lvlExp = self::expGeneration($userData);
         $userData->exp += $exp;
 
-        if ($userData->exp >= $expAll) {
+        if ($userData->exp >= $lvlExp) {
             $userData->lvl++;
-            $userData->exp -= $expAll;
+            $userData->exp -= $lvlExp;
         }
 
         DescriptionProfile::query()
-            ->where('user_id', Auth::user()->id)
+            ->where('user_id', $userId)
             ->update([
                 'exp' => $userData->exp,
                 'lvl' => $userData->lvl
@@ -92,28 +98,33 @@ class DescriptionProfile extends Model
     }
 
     /**
-     * @param int $userId
+     * Add lvl to user
+     *
+     * @param null|int $userId
+     * @return bool
      */
-    public static function lvlAdd(int $userId = 0)
+    public static function lvlAdd($lvl = 1, ?int $userId = null):bool
     {
-        if (!$userId) {
+        if (is_null($userId)) {
             $userId = Auth::user()->id;
         }
-        DescriptionProfile::where('user_id', '=', $userId)->increment('lvl');
+        return DescriptionProfile::query()
+            ->where('user_id', '=', $userId)
+        ->increment('lvl', $lvl);
     }
 
     /**
+     * Generate experience
+     *
      * @param  $userData
-     * @return float|int
+     * @return int|float
      */
     public static function expGeneration(&$userData)
     {
         if (is_null($userData->lvl)) {
-            DescriptionProfile::firstOrCreate(
-                [
+            DescriptionProfile::firstOrCreate([
                     'user_id' => $userData->id
-                ]
-            );
+            ]);
             $userData->lvl = 1;
         }
         return $userData->lvl * 10;

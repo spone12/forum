@@ -37,7 +37,7 @@ class ProfileService
      */
     public function getAnotherUser(int $id)
     {
-        $userData = $this->profileRepository->getAnotherUserData($id);
+        $userData = $this->profileRepository->getUserData($id);
         if (!empty($userData)) {
             $userData->expNeed = DescriptionProfile::expGeneration($userData);
             $userData->last_online_at = date_create($userData->last_online_at)->Format('d.m.Y H:i');
@@ -58,7 +58,7 @@ class ProfileService
      */
     public function getCurrentUserData()
     {
-        $userData = $this->profileRepository->getCurrentUserData();
+        $userData = $this->profileRepository->getUserData();
         if ($userData) {
             $userData->expNeed = DescriptionProfile::expGeneration($userData);
             $userData->created_at = date_create($userData->created_at)->Format('d.m.y H:i');
@@ -87,7 +87,7 @@ class ProfileService
      */
     public function getUserDataChange(int $userId)
     {
-        $userData = $this->profileRepository->getUserDataChange($userId);
+        $userData = $this->profileRepository->getUserData($userId);
 
         if ($userData) {
             ArrayHelper::noAvatar($userData);
