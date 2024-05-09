@@ -8,7 +8,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Observers\MessageObserver;
 use App\Models\Chat\MessagesModel;
-use App\Events\ChatMessageNotifyEvent;
+use App\Events\ChatMessageEvent;
 use App\Listeners\ChatMessageNotifyListener;
 
 class EventServiceProvider extends ServiceProvider
@@ -22,12 +22,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        
+
         'Illuminate\Auth\Events\Login' => [
             'App\Listeners\AddDataToUserSession',
         ],
 
-        ChatMessageNotifyEvent::class => [
+        ChatMessageEvent::class => [
             ChatMessageNotifyListener::class
         ]
     ];

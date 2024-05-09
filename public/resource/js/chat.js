@@ -1,3 +1,4 @@
+
 var messagePage = 2;
 
 function stopEditMessage() {
@@ -29,26 +30,7 @@ function sendMessage() {
             dialogWithId: dialogWithId,
             dialogId: dialogId,
         },
-        success: function (data) {
-            $("#dialog__message").text("");
-
-            var newMessage = $(".chatLs__chat:eq(0)").clone();
-            newMessage.attr("id", "chatLs__chat-" + data.message.messageId);
-            newMessage.find(".chatLs__text").html(message);
-            newMessage.find(".chatLs__photo").attr("src", data.message.avatar);
-            newMessage.find(".chatLs__name").text(data.message.name);
-            newMessage
-                .find(".chatLs__link")
-                .attr("href", "/profile/" + data.message.userId);
-            newMessage
-                .find(".chatLs__message-time")
-                .text(data.message.created_at)
-                .attr("title", "")
-                .attr("data-original-title", data.message.diff);
-
-            newMessage.appendTo(".chatLs");
-            scrollDown();
-        },
+        success: function (data) {},
         error: function (data) {
             errorMsgResponse(data);
         },
@@ -332,21 +314,49 @@ $(document).ready(function () {
         });
     });
 
-    /**
-     * If press Shift + Enter -> run send or edit message function
-     */
-    const dialogMessage = document.getElementById("dialog__message");
+    // Chat
+    if ($('.allDialogs').length === 0) {
+        /**
+         *  Pusher Chat Websocket
+         */
+        window, Echo.private('chat.' + $('#dialogId').val())
+            .listen('ChatMessageEvent', (e) => {
+                $("#dialog__message").text("");
 
-    dialogMessage.addEventListener("keydown", function (e) {
-        // Get the code of pressed key
-        const keyCode = e.which || e.keyCode;
+                var newMessage = $(".chatLs__chat:eq(0)").clone();
+                newMessage.attr("id", "chatLs__chat-" + e.messageObj.message_id);
+                newMessage.find(".chatLs__text").html(e.messageObj.text);
+                newMessage.find(".chatLs__photo").attr("src", e.userObj.avatar);
+                newMessage.find(".chatLs__name").text(e.userObj.name);
+                newMessage
+                    .find(".chatLs__link")
+                    .attr("href", "/profile/" + e.userObj.id);
+                newMessage
+                    .find(".chatLs__message-time")
+                    .text(e.messageObj.created_at_hour)
+                    .attr("title", "")
+                    .attr("data-original-title", e.messageObj.difference);
 
-        // Don't generate a new line
-        if (keyCode === 13 && !e.shiftKey) {
-            e.preventDefault();
-            if ($(dialogMessage).hasClass("dialog__message")) {
-                $(".dialog__send").click();
+                newMessage.appendTo(".chatLs");
+                scrollDown();
+            });
+
+        /**
+         * If press Shift + Enter -> run send or edit message function
+         */
+        const dialogMessage = document.getElementById("dialog__message");
+
+        dialogMessage.addEventListener("keydown", function (e) {
+            // Get the code of pressed key
+            const keyCode = e.which || e.keyCode;
+
+            // Don't generate a new line
+            if (keyCode === 13 && !e.shiftKey) {
+                e.preventDefault();
+                if ($(dialogMessage).hasClass("dialog__message")) {
+                    $(".dialog__send").click();
+                }
             }
-        }
-    });
+        });
+    }
 });

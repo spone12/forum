@@ -5,9 +5,9 @@ return [
     /*
         Salt for passwords. Rainbow tables Bye
     */
-    
+
     'salt' => env('SALT'),
-    
+
     'api_key_length' => env('API_KEY_LENGTH'),
 
     /*
@@ -180,7 +180,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 

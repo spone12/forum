@@ -26,9 +26,8 @@ class IsUserOnline
     public function handle($request, Closure $next)
     {
         if (Auth::check()) {
-
             $expiresAt = Carbon::now()->addMinutes(5);
-            Cache::put('UserOnline-' . Auth::user()->id, true, $expiresAt);
+            Cache::put('is_online.' . Auth::user()->id, true, $expiresAt);
 
             if (Auth::user()->last_online_at->diffInHours(now()) !== 0) {
                 Auth::user()
