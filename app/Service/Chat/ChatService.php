@@ -114,11 +114,10 @@ class ChatService
      * Send message service
      *
      * @param array $data
-     * @return
+     * @return bool
      */
-    public function message(array $data): array
+    public function message(array $data): bool
     {
-        // @TODO Change incoming message validation to Request
         $messageId = $this->chatRepository->sendMessage(
             addslashes($data['message']),
             $this->getDialogId($data['dialogWithId'], $data['dialogId']),
@@ -136,15 +135,7 @@ class ChatService
         ->firstOrFail();
         broadcast(new \App\Events\ChatMessageEvent($user, $message));
 
-        $now = Carbon::now()->format('H:i');
-        return [
-            'messageId' => $messageId,
-            'created_at' => $now,
-            'diff' => $now,
-            'avatar' => session('avatar'),
-            'name' => Auth::user()->name,
-            'userId' => Auth::user()->id
-        ];
+        return true;
     }
 
     /**

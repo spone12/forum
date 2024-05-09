@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ResponseCodeEnum;
+use App\Http\Requests\ChatMessageRequest;
 use Illuminate\Http\Request;
 use App\Service\Chat\ChatService;
 
@@ -59,18 +60,16 @@ class ChatController extends Controller
      * @param  Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function sendMessage(Request $request)
+    protected function sendMessage(ChatMessageRequest $request)
     {
         try {
-            $data = $request->only(
-                [
-                    'message',
-                    'dialogId',
-                    'dialogWithId'
-                ]
-            );
+            $data = $request->only([
+                'message',
+                'dialogId',
+                'dialogWithId'
+            ]);
 
-            return response()->json(['message' => $this->chatService->message($data)]);
+            return response()->json(['isSend' => $this->chatService->message($data)]);
         } catch (\Throwable $exception) {
             return response()->json(
                 [
