@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\ChatMessageNotifyEvent;
+use App\Events\ChatMessageEvent;
 use App\User;
 use Illuminate\Support\Facades\Cache;
 
@@ -26,21 +26,21 @@ class ChatMessageNotifyListener
      * @param  object  $event
      * @return void
      */
-    public function handle(ChatMessageNotifyEvent $event)
+    public function handle(ChatMessageEvent $event)
     {
         // Clear user recive count notifications
         Cache::forget('userNorificationsBell' . $event->messageObj->recive);
 
-        // TODO Add a check if notification is enabled for a user
+       /* // TODO Add a check if notification is enabled for a user
         $recive = User::where('id', $event->messageObj->recive)
             ->firstOrFail();
-        
+
         if (empty($recive->email)) {
             return;
         }
 
         $recive->text = $event->messageObj->text;
-        $recive->action = $this->actionDialog . $event->messageObj->dialog;
+        $recive->action = $this->actionDialog . $event->messageObj->dialog;*/
 
         //Notification::send($recive, new \App\Notifications\ChatMessageNorify());
     }

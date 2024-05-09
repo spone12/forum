@@ -16,7 +16,7 @@
     </div>
 @endif
 
-<div class="container p-3">
+<div class="allDialogs container p-3">
     <div class="row justify-content-center align-items-center">
         <div class='col-11'>
             <div class="card card-header">

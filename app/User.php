@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Enums\Profile\ProfileEnum;
+use App\Traits\ArrayHelper;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -34,7 +36,7 @@ use Auth;
  */
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, ArrayHelper;
 
     /**
      * The attributes that are mass assignable.
@@ -131,6 +133,16 @@ class User extends Authenticatable
      */
     public function isOnline(int $userId)
     {
-        return Cache::get('UserOnline-' . $userId);
+        return Cache::get('is_online.' . $userId);
+    }
+
+    /**
+     * Set the default img for an empty avatar
+     *
+     * @return string
+     */
+    public function getAvatarAttribute()
+    {
+        return $this->attributes['avatar'] ?: ProfileEnum::NO_AVATAR;
     }
 }

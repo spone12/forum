@@ -11,6 +11,8 @@
     <link href="{{ asset('resource/css/app.css') }}" rel="stylesheet" type='text/css'>
     <link rel="stylesheet" type="text/css" href="{{ asset('resource/libraries/bootstrap/css/bootstrap.min.css') }}" />
 
+    <script src="{{ asset('resource/js/app.js') }}"></script>
+
     <script src="{{ asset('resource/libraries/jQuery/jquery-3.3.1.js') }}"></script>
     <script src="{{ asset('resource/libraries/popper/popper.min.js') }}"></script>
     <script src="{{ asset('resource/libraries/bootstrap/js/bootstrap.min.js') }}"></script>

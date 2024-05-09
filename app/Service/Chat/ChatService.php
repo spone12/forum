@@ -118,6 +118,7 @@ class ChatService
      */
     public function message(array $data): array
     {
+        // @TODO Change incoming message validation to Request
         $messageId = $this->chatRepository->sendMessage(
             addslashes($data['message']),
             $this->getDialogId($data['dialogWithId'], $data['dialogId']),
@@ -128,12 +129,12 @@ class ChatService
             throw new \Exception('Message not send');
         }
 
-        // Send notification of new message
-        event(
-            new \App\Events\ChatMessageNotifyEvent(
-                MessagesModel::where('message_id', $messageId)->firstOrFail()
-            )
-        );
+        // Websocket
+        $message = MessagesModel::where('message_id', $messageId)->firstOrFail();
+        $user = User::select(['id', 'name', 'avatar'])
+            ->whereId((auth()->id() === $message->recive ?: $message->send))
+        ->firstOrFail();
+        broadcast(new \App\Events\ChatMessageEvent($user, $message));
 
         $now = Carbon::now()->format('H:i');
         return [
