@@ -64,9 +64,9 @@ class ChatService
             }
 
             $dialogWithId = (Auth::user()->id == $chat->send) ? $chat->recive : $chat->send;
-            $user = DB::table('users')
-                ->select('users.id AS userId', 'users.name',  'users.avatar')
-                ->where('users.id', $dialogWithId)
+            $user = User::query()
+                ->select(['users.id AS userId', 'name', 'avatar'])
+                    ->whereId($dialogWithId)
                 ->first();
 
             $userDialogs[$k]->id = $user->userId;
@@ -75,6 +75,7 @@ class ChatService
             $userDialogs[$k]->text = $lastMessage->text;
             $userDialogs[$k]->created_at = $lastMessage->created_at;
             $userDialogs[$k]->isRead = $lastMessage->read;
+            $userDialogs[$k]->isOnline = \Cache::get('is_online.' . $user->userId);
             $userDialogs[$k]->difference =
                 Carbon::createFromFormat('Y-m-d H:i:s', $lastMessage->created_at)->diffForHumans();
 

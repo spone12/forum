@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title-block') {{trans('chat.chatLS')}} @endsection
+@section('title-block') {{ trans('chat.chatLS') }} @endsection
 @section('content')
 
 @push('scripts')
@@ -22,18 +22,21 @@
     <div class="row justify-content-center align-items-center">
         <div class='chatMenuLeft col-lg-2 col-sm-12 align-items-center justify-content-center'>
             @foreach ($lastDialogs as $chat)
-                <a class="row align-items-center justify-content-center
-                    @if ($chat->dialog_id === $dialogId)
-                        currentChatSelectionInMenu
-                    @endif
-                " href='/chat/dialog/{{$chat->dialog_id}}'>
+                <a @class([
+                    'row',
+                    'align-items-center',
+                    'justify-content-center',
+                    'recentChats',
+                    'currentChatSelectionInMenu' => ($chat->dialog_id === $dialogId)
+                ]) href='/chat/dialog/{{$chat->dialog_id}}'>
                     <div class='chatLs__link col-sm-4'>
                         <img class='chatLs__photo' src="{{ asset($chat->avatar) }}" />
                     </div>
                     <div class="col-sm-8 chatLs__name">
-                        @if (!$chat->isRead)
-                            <div class="isRead"></div>
-                        @endif
+                        <div @class([
+                            'userOnline' => $chat->isOnline,
+                            'userOffline' => !$chat->isOnline
+                        ])></div>
                         {{ $chat->name }}
                     </div>
                 </a>
@@ -42,7 +45,6 @@
 
         <div class='chatLs col-lg-10'>
          @if (!empty($dialogObj[0]))
-
             @php
                 $dialogObj = $dialogObj->reverse();
             @endphp
@@ -52,7 +54,7 @@
                     <div class='col-sm-12 row'>
                         <div class='col-lg-2 col-2 col-xl-1 col-sm-2 col-md-2'>
                             <a class='chatLs__link' target='_blank' href='{{ route("profile_id", $chat->id) }}'>
-                                <img class='chatLs__photo' src="{{ asset($chat->avatar) }}" />
+                                <img class='chatLs__photo' alt="avatar" src="{{ asset($chat->avatar) }}" />
                             </a>
                             <div class="col-sm-12 chatLs__name">{{ $chat->name }}</div>
                         </div>

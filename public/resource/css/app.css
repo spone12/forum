@@ -343,13 +343,20 @@ html {
   text-align: justify;
 }
 
-.isRead {
-  background: #fbe4b8;
+.circleStatus, .userOffline, .userOnline {
   border: 1px solid black;
   border-radius: 50%;
-  height: 7px;
-  width: 7px;
+  height: 8px;
+  width: 8px;
   float: right;
+}
+
+.userOnline {
+  background: #2ae621;
+}
+
+.userOffline {
+  background: #fd7567;
 }
 
 .Chat-search {
@@ -594,6 +601,11 @@ html {
 }
 .dialog__scroll-down:hover {
   opacity: 1;
+}
+
+.recentChats {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 /* colors */

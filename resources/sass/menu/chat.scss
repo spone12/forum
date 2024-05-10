@@ -2,13 +2,22 @@
     @extend .search-marker;
 }
 
-.isRead {
-    background: #fbe4b8;
+.circleStatus {
     border: 1px solid black;
     border-radius: 50%;
-    height: 7px;
-    width: 7px;
+    height: 8px;
+    width: 8px;
     float: right;
+}
+
+.userOnline {
+    @extend .circleStatus;
+    background: #2ae621;
+}
+
+.userOffline {
+    @extend .circleStatus;
+    background: #fd7567;
 }
 
 .Chat-search {
@@ -303,7 +312,6 @@
 }
 
 .chatLs__move-recover {
-
     cursor: pointer;
     &:hover {
         opacity: 1;
@@ -319,4 +327,9 @@
     &:hover {
         opacity: 1;
     }
+}
+
+.recentChats {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
