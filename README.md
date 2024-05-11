@@ -43,7 +43,7 @@
     </ul>
 </div>
 
-<blockquote><i>Начало установки:</i></blockquote>
+><i>Начало установки:</i>
 
 1. Клонировать репозиторий: <code>git clone https://github.com/spone12/forum.git</code>
 2. Перейти в папку с репозиторием: `cd forum/`
@@ -68,17 +68,29 @@ php artisan cache:clear
 
 </div>
 
-<div>
-    <blockquote>SASS компиляция: <code>npm run watch (dev)</code></blockquote>
-</div>
+>SASS компиляция: <code>npm run watch (dev)</code>
 
-<div>
-    <blockquote>PHP Unit запуск тестов: <code>vendor\bin\phpunit</code> </blockquote>
-</div>
+>PHP Unit запуск тестов: <code>vendor\bin\phpunit</code>
 
-<div>
-    <blockquote>Websocket Pusher:</blockquote>
-</div>
+>Websockets:
+
+**Local (по умолчанию)**
+
+1. Заполнить в файле `.env` константы:
+   + APP_URL - доменное имя
+   + PUSHER_APP_HOST
+   + PUSHER_APP_PORT 
+2. Запустить локальный сервер `php artisan websockets:serve`
+
+**Pusher**
 
 1. Создать канал на сайте [Pusher](https://pusher.com/ "Pusher") и сгенерировать API ключи
 2. Добавить сгенерированные ключи в файл `.env`
+3. Зайти в файл конфигурации `resources/js/bootstrap.js`
+   + Закомментировать  // For local websockets
+   + Раскомментировать // For another service websockets
+4. Зайти в файл конфигурации `config/broadcasting.php`
+    + Закомментировать  // For local websockets
+    + Раскомментировать // For another service websockets
+5. Пересобрать локальное окружение `npm run dev`
+6. Очистить кэш приложения `php artisan config:cache`
