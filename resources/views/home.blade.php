@@ -19,28 +19,28 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item sortDate" href="#">
                         <div>
                             <img width=20 src="{{ url('img/icons/date.png') }}" />
                             <span class='icon-text'>{{ trans('notation.sortDate') }}</span>
                         </div>
                     </a>
 
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item sortName" href="#">
                         <div>
                             <img width=20 src="{{ url('img/icons/title.png') }}" />
                             <span class='icon-text'>{{ trans('notation.sortName') }}</span>
                         </div>
                     </a>
 
-                    <a class="dropdown-item" href="#" >
+                    <a class="dropdown-item sortViews" href="#" >
                         <div>
                             <img width=20 src="{{ url('img/icons/Notation/eye.png') }}" />
                             <span class='icon-text'>{{ trans('notation.sortViews') }}</span>
                         </div>
                     </a>
 
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item sortRating" href="#">
                         <div>
                             <img width=20 src="{{ url('img/icons/rating.png') }}" />
                             <span class='icon-text'>{{ trans('notation.sortRating') }}</span>
