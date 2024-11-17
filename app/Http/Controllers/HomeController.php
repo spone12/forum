@@ -13,7 +13,7 @@ use App\Service\HomeService;
 class HomeController extends Controller
 {
     /**
-     * @var HomeService 
+     * @var HomeService
      */
     protected $homeService;
 
@@ -37,7 +37,7 @@ class HomeController extends Controller
     public function index()
     {
         try {
-            $notations = $this->homeService->notations();
+            $notations = $this->homeService->notations('');
             $this->homeService->userNotifications();
         } catch (\Throwable $e) {
             return abort(ResponseCodeEnum::NOT_FOUND);

@@ -17,10 +17,9 @@ class HomeRepository
     /**
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function takeNotations()
+    public function takeNotations(string $order = '')
     {
-
-        return DB::table('notations AS n')
+        $notations = DB::table('notations AS n')
             ->select(
                 'n.notation_id',
                 'n.user_id',
@@ -34,10 +33,17 @@ class HomeRepository
             )
             ->join('users', 'users.id', '=', 'n.user_id')
             ->leftJoin('notation_views AS nv', 'n.notation_id', '=', 'nv.notation_id')
-            ->groupBy('nv.notation_id')
-            ->orderBy('notation_add_date', 'DESC')
-            ->paginate(10)
-            ->onEachSide(2);
+            ->groupBy('nv.notation_id');
+
+        if ($order === '') {
+            $notations->orderBy('notation_add_date', 'DESC');
+        } else {
+            $notations->orderBy($order, 'DESC');
+        }
+
+        return $notations
+                ->paginate(10)
+                ->onEachSide(2);
     }
 
     /**
@@ -51,9 +57,9 @@ class HomeRepository
             ->selectRaw('COUNT(*) as count_notifications,
                          dialog,
                          name,
-                        (CASE WHEN avatar IS NULL THEN 
+                        (CASE WHEN avatar IS NULL THEN
                             "' . ProfileEnum::NO_AVATAR . '"
-                         ELSE 
+                         ELSE
                             avatar
                          END) as avatar'
                 )

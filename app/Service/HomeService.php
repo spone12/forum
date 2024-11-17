@@ -34,9 +34,9 @@ class HomeService
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function notations()
+    public function notations(string $order)
     {
-        $notations = $this->homeRepository->takeNotations();
+        $notations = $this->homeRepository->takeNotations($order);
         if ($notations) {
             foreach ($notations as $k => $v) {
                 $notations[$k]->date_n =
