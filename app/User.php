@@ -143,6 +143,6 @@ class User extends Authenticatable
      */
     public function getAvatarAttribute()
     {
-        return $this->attributes['avatar'] ?: ProfileEnum::NO_AVATAR;
+        return $this->attributes['avatar'] ? asset('storage/' . $this->attributes['avatar']) : asset(ProfileEnum::NO_AVATAR);
     }
 }

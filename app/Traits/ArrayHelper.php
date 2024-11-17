@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Traits;
 
 use App\Enums\Profile\ProfileEnum;
+use Illuminate\Support\Collection;
 
 /**
  * Trait ArrayHelper
@@ -14,7 +14,7 @@ trait ArrayHelper
     /**
      * Changing the path of empty avatars
      *
-     * @param midex $data
+     * @param mixed $data
      * @return void
      */
     public static function noAvatar(&$data): void {
@@ -23,14 +23,18 @@ trait ArrayHelper
             return;
         }
 
-        if (!is_array($data)) {
-            if (is_null($data->avatar)) {
-                $data->avatar = ProfileEnum::NO_AVATAR;
+        if (!is_array($data) && !$data instanceof Collection) {
+            if (is_null($data->avatar) || stripos($data->avatar, 'no_avatar') !== false) {
+                $data->avatar = asset(ProfileEnum::NO_AVATAR);
+            } else {
+                $data->avatar = asset('storage/' . $data->avatar);
             }
         } else {
             foreach ($data as $k => $v) {
-                if (is_null($v->avatar)) {
-                    $data[$k]->avatar = ProfileEnum::NO_AVATAR;
+                if (is_null($v->avatar) || stripos($v->avatar, 'no_avatar') !== false) {
+                    $data[$k]->avatar = asset(ProfileEnum::NO_AVATAR);
+                } else {
+                    $data[$k]->avatar = asset('storage/' . $v->avatar);
                 }
             }
         }

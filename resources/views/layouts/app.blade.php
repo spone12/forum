@@ -65,14 +65,13 @@
                                     <img class="bellIcon" width=35 src="{{ url('/img/icons/bell.png') }}" />
                                 </a>
 
-
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     @if (count($userNorifications) > 0)
                                     @foreach ($userNorifications as $notification)
                                         <a class="dropdown-item" href="{{ route('dialog', $notification->dialog) }}" onclick="">
                                             <div>
                                                 <span class="notificationBell__countMessages">{{ $notification->count_notifications }}</span>
-                                                <img width=20 src="{{ url($notification->avatar) }}" />
+                                                <img width=20 src="{{ asset($notification->avatar) }}" />
                                                 <span>{{ $notification->name }}</span>
                                             </div>
                                         </a>
@@ -121,7 +120,7 @@
                             @endif
                         @else
                             <li class="nav-item dropdown menu_user">
-                                    <!--dropdown-toggle class-->
+                                <!--dropdown-toggle class-->
                                 <a id="navbarDropdown" class="nav-link c" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     <span class='name_profile'> {{ Auth::user()->name }} </span>
                                     <img class='mini_avatar mr-2' width=30 src=@getSessValue('avatar') />

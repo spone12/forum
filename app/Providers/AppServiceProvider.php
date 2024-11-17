@@ -37,9 +37,8 @@ class AppServiceProvider extends ServiceProvider
             } else {
                 $view->with('userNorifications', []);
             }
-            
+
         });
-        
 
         // Directive @ifGuest', that checks if the user is a guest
         Blade::if(

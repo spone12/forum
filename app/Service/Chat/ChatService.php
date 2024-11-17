@@ -79,8 +79,6 @@ class ChatService
             $userDialogs[$k]->difference =
                 Carbon::createFromFormat('Y-m-d H:i:s', $lastMessage->created_at)->diffForHumans();
 
-            ArrayHelper::noAvatar($userDialogs[$k]);
-
             if (strlen($userDialogs[$k]->text) >= 50) {
                 $chat->text = str_ireplace(['</div>'], '<br>', $chat->text);
                 $userDialogs[$k]->text = Str::limit(strip_tags($chat->text, '<br>'), 50);
@@ -103,10 +101,9 @@ class ChatService
         foreach ($searchResult as $search) {
             $search->text = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $search->text);
             $userObj = User::where('id', $search->send)->first();
-
-            $search->avatar = $userObj->avatar ?: ProfileEnum::NO_AVATAR;
             $search->id = $userObj->id;
             $search->name = $userObj->name;
+            $search->avatar = $userObj->avatar;
         }
         return $searchResult;
     }
@@ -233,7 +230,7 @@ class ChatService
             throw new \Exception('Chat not exist');
         }
 
-        $currentUserAvatar = Auth::user()->avatar ?: ProfileEnum::NO_AVATAR;
+        $currentUserAvatar = Auth::user()->avatar;
         $dialogMessages = $this->chatRepository->getDialogMessages($dialogId);
 
         if ($dialogMessages->count()) {
@@ -243,7 +240,6 @@ class ChatService
                 $dialogMessages[0]->send;
 
             $anotherUserObj = User::where('id', $anotherUserId)->first();
-            ArrayHelper::noAvatar($anotherUserObj);
 
             foreach ($dialogMessages as $dialog) {
                 $dialog->text = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $dialog->text);
@@ -316,7 +312,7 @@ class ChatService
         }
 
         if ($currentDate == $chatDate->format('d.m.Y')) {
-            $obj->created_at =  $chatDate->format('H:i');
+            $obj->created_at = $chatDate->format('H:i');
         } else {
             $obj->created_at = $chatDate->format('d.m.Y H:i');
         }

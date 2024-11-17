@@ -159,14 +159,12 @@ class ChatController extends Controller
                 $value;
             $userDialog = $this->chatService->userDialog($dialogId, $value);
 
-            return view('menu.Chat.chatLS',
-                [
-                    'dialogWithId' =>  $userDialog['recive'],
-                    'dialogObj' => $userDialog['dialogMessages'],
-                    'dialogId' => $dialogId,
-                    'lastDialogs' => $this->chatService->chat(5)
-                ]
-            );
+            return view('menu.Chat.chatLS', [
+                'dialogWithId' =>  $userDialog['recive'],
+                'dialogObj' => $userDialog['dialogMessages'],
+                'dialogId' => $dialogId,
+                'lastDialogs' => $this->chatService->chat(5)
+            ]);
         } catch (\Throwable $exception) {
             return redirect()
                 ->route('chat')

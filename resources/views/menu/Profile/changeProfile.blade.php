@@ -53,7 +53,7 @@
                             Form::select(
                                 'gender',
                                 ['1' => trans('profile.male'), '2' => trans('profile.female')],
-                                    $data_user->gender,
+                                $data_user->gender,
                                 ['id' => 'gender', 'class' => 'form-control']
                             )
                         }}
@@ -68,7 +68,7 @@
                     <div class='col-sm-4 profile_info'>{{ trans('profile.town') }}:</div>
                     <div class='col-sm-8'>
                         {{
-                            Form::text('town_user',  $data_user->town, [
+                            Form::text('town_user', $data_user->town, [
                                 'id' => 'town_user',
                                 'class' => 'input_field',
                                 'style' => 'width:100%'
@@ -137,7 +137,7 @@
                     <form  enctype="multipart/form-data" id='form_change_avatar' method="POST" action="{{ route('change_avatar') }}" >
                         @csrf
                         <div>
-                            <img id='page_avatar_edit' data-toggle="tooltip" class="page_avatar_edit" src="{{ asset($data_user->avatar )}}" title='{{ trans('profile.changeAvatar') }}' alt='avatar' />
+                            <img id='page_avatar_edit' data-toggle="tooltip" class="page_avatar_edit" src="{{ asset($data_user->avatar)}}" title='{{ trans('profile.changeAvatar') }}' alt='avatar' />
                             <input name="avatar" id='user_avatar' type="file" hidden>
                         </div>
                     </form>

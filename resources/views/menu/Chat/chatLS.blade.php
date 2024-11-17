@@ -6,17 +6,9 @@
     <script src="{{ asset('resource/js/chat.js') }}"></script>
 @endpush
 
-{{
-    Form::hidden('dialogWithId', $dialogWithId, ['id' => 'dialogWithId'])
-}}
-
-{{
-    Form::hidden('dialogId', $dialogId, ['id' => 'dialogId'])
-}}
-
-{{
-    Form::hidden('nextMessages', $dialogObj->nextPageUrl(), ['id' => 'nextMessages'])
-}}
+{{ Form::hidden('dialogWithId', $dialogWithId, ['id' => 'dialogWithId']) }}
+{{ Form::hidden('dialogId', $dialogId, ['id' => 'dialogId']) }}
+{{ Form::hidden('nextMessages', $dialogObj->nextPageUrl(), ['id' => 'nextMessages']) }}
 
 <div class="container p-3">
     <div class="row justify-content-center align-items-center">

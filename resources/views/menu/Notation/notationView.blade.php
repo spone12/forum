@@ -9,9 +9,7 @@
     <script src="{{asset('resource/libraries/MorrisJs/JS/morris.min.js')}}"></script>
 @endpush
 
-    {{
-         Form::hidden('hidden_id', $view->notation_id, ['id' => 'id_notation'])
-    }}
+    {{ Form::hidden('hidden_id', $view->notation_id, ['id' => 'id_notation']) }}
 
     <div class='container pt-3'>
         <div class='row justify-content-center'>
@@ -110,7 +108,7 @@
                                     @foreach ($view->photo as $v)
                                         @if (!empty($v->path_photo))
                                             <div class="carousel-item @if ($loop->first) active @endif">
-                                                <img class="d-block w-100 notation_carousel_photo" src="{{ asset("storage/$v->path_photo") }}" alt="{{ trans('notation.firstSlide') }}">
+                                                <img class="d-block w-100 notation_carousel_photo" src="{{ asset('storage/' . $v->path_photo) }}" alt="{{ trans('notation.firstSlide') }}">
                                             </div>
                                         @endif
                                     @endforeach

@@ -2,14 +2,17 @@
 
 namespace App\Service\Profile;
 
+use App\Enums\NotationEnum;
 use App\Enums\Profile\ProfileEnum;
 use App\Enums\ResponseCodeEnum;
 use App\Http\Requests\ProfileAvatarRequest;
 use App\Models\DescriptionProfile;
 use App\Repository\Profile\ProfileRepository;
 use App\Traits\ArrayHelper;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class ProfileService
@@ -45,10 +48,7 @@ class ProfileService
             $userData->gender == ProfileEnum::MALE ?
                 $userData->genderName = trans('profile.male') :
                 $userData->genderName = trans('profile.female');
-
-            if (is_null($userData->avatar)) {
-                $userData->avatar = ProfileEnum::NO_AVATAR;
-            }
+            ArrayHelper::noAvatar($userData);
         }
         return $userData;
     }
@@ -74,7 +74,6 @@ class ProfileService
             $userData->gender == ProfileEnum::MALE ?
                 $userData->genderName = trans('profile.male') :
                 $userData->genderName = trans('profile.female');
-
             ArrayHelper::noAvatar($userData);
         }
 
@@ -154,26 +153,25 @@ class ProfileService
      */
     public function changeAvatar(ProfileAvatarRequest $request)
     {
-        if ($request->hasFile('avatar')) {
-            $userId = Auth::user()->id;
-            $imageName = uniqid() . '.' . $request->avatar->extension();
+        if (!$request->hasFile('avatar')) {
+            throw new \Exception('Error, file not found');
+        }
 
-            DB::table('users')
-                ->where('id', $userId)
-                ->update(['avatar' => ProfileEnum::USER_AVATAR_PATH . $userId . '/' . $imageName]);
+        $avatarPath = Storage::disk('public')->putFile(
+            ProfileEnum::USER_AVATAR_PATH, $request->avatar
+        );
 
-            $request->avatar->move(
-                public_path(ProfileEnum::USER_AVATAR_PATH . $userId),
-                $imageName
-            );
+        $updateProfile = User::query()
+            ->whereId(Auth::user()->id)
+            ->update(['avatar' => $avatarPath]);
 
-            $request->session()->put(
-                'avatar', ProfileEnum::USER_AVATAR_PATH . $userId . '/' . $imageName
-            );
+        if (!$updateProfile) {
+            throw new \Exception('Error updating photo');
+        }
 
-            if (file_exists($request->session()->get('avatar'))) {
-                return true;
-            }
+        $request->session()->put('avatar', asset('storage/' . $avatarPath));
+        if (file_exists($request->session()->get('avatar'))) {
+            return true;
         }
 
         return false;

@@ -12,5 +12,5 @@ class NotationEnum
     /*
      * Notation photo path
      */
-    const PHOTO_PATH = 'images/notation_photo/';
+    const PHOTO_PATH = '/images/notation_photo/';
 }
