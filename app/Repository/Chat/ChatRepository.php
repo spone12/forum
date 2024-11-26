@@ -79,11 +79,16 @@ class ChatRepository
      */
     public function getDialogMessages(int $dialogId)
     {
-        return DB::table('messages')
+        return DB::table('messages AS m')
             ->select(
-                'messages.message_id', 'messages.text', 'messages.dialog', 'messages.created_at',
-                'messages.updated_at', 'messages.send', 'messages.recive',
-                'messages.text'
+                'm.message_id',
+                'm.text',
+                'm.dialog',
+                'm.created_at',
+                'm.updated_at',
+                'm.send',
+                'm.recive',
+                'm.text'
             )
             ->where('dialog', $dialogId)
             ->whereNull('deleted_at')

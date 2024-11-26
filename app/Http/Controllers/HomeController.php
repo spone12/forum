@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ResponseCodeEnum;
-use App\Service\HomeService;
+use App\Service\{HomeService, NotificationsService};
 
 /**
  * Class HomeController
@@ -38,7 +38,7 @@ class HomeController extends Controller
     {
         try {
             $notations = $this->homeService->notations('');
-            $this->homeService->userNotifications();
+            NotificationsService::userNotifications();
         } catch (\Throwable $e) {
             return abort(ResponseCodeEnum::NOT_FOUND);
         }

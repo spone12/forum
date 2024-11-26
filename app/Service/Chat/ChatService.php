@@ -2,17 +2,17 @@
 
 namespace App\Service\Chat;
 
-use App\Enums\Profile\ProfileEnum;
 use App\Repository\Chat\ChatRepository;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\SendMessageNotification;
 use App\Models\Chat\MessagesModel;
 use App\Traits\ArrayHelper;
 use App\Models\Chat\DialogModel as DialogModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use App\Service\NotificationsService;
+
 
 class ChatService
 {
@@ -241,22 +241,31 @@ class ChatService
 
             $anotherUserObj = User::where('id', $anotherUserId)->first();
 
-            foreach ($dialogMessages as $dialog) {
-                $dialog->text = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $dialog->text);
-                $dialog->difference =
-                    Carbon::createFromFormat('Y-m-d H:i:s', $dialog->created_at)->diffForHumans();
+            // Array of read messages
+            $readedMessages = [];
+            foreach ($dialogMessages as $message) {
+                $message->text = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $message->text);
+                $message->difference =
+                    Carbon::createFromFormat('Y-m-d H:i:s', $message->created_at)->diffForHumans();
 
-                $this->formatChatDate($dialog);
-                if ($dialog->send == $currentUserId) {
-                    $dialog->name = Auth::user()->name;
-                    $dialog->avatar = $currentUserAvatar;
-                    $dialog->id = $currentUserId;
+                $this->formatChatDate($message);
+                if ($message->send == $currentUserId) {
+                    $message->name = Auth::user()->name;
+                    $message->avatar = $currentUserAvatar;
+                    $message->id = $currentUserId;
                 } else {
-                    $dialog->name = $anotherUserObj->name;
-                    $dialog->avatar = $anotherUserObj->avatar;
-                    $dialog->id = $anotherUserObj->id;
+                    $readedMessages[] = $message->message_id;
+                    $message->name = $anotherUserObj->name;
+                    $message->avatar = $anotherUserObj->avatar;
+                    $message->id = $anotherUserObj->id;
                 }
             }
+
+            // Update read messages
+            MessagesModel::whereIn('message_id', $readedMessages)
+                ->update(['read' => true]);
+            NotificationsService::userNotifications($currentUserId, true);
+
         } else {
             $anotherUserId = $userMessageWithId;
         }
