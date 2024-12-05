@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use App\Models\Notation\{NotationModel, NotationCommentsModel, NotationPhotoModel, VoteNotationModel};
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\DescriptionProfile;
 use Cache;
 use Auth;
@@ -36,7 +37,7 @@ use Auth;
  */
 class User extends Authenticatable
 {
-    use Notifiable, ArrayHelper;
+    use Notifiable, ArrayHelper, HasFactory;
 
     /**
      * The attributes that are mass assignable.
