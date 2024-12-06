@@ -146,4 +146,14 @@ class User extends Authenticatable
     {
         return $this->attributes['avatar'] ? asset('storage/' . $this->attributes['avatar']) : asset(ProfileEnum::NO_AVATAR);
     }
+
+    /**
+     * Get user API key
+     *
+     * @return null|string
+     */
+    public function getUserAPIkey(): ?string
+    {
+        return $this->api_key;
+    }
 }

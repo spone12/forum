@@ -17,7 +17,7 @@ use App\User as User;
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index')->name('homePage');
 
 Route::match(['get', 'post'], '/search', 'SearchController@getDataSearch')->name('search');
 

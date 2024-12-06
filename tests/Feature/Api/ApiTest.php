@@ -13,41 +13,35 @@ use App\User as User;
 
 class ApiTest extends TestCase
 {
-    //protected $seeder = User::class;
     use RefreshDatabase;
-    /**
-     * @var $user
-     */
+
+    /** @var object $user*/
     private $user;
-    /**
-     * @var $apiKey
-     */
+
+    /** @var string $apiKey*/
     private $apiKey;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create();
+        $this->user = User::factory()->create();
         $this->actingAs($this->user);
-        $response = $this->put('/generate_api_key');
-        $this->apiKey = DB::table('users')
-            ->select('api_key')
-            ->where('id', '=', $this->user->id)
-            ->get();
-        $this->apiKey = $this->apiKey[0]->api_key;
+        $responseAPIKey = $this->put('/profile/generate_api_key');
+        $this->apiKey = json_decode($responseAPIKey->getContent())->api_key;
     }
 
     /**
      * Update Token Fail
      *
+     * @covers \App\Http\Controllers\Api\ApiController::updateToken
      * @return void
      */
     public function testUpdateTokenFail():void
     {
         $response = $this->withHeaders(
             [
-            'Content-Type' => 'Application/json',
+                'Content-Type' => 'Application/json',
             ]
         )->put('/api/update_token', ['api_key' => 'test']);
 
@@ -56,20 +50,22 @@ class ApiTest extends TestCase
     }
 
     /**
-     * Generate api key
+     * Generate API Key success
      *
+     * @covers \App\User::generateApiKey
      * @return void
      */
-    public function testGenerateApiKey():void
+    public function testGenerateApiKeySuccess():void
     {
-        $response = $this->put('/generate_api_key');
-        $response->assertStatus(ResponseCodeEnum::OK)
+        $response = $this->put('/profile/generate_api_key');
+        $response->assertOk()
             ->assertJson(['api_key' => true]);
     }
 
     /**
      * Update Token Success
      *
+     * @covers \App\Http\Controllers\Api\ApiController::updateToken
      * @return void
      */
     public function testUpdateTokenSuccess():void
@@ -82,13 +78,13 @@ class ApiTest extends TestCase
             'PUT', route(
                 'updateToken',
                 [
-                    'api_key' => $this->apiKey,
-                    'update_token' => true
+                        'api_key' => $this->apiKey,
+                        'update_token' => true
                     ]
             )
         );
 
-        $response->assertStatus(ResponseCodeEnum::OK)
+        $response->assertOk()
             ->assertJson(['api_token' => true]);
     }
 }
