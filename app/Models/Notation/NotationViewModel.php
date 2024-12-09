@@ -2,6 +2,7 @@
 
 namespace App\Models\Notation;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -17,6 +18,8 @@ use Carbon\Carbon;
  */
 class NotationViewModel extends Model
 {
+    use HasFactory;
+
     /**
      * @var string
      */

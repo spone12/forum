@@ -16,6 +16,6 @@ class NotationsSeeder extends Seeder
     {
 
         NotationModel::factory()->count(70)->create();
-        factory(NotationViewModel::class, 70)->create();
+        NotationViewModel::factory()->count(70)->viewRandomDateState()->create();
     }
 }

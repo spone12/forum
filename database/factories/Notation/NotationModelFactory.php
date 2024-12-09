@@ -3,7 +3,6 @@
 namespace Database\Factories\Notation;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Notation\NotationModel;
 
 class NotationModelFactory extends Factory
@@ -21,7 +20,7 @@ class NotationModelFactory extends Factory
 
         return [
             'user_id' => \App\User::query()->inRandomOrder()->first()->id,
-            'name_notation' => Str::random(10),
+            'name_notation' => $this->faker->regexify('[A-Za-z0-9]{10}'),
             'text_notation' => $this->faker->realText(rand(100, 500)),
             'notation_add_date' => $this->faker->dateTimeBetween('-9 months', '-1 days')
         ];
