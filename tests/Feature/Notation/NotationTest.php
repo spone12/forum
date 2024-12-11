@@ -203,19 +203,20 @@ class NotationTest extends TestCase
         $this->actingAs($this->user);
 
         Storage::fake('public');
-
-        $file = UploadedFile::fake()->image('photo.jpg');
         $response = $this->post(self::PATH . 'add_photos/' . $this->notationObject->notation_id, [
             'images' => [
-                $file
+                UploadedFile::fake()->image('photo.jpg'),
+                UploadedFile::fake()->image('photo1.jpg'),
             ]
         ]);
 
         $this->user->fresh();
+        foreach(User::with('notationPhoto')->first()->notationPhoto->all() as $notationPhotoObj) {
+            Storage::disk('public')->assertExists(
+                $notationPhotoObj->path_photo
+            );
+        }
 
-        Storage::disk('public')->assertExists(
-            User::with('notationPhoto')->first()->notationPhoto->first()->path_photo
-        );
         $response->assertRedirect();
     }
 
@@ -230,16 +231,13 @@ class NotationTest extends TestCase
         $this->actingAs($this->user);
 
         Storage::fake('public');
-
-        $file = UploadedFile::fake()->image('photo.jpg');
         $this->post(self::PATH . 'add_photos/' . $this->notationObject->notation_id, [
             'images' => [
-                $file
+                UploadedFile::fake()->image('photo.jpg')
             ]
         ]);
 
         $this->user->fresh();
-
         $photoObj = User::with('notationPhoto')->first()->notationPhoto->first();
         Storage::disk('public')->assertExists(
             $photoObj->path_photo
