@@ -75,14 +75,14 @@ class NotationController extends Controller
     }
 
     /**
-     * Edit the notation
+     * Retrieving the notation modification page
      *
      * @param  int $notationId
      * @return \Illuminate\Contracts\Foundation\Application|
      * \Illuminate\Contracts\View\Factory|
      * \Illuminate\Contracts\View\View
      */
-    protected function notationEdit(int $notationId)
+    protected function notationEditView(int $notationId)
     {
         try {
             $dataEdit = $this->notationService->getDataEdit($notationId);

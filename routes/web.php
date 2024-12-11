@@ -30,7 +30,7 @@ Route::prefix('notation')->group(function()
     Route::post('/', 'NotationController@createNotation')->middleware('auth');
     Route::get('/view/{notation_id}', 'NotationController@notationView')
         ->name('notation_view_id')->where('notation_id','[0-9]{1,11}');
-    Route::get('/edit/{notation_id}', 'NotationController@notationEdit')
+    Route::get('/edit/{notation_id}', 'NotationController@notationEditView')
         ->name('notation_edit_id')->where('notation_id','[0-9]{1,11}')->middleware('auth');
     Route::post('/rating/{notation_id}', 'NotationController@notationRating')
         ->where('notation_id','[0-9]{1,11}')->middleware('auth');
