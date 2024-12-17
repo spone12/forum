@@ -73,7 +73,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/profile'], function ()
     Route::put('/confirm_change/{id}', 'ProfileController@changeProfileConfirm')->where('id','[0-9]{1,11}');
     Route::post('/change_avatar', 'ProfileController@changeAvatar')->name('change_avatar');
     Route::post('/generate_token', 'Api\ApiController@generateApiToken')->middleware('auth')->name('generateApiToken');
-    //Route::put('/generate_api_key', [User::class, 'generateApiKey'])->name('generateApiKey');
 });
 
 /**

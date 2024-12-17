@@ -29,18 +29,30 @@ class NotationModel extends Model
      * @var string
      */
     protected $table = 'notations';
+
     /**
      * @var string
      */
     protected $primaryKey = 'notation_id';
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+
+    ];
+
     /**
      * @var bool
      */
     public $timestamps = false;
 
-    /*protected $fillable = [
-        'user_id', 'name_notation', 'text_notation','notation_add_date'
-    ];*/
+    protected $fillable = [
+        'name_notation',
+        'text_notation',
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

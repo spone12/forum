@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\ResponseCodeEnum;
 use Closure;
 use Illuminate\Http\Request;
 use App\User;
@@ -18,9 +19,13 @@ class ApiTokenMiddleware
     public function handle(Request $request, Closure $next)
     {
 
+        if (!$request->isJson()) {
+            return response()->json(['error' => true, 'message' => 'This is not json request!'], ResponseCodeEnum::BAD_REQUEST);
+        }
+
         $token = $request->bearerToken();
         if (!$token || !User::where('api_token', $token)->exists()) {
-            return response()->json(['error' => true, 'message' => 'Unauthorized111'], 401);
+            return response()->json(['error' => true, 'message' => 'Unauthorized'], ResponseCodeEnum::UNAUTHORIZED);
         }
 
         $user = User::where('api_token', $token)->first();

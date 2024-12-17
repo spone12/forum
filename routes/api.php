@@ -17,10 +17,13 @@ use App\Http\Controllers\Api\ApiController;
 
 Route::post('/generate_token', 'Api\ApiController@generateToken')->name('generateToken');
 
-Route::group(['prefix' => 'v1/notation', 'middleware' => 'auth.api'], function () {
+Route::group(['prefix' => 'v1', 'middleware' => 'auth.api'], function () {
 
-    Route::get('/list', 'Api\v1\ApiNotationController@list')->name('notationList');
-    Route::get('/get_notation', 'Api\v1\ApiNotationController@getNotationById')->name('notationById');
-    Route::put('/update_notation', 'Api\v1\ApiNotationController@updateNotation')->name('updateNotation');
+    Route::group(['prefix' => 'notation'], function () {
+
+        Route::get('/list', 'Api\v1\ApiNotationController@list')->name('notationList');
+        Route::get('/get_notation', 'Api\v1\ApiNotationController@getNotationById')->name('notationById');
+        Route::put('/update_notation', 'Api\v1\ApiNotationController@updateNotation')->name('updateNotation');
+    });
 
 });
