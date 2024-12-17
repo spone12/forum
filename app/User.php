@@ -22,7 +22,6 @@ use Auth;
  * @property string $email
  * @property string $email_verified_at
  * @property string $password
- * @property string $api_key
  * @property string $api_token
  * @property smallint $gender
  * @property string $avatar
@@ -46,7 +45,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'registration_ip', 'user_agent'
+        'name', 'email', 'password', 'registration_ip', 'user_agent', 'api_token'
     ];
 
     /**
@@ -60,7 +59,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'api_key', 'api_token'
+        'password',
+        'remember_token',
+        'api_token',
+        'email_verified_at',
+        'registration_ip',
+        'user_agent'
     ];
 
     /**

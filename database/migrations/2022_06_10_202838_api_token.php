@@ -15,13 +15,8 @@ class ApiToken extends Migration
     {
         Schema::table(
             'users', function ($table) {
-            
-                $table->string('api_key', 20)->after('password')
-                    ->unique()
-                    ->nullable()
-                    ->default(null);
 
-                $table->string('api_token', 80)->after('api_key')
+                $table->string('api_token', 80)
                     ->unique()
                     ->nullable()
                     ->default(null);
@@ -36,6 +31,8 @@ class ApiToken extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('users', function ($table) {
+            $table->dropColumn('api_token');
+        });
     }
 }

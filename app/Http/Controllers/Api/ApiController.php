@@ -9,6 +9,7 @@ use App\Models\Notation\NotationModel;
 use Illuminate\Support\Str;
 use App\User;
 use Auth;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class ApiController
@@ -17,25 +18,50 @@ use Auth;
  */
 class ApiController extends Controller
 {
-    /**
-     * @param  Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateToken(Request $request)
-    {
-        $token = Str::random(80);
-        $updateStatus = User::where('api_key', request()->only('api_key'))
-            ->update(['api_token' => $token]);
 
-        if ($updateStatus) {
-            return response()->json(['api_token' => $token]);
+    /**
+     * Generate API Token
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
+    public function generateToken(Request $request) {
+
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => true, 'message' => 'Invalid credentials'], ResponseCodeEnum::UNAUTHORIZED);
         }
 
-        return response()->json(
-            [
-            'error' => true,
-            'errorCause' => 'Api token not found!'
-            ], ResponseCodeEnum::FORBIDDEN
-        );
+        $token = $this->getRandomToken();
+        //$tokenHash = password_hash($token, PASSWORD_DEFAULT);
+        $updateTokenStatus = $user->update(['api_token' => $token]);
+
+        if (!$updateTokenStatus) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token not setted'
+            ], ResponseCodeEnum::SERVER_ERROR);
+        }
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'Bearer'
+        ], ResponseCodeEnum::OK);
+    }
+
+    /**
+     * Get Random API token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRandomToken()
+    {
+        return bin2hex(random_bytes(config('app.api_token_length')));
     }
 }

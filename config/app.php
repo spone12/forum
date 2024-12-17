@@ -8,7 +8,7 @@ return [
 
     'salt' => env('SALT'),
 
-    'api_key_length' => env('API_KEY_LENGTH'),
+    'api_token_length' => env('API_TOKEN_LENGTH'),
 
     /*
     |--------------------------------------------------------------------------

@@ -10,15 +10,15 @@ jQuery(function () {
 
 function generateApiKey() {
     $.ajax({
-        url: "/profile/generate_api_key/",
-        type: "PUT",
+        url: "/profile/generate_token",
+        type: "POST",
         dataType: "JSON",
         headers: {
             "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
         },
         success: function (data) {
-            $("#apiKey").val(data.api_key);
-            tata.success("", "Api ключ успешно установлен", {
+            $("#apiKey").val(data.api_token);
+            tata.success("", "Api token успешно установлен", {
                 duration: 2000,
                 animate: "slide",
                 position: "tr",

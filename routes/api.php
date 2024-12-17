@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ApiController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,12 +15,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::put('/update_token', 'Api\ApiController@updateToken')->middleware('api')->name('updateToken');
+Route::post('/generate_token', 'Api\ApiController@generateToken')->name('generateToken');
 
-Route::group(['prefix' => 'v1/notation', 'middleware' => 'api'], function () {
+Route::group(['prefix' => 'v1/notation', 'middleware' => 'auth.api'], function () {
 
-    Route::post('/list', 'Api\v1\ApiNotationController@list')->name('list');
-    Route::post('/get_notation', 'Api\v1\ApiNotationController@getNotationById')->name('notationById');
+    Route::get('/list', 'Api\v1\ApiNotationController@list')->name('notationList');
+    Route::get('/get_notation', 'Api\v1\ApiNotationController@getNotationById')->name('notationById');
     Route::put('/update_notation', 'Api\v1\ApiNotationController@updateNotation')->name('updateNotation');
 
 });
