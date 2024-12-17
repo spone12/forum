@@ -26,5 +26,5 @@ return [
     'goToProfile' => 'Перейти в профиль',
     'privacySettings' => 'Настройки конфиденциальности',
     'changeAvatar' => 'Изменить аватар',
-    'updateApiKey' => 'Обновить API ключ'
+    'ApiToken' => 'Для генерации токена используйте API'
 ];

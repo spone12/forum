@@ -67,6 +67,10 @@ class ProfileController extends Controller
      */
     public function changeProfile(int $userId)
     {
+        if (Auth::user()->id !== $userId) {
+            return view('error_404', ['error' => ['The requested page does not exist!']]);
+        }
+
         $userData = $this->profileService->getUserDataChange($userId);
         return view('menu.Profile.changeProfile', ['data_user' => $userData]);
     }

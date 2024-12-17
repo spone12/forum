@@ -53,10 +53,14 @@
                 <div class='col-sm-5'> {{ $data_user->town }} </div>
             </div>
 
-            <div class='row align-items-center'>
-                <div class='col-sm-7 profile_info'>{{ trans('profile.email') }}:</div>
-                <div class='col-sm-5'>{{ $data_user->email }}</div>
-            </div>
+            @auth
+                @if (Auth::user()->id === $data_user->id)
+                    <div class='row align-items-center'>
+                        <div class='col-sm-7 profile_info'>{{ trans('profile.email') }}:</div>
+                        <div class='col-sm-5'>{{ $data_user->email }}</div>
+                    </div>
+                @endif
+            @endauth
 
             <div class='row align-items-center'>
                 <div class='col-sm-7 profile_info'>{{ trans('profile.phone') }}:</div>

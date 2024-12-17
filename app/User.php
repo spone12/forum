@@ -117,22 +117,6 @@ class User extends Authenticatable
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function generateApiKey()
-    {
-        // @ TODO Rework the api key generation logic
-        $countSaltCharacter = 20 - strlen(config('app.salt'));
-        $apiKey = mb_substr(
-            hash('sha256', config('app.salt') . Str::random($countSaltCharacter)),
-            44
-        );
-        User::where('id', Auth::user()->id)->update(['api_key' => $apiKey]);
-
-        return response()->json(['api_key' => $apiKey]);
-    }
-
-    /**
      * @param  int $userId
      * @return mixed
      */
@@ -152,12 +136,12 @@ class User extends Authenticatable
     }
 
     /**
-     * Get user API key
+     * Get user API token
      *
      * @return null|string
      */
-    public function getUserAPIkey(): ?string
+    public function getUserAPIToken(): ?string
     {
-        return $this->api_key;
+        return $this->api_token;
     }
 }

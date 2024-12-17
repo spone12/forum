@@ -26,5 +26,5 @@ return [
     'goToProfile' => 'Go to profile',
     'privacySettings' => 'Privacy settings',
     'changeAvatar' => 'Change avatar',
-    'updateApiKey' => 'Update API key'
+    'ApiToken' => 'To generate a token, use the API'
 ];

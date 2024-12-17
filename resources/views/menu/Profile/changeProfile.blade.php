@@ -107,13 +107,13 @@
 
                 <div class='row align-items-center mb-2'>
                     <div class='col-sm-4 profile_info'>
-                        Api Key
+                        Api Token
                     </div>
                     <div class='col-sm-6'>
-                        <input id='apiKey' class='form-control' type="text" name="api_key" disabled value="{{ $data_user->api_key }}" />
+                        <input id='apiToken' class='form-control' type="text" name="api_token" disabled value="{{ $data_user->api_token }}" />
                     </div>
                     <div class='col-sm-2'>
-                        <img class='lock' onclick="generateApiKey();" data-toggle="tooltip" title='{{ trans('profile.updateApiKey') }}' src="{{ asset('img/icons/profile/settings.png' )}}">
+                        <img class='lock' data-toggle="tooltip" title='{{ trans('profile.ApiToken') }}' src="{{ asset('img/icons/profile/settings.png' )}}">
                      </div>
                 </div>
                 <div class='row align-items-center'>

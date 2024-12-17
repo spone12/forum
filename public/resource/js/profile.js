@@ -8,30 +8,6 @@ jQuery(function () {
     });
 });
 
-function generateApiKey() {
-    $.ajax({
-        url: "/profile/generate_token",
-        type: "POST",
-        dataType: "JSON",
-        headers: {
-            "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
-        },
-        success: function (data) {
-            $("#apiKey").val(data.api_token);
-            tata.success("", "Api token успешно установлен", {
-                duration: 2000,
-                animate: "slide",
-                position: "tr",
-                onClose: function () {},
-            });
-        },
-        error: function (data) {
-            var errors = data.responseJSON;
-            console.log(data.responseText);
-        },
-    });
-}
-
 function edit_profile() {
     let name = $("#name_user").val();
     let gender = $("#gender").val();

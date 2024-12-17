@@ -27,7 +27,7 @@ class ProfileRepository
                 'u.email',
                 'u.gender',
                 'u.avatar',
-                'u.api_key',
+                'u.api_token',
                 'u.created_at',
                 'u.last_online_at',
                 'dp.real_name',
