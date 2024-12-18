@@ -7,7 +7,6 @@ use App\Traits\ArrayHelper;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 use App\Models\Notation\{NotationModel, NotationCommentsModel, NotationPhotoModel, VoteNotationModel};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\DescriptionProfile;
@@ -22,7 +21,6 @@ use Auth;
  * @property string $email
  * @property string $email_verified_at
  * @property string $password
- * @property string $api_token
  * @property smallint $gender
  * @property string $avatar
  * @property string $remember_token
@@ -31,6 +29,8 @@ use Auth;
  * @property date $last_online_at
  * @property string $registration_ip
  * @property string $user_agent
+ * @property string $api_token
+ * @property timestamp $token_expires_at
  *
  * @package App
  */
@@ -45,7 +45,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'registration_ip', 'user_agent', 'api_token'
+        'name',
+        'email',
+        'password',
+        'registration_ip',
+        'user_agent',
+        'api_token',
+        'token_expires_at'
     ];
 
     /**
@@ -61,10 +67,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'api_token',
         'email_verified_at',
         'registration_ip',
-        'user_agent'
+        'user_agent',
+        'api_token',
+        'token_expires_at'
     ];
 
     /**
@@ -73,7 +80,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'last_online_at' => "datetime"
+        'last_online_at' => 'datetime',
+        'token_expires_at' => 'datetime'
     ];
 
     /**

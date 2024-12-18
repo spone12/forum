@@ -33,14 +33,15 @@ class ApiController extends Controller
         ]);
 
         $user = User::where('email', $request->email)->first();
-
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['error' => true, 'message' => 'Invalid credentials'], ResponseCodeEnum::UNAUTHORIZED);
         }
 
         $token = $this->getRandomToken();
-        //$tokenHash = password_hash($token, PASSWORD_DEFAULT);
-        $updateTokenStatus = $user->update(['api_token' => $token]);
+        $updateTokenStatus = $user->update([
+            'api_token' => $token,
+            'token_expires_at' => now()->addDay()
+        ]);
 
         if (!$updateTokenStatus) {
             return response()->json([
@@ -51,7 +52,8 @@ class ApiController extends Controller
 
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'Bearer'
+            'token_type' => 'Bearer',
+            'token_expires_at' => $user->token_expires_at->format('Y-m-d H:i:s')
         ], ResponseCodeEnum::OK);
     }
 
