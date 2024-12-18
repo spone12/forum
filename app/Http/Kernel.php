@@ -39,7 +39,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\Localization::class,
         ],
         'api' => [
-            'throttle:60,1',
+            'throttle:10,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             //\App\Http\Middleware\Api::class,
         ],
@@ -54,7 +54,6 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
-        'api' => \App\Http\Middleware\Api::class,
         'auth.api' => \App\Http\Middleware\ApiTokenMiddleware::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
