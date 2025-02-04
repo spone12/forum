@@ -4,6 +4,16 @@ namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
+/**
+ * @OA\OpenApi(
+ *     @OA\Info(
+ *         title="Forum API",
+ *         version="1.0.0",
+ *         description="Forum API"
+ *     )
+ * )
+ *
+ */
 class Kernel extends HttpKernel
 {
     /**

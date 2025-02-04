@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.3",
         "beyondcode/laravel-websockets": "^1.14",
+        "darkaonline/l5-swagger": "^8.6",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.0",

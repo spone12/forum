@@ -1,0 +1,30 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Forum API",
+        "description": "Forum API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/home": {
+            "get": {
+                "tags": [
+                    "Home"
+                ],
+                "summary": "Home page",
+                "operationId": "96ccc37cd35051ad90e041d369802410",
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Home",
+            "description": "Home"
+        }
+    ]
+}

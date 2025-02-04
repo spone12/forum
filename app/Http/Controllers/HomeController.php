@@ -28,6 +28,13 @@ class HomeController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/home",
+     *     summary="Home page",
+     *     tags={"Home"},
+     *     @OA\Response(response=200, description="Successful response")
+     * )
+     *
      * Show the home page
      *
      * @return \Illuminate\Contracts\Foundation\Application|
