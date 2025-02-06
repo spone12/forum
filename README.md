@@ -104,3 +104,5 @@ php artisan cache:clear
    + PUSHER_APP_ID
    + PUSHER_APP_KEY
    + PUSHER_APP_SECRET
+
+>Swagger API документация: `{host}/api/documentation`

@@ -3,28 +3,159 @@
     "info": {
         "title": "Forum API",
         "description": "Forum API",
-        "version": "1.0.0"
+        "version": "0.2"
     },
     "paths": {
-        "/home": {
-            "get": {
+        "/api/generate_token": {
+            "post": {
                 "tags": [
-                    "Home"
+                    "API/Main"
                 ],
-                "summary": "Home page",
-                "operationId": "96ccc37cd35051ad90e041d369802410",
+                "summary": "Generate API token",
+                "operationId": "58dd138caf887e0fe9913543ada04788",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "test@tempmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "pass"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Successful response"
+                        "description": "Token generated"
                     }
                 }
+            }
+        },
+        "/api/v1/notation/list": {
+            "get": {
+                "tags": [
+                    "API/Notations"
+                ],
+                "summary": "Get user notations",
+                "operationId": "17729c657b87ac0550bc05a9782eb8af",
+                "responses": {
+                    "200": {
+                        "description": "User list notations"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/notation/get_notation": {
+            "get": {
+                "tags": [
+                    "API/Notations"
+                ],
+                "summary": "Get user notation by Id",
+                "operationId": "9d50fbea8be99ea03c3b083822f1c3d0",
+                "parameters": [
+                    {
+                        "name": "notation_id",
+                        "in": "query",
+                        "description": "Notation id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User notation info"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/notation/update_notation": {
+            "put": {
+                "tags": [
+                    "API/Notations"
+                ],
+                "summary": "Update notation",
+                "operationId": "b897577b8ddcf36e49007841da31bba6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "notation_id",
+                                    "text"
+                                ],
+                                "properties": {
+                                    "notation_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "text": {
+                                        "type": "string",
+                                        "example": "Example text notation"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Notation update successfuly"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Bearer {token}",
+                "bearerFormat": "",
+                "scheme": "bearer"
             }
         }
     },
     "tags": [
         {
-            "name": "Home",
-            "description": "Home"
+            "name": "API/Main",
+            "description": "API/Main"
+        },
+        {
+            "name": "API/Notations",
+            "description": "API/Notations"
         }
     ]
 }

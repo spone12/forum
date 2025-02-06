@@ -62,7 +62,7 @@ class ApiController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getRandomToken()
+    private function getRandomToken()
     {
         return bin2hex(random_bytes(config('app.api_token_length')));
     }
