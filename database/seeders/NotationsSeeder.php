@@ -14,13 +14,12 @@ class NotationsSeeder extends Seeder
      */
     public function run(): void
     {
-
         NotationModel::factory()
             ->has(
                 NotationViewModel::factory()->viewRandomDateState(),
                 'notationViews'
             )
-            ->count(70)
+            ->count(25)
         ->create();
     }
 }

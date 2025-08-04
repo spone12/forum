@@ -48,7 +48,6 @@ class NotationViewModel extends Model
         return $this->belongsTo(NotationModel::class, 'notation_id', 'notation_id');
     }
 
-
     /**
      * Create or increment view count
      *
