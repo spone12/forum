@@ -28,8 +28,8 @@
 
 ## <blockquote>Установка</blockquote>
 <ul>
-    <li><b>PHP: "^7.3"</b></li>
-    <li><b>Laravel: "^8.83"</b></li>
+    <li><b>PHP: "^8.2"</b></li>
+    <li><b>Laravel: "^10.48"</b></li>
     <li><b>MySQL: "^5.6"</b></li>
     <li><b>Apache: "^2.2"</b></li>
 </ul>
