@@ -60,7 +60,7 @@ class NotificationsService
                 self::forgetNotificationCache($userId);
             }
 
-            cache()->remember(self::CACHE_NAME . $userId, TimeEnums::DAY, function () use ($userId)   {
+            cache()->remember(self::CACHE_NAME . $userId, TimeEnums::DAY->value, function () use ($userId)   {
                 $userNotifications = NotificationsRepository::getUserNotifications($userId);
                 ArrayHelper::noAvatar($userNotifications);
                 return $userNotifications;

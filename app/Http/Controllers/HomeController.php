@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ResponseCodeEnum;
+use App\Enums\{ResponseCodeEnum, TimeEnums};
 use App\Service\{HomeService, NotificationsService};
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class HomeController
@@ -37,7 +38,16 @@ class HomeController extends Controller
     public function index()
     {
         try {
-            $notations = $this->homeService->notations('');
+            $page = request()->get('page', 1);
+            $cacheHomeKey = "home_page_{$page}";
+
+            $notations = Cache::remember(
+                $cacheHomeKey,
+                now()->addSeconds(TimeEnums::MINUTE->value),
+                function () {
+                    return $this->homeService->notations('');
+            });
+
             NotificationsService::userNotifications();
         } catch (\Throwable $e) {
             return abort(ResponseCodeEnum::NOT_FOUND);

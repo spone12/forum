@@ -3,15 +3,17 @@
 namespace App\Enums;
 
 /**
- * Class TimeEnums
+ * Enum TimeEnums
  *
  * @package App\Enums
  */
-class TimeEnums
+enum TimeEnums:int
 {
-    const MINUTE = 60;
-    const HOUR = 3600;
-    const DAY = 86400;
-    const WEEK = 604800;
-    const YEAR = 31536000;
+    case SECOND = 1;
+    case MINUTE = 60;
+    case HOUR = 3600;
+    case DAY = 86400;
+    case WEEK = 604800;
+    case MONTH = 2592000;
+    case YEAR = 31536000;
 }
