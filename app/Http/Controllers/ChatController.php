@@ -6,6 +6,11 @@ use App\Enums\ResponseCodeEnum;
 use App\Http\Requests\ChatMessageRequest;
 use Illuminate\Http\Request;
 use App\Service\Chat\ChatService;
+use App\Http\Resources\ResponseResource;
+use App\Http\Resources\Chat\{
+    UpdateMessageResource,
+    DeleteMessageResource
+};
 
 /**
  * Class ChatController
@@ -102,43 +107,49 @@ class ChatController extends Controller
     }
 
     /**
-     * Delete message
+     * Delete message controller
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return ResponseResource|ResponseResource
      */
     protected function deleteMessage(Request $request)
     {
         try {
             $data = $request->only(['dialogId', 'messageId']);
-            return response()->json(['delete' => $this->chatService->delete($data)]);
+            return new ResponseResource(
+                new DeleteMessageResource(
+                    $this->chatService->delete($data)
+                )
+            );
         } catch (\Throwable $exception) {
-            return response()->json(
-                [
-                    'success' => false,
-                    'message' => $exception->getMessage()
-                ], ResponseCodeEnum::SERVER_ERROR
+            return new ResponseResource(
+                $exception->getMessage(),
+                false,
+                ResponseCodeEnum::SERVER_ERROR
             );
         }
     }
 
     /**
-     * Recover message
+     * Recover message controller
      *
      * @param  Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return ResponseResource
      */
     protected function recoverMessage(Request $request)
     {
         try {
             $data = $request->only(['dialogId', 'messageId']);
-            return response()->json(['recover' => $this->chatService->recover($data)]);
+            return new ResponseResource(
+                new UpdateMessageResource(
+                    $this->chatService->recover($data)
+                )
+            );
         } catch (\Throwable $exception) {
-            return response()->json(
-                [
-                    'success' => false,
-                    'message' => $exception->getMessage()
-                ], ResponseCodeEnum::SERVER_ERROR
+            return new ResponseResource(
+                $exception->getMessage(),
+                false,
+                ResponseCodeEnum::SERVER_ERROR
             );
         }
     }

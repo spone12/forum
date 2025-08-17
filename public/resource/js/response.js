@@ -8,14 +8,13 @@ function errorMsgResponse(data, duration = 3000) {
     let errorMsg = "";
     let jsonResponse = data.responseJSON;
 
-    if (typeof (jsonResponse.message) != 'undefined') {
+    if (typeof (jsonResponse.message) !== 'undefined') {
         errorMsg += jsonResponse.message;
     }
 
-    if (typeof (jsonResponse.errors) != 'undefined') {
-
+    if (typeof (jsonResponse.errors) !== 'undefined') {
         errorMsg += '<ul>';
-        $.each(jsonResponse.errors, function( key, value ) {
+        $.each(jsonResponse.errors, function(key, value) {
             errorMsg += '<li>' + value + '</li>';
         });
         errorMsg += "</ul>";

@@ -162,13 +162,7 @@ $(document).ready(function () {
         let dialogId = $("#dialogId").val();
         let mainBlock = $(this).closest(".chatLs__chat");
         let messageId = mainBlock.attr("id").split("chat-")[1];
-
         stopEditMessage();
-        mainBlock
-            .addClass("delete_message")
-            .find(".chatLs__move-edit, .chatLs__move-delete")
-            .addClass("hide_message_btn");
-        mainBlock.find(".chatLs__move-recover").removeClass("hide_message_btn");
 
         $.ajax({
             url: "/chat/delete_message",
@@ -181,7 +175,13 @@ $(document).ready(function () {
                 messageId: messageId,
                 dialogId: dialogId,
             },
-            success: function (data) {},
+            success: function (data) {
+                mainBlock
+                    .addClass("delete_message")
+                    .find(".chatLs__move-edit, .chatLs__move-delete")
+                    .addClass("hide_message_btn");
+                mainBlock.find(".chatLs__move-recover").removeClass("hide_message_btn");
+            },
             error: function (data) {
                 errorMsgResponse(data);
             },
@@ -195,11 +195,6 @@ $(document).ready(function () {
         let dialogId = $("#dialogId").val();
         let mainBlock = $(this).closest(".chatLs__chat");
         let messageId = mainBlock.attr("id").split("chat-")[1];
-        mainBlock
-            .removeClass("delete_message")
-            .find(".chatLs__move-edit, .chatLs__move-delete")
-            .removeClass("hide_message_btn");
-        mainBlock.find(".chatLs__move-recover").addClass("hide_message_btn");
 
         $.ajax({
             url: "/chat/recover_message",
@@ -212,7 +207,13 @@ $(document).ready(function () {
                 messageId: messageId,
                 dialogId: dialogId,
             },
-            success: function (data) {},
+            success: function (data) {
+                mainBlock
+                    .removeClass("delete_message")
+                    .find(".chatLs__move-edit, .chatLs__move-delete")
+                    .removeClass("hide_message_btn");
+                mainBlock.find(".chatLs__move-recover").addClass("hide_message_btn");
+            },
             error: function (data) {
                 errorMsgResponse(data);
             },

@@ -173,7 +173,9 @@ class ChatService
         $messageId = (int) $data['messageId'];
 
         $this->checkAccess($dialogId);
-        $messageObj = MessagesModel::query()->where('message_id', $messageId)->firstOrFail();
+        $messageObj = MessagesModel::query()
+            ->where('message_id', $messageId)
+            ->firstOrFail();
         $messageObj->delete();
 
         if (!$messageObj->save()) {
@@ -181,7 +183,8 @@ class ChatService
         }
 
         return [
-            'success' => true
+            'id' => $messageId,
+            'deleted_at' => carbon::now()
         ];
     }
 
@@ -193,7 +196,6 @@ class ChatService
      */
     public function recover(array $data):array
     {
-
         $dialogId = (int) $data['dialogId'];
         $messageId = (int) $data['messageId'];
 
@@ -208,7 +210,8 @@ class ChatService
         }
 
         return [
-            'success' => true
+            'id' => $messageId,
+            'updated_at' => carbon::now()
         ];
     }
 
