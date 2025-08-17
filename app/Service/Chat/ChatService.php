@@ -5,15 +5,16 @@ namespace App\Service\Chat;
 use App\Repository\Chat\ChatRepository;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Chat\MessagesModel;
 use App\Traits\ArrayHelper;
 use App\Models\Chat\DialogModel as DialogModel;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use App\Service\NotificationsService;
+use Illuminate\Support\Facades\{Gate, DB, Auth};
 
-
+/**
+ * Chat service class
+ */
 class ChatService
 {
     use ArrayHelper;
@@ -148,7 +149,9 @@ class ChatService
         $messageId = (int) $data['messageId'];
         $message = addslashes($data['message']);
 
-        $this->checkAccess($dialogId);
+        $dialog = DialogModel::find($dialogId);
+        Gate::authorize('access', $dialog);
+
         $messageObj = MessagesModel::where('message_id', $messageId)->firstOrFail();
         $messageObj->text = $message;
 
@@ -172,7 +175,9 @@ class ChatService
         $dialogId = (int) $data['dialogId'];
         $messageId = (int) $data['messageId'];
 
-        $this->checkAccess($dialogId);
+        $dialog = DialogModel::find($dialogId);
+        Gate::authorize('access', $dialog);
+
         $messageObj = MessagesModel::query()
             ->where('message_id', $messageId)
             ->firstOrFail();
@@ -199,7 +204,9 @@ class ChatService
         $dialogId = (int) $data['dialogId'];
         $messageId = (int) $data['messageId'];
 
-        $this->checkAccess($dialogId);
+        $dialog = DialogModel::find($dialogId);
+        Gate::authorize('access', $dialog);
+
         $messageObj = MessagesModel::onlyTrashed()
             ->where('message_id', $messageId)
             ->firstOrFail();
@@ -296,12 +303,10 @@ class ChatService
         }
 
         if (empty($dialogExist) || is_null($dialogExist)) {
-            $dialogId = DB::table('dialog')->insertGetId(
-                [
-                    'send' =>  Auth::user()->id,
-                    'recive' => $userId
-                ]
-            );
+            $dialogId = DB::table('dialog')->insertGetId([
+                'send' =>  Auth::user()->id,
+                'recive' => $userId
+            ]);
         } else {
             $dialogId = $dialogExist->dialog_id;
         }
@@ -327,24 +332,6 @@ class ChatService
             $obj->created_at = $chatDate->format('H:i');
         } else {
             $obj->created_at = $chatDate->format('d.m.Y H:i');
-        }
-    }
-
-    /**
-     * Check access to dialog
-     *
-     * @param  int $dialogId
-     * @throws \Exception
-     */
-    private function checkAccess(int $dialogId)
-    {
-        $dialog = DialogModel::query()->where('dialog_id', $dialogId)->first();
-        if (!$dialog->exists()) {
-            throw new \Exception('Dialog not found!');
-        }
-
-        if ($dialog->send !== Auth::user()->id && $dialog->recive !== Auth::user()->id) {
-            throw new \Exception('Not access to message edit!');
         }
     }
 }

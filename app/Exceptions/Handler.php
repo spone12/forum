@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Enums\ResponseCodeEnum;
 use Throwable;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -50,10 +51,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if ($this->isHttpException($exception))
-        {
-            if ($exception->getStatusCode() == 404) {
-                return response()->view('error_' . '404', [], 404);
+        if ($this->isHttpException($exception)) {
+            if ($exception->getStatusCode() === ResponseCodeEnum::NOT_FOUND) {
+                return response()->view('error_404', [], ResponseCodeEnum::NOT_FOUND);
             }
         }
 
