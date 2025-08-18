@@ -2,6 +2,7 @@
 
 namespace App\Service\Chat;
 
+use App\Exceptions\Chat\ChatMessageException;
 use App\Repository\Chat\ChatRepository;
 use App\User;
 use Carbon\Carbon;
@@ -184,7 +185,7 @@ class ChatService
         $messageObj->delete();
 
         if (!$messageObj->save()) {
-            throw new \Exception('Message not deleted!');
+            throw new ChatMessageException('Message not deleted!');
         }
 
         return [
@@ -213,7 +214,7 @@ class ChatService
         $messageObj->restore();
 
         if (!$messageObj->save()) {
-            throw new \Exception('Message not recovered!');
+            throw new ChatMessageException('Message not recovered!');
         }
 
         return [
@@ -321,7 +322,7 @@ class ChatService
      * @param  $currentDate string
      * @return void
      */
-    private function formatChatDate($obj, $currentDate = '')
+    private function formatChatDate($obj, $currentDate = ''): void
     {
         $chatDate = Carbon::parse($obj->created_at);
         if (empty($currentDate)) {

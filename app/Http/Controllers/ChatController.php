@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ResponseCodeEnum;
+use App\Exceptions\Chat\ChatMessageException;
 use App\Http\Requests\ChatMessageRequest;
 use Illuminate\Http\Request;
 use App\Service\Chat\ChatService;
-use App\Http\Resources\ResponseResource;
+use App\Http\Resources\{SuccessResource, ErrorResource};
 use App\Http\Resources\Chat\{
     UpdateMessageResource,
     DeleteMessageResource
@@ -110,23 +111,21 @@ class ChatController extends Controller
      * Delete message controller
      *
      * @param Request $request
-     * @return ResponseResource|ResponseResource
+     * @return ErrorResource|SuccessResource
      */
     protected function deleteMessage(Request $request)
     {
         try {
             $data = $request->only(['dialogId', 'messageId']);
-            return new ResponseResource(
+            return new SuccessResource(
                 new DeleteMessageResource(
                     $this->chatService->delete($data)
                 )
             );
+        } catch (ChatMessageException $exception) {
+            return new ErrorResource($exception->getMessage());
         } catch (\Throwable $exception) {
-            return new ResponseResource(
-                $exception->getMessage(),
-                false,
-                ResponseCodeEnum::SERVER_ERROR
-            );
+            return new ErrorResource();
         }
     }
 
@@ -134,23 +133,21 @@ class ChatController extends Controller
      * Recover message controller
      *
      * @param  Request $request
-     * @return ResponseResource
+     * @return SuccessResource|ErrorResource
      */
     protected function recoverMessage(Request $request)
     {
         try {
             $data = $request->only(['dialogId', 'messageId']);
-            return new ResponseResource(
+            return new SuccessResource(
                 new UpdateMessageResource(
                     $this->chatService->recover($data)
                 )
             );
+        } catch (ChatMessageException $exception) {
+            return new ErrorResource($exception->getMessage());
         } catch (\Throwable $exception) {
-            return new ResponseResource(
-                $exception->getMessage(),
-                false,
-                ResponseCodeEnum::SERVER_ERROR
-            );
+            return new ErrorResource();
         }
     }
 

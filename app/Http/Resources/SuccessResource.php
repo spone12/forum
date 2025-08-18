@@ -6,20 +6,20 @@ use App\Enums\ResponseCodeEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ResponseResource extends JsonResource
+class SuccessResource extends JsonResource
 {
-    private bool $success;
+    /** @var int $statusCode */
     private int $statusCode;
 
     /**
      * @param $resource
-     * @param bool $success
      * @param int $statusCode
      */
-    public function __construct($resource, bool $success = true, int $statusCode = ResponseCodeEnum::OK)
-    {
+    public function __construct(
+        $resource,
+        int $statusCode = ResponseCodeEnum::OK
+    ) {
         parent::__construct($resource);
-        $this->success = $success;
         $this->statusCode = $statusCode;
     }
 
@@ -30,13 +30,18 @@ class ResponseResource extends JsonResource
     public function toArray(Request $request)
     {
         return [
-            'success' => $this->success,
-            'data' => $this->success ? $this->resource : null,
-            'message' => !$this->success ? $this->resource : null,
+            'success' => true,
+            'data' => $this->resource ?: null,
+            'message' => $this->resource ?: null
         ];
     }
 
-    public function withResponse($request, $response)
+    /**
+     * @param $request
+     * @param $response
+     * @return void
+     */
+    public function withResponse($request, $response): void
     {
         $response->setStatusCode($this->statusCode);
     }
