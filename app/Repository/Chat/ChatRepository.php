@@ -60,15 +60,13 @@ class ChatRepository
      */
     public function sendMessage(string $message, int $dialogId, int $userId): int
     {
-        return DB::table('messages')->insertGetId(
-            [
-                'dialog'     => $dialogId,
-                'send'       =>  Auth::user()->id,
-                'recive'     => $userId,
-                'text'       => $message,
-                'created_at' => Carbon::now()
-            ]
-        );
+        return DB::table('messages')->insertGetId([
+            'dialog'     => $dialogId,
+            'send'       => Auth::user()->id,
+            'recive'     => $userId,
+            'text'       => $message,
+            'created_at' => now()
+        ]);
     }
 
     /**

@@ -29,14 +29,26 @@ class MessagesModel extends Model
      * @var string
      */
     protected $table = 'messages';
+
     /**
      * @var string
      */
     protected $primaryKey = 'message_id';
+
     /**
      * @var string[]
      */
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+
+    /**
+     * @var string[]
+     */
+    protected $fillable = [
+        'dialog',
+        'send',
+        'recive',
+        'text'
+    ];
 
     /**
      * @var string[]

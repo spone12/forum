@@ -8,10 +8,7 @@ use App\Http\Requests\ChatMessageRequest;
 use Illuminate\Http\Request;
 use App\Service\Chat\ChatService;
 use App\Http\Resources\{SuccessResource, ErrorResource};
-use App\Http\Resources\Chat\{
-    UpdateMessageResource,
-    DeleteMessageResource
-};
+use App\Http\Resources\Chat\ChatMessageResource;
 
 /**
  * Class ChatController
@@ -64,7 +61,7 @@ class ChatController extends Controller
      * Controller message send
      *
      * @param  Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return ErrorResource|SuccessResource
      */
     protected function sendMessage(ChatMessageRequest $request)
     {
@@ -75,40 +72,47 @@ class ChatController extends Controller
                 'dialogWithId'
             ]);
 
-            return response()->json(['isSend' => $this->chatService->message($data)]);
-        } catch (\Throwable $exception) {
-            return response()->json(
-                [
-                    'success' => false,
-                    'message' => $exception->getMessage()
-                ], ResponseCodeEnum::SERVER_ERROR
+            return new SuccessResource(
+                new ChatMessageResource(
+                    $this->chatService->send($data)
+                )
             );
+        } catch (ChatMessageException $exception) {
+            return new ErrorResource($exception->getMessage());
+        } catch (\Throwable $exception) {
+            return new ErrorResource();
         }
     }
 
     /**
-     * Edit message send
+     * Chat edit message controller
      *
      * @param  Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return ErrorResource|SuccessResource
      */
     protected function editMessage(Request $request)
     {
         try {
-            $data = $request->only(['message', 'dialogId', 'messageId']);
-            return response()->json(['edit' => $this->chatService->edit($data)]);
-        } catch (\Throwable $exception) {
-            return response()->json(
-                [
-                    'success' => false,
-                    'message' => $exception->getMessage()
-                ], ResponseCodeEnum::SERVER_ERROR
+            $data = $request->only([
+                'message',
+                'dialogId',
+                'messageId'
+            ]);
+
+            return new SuccessResource(
+                new ChatMessageResource(
+                    $this->chatService->edit($data)
+                )
             );
+        } catch (ChatMessageException $exception) {
+            return new ErrorResource($exception->getMessage());
+        } catch (\Throwable $exception) {
+            return new ErrorResource();
         }
     }
 
     /**
-     * Delete message controller
+     * Chat delete message controller
      *
      * @param Request $request
      * @return ErrorResource|SuccessResource
@@ -116,9 +120,13 @@ class ChatController extends Controller
     protected function deleteMessage(Request $request)
     {
         try {
-            $data = $request->only(['dialogId', 'messageId']);
+            $data = $request->only([
+                'dialogId',
+                'messageId'
+            ]);
+
             return new SuccessResource(
-                new DeleteMessageResource(
+                new ChatMessageResource(
                     $this->chatService->delete($data)
                 )
             );
@@ -130,7 +138,7 @@ class ChatController extends Controller
     }
 
     /**
-     * Recover message controller
+     * Chat recover message controller
      *
      * @param  Request $request
      * @return SuccessResource|ErrorResource
@@ -140,7 +148,7 @@ class ChatController extends Controller
         try {
             $data = $request->only(['dialogId', 'messageId']);
             return new SuccessResource(
-                new UpdateMessageResource(
+                new ChatMessageResource(
                     $this->chatService->recover($data)
                 )
             );

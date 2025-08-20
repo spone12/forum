@@ -114,18 +114,22 @@ class ChatService
      * Send message service
      *
      * @param array $data
-     * @return bool
+     * @return array
      */
-    public function message(array $data): bool
+    public function send(array $data): array
     {
+        $dialogWithId = (int)$data['dialogWithId'];
+        $dialogId = (int)$data['dialogId'];
+        $message = trim($data['message']);
+
         $messageId = $this->chatRepository->sendMessage(
-            addslashes($data['message']),
-            $this->getDialogId($data['dialogWithId'], $data['dialogId']),
-            $data['dialogWithId']
+            $message,
+            $this->getDialogId($dialogWithId, $dialogId),
+            $dialogWithId
         );
 
         if (!$messageId) {
-            throw new \Exception('Message not send');
+            throw new ChatMessageException('Message was not sent!');
         }
 
         // Websocket
@@ -135,7 +139,10 @@ class ChatService
         ->firstOrFail();
         broadcast(new \App\Events\ChatMessageEvent($user, $message));
 
-        return true;
+        return [
+            'id' => $messageId,
+            'created_at' => $message->created_at
+        ];
     }
 
     /**
@@ -148,20 +155,23 @@ class ChatService
     {
         $dialogId = (int) $data['dialogId'];
         $messageId = (int) $data['messageId'];
-        $message = addslashes($data['message']);
+        $message = trim($data['message']);
 
         $dialog = DialogModel::find($dialogId);
         Gate::authorize('access', $dialog);
 
-        $messageObj = MessagesModel::where('message_id', $messageId)->firstOrFail();
+        $messageObj = MessagesModel::where('message_id', $messageId)
+            ->where('dialog', $dialogId)
+            ->firstOrFail();
         $messageObj->text = $message;
 
         if (!$messageObj->save()) {
-            throw new \Exception('Message not edited!');
+            throw new ChatMessageException('The message has not been changed!');
         }
 
         return [
-            'success' => true
+            'id' => $messageId,
+            'updated_at' => $messageObj->updated_at
         ];
     }
 
@@ -181,16 +191,17 @@ class ChatService
 
         $messageObj = MessagesModel::query()
             ->where('message_id', $messageId)
+            ->where('dialog', $dialogId)
             ->firstOrFail();
         $messageObj->delete();
 
         if (!$messageObj->save()) {
-            throw new ChatMessageException('Message not deleted!');
+            throw new ChatMessageException('The message was not deleted!');
         }
 
         return [
             'id' => $messageId,
-            'deleted_at' => carbon::now()
+            'deleted_at' => $messageObj->deleted_at
         ];
     }
 
@@ -210,16 +221,17 @@ class ChatService
 
         $messageObj = MessagesModel::onlyTrashed()
             ->where('message_id', $messageId)
+            ->where('dialog', $dialogId)
             ->firstOrFail();
         $messageObj->restore();
 
         if (!$messageObj->save()) {
-            throw new ChatMessageException('Message not recovered!');
+            throw new ChatMessageException('The message was not restored!');
         }
 
         return [
             'id' => $messageId,
-            'updated_at' => carbon::now()
+            'updated_at' => $messageObj->updated_at
         ];
     }
 
