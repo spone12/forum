@@ -13,21 +13,33 @@ class Dialog extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('dialog');
-        Schema::create(
-            'dialog', function (Blueprint $table) {
-                $table->increments('dialog_id')->unsigned(false);
-                $table->integer('send')->comment('Who send');
-                $table->integer('recive')->comment('With whom');
-                $table->timestamp('date_create')->comment('Date the dialog was created ')->useCurrent = true;
+        Schema::create('dialog', function (Blueprint $table) {
+            $table->id('dialog_id');
 
-                $table->unique(['send', 'recive']);
-                $table->foreign('send')->references('id')
-                    ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
-                $table->foreign('recive')->references('id')
-                    ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
-            }
-        );
+            $table->string('title', 100)
+                ->comment('Dialog title');
+
+            $table->enum('type', [
+                'private', 'group'
+            ])->default('private');
+
+            $table->foreignId('created_by')
+                ->constrained('users')
+                ->cascadeOnDelete()
+                ->comment('The user who created the dialog');
+
+            $table->foreignId('send')
+                ->constrained('users')
+                ->cascadeOnDelete()
+                ->comment('DELETE AFTER');
+
+            $table->foreignId('recive')
+                ->constrained('users')
+                ->cascadeOnDelete()
+                ->comment('DELETE AFTER');
+
+            $table->timestamp('date_create')->comment('Date the dialog was created ')->useCurrent = true;
+        });
     }
 
     /**

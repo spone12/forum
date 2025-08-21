@@ -13,22 +13,21 @@ class NotationComments extends Migration
      */
     public function up()
     {
-        Schema::create(
-            'notation_comments', function (Blueprint $table) {
-                $table->increments('comment_id')->unsigned(false);
-                $table->integer('user_id')->comment('id of the user who added the comment');
-                $table->integer('notation_id')->comment('id news');
-                $table->text('text')->comment('Comment text');
-                $table->timestamps();
-                $table->softDeletes();
+        Schema::create('notation_comments', function (Blueprint $table) {
+            $table->increments('comment_id')->unsigned(false);
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->cascadeOnDelete()
+                ->comment('Id of the user who added the comment');
 
-                $table->foreign('user_id')->references('id')
-                    ->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->integer('notation_id')->comment('id news');
+            $table->text('text')->comment('Comment text');
+            $table->timestamps();
+            $table->softDeletes();
 
-                $table->foreign('notation_id')->references('notation_id')
-                    ->on('notations')->onUpdate('CASCADE')->onDelete('CASCADE');
-            }
-        );
+            $table->foreign('notation_id')->references('notation_id')
+                ->on('notations')->onUpdate('CASCADE')->onDelete('CASCADE');
+        });
     }
 
     /**

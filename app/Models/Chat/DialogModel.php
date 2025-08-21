@@ -2,6 +2,7 @@
 
 namespace App\Models\Chat;
 
+use App\Enums\Chat\DialogType;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -17,17 +18,22 @@ use Illuminate\Database\Eloquent\Model;
 class DialogModel extends Model
 {
     /**
-     * @var string 
+     * @var string
      */
     protected $table = 'dialog';
     /**
-     * @var string 
+     * @var string
      */
     protected $primaryKey = 'dialog_id';
     /**
-     * @var string[] 
+     * @var string[]
      */
     protected $dates = ['date_create'];
+
+    /** @var \class-string[] */
+    protected $casts = [
+        'type' => DialogType::class,
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

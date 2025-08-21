@@ -63,6 +63,7 @@ class ChatRepository
         return DB::table('messages')->insertGetId([
             'dialog'     => $dialogId,
             'send'       => Auth::user()->id,
+            'user_id'    => Auth::user()->id,
             'recive'     => $userId,
             'text'       => $message,
             'created_at' => now()

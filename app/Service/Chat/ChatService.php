@@ -138,7 +138,7 @@ class ChatService
             ->whereId((auth()->id() === $message->recive ?: $message->send))
         ->firstOrFail();
         broadcast(new \App\Events\ChatMessageEvent($user, $message));
-
+dd('32');
         return [
             'id' => $messageId,
             'created_at' => $message->created_at
@@ -318,6 +318,7 @@ class ChatService
         if (empty($dialogExist) || is_null($dialogExist)) {
             $dialogId = DB::table('dialog')->insertGetId([
                 'send' =>  Auth::user()->id,
+                'created_by' =>  Auth::user()->id,
                 'recive' => $userId
             ]);
         } else {
