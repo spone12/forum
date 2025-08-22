@@ -3,6 +3,7 @@
 namespace App\Models\Chat;
 
 use App\Enums\Chat\ChatRole;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -25,4 +26,20 @@ class DialogParticipant extends Model
     protected $casts = [
         'role' => ChatRole::class,
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function dialog()
+    {
+        return $this->belongsTo(DialogModel::class, 'dialog_id', 'dialog_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

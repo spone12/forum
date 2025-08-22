@@ -2,6 +2,7 @@
 
 namespace App\Models\Chat;
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,12 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class MessagesModel
  *
- * @property int $message_id
- * @property int $dialog
- * @property int $send
- * @property int $recive
- * @property text $text
- * @property tinyint $read
+ * @property int            $message_id
+ * @property int            $dialog
+ * @property int            $send
+ * @property int            $recive
+ * @property string         $text
+ * @property tinyint        $read
  * @property timestamp|null $created_at
  * @property timestamp|null $updated_at
  * @property timestamp|null $deleted_at
@@ -44,7 +45,7 @@ class MessagesModel extends Model
      * @var string[]
      */
     protected $fillable = [
-        'dialog',
+        'dialog_id',
         'send',
         'recive',
         'text'
@@ -63,11 +64,19 @@ class MessagesModel extends Model
     protected $appends = ['difference', 'created_at_hour'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function dialogObject()
+    public function dialog()
     {
-        return $this->hasOne(DialogModel::class, 'dialog_id', 'dialog');
+        return $this->belongsTo(DialogModel::class, 'dialog_id', 'dialog_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     /**
