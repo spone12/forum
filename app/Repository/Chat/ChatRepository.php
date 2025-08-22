@@ -26,7 +26,7 @@ class ChatRepository
             ->select('messages.send', 'dialog.dialog_id', 'messages.created_at', 'messages.text')
             ->join('users', 'dialog.recive', '=', 'users.id')
             ->join('users as user2', 'dialog.send', '=', 'user2.id')
-            ->leftJoin('messages', 'messages.dialog', '=', 'dialog.dialog_id')
+            ->leftJoin('messages', 'messages.dialog_id', '=', 'dialog.dialog_id')
             ->where(
                 function ($query) {
                     $query->where('dialog.recive', Auth::user()->id)
@@ -61,7 +61,7 @@ class ChatRepository
     public function sendMessage(string $message, int $dialogId, int $userId): int
     {
         return DB::table('messages')->insertGetId([
-            'dialog'     => $dialogId,
+            'dialog_id'  => $dialogId,
             'send'       => Auth::user()->id,
             'user_id'    => Auth::user()->id,
             'recive'     => $userId,
@@ -82,14 +82,14 @@ class ChatRepository
             ->select(
                 'm.message_id',
                 'm.text',
-                'm.dialog',
+                'm.dialog_id',
                 'm.created_at',
                 'm.updated_at',
                 'm.send',
                 'm.recive',
                 'm.text'
             )
-            ->where('dialog', $dialogId)
+            ->where('dialog_id', $dialogId)
             ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc')
             ->simplePaginate(10);

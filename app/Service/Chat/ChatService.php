@@ -55,7 +55,7 @@ class ChatService
 
         foreach ($userDialogs as $k => $chat) {
             $lastMessage = MessagesModel::query()
-                ->where('dialog', $chat->dialog_id)
+                ->where('dialog_id', $chat->dialog_id)
                 ->whereNull('deleted_at')
                 ->orderBy('created_at', 'DESC')
             ->first();
@@ -138,7 +138,7 @@ class ChatService
             ->whereId((auth()->id() === $message->recive ?: $message->send))
         ->firstOrFail();
         broadcast(new \App\Events\ChatMessageEvent($user, $message));
-dd('32');
+
         return [
             'id' => $messageId,
             'created_at' => $message->created_at
@@ -161,7 +161,7 @@ dd('32');
         Gate::authorize('access', $dialog);
 
         $messageObj = MessagesModel::where('message_id', $messageId)
-            ->where('dialog', $dialogId)
+            ->where('dialog_id', $dialogId)
             ->firstOrFail();
         $messageObj->text = $message;
 
@@ -191,7 +191,7 @@ dd('32');
 
         $messageObj = MessagesModel::query()
             ->where('message_id', $messageId)
-            ->where('dialog', $dialogId)
+            ->where('dialog_id', $dialogId)
             ->firstOrFail();
         $messageObj->delete();
 
@@ -221,7 +221,7 @@ dd('32');
 
         $messageObj = MessagesModel::onlyTrashed()
             ->where('message_id', $messageId)
-            ->where('dialog', $dialogId)
+            ->where('dialog_id', $dialogId)
             ->firstOrFail();
         $messageObj->restore();
 

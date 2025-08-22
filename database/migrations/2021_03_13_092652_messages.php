@@ -16,7 +16,7 @@ class Messages extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id('message_id');
 
-            $table->foreignId('dialog')
+            $table->foreignId('dialog_id')
                 ->constrained('dialog', 'dialog_id')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
@@ -29,15 +29,15 @@ class Messages extends Migration
             $table->foreignId('send')
                 ->constrained('users')
                 ->cascadeOnDelete()
-                ->comment('DELETE AFTER');
+                ->comment('DELETE AFTER REFACTORING');
 
             $table->foreignId('recive')
                 ->constrained('users')
                 ->cascadeOnDelete()
-                ->comment('DELETE AFTER');
+                ->comment('DELETE AFTER REFACTORING');
 
             $table->text('text')->comment('Message text')->nullable(false);
-            $table->boolean('read')->comment('Message read')->default(0);
+            $table->boolean('read')->comment('The message has been read')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

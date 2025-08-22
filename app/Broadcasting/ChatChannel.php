@@ -23,7 +23,7 @@ class ChatChannel
      */
     public function join(User $user, int $dialogId)
     {
-        $messageObj = MessagesModel::select(['send', 'recive'])->where('dialog', $dialogId)->firstOrFail();
+        $messageObj = MessagesModel::select(['send', 'recive'])->where('dialog_id', $dialogId)->firstOrFail();
         return auth()->check() && in_array(auth()->id(), [$messageObj->recive, $messageObj->send]);
     }
 }
