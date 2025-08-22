@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Dialog extends Migration
+class Dialogs extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class Dialog extends Migration
      */
     public function up()
     {
-        Schema::create('dialog', function (Blueprint $table) {
+        Schema::create('dialogs', function (Blueprint $table) {
             $table->id('dialog_id');
 
             $table->string('title', 100)
@@ -49,6 +49,6 @@ class Dialog extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dialog');
+        Schema::dropIfExists('dialogs');
     }
 }

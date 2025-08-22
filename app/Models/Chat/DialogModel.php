@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
  * Class DialogModel
  *
  * @property int    $dialog_id
+ * @property string $title
+ * @property enum   $type
+ * @property int    $created_by
  * @property int    $send
  * @property int    $recive
  * @property string $date_create
@@ -21,7 +24,7 @@ class DialogModel extends Model
     /**
      * @var string
      */
-    protected $table = 'dialog';
+    protected $table = 'dialogs';
     /**
      * @var string
      */
@@ -35,16 +38,6 @@ class DialogModel extends Model
     protected $casts = [
         'type' => DialogType::class,
     ];
-
-    /**
-     * @todo Delete after refactoring
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function messages()
-    {
-        return $this->hasMany(MessagesModel::class, 'dialog', 'dialog_id');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

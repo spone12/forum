@@ -17,7 +17,7 @@ class Messages extends Migration
             $table->id('message_id');
 
             $table->foreignId('dialog_id')
-                ->constrained('dialog', 'dialog_id')
+                ->constrained('dialogs', 'dialog_id')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 

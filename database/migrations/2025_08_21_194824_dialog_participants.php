@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('dialog_id')
-                ->constrained('dialog', 'dialog_id')
+                ->constrained('dialogs', 'dialog_id')
                 ->cascadeOnDelete()
                 ->comment('Dialog id');
 

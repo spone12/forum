@@ -22,15 +22,15 @@ class ChatRepository
      */
     public function search(string $word, $limit = 10): Collection
     {
-        return DB::table('dialog')
-            ->select('messages.send', 'dialog.dialog_id', 'messages.created_at', 'messages.text')
-            ->join('users', 'dialog.recive', '=', 'users.id')
-            ->join('users as user2', 'dialog.send', '=', 'user2.id')
-            ->leftJoin('messages', 'messages.dialog_id', '=', 'dialog.dialog_id')
+        return DB::table('dialogs')
+            ->select('messages.send', 'dialogs.dialog_id', 'messages.created_at', 'messages.text')
+            ->join('users', 'dialogs.recive', '=', 'users.id')
+            ->join('users as user2', 'dialogs.send', '=', 'user2.id')
+            ->leftJoin('messages', 'messages.dialog_id', '=', 'dialogs.dialog_id')
             ->where(
                 function ($query) {
-                    $query->where('dialog.recive', Auth::user()->id)
-                        ->orWhere('dialog.send', Auth::user()->id);
+                    $query->where('dialogs.recive', Auth::user()->id)
+                        ->orWhere('dialogs.send', Auth::user()->id);
                 }
             )
             ->where(
@@ -103,7 +103,7 @@ class ChatRepository
      */
     public function getUserDialog(int $userId)
     {
-        return DB::table('dialog AS d')
+        return DB::table('dialogs AS d')
             ->select('d.dialog_id')
             ->where(
                 function ($query) use ($userId) {

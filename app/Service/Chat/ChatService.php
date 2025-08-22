@@ -39,12 +39,12 @@ class ChatService
      */
     public function chat(int $limit = 0):Collection
     {
-        $userDialogs = DB::table('dialog')
+        $userDialogs = DB::table('dialogs')
             ->select('dialog_id', 'send', 'recive')
             ->where(
                 function ($query) {
-                    $query->where('dialog.send', Auth::user()->id)
-                        ->orWhere('dialog.recive', Auth::user()->id);
+                    $query->where('dialogs.send', Auth::user()->id)
+                        ->orWhere('dialogs.recive', Auth::user()->id);
                 }
             )
             ->get();
@@ -316,7 +316,7 @@ class ChatService
         }
 
         if (empty($dialogExist) || is_null($dialogExist)) {
-            $dialogId = DB::table('dialog')->insertGetId([
+            $dialogId = DB::table('dialogs')->insertGetId([
                 'send' =>  Auth::user()->id,
                 'created_by' =>  Auth::user()->id,
                 'recive' => $userId
