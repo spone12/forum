@@ -164,6 +164,7 @@ class ChatController extends Controller
      *
      * @param  int     $value   - mix (dialogId or userId)
      * @param  Request $request
+     *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|
      * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
@@ -176,10 +177,10 @@ class ChatController extends Controller
             $userDialog = $this->chatService->userDialog($dialogId, $value);
 
             return view('menu.Chat.chatLS', [
-                'dialogWithId' =>  $userDialog['recive'],
-                'dialogObj' => $userDialog['dialogMessages'],
-                'dialogId' => $dialogId,
-                'lastDialogs' => $this->chatService->chat(5)
+                'dialogWithId' => $userDialog->partnerId,
+                'dialogObj'    => $userDialog->messages,
+                'dialogId'     => $userDialog->dialogId,
+                'lastDialogs'  => $this->chatService->chat(5)
             ]);
         } catch (\Throwable $exception) {
             return redirect()

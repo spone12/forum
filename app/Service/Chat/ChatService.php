@@ -5,15 +5,16 @@ namespace App\Service\Chat;
 use App\Enums\Chat\ChatRole;
 use App\Enums\Chat\DialogType;
 use App\Exceptions\Chat\ChatMessageException;
-use App\Exceptions\General\NotAccessException;
 use App\Repository\Chat\ChatRepository;
 use App\User;
 use Carbon\Carbon;
 use App\Models\Chat\MessagesModel;
 use App\Traits\ArrayHelper;
-use App\Models\Chat\DialogModel as DialogModel;
+use App\Models\Chat\DialogModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use App\Service\NotificationsService;
+use App\DTO\Chat\PrivateChatDTO;
 use Illuminate\Support\Facades\{Gate, DB, Auth};
 
 /**
@@ -125,8 +126,7 @@ class ChatService
         $dialogId = (int)$data['dialogId'];
         $message = trim($data['message']);
 
-        $dialog = DialogModel::find($dialogId);
-        Gate::authorize('access', $dialog);
+        $this->checkDialogAccess($dialogId);
 
         $messageId = $this->chatRepository->sendMessage(
             $message,
@@ -163,8 +163,7 @@ class ChatService
         $messageId = (int) $data['messageId'];
         $message = trim($data['message']);
 
-        $dialog = DialogModel::find($dialogId);
-        Gate::authorize('access', $dialog);
+        $this->checkDialogAccess($dialogId);
 
         $messageObj = MessagesModel::where('message_id', $messageId)
             ->where('dialog_id', $dialogId)
@@ -192,8 +191,7 @@ class ChatService
         $dialogId = (int) $data['dialogId'];
         $messageId = (int) $data['messageId'];
 
-        $dialog = DialogModel::find($dialogId);
-        Gate::authorize('access', $dialog);
+        $this->checkDialogAccess($dialogId);
 
         $messageObj = MessagesModel::query()
             ->where('message_id', $messageId)
@@ -222,8 +220,7 @@ class ChatService
         $dialogId = (int) $data['dialogId'];
         $messageId = (int) $data['messageId'];
 
-        $dialog = DialogModel::find($dialogId);
-        Gate::authorize('access', $dialog);
+        $this->checkDialogAccess($dialogId);
 
         $messageObj = MessagesModel::onlyTrashed()
             ->where('message_id', $messageId)
@@ -245,65 +242,41 @@ class ChatService
      * User dialog service
      *
      * @param int $dialogId
-     * @param int $userMessageWithId
-     * @return array
+     * @param int $partnerId
+     *
+     * @return PrivateChatDTO
      */
-    public function userDialog(int $dialogId, $userMessageWithId = 0): array
+    public function userDialog(int $dialogId, int $partnerId = 0): PrivateChatDTO
     {
-        $currentUserId = Auth::user()->id;
-        $dialogCheck = DialogModel::where('dialog_id', $dialogId);
-
-        if (!$dialogCheck->exists()
-            || ($dialogCheck->first()->send != $currentUserId && $dialogCheck->first()->recive != $currentUserId)
-        ) {
-            throw new \Exception('Chat not exist');
-        }
-
-        $currentUserAvatar = Auth::user()->avatar;
+        $dialog = $this->checkDialogAccess($dialogId);
         $dialogMessages = $this->chatRepository->getDialogMessages($dialogId);
 
         if ($dialogMessages->count()) {
             // Get id of the user we are talking to
-            $anotherUserId = ($dialogMessages[0]->send == $currentUserId) ?
-                $dialogMessages[0]->recive :
-                $dialogMessages[0]->send;
-
-            $anotherUserObj = User::where('id', $anotherUserId)->first();
+            $partnerId = $dialog->participants
+                ->firstOrFail(fn($user) => $user->user_id !== auth()->id())
+                ->user_id;
 
             // Array of read messages
             $readedMessages = [];
             foreach ($dialogMessages as $message) {
-                $message->text = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $message->text);
                 $message->difference =
                     Carbon::createFromFormat('Y-m-d H:i:s', $message->created_at)->diffForHumans();
 
                 $this->formatChatDate($message);
-                if ($message->send == $currentUserId) {
-                    $message->name = Auth::user()->name;
-                    $message->avatar = $currentUserAvatar;
-                    $message->id = $currentUserId;
-                } else {
-                    $readedMessages[] = $message->message_id;
-                    $message->name = $anotherUserObj->name;
-                    $message->avatar = $anotherUserObj->avatar;
-                    $message->id = $anotherUserObj->id;
-                }
             }
 
             // Update read messages
             MessagesModel::whereIn('message_id', $readedMessages)
                 ->update(['read' => true]);
-            NotificationsService::userNotifications($currentUserId, true);
-
-        } else {
-            $anotherUserId = $userMessageWithId;
+            NotificationsService::userNotifications(Auth::user()->id, true);
         }
 
-        return [
-            'dialogMessages' => $dialogMessages,
-            'dialogId' => $dialogId,
-            'recive' => $anotherUserId
-        ];
+        return new PrivateChatDTO(
+            dialogId: $dialogId,
+            partnerId: $partnerId,
+            messages: $dialogMessages
+        );
     }
 
     /**
@@ -370,5 +343,16 @@ class ChatService
         } else {
             $obj->created_at = $chatDate->format('d.m.Y H:i');
         }
+    }
+
+    /**
+     * @param int $dialogId
+     * @return Model
+     */
+    private function checkDialogAccess(int $dialogId): Model
+    {
+        $dialogObject = DialogModel::findOrFail($dialogId);
+        Gate::authorize('access', $dialogObject);
+        return $dialogObject;
     }
 }

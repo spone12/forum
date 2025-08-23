@@ -68,7 +68,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     @if (count($userNorifications) > 0)
                                     @foreach ($userNorifications as $notification)
-                                        <a class="dropdown-item" href="{{ route('dialog', $notification->dialog) }}" onclick="">
+                                        <a class="dropdown-item" href="{{ route('dialog', $notification->dialog_id) }}" onclick="">
                                             <div>
                                                 <span class="notificationBell__countMessages">{{ $notification->count_notifications }}</span>
                                                 <img width=20 src="{{ asset($notification->avatar) }}" />

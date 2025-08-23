@@ -3,6 +3,7 @@
 namespace App\Repository\Chat;
 
 use App\Enums\Chat\DialogType;
+use App\Enums\Profile\ProfileEnum;
 use App\Models\Chat\DialogModel;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -87,10 +88,21 @@ class ChatRepository
                 'm.dialog_id',
                 'm.created_at',
                 'm.updated_at',
+                'm.user_id',
+                'u.name',
+                DB::raw(
+                'CASE WHEN u.avatar IS NULL THEN
+                        "' . ProfileEnum::NO_AVATAR . '"
+                     ELSE
+                        u.avatar
+                     END as avatar'
+                ),
+                'u.id',
                 'm.send',
                 'm.recive',
                 'm.text'
             )
+            ->join('users as u', 'm.user_id', '=', 'u.id')
             ->where('dialog_id', $dialogId)
             ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc')
