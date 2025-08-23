@@ -41,7 +41,7 @@ class ChatController extends Controller
      */
     protected function chat()
     {
-        return view('menu.Chat.chat', ['userChats' => $this->chatService->chat()]);
+        return view('menu.Chat.chat', ['userChats' => $this->chatService->chatList()]);
     }
 
     /**
@@ -180,7 +180,7 @@ class ChatController extends Controller
                 'dialogWithId' => $userDialog->partnerId,
                 'dialogObj'    => $userDialog->messages,
                 'dialogId'     => $userDialog->dialogId,
-                'lastDialogs'  => $this->chatService->chat(5)
+                'lastDialogs'  => $this->chatService->chatList(5)
             ]);
         } catch (\Throwable $exception) {
             return redirect()

@@ -36,59 +36,36 @@ class ChatService
     }
 
     /**
-     * Chat service
+     * Dialog chat list service
      *
      * @param int $limit
      * @return Collection
      */
-    public function chat(int $limit = 0):Collection
+    public function chatList(int $limit = 0):Collection
     {
-        $userDialogs = DB::table('dialogs')
-            ->select('dialog_id', 'send', 'recive')
-            ->where(
-                function ($query) {
-                    $query->where('dialogs.send', Auth::user()->id)
-                        ->orWhere('dialogs.recive', Auth::user()->id);
-                }
-            )
+        $userDialogs = auth()->user()->dialogs()
+            ->with([
+                'participants.user',
+                'lastMessage.user'
+            ])
+            ->whereHas('messages')
             ->get();
 
         if ($limit) {
             $userDialogs = $userDialogs->take($limit);
         }
 
-        foreach ($userDialogs as $k => $chat) {
-            $lastMessage = MessagesModel::query()
-                ->where('dialog_id', $chat->dialog_id)
-                ->whereNull('deleted_at')
-                ->orderBy('created_at', 'DESC')
-            ->first();
+        foreach ($userDialogs as $dialog) {
+            $lastMessage = $dialog->lastMessage;
 
-            if (is_null($lastMessage)) {
-                unset($userDialogs[$k]);
-                continue;
-            }
-
-            $dialogWithId = (Auth::user()->id == $chat->send) ? $chat->recive : $chat->send;
-            $user = User::query()
-                ->select(['users.id AS userId', 'name', 'avatar'])
-                    ->whereId($dialogWithId)
-                ->first();
-
-            $userDialogs[$k]->id = $user->userId;
-            $userDialogs[$k]->name = $user->name;
-            $userDialogs[$k]->avatar = $user->avatar;
-            $userDialogs[$k]->text = $lastMessage->text;
-            $userDialogs[$k]->created_at = $lastMessage->created_at;
-            $userDialogs[$k]->isRead = $lastMessage->read;
-            $userDialogs[$k]->isOnline = \Cache::get('is_online.' . $user->userId);
-            $userDialogs[$k]->difference =
-                Carbon::createFromFormat('Y-m-d H:i:s', $lastMessage->created_at)->diffForHumans();
-
-            if (strlen($userDialogs[$k]->text) >= 50) {
-                $chat->text = str_ireplace(['</div>'], '<br>', $chat->text);
-                $userDialogs[$k]->text = Str::limit(strip_tags($chat->text, '<br>'), 50);
-            }
+            $dialog->id = $lastMessage->user_id;
+            $dialog->name = $lastMessage->user->name;
+            $dialog->avatar = $lastMessage->user->avatar;
+            $dialog->created_at = $lastMessage->created_at;
+            $dialog->isRead = $lastMessage->read;
+            $dialog->isOnline = \Cache::get('is_online.' . $lastMessage->user_id);
+            $dialog->difference = $lastMessage->created_at->diffForHumans();
+            $dialog->text = \Str::limit($lastMessage->text, 50);
         }
         return $userDialogs->sortByDesc('created_at');
     }

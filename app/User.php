@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Enums\Profile\ProfileEnum;
+use App\Models\Chat\DialogModel;
 use App\Traits\ArrayHelper;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -98,6 +99,14 @@ class User extends Authenticatable
     public function notations()
     {
         return $this->hasMany(NotationModel::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function dialogs()
+    {
+        return $this->belongsToMany(DialogModel::class, 'dialog_participants', 'user_id', 'dialog_id');
     }
 
     /**

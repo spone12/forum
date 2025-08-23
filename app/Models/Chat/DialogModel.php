@@ -66,4 +66,21 @@ class DialogModel extends Model
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(MessagesModel::class, 'dialog_id', 'dialog_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function lastMessage()
+    {
+        return $this->hasOne(MessagesModel::class, 'dialog_id', 'dialog_id')
+            ->latest('created_at');
+    }
 }
