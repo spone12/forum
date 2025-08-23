@@ -7,11 +7,11 @@ use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class DialogParticipant
+ * Class DialogParticipants
  *
  * @package App\Models\Chat
  */
-class DialogParticipant extends Model
+class DialogParticipants extends Model
 {
     /** @var string */
     protected $table = 'dialog_participants';
@@ -21,6 +21,9 @@ class DialogParticipant extends Model
 
     /** @var string[] */
     protected $fillable = ['dialog_id', 'user_id', 'role'];
+
+    /** @var bool */
+    public $timestamps = false;
 
     /** @var \class-string[] */
     protected $casts = [

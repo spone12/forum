@@ -19,10 +19,16 @@ class ChatPolicy
             return Response::deny('Dialog not found!');
         }
 
-        if ($dialog->send === $user->id || $dialog->recive === $user->id) {
-            return Response::allow();
+        $dialogExists = DialogModel::with('participants')
+            ->where('dialog_id', $dialog->dialog_id)
+            ->where('type', $dialog->type)
+            ->whereHas('participants', fn($q) => $q->where('user_id', $user->id))
+        ->exists();
+
+        if (!$dialogExists) {
+            return Response::deny('You cannot access this action!');
         }
 
-        return Response::deny('You cannot access this action!');
+        return Response::allow();
     }
 }

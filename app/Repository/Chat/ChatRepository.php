@@ -2,6 +2,8 @@
 
 namespace App\Repository\Chat;
 
+use App\Enums\Chat\DialogType;
+use App\Models\Chat\DialogModel;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -101,22 +103,17 @@ class ChatRepository
      * @param int $userId
      * @return
      */
-    public function getUserDialog(int $userId)
+    public function getUserDialog(int $userId, DialogType $dialogType)
     {
-        return DB::table('dialogs AS d')
-            ->select('d.dialog_id')
-            ->where(
-                function ($query) use ($userId) {
-                    $query->where('d.send',  Auth::user()->id)
-                        ->where('d.recive', $userId);
-                }
-            )
-            ->orWhere(
-                function ($query) use ($userId) {
-                    $query->where('d.send',  $userId)
-                        ->where('d.recive', Auth::user()->id);
-                }
-            )
+        return DialogModel::query()
+            ->select('dialog_id')
+            ->where('type', $dialogType)
+            ->whereHas('participants', function ($q) {
+                $q->where('user_id', Auth::id());
+            })
+            ->whereHas('participants', function ($q) use ($userId) {
+                $q->where('user_id', $userId);
+            })
             ->first();
     }
 }

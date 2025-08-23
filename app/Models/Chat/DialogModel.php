@@ -34,6 +34,18 @@ class DialogModel extends Model
      */
     protected $dates = ['date_create'];
 
+    /** @var bool */
+    public $timestamps = false;
+
+    /** @var string[] */
+    protected $fillable = [
+        'title',
+        'type',
+        'created_by',
+        'send',
+        'recive'
+    ];
+
     /** @var \class-string[] */
     protected $casts = [
         'type' => DialogType::class,
@@ -42,9 +54,9 @@ class DialogModel extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function dialogParticipants()
+    public function participants()
     {
-        return $this->hasMany(DialogParticipant::class, 'dialog_id', 'dialog_id');
+        return $this->hasMany(DialogParticipants::class, 'dialog_id', 'dialog_id');
     }
 
     /**

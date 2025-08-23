@@ -2,7 +2,10 @@
 
 namespace App\Service\Chat;
 
+use App\Enums\Chat\ChatRole;
+use App\Enums\Chat\DialogType;
 use App\Exceptions\Chat\ChatMessageException;
+use App\Exceptions\General\NotAccessException;
 use App\Repository\Chat\ChatRepository;
 use App\User;
 use Carbon\Carbon;
@@ -121,6 +124,9 @@ class ChatService
         $dialogWithId = (int)$data['dialogWithId'];
         $dialogId = (int)$data['dialogId'];
         $message = trim($data['message']);
+
+        $dialog = DialogModel::find($dialogId);
+        Gate::authorize('access', $dialog);
 
         $messageId = $this->chatRepository->sendMessage(
             $message,
@@ -303,26 +309,43 @@ class ChatService
     /**
      * Get dialog Id or create new
      *
-     * @param  $userId   int
-     * @param  $dialogId int
+     * @param int        $userId
+     * @param int        $dialogId
+     * @param DialogType $dialogType
+     *
      * @return int
      */
-    public function getDialogId(int $userId, int $dialogId = 0): int
-    {
+    public function getDialogId(
+        int $userId,
+        int $dialogId = 0,
+        DialogType $dialogType = DialogType::PRIVATE
+    ): int {
+
         if ($dialogId === 0) {
-            $dialogExist = $this->chatRepository->getUserDialog($userId);
+            $dialog = $this->chatRepository->getUserDialog($userId, $dialogType);
         } else {
-            $dialogExist = DialogModel::where('dialog_id', $dialogId)->first();
+            $dialog = DialogModel::where('dialog_id', $dialogId)->first();
         }
 
-        if (empty($dialogExist) || is_null($dialogExist)) {
-            $dialogId = DB::table('dialogs')->insertGetId([
-                'send' =>  Auth::user()->id,
-                'created_by' =>  Auth::user()->id,
-                'recive' => $userId
-            ]);
+        if (empty($dialog) || is_null($dialog)) {
+
+            $dialogId = DB::transaction(function () use ($userId, $dialogType) {
+                $dialog = DialogModel::create([
+                    'send' => Auth::id(),
+                    'created_by' => Auth::id(),
+                    'recive' => $userId,
+                    'type' => $dialogType
+                ]);
+
+                $dialog->participants()->createMany([
+                    ['user_id' => Auth::id(), 'role' => ChatRole::OWNER],
+                    ['user_id' => $userId, 'role' => ChatRole::MEMBER],
+                ]);
+
+                return $dialog->dialog_id;
+            });
         } else {
-            $dialogId = $dialogExist->dialog_id;
+            $dialogId = $dialog->dialog_id;
         }
 
         return $dialogId;

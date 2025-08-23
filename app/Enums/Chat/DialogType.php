@@ -4,6 +4,6 @@ namespace App\Enums\Chat;
 
 enum DialogType:string
 {
-    case MEMBER = 'private';
-    case ADMIN  = 'group';
+    case PRIVATE = 'private';
+    case GROUP  = 'group';
 }
