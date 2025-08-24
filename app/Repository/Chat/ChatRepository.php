@@ -5,8 +5,6 @@ namespace App\Repository\Chat;
 use App\Enums\Chat\DialogType;
 use App\Enums\Profile\ProfileEnum;
 use App\Models\Chat\DialogModel;
-use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -17,34 +15,6 @@ use Illuminate\Support\Facades\DB;
  */
 class ChatRepository
 {
-    /**
-     * Search messages in dialogs
-     *
-     * @param  string   $searchText
-     * @param  int      $limit
-     * @return Collection
-     */
-    public function search(string $searchText, int $limit = 10): Collection
-    {
-        return DB::table('messages as m')
-            ->select(
-                'u.id',
-                'u.name',
-                'u.avatar',
-                'm.dialog_id',
-                'm.created_at',
-                'm.text'
-            )
-            ->join('users as u', 'm.user_id', '=', 'u.id')
-            ->where('u.id', auth()->id())
-            ->where('m.text', 'LIKE', "%{$searchText}%")
-            ->whereNull('m.deleted_at')
-            ->orderByDesc('m.created_at')
-            ->orderBy('u.name')
-            ->limit($limit)
-        ->get();
-    }
-
     /**
      * Get dialog messages by id
      *

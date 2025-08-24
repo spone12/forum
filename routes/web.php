@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Integrations\ServerHandler;
 use App\User as User;
-use App\Http\Controllers\Chat\ChatMessageController;
+use App\Http\Controllers\Chat\{ChatMessageController, ChatSearchController};
 
 /*
 |--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/chat'], function ()
 {
     Route::get('/', 'ChatController@chat')->name('chat');
     Route::get('/dialog/{dialogId}', 'ChatController@dialog')->name('dialog')->where('dialogId', '[0-9]{1,11}');
-    Route::post('/search/', 'ChatController@searchChat')->name('searchChat')->where('word', '[а-яА-Яa-zA-Z0-9 ]+');
+    Route::get('/search_all/', [ChatSearchController::class, 'searchAll'])->name('searchChat')->where('searchText', '[а-яА-Яa-zA-Z0-9 ]+');
 
     Route::post('/send_message/', [ChatMessageController::class, 'send'])->name('sendMessage');
     Route::put('/edit_message/', [ChatMessageController::class, 'edit'])->name('editMessage');

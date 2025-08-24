@@ -40,19 +40,6 @@ class ChatController extends Controller
     }
 
     /**
-     * Controller search chat
-     *
-     * @param  Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function searchChat(Request $request)
-    {
-        $word = $request->only('word');
-        $data = $this->chatService->search($word['word']);
-        return response()->json(['searchResult' => $data]);
-    }
-
-    /**
      * Controller current user dialogs
      *
      * @param  int     $value   - mix (dialogId or userId)

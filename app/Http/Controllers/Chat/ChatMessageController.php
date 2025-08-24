@@ -23,13 +23,13 @@ class ChatMessageController extends Controller
     protected $chatMessageService;
 
     /**
-     * ChatController constructor.
+     * ChatMessageService constructor.
      *
-     * @param ChatMessageService $chatService
+     * @param ChatMessageService $chatMessageService
      */
-    function __construct(ChatMessageService $chatService)
+    function __construct(ChatMessageService $chatMessageService)
     {
-        $this->chatMessageService = $chatService;
+        $this->chatMessageService = $chatMessageService;
     }
 
     /**
@@ -38,7 +38,7 @@ class ChatMessageController extends Controller
      * @param Request $request
      * @return ErrorResource|SuccessResource
      */
-    #[Route('/send_message/', methods: ['POST'])]
+    #[Route('/chat/send_message/', methods: ['POST'])]
     protected function send(ChatMessageRequest $request)
     {
         try {
@@ -66,7 +66,7 @@ class ChatMessageController extends Controller
      * @param Request $request
      * @return ErrorResource|SuccessResource
      */
-    #[Route('/edit_message/', methods: ['PUT'])]
+    #[Route('/chat/edit_message/', methods: ['PUT'])]
     protected function edit(Request $request)
     {
         try {
@@ -94,7 +94,7 @@ class ChatMessageController extends Controller
      * @param Request $request
      * @return ErrorResource|SuccessResource
      */
-    #[Route('/delete_message/', methods: ['DELETE'])]
+    #[Route('/chat/delete_message/', methods: ['DELETE'])]
     protected function delete(Request $request)
     {
         try {
@@ -121,7 +121,7 @@ class ChatMessageController extends Controller
      * @param Request $request
      * @return ErrorResource|SuccessResource
      */
-    #[Route('/recover_message/', methods: ['PUT'])]
+    #[Route('/chat/recover_message/', methods: ['PUT'])]
     protected function recover(Request $request)
     {
         try {

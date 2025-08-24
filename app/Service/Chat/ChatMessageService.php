@@ -25,8 +25,8 @@ class ChatMessageService
      * ChatService constructor.
      * @param ChatMessageRepository $chatRepository
      */
-    function __construct(ChatMessageRepository $chatRepository) {
-        $this->chatMessageRepository = $chatRepository;
+    function __construct(ChatMessageRepository $chatMessageRepository) {
+        $this->chatMessageRepository = $chatMessageRepository;
     }
 
     /**

@@ -248,9 +248,9 @@ $(document).ready(function () {
     });
 
     $("#chatSearch").on("change", function () {
-        var searchWord = $.trim($(this).val());
+        var searchText = $.trim($(this).val());
 
-        if (jQuery.isEmptyObject(searchWord)) {
+        if (jQuery.isEmptyObject(searchText)) {
             $(".Chat-search__item").not(".Chat-search__item:first").remove();
             $(".Chat-search").hide();
             $(".mainData").show();
@@ -258,12 +258,12 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: "/chat/search",
-            type: "POST",
+            url: "/chat/search_all",
+            type: "GET",
             headers: {
                 "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
             },
-            data: { word: searchWord },
+            data: { searchText: searchText },
             success: function (data) {
                 $(".mainData").hide();
 
