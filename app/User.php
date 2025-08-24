@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Enums\Cache\CacheKey;
 use App\Enums\Profile\ProfileEnum;
 use App\Models\Chat\DialogModel;
 use App\Traits\ArrayHelper;
@@ -139,7 +140,7 @@ class User extends Authenticatable
      */
     public function isOnline(int $userId)
     {
-        return Cache::get('is_online.' . $userId);
+        return Cache::get(CacheKey::USER_IS_ONLINE->value . $userId);
     }
 
     /**

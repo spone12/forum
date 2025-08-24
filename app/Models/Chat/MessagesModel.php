@@ -12,8 +12,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property int            $message_id
  * @property int            $dialog
- * @property int            $send
- * @property int            $recive
  * @property string         $text
  * @property tinyint        $read
  * @property timestamp|null $created_at

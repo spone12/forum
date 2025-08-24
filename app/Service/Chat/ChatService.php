@@ -2,6 +2,7 @@
 
 namespace App\Service\Chat;
 
+use App\Enums\Cache\CacheKey;
 use App\Enums\Chat\ChatRole;
 use App\Enums\Chat\DialogType;
 use App\Exceptions\Chat\ChatMessageException;
@@ -43,7 +44,8 @@ class ChatService
      */
     public function chatList(int $limit = 0):Collection
     {
-        $userDialogs = auth()->user()->dialogs()
+        $userDialogs = auth()->user()
+            ->dialogs()
             ->with([
                 'participants.user',
                 'lastMessage.user'
@@ -63,7 +65,7 @@ class ChatService
             $dialog->avatar = $lastMessage->user->avatar;
             $dialog->created_at = $lastMessage->created_at;
             $dialog->isRead = $lastMessage->read;
-            $dialog->isOnline = \Cache::get('is_online.' . $lastMessage->user_id);
+            $dialog->isOnline = \Cache::get(CacheKey::USER_IS_ONLINE->value . $lastMessage->user_id);
             $dialog->difference = $lastMessage->created_at->diffForHumans();
             $dialog->text = \Str::limit($lastMessage->text, 50);
         }

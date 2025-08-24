@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $title
  * @property enum   $type
  * @property int    $created_by
- * @property int    $send
- * @property int    $recive
  * @property string $date_create
  *
  * @package App\Models\Chat
