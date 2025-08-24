@@ -296,24 +296,18 @@ class ChatService
     }
 
     /**
-     * Formate create date message value
+     * Format create date message value
      *
-     * @param  $obj
-     * @param  $currentDate string
+     * @param \stdClass $obj
+     *
      * @return void
      */
-    private function formatChatDate($obj, $currentDate = ''): void
+    private function formatChatDate(\stdClass $obj): void
     {
-        $chatDate = Carbon::parse($obj->created_at);
-        if (empty($currentDate)) {
-            $currentDate = Carbon::now()->format('d.m.Y');
-        }
-
-        if ($currentDate === $chatDate->format('d.m.Y')) {
-            $obj->created_at = $chatDate->format('H:i');
-        } else {
-            $obj->created_at = $chatDate->format('d.m.Y H:i');
-        }
+        $messageCreatedAt = Carbon::parse($obj->created_at);
+        $obj->created_at = $messageCreatedAt->isToday()
+            ? $messageCreatedAt->format('H:i')
+            : $messageCreatedAt->format('d.m.Y H:i');
     }
 
     /**
