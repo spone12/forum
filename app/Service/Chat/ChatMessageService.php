@@ -3,10 +3,9 @@
 namespace App\Service\Chat;
 
 use App\Exceptions\Chat\ChatMessageException;
-use App\Repository\Chat\ChatMessageRepository;
+use App\Contracts\Chat\ChatMessageRepositoryInterface;
 use App\User;
 use App\Models\Chat\MessagesModel;
-use App\Traits\ArrayHelper;
 use App\Models\Chat\DialogModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
@@ -16,16 +15,15 @@ use Illuminate\Support\Facades\Gate;
  */
 class ChatMessageService
 {
-    use ArrayHelper;
-
-    /** @var ChatMessageRepository */
+    /** @var ChatMessageRepositoryInterface $chatMessageRepository */
     protected $chatMessageRepository;
 
     /**
      * ChatService constructor.
-     * @param ChatMessageRepository $chatRepository
+     *
+     * @param ChatMessageRepositoryInterface $chatMessageRepository
      */
-    function __construct(ChatMessageRepository $chatMessageRepository) {
+    function __construct(ChatMessageRepositoryInterface $chatMessageRepository) {
         $this->chatMessageRepository = $chatMessageRepository;
     }
 
@@ -43,7 +41,7 @@ class ChatMessageService
 
         $this->checkDialogAccess($dialogId);
 
-        $messageId = $this->chatMessageRepository->sendMessage(
+        $messageId = $this->chatMessageRepository->send(
             $message,
             app(ChatService::class)
                 ->getDialogId($dialogWithId, $dialogId)
@@ -79,13 +77,9 @@ class ChatMessageService
         $message = trim($data['message']);
 
         $this->checkDialogAccess($dialogId);
+        $messageObj = $this->chatMessageRepository->edit($message, $dialogId, $messageId);
 
-        $messageObj = MessagesModel::where('message_id', $messageId)
-            ->where('dialog_id', $dialogId)
-            ->firstOrFail();
-        $messageObj->text = $message;
-
-        if (!$messageObj->save()) {
+        if (!$messageObj->wasChanged('text')) {
             throw new ChatMessageException('The message has not been changed!');
         }
 
@@ -107,14 +101,9 @@ class ChatMessageService
         $messageId = (int) $data['messageId'];
 
         $this->checkDialogAccess($dialogId);
+        $messageObj = $this->chatMessageRepository->delete($dialogId, $messageId);
 
-        $messageObj = MessagesModel::query()
-            ->where('message_id', $messageId)
-            ->where('dialog_id', $dialogId)
-            ->firstOrFail();
-        $messageObj->delete();
-
-        if (!$messageObj->save()) {
+        if (!$messageObj->trashed()) {
             throw new ChatMessageException('The message was not deleted!');
         }
 
@@ -136,14 +125,9 @@ class ChatMessageService
         $messageId = (int) $data['messageId'];
 
         $this->checkDialogAccess($dialogId);
+        $messageObj = $this->chatMessageRepository->recover($dialogId, $messageId);
 
-        $messageObj = MessagesModel::onlyTrashed()
-            ->where('message_id', $messageId)
-            ->where('dialog_id', $dialogId)
-            ->firstOrFail();
-        $messageObj->restore();
-
-        if (!$messageObj->save()) {
+        if ($messageObj->trashed()) {
             throw new ChatMessageException('The message was not restored!');
         }
 

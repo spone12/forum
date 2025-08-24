@@ -71,17 +71,6 @@ class ChatService
     }
 
     /**
-     * Search service
-     *
-     * @param string $searchText
-     * @return
-     */
-    public function search(string $searchText)
-    {
-        return $this->chatRepository->search($searchText);
-    }
-
-    /**
      * User dialog service
      *
      * @param int $dialogId
