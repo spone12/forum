@@ -53,7 +53,7 @@ class ChatController extends Controller
     protected function searchChat(Request $request)
     {
         $word = $request->only('word');
-        $data = $this->chatService->search($word);
+        $data = $this->chatService->search($word['word']);
         return response()->json(['searchResult' => $data]);
     }
 

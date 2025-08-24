@@ -18,38 +18,31 @@ use Illuminate\Support\Facades\DB;
 class ChatRepository
 {
     /**
-     * Search word in the chats
+     * Search messages in dialogs
      *
-     * @param  $word string
+     * @param  string   $searchText
+     * @param  int      $limit
      * @return Collection
      */
-    public function search(string $word, $limit = 10): Collection
+    public function search(string $searchText, int $limit = 10): Collection
     {
-        return DB::table('dialogs')
-            ->select('messages.send', 'dialogs.dialog_id', 'messages.created_at', 'messages.text')
-            ->join('users', 'dialogs.recive', '=', 'users.id')
-            ->join('users as user2', 'dialogs.send', '=', 'user2.id')
-            ->leftJoin('messages', 'messages.dialog_id', '=', 'dialogs.dialog_id')
-            ->where(
-                function ($query) {
-                    $query->where('dialogs.recive', Auth::user()->id)
-                        ->orWhere('dialogs.send', Auth::user()->id);
-                }
+        return DB::table('messages as m')
+            ->select(
+                'u.id',
+                'u.name',
+                'u.avatar',
+                'm.dialog_id',
+                'm.created_at',
+                'm.text'
             )
-            ->where(
-                function ($query) use (&$word) {
-                    $query->where('messages.text', 'like', '%' . $word . '%')
-                        ->orWhere('users.name', 'like', '%'. $word .'%')
-                        ->orWhere('user2.name', 'like', '%'. $word .'%');
-                }
-            )
-            ->whereNull('messages.deleted_at')
-            //->groupBy('users.id')
-            ->orderBy('messages.created_at', 'DESC')
-            ->orderBy('users.name', 'ASC')
-            ->orderBy('user2.name', 'ASC')
+            ->join('users as u', 'm.user_id', '=', 'u.id')
+            ->where('u.id', auth()->id())
+            ->where('m.text', 'LIKE', "%{$searchText}%")
+            ->whereNull('m.deleted_at')
+            ->orderByDesc('m.created_at')
+            ->orderBy('u.name')
             ->limit($limit)
-            ->get();
+        ->get();
     }
 
     /**

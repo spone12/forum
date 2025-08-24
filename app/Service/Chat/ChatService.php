@@ -73,22 +73,12 @@ class ChatService
     /**
      * Search service
      *
-     * @param array $word
+     * @param string $searchText
      * @return
      */
-    public function search(array $word)
+    public function search(string $searchText)
     {
-        $searchResult = $this->chatRepository->search(
-            addslashes($word['word'])
-        );
-        foreach ($searchResult as $search) {
-            $search->text = str_ireplace(array("\r\n", "\r", "\n"), '<br/>&emsp;', $search->text);
-            $userObj = User::where('id', $search->send)->first();
-            $search->id = $userObj->id;
-            $search->name = $userObj->name;
-            $search->avatar = $userObj->avatar;
-        }
-        return $searchResult;
+        return $this->chatRepository->search($searchText);
     }
 
     /**
