@@ -23,7 +23,7 @@ class NotificationsRepository
     {
         return DB::table('messages AS m')
             ->selectRaw('COUNT(*) as count_notifications,
-                         dialog_id,
+                         m.dialog_id,
                          name,
                         (CASE WHEN avatar IS NULL THEN
                             "' . ProfileEnum::NO_AVATAR . '"
@@ -31,10 +31,13 @@ class NotificationsRepository
                             avatar
                          END) as avatar'
                 )
-                ->join('users', 'users.id', '=', 'm.send')
+                ->join('users', 'users.id', '=', 'm.user_id')
+                ->join('dialog_participants AS dp', 'dp.dialog_id', '=', 'm.dialog_id')
+                ->where('dp.user_id', $userId)
                 ->where('m.read', '=', 0)
-                ->where('m.recive', $userId)
+                ->where('m.user_id', '!=', $userId)
             ->groupBy('m.dialog_id')
+            ->having('count_notifications', '>', 0)
         ->get();
     }
 }

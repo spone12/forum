@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use App\Service\NotificationsService;
 use App\DTO\Chat\PrivateChatDTO;
-use Illuminate\Support\Facades\{Gate, DB, Auth};
+use Illuminate\Support\Facades\{Cache, Gate, DB, Auth};
 
 /**
  * Chat service class
@@ -235,18 +235,23 @@ class ChatService
                 ->user_id;
 
             // Array of read messages
-            $readedMessages = [];
+            $readMessages = [];
+
             foreach ($dialogMessages as $message) {
                 $message->difference =
                     Carbon::createFromFormat('Y-m-d H:i:s', $message->created_at)->diffForHumans();
 
                 $this->formatChatDate($message);
+
+                if ($message->user_id !== auth()->id()) {
+                    $readMessages[] = $message->message_id;
+                }
             }
 
             // Update read messages
-            MessagesModel::whereIn('message_id', $readedMessages)
+            MessagesModel::whereIn('message_id', $readMessages)
                 ->update(['read' => true]);
-            NotificationsService::userNotifications(Auth::user()->id, true);
+            NotificationsService::userNotifications(auth()->id(), true);
         }
 
         return new PrivateChatDTO(
@@ -315,7 +320,7 @@ class ChatService
             $currentDate = Carbon::now()->format('d.m.Y');
         }
 
-        if ($currentDate == $chatDate->format('d.m.Y')) {
+        if ($currentDate === $chatDate->format('d.m.Y')) {
             $obj->created_at = $chatDate->format('H:i');
         } else {
             $obj->created_at = $chatDate->format('d.m.Y H:i');

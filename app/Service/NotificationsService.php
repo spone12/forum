@@ -6,6 +6,7 @@ use App\Repository\NotificationsRepository;
 use App\Traits\ArrayHelper;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\TimeEnums;
+use App\Enums\Cache\CacheKey;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -15,8 +16,6 @@ use Illuminate\Support\Facades\Cache;
 class NotificationsService
 {
     use ArrayHelper;
-
-    const CACHE_NAME = 'userNorificationsBell';
 
     /** @var NotificationsRepository */
     protected $notificaRepository;
@@ -37,7 +36,7 @@ class NotificationsService
      * @return void
      */
     public static function forgetNotificationCache(int $userId)  {
-        Cache::forget(self::CACHE_NAME . $userId);
+        Cache::forget(CacheKey::CHAT_NOTIFICATIONS_BELL->value . $userId);
     }
 
     /**
@@ -45,26 +44,30 @@ class NotificationsService
      *
      * @param  int $userId
      * @param  bool $isClearCache
+     *
      * @return void
      */
     public static function userNotifications(int $userId = null, bool $isClearCache = false): void
     {
-
-        if (Auth::check()) {
-
-            if ($userId === null) {
-                $userId = Auth::user()->id;
+        if ($userId === null) {
+            if (!Auth::check()) {
+                return;
             }
+            $userId = Auth::id();
+        }
 
-            if ($isClearCache) {
-                self::forgetNotificationCache($userId);
-            }
+        if ($isClearCache) {
+            self::forgetNotificationCache($userId);
+        }
 
-            cache()->remember(self::CACHE_NAME . $userId, TimeEnums::DAY->value, function () use ($userId)   {
+        cache()->remember(
+            CacheKey::CHAT_NOTIFICATIONS_BELL->value . $userId,
+            TimeEnums::DAY->value,
+            function () use ($userId) {
                 $userNotifications = NotificationsRepository::getUserNotifications($userId);
                 ArrayHelper::noAvatar($userNotifications);
                 return $userNotifications;
-            });
-        }
+            }
+        );
     }
 }
