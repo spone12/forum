@@ -46,24 +46,6 @@ class ChatRepository
     }
 
     /**
-     * Send message in dialog
-     *
-     * @param  $message  string
-     * @param  $dialogId int
-     *
-     * @return int
-     */
-    public function sendMessage(string $message, int $dialogId): int
-    {
-        return DB::table('messages')->insertGetId([
-            'dialog_id'  => $dialogId,
-            'user_id'    => Auth::user()->id,
-            'text'       => $message,
-            'created_at' => now()
-        ]);
-    }
-
-    /**
      * Get dialog messages by id
      *
      * @param int $dialogId

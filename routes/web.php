@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Integrations\ServerHandler;
 use App\User as User;
+use App\Http\Controllers\Chat\ChatMessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,10 +55,11 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/chat'], function ()
     Route::get('/', 'ChatController@chat')->name('chat');
     Route::get('/dialog/{dialogId}', 'ChatController@dialog')->name('dialog')->where('dialogId', '[0-9]{1,11}');
     Route::post('/search/', 'ChatController@searchChat')->name('searchChat')->where('word', '[а-яА-Яa-zA-Z0-9 ]+');
-    Route::post('/send_message/', 'ChatController@sendMessage')->name('sendMessage');
-    Route::put('/edit_message/', 'ChatController@editMessage')->name('editMessage');
-    Route::delete('/delete_message/', 'ChatController@deleteMessage')->name('deleteMessage');
-    Route::put('/recover_message/', 'ChatController@recoverMessage')->name('recoverMessage');
+
+    Route::post('/send_message/', [ChatMessageController::class, 'send'])->name('sendMessage');
+    Route::put('/edit_message/', [ChatMessageController::class, 'edit'])->name('editMessage');
+    Route::delete('/delete_message/', [ChatMessageController::class, 'delete'])->name('deleteMessage');
+    Route::put('/recover_message/', [ChatMessageController::class, 'recover'])->name('recoverMessage');
 });
 
 /**
