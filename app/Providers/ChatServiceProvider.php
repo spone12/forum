@@ -15,6 +15,11 @@ class ChatServiceProvider extends ServiceProvider
             \App\Contracts\Chat\ChatMessageRepositoryInterface::class,
             \App\Repository\Chat\ChatMessageRepository::class
         );
+
+        $this->app->bind(
+            \App\Contracts\Chat\ChatMessageSearchInterface::class,
+            \App\Repository\Chat\ChatSearchRepository::class
+        );
     }
 
     /**

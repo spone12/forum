@@ -2,6 +2,7 @@
 
 namespace App\Repository\Chat;
 
+use App\Contracts\Chat\ChatMessageSearchInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -10,13 +11,14 @@ use Illuminate\Support\Facades\DB;
  *
  * @package App\Repository\Chat
  */
-class ChatSearchRepository
+class ChatSearchRepository implements ChatMessageSearchInterface
 {
     /**
      * Search messages in all dialogs
      *
      * @param  string   $searchText
      * @param  int      $limit
+     *
      * @return Collection
      */
     public function searchAll(string $searchText, int $limit = 10): Collection

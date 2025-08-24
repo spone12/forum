@@ -2,22 +2,22 @@
 
 namespace App\Service\Chat;
 
-use App\Repository\Chat\ChatSearchRepository;
+use App\Contracts\Chat\ChatMessageSearchInterface;
 
 /**
  * Chat search service class
  */
 class ChatSearchService
 {
-    /** @var ChatSearchRepository $chatSearchRepository */
+    /** @var ChatMessageSearchInterface $chatSearchRepository */
     protected $chatSearchRepository;
 
     /**
      * ChatSearchRepository constructor.
      *
-     * @param ChatSearchRepository $chatSearchRepository
+     * @param ChatMessageSearchInterface $chatSearchRepository
      */
-    function __construct(ChatSearchRepository $chatSearchRepository) {
+    function __construct(ChatMessageSearchInterface $chatSearchRepository) {
         $this->chatSearchRepository = $chatSearchRepository;
     }
 
