@@ -41,9 +41,7 @@ class DialogModel extends Model
     protected $fillable = [
         'title',
         'type',
-        'created_by',
-        'send',
-        'recive'
+        'created_by'
     ];
 
     /** @var \class-string[] */

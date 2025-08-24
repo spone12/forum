@@ -46,8 +46,6 @@ class MessagesModel extends Model
      */
     protected $fillable = [
         'dialog_id',
-        'send',
-        'recive',
         'text'
     ];
 

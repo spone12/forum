@@ -97,8 +97,7 @@ class ChatService
 
         $messageId = $this->chatRepository->sendMessage(
             $message,
-            $this->getDialogId($dialogWithId, $dialogId),
-            $dialogWithId
+            $this->getDialogId($dialogWithId, $dialogId)
         );
 
         if (!$messageId) {
@@ -108,7 +107,7 @@ class ChatService
         // Websocket
         $message = MessagesModel::where('message_id', $messageId)->firstOrFail();
         $user = User::select(['id', 'name', 'avatar'])
-            ->whereId((auth()->id() === $message->recive ?: $message->send))
+            ->whereId(auth()->id())
         ->firstOrFail();
         broadcast(new \App\Events\ChatMessageEvent($user, $message));
 
@@ -276,14 +275,12 @@ class ChatService
 
             $dialogId = DB::transaction(function () use ($userId, $dialogType) {
                 $dialog = DialogModel::create([
-                    'send' => Auth::id(),
-                    'created_by' => Auth::id(),
-                    'recive' => $userId,
+                    'created_by' => auth()->id(),
                     'type' => $dialogType
                 ]);
 
                 $dialog->participants()->createMany([
-                    ['user_id' => Auth::id(), 'role' => ChatRole::OWNER],
+                    ['user_id' => auth()->id(), 'role' => ChatRole::OWNER],
                     ['user_id' => $userId, 'role' => ChatRole::MEMBER],
                 ]);
 

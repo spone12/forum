@@ -12,16 +12,6 @@ class ChatMessageNotifyListener
     protected $actionDialog = '/chat/dialog/';
 
     /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      *
      * @param  object  $event
@@ -30,7 +20,7 @@ class ChatMessageNotifyListener
     public function handle(ChatMessageEvent $event)
     {
         // Clear user recive count notifications
-        Cache::forget(CacheKey::CHAT_NOTIFICATIONS_BELL->value . $event->messageObj->recive);
+        Cache::forget(CacheKey::CHAT_NOTIFICATIONS_BELL->value . $event->messageObj->user_id);
 
        /* // TODO Add a check if notification is enabled for a user
         $recive = User::where('id', $event->messageObj->recive)

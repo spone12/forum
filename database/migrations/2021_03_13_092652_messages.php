@@ -26,16 +26,6 @@ class Messages extends Migration
                 ->cascadeOnDelete()
                 ->comment('User who created a message');
 
-            $table->foreignId('send')
-                ->constrained('users')
-                ->cascadeOnDelete()
-                ->comment('DELETE AFTER REFACTORING');
-
-            $table->foreignId('recive')
-                ->constrained('users')
-                ->cascadeOnDelete()
-                ->comment('DELETE AFTER REFACTORING');
-
             $table->text('text')->comment('Message text')->nullable(false);
             $table->boolean('read')->comment('The message has been read')->default(0);
             $table->timestamps();

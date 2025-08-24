@@ -50,17 +50,14 @@ class ChatRepository
      *
      * @param  $message  string
      * @param  $dialogId int
-     * @param  $userId   int
      *
      * @return int
      */
-    public function sendMessage(string $message, int $dialogId, int $userId): int
+    public function sendMessage(string $message, int $dialogId): int
     {
         return DB::table('messages')->insertGetId([
             'dialog_id'  => $dialogId,
-            'send'       => Auth::user()->id,
             'user_id'    => Auth::user()->id,
-            'recive'     => $userId,
             'text'       => $message,
             'created_at' => now()
         ]);
@@ -91,8 +88,6 @@ class ChatRepository
                      END as avatar'
                 ),
                 'u.id',
-                'm.send',
-                'm.recive',
                 'm.text'
             )
             ->join('users as u', 'm.user_id', '=', 'u.id')
