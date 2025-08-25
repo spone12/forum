@@ -28,7 +28,9 @@ class Dialogs extends Migration
                 ->cascadeOnDelete()
                 ->comment('The user who created the dialog');
 
-            $table->timestamp('date_create')->comment('Date the dialog was created')->useCurrent = true;
+            $table->timestamp('date_create')
+                ->useCurrent()
+                ->comment('Date the dialog was created');
         });
     }
 

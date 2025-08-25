@@ -28,7 +28,13 @@ return new class extends Migration
                 'member', 'admin', 'owner'
             ])->default('member');
 
-            $table->timestamp('joined_at')->comment('The time at which the user entered the chat')->useCurrent = true;
+            $table->timestamp('joined_at')
+                ->useCurrent()
+                ->comment('The time at which the user entered the chat');
+
+            $table->unique(['dialog_id', 'user_id']);
+            $table->index('dialog_id');
+            $table->index('user_id');
         });
     }
 
