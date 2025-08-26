@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Repository\Chat;
+namespace App\Repository\Chat\Messages;
 
-use App\Contracts\Chat\ChatMessageRepositoryInterface;
+use App\Contracts\Chat\Messages\MessageCommandRepositoryInterface;
 use App\Models\Chat\MessagesModel;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\{Auth, DB};
 
 /**
  * Class ChatRepository
  *
  * @package App\Repository\Chat
  */
-class ChatMessageRepository implements ChatMessageRepositoryInterface
+class MessageCommandRepository implements MessageCommandRepositoryInterface
 {
     /**
      * Send message in dialog

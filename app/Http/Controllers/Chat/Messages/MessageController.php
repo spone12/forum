@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Chat;
+namespace App\Http\Controllers\Chat\Messages;
 
 use App\Exceptions\Chat\ChatMessageException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChatMessageRequest;
-use App\Service\Chat\ChatMessageService;
+use App\Service\Chat\Messages\MessageCommandService;
 use Illuminate\Http\Request;
 use App\Http\Resources\{SuccessResource, ErrorResource};
 use App\Http\Resources\Chat\ChatMessageResource;
@@ -15,21 +15,21 @@ use App\Http\Resources\Chat\ChatMessageResource;
  *
  * @package App\Http\Controllers
  */
-class ChatMessageController extends Controller
+class MessageController extends Controller
 {
     /**
-     * @var ChatMessageService $chatMessageService
+     * @var MessageCommandService $messageService
      */
-    protected $chatMessageService;
+    protected $messageService;
 
     /**
      * ChatMessageService constructor.
      *
-     * @param ChatMessageService $chatMessageService
+     * @param MessageCommandService $messageService
      */
-    function __construct(ChatMessageService $chatMessageService)
+    function __construct(MessageCommandService $messageService)
     {
-        $this->chatMessageService = $chatMessageService;
+        $this->messageService = $messageService;
     }
 
     /**
@@ -50,7 +50,7 @@ class ChatMessageController extends Controller
 
             return new SuccessResource(
                 new ChatMessageResource(
-                    $this->chatMessageService->send($data)
+                    $this->messageService->send($data)
                 )
             );
         } catch (ChatMessageException $exception) {
@@ -78,7 +78,7 @@ class ChatMessageController extends Controller
 
             return new SuccessResource(
                 new ChatMessageResource(
-                    $this->chatMessageService->edit($data)
+                    $this->messageService->edit($data)
                 )
             );
         } catch (ChatMessageException $exception) {
@@ -105,7 +105,7 @@ class ChatMessageController extends Controller
 
             return new SuccessResource(
                 new ChatMessageResource(
-                    $this->chatMessageService->delete($data)
+                    $this->messageService->delete($data)
                 )
             );
         } catch (ChatMessageException $exception) {
@@ -128,7 +128,7 @@ class ChatMessageController extends Controller
             $data = $request->only(['dialogId', 'messageId']);
             return new SuccessResource(
                 new ChatMessageResource(
-                    $this->chatMessageService->recover($data)
+                    $this->messageService->recover($data)
                 )
             );
         } catch (ChatMessageException $exception) {

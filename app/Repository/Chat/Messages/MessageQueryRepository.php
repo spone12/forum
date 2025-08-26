@@ -1,27 +1,28 @@
 <?php
 
-namespace App\Repository\Chat;
+namespace App\Repository\Chat\Messages;
 
-use App\Enums\Chat\DialogType;
+use App\Contracts\Chat\Messages\MessageQueryRepositoryInterface;
 use App\Enums\Profile\ProfileEnum;
-use App\Models\Chat\DialogModel;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class ChatRepository
+ * Class MessageQueryRepository
  *
- * @package App\Repository\Chat
+ * @package App\Repository\Chat\Messages
  */
-class ChatRepository
+class MessageQueryRepository implements MessageQueryRepositoryInterface
 {
     /**
      * Get dialog messages by id
      *
      * @param int $dialogId
-     * @return
+     * @param int $messagesPerPage
+     *
+     * @return \Illuminate\Contracts\Pagination\Paginator
      */
-    public function getDialogMessages(int $dialogId)
+    public function getDialogMessages(int $dialogId, int $messagesPerPage = 10): Paginator
     {
         return DB::table('messages AS m')
             ->select(
@@ -45,27 +46,7 @@ class ChatRepository
             ->join('users as u', 'm.user_id', '=', 'u.id')
             ->where('dialog_id', $dialogId)
             ->whereNull('deleted_at')
-            ->orderBy('created_at', 'desc')
-            ->simplePaginate(10);
-    }
-
-    /**
-     * Get user dialog
-     *
-     * @param int $userId
-     * @return
-     */
-    public function getUserDialog(int $userId, DialogType $dialogType)
-    {
-        return DialogModel::query()
-            ->select('dialog_id')
-            ->where('type', $dialogType)
-            ->whereHas('participants', function ($q) {
-                $q->where('user_id', Auth::id());
-            })
-            ->whereHas('participants', function ($q) use ($userId) {
-                $q->where('user_id', $userId);
-            })
-            ->first();
+            ->orderByDesc('created_at')
+            ->simplePaginate($messagesPerPage);
     }
 }

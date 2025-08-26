@@ -4,6 +4,14 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use App\Contracts\Chat\{ChatMessageSearchInterface};
+use App\Contracts\Chat\Dialog\{DialogCommandRepositoryInterface, DialogQueryRepositoryInterface};
+use App\Contracts\Chat\Messages\{MessageCommandRepositoryInterface, MessageQueryRepositoryInterface};
+
+use App\Repository\Chat\{ChatSearchRepository};
+use App\Repository\Chat\Dialog\{DialogCommandRepository, DialogQueryRepository};
+use App\Repository\Chat\Messages\{MessageQueryRepository, MessageCommandRepository};
+
 class ChatServiceProvider extends ServiceProvider
 {
     /**
@@ -11,15 +19,11 @@ class ChatServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(
-            \App\Contracts\Chat\ChatMessageRepositoryInterface::class,
-            \App\Repository\Chat\ChatMessageRepository::class
-        );
-
-        $this->app->bind(
-            \App\Contracts\Chat\ChatMessageSearchInterface::class,
-            \App\Repository\Chat\ChatSearchRepository::class
-        );
+        $this->app->bind(MessageCommandRepositoryInterface::class, MessageCommandRepository::class);
+        $this->app->bind(ChatMessageSearchInterface::class, ChatSearchRepository::class);
+        $this->app->bind(DialogCommandRepositoryInterface::class, DialogCommandRepository::class);
+        $this->app->bind(DialogQueryRepositoryInterface::class, DialogQueryRepository::class);
+        $this->app->bind(MessageQueryRepositoryInterface::class, MessageQueryRepository::class);
     }
 
     /**

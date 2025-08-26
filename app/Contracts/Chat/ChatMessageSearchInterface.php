@@ -1,7 +1,6 @@
 <?php
 namespace App\Contracts\Chat;
 
-use App\Models\Chat\MessagesModel;
 use Illuminate\Support\Collection;
 
 /**

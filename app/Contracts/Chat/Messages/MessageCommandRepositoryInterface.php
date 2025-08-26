@@ -1,5 +1,5 @@
 <?php
-namespace App\Contracts\Chat;
+namespace App\Contracts\Chat\Messages;
 
 use App\Models\Chat\MessagesModel;
 
@@ -8,11 +8,13 @@ use App\Models\Chat\MessagesModel;
  *
  * @package App\Contracts\Chat
  */
-interface ChatMessageRepositoryInterface
+interface MessageCommandRepositoryInterface
 {
     public function send(string $message, int $dialogId): int;
 
     public function edit(string $message, int $dialogId, int $messageId): MessagesModel;
 
     public function delete(int $dialogId, int $messageId): MessagesModel;
+
+    public function recover(int $dialogId, int $messageId): MessagesModel;
 }

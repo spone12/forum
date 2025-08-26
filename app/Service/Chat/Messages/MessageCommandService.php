@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Service\Chat;
+namespace App\Service\Chat\Messages;
 
 use App\Exceptions\Chat\ChatMessageException;
-use App\Contracts\Chat\ChatMessageRepositoryInterface;
+use App\Contracts\Chat\Messages\MessageCommandRepositoryInterface;
+use App\Service\Chat\Dialog\DialogService;
 use App\User;
-use App\Models\Chat\MessagesModel;
-use App\Models\Chat\DialogModel;
+use App\Models\Chat\{MessagesModel, DialogModel};
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 
 /**
  * Chat message service class
  */
-class ChatMessageService
+class MessageCommandService
 {
-    /** @var ChatMessageRepositoryInterface $chatMessageRepository */
-    protected $chatMessageRepository;
+    /** @var MessageCommandRepositoryInterface $repository */
+    protected $repository;
 
     /**
      * ChatService constructor.
      *
-     * @param ChatMessageRepositoryInterface $chatMessageRepository
+     * @param MessageCommandRepositoryInterface $repository
      */
-    function __construct(ChatMessageRepositoryInterface $chatMessageRepository) {
-        $this->chatMessageRepository = $chatMessageRepository;
+    function __construct(MessageCommandRepositoryInterface $repository) {
+        $this->repository = $repository;
     }
 
     /**
@@ -41,9 +41,9 @@ class ChatMessageService
 
         $this->checkDialogAccess($dialogId);
 
-        $messageId = $this->chatMessageRepository->send(
+        $messageId = $this->repository->send(
             $message,
-            app(ChatService::class)
+            app(DialogService::class)
                 ->getDialogId($dialogWithId, $dialogId)
         );
 
@@ -77,7 +77,7 @@ class ChatMessageService
         $message = trim($data['message']);
 
         $this->checkDialogAccess($dialogId);
-        $messageObj = $this->chatMessageRepository->edit($message, $dialogId, $messageId);
+        $messageObj = $this->repository->edit($message, $dialogId, $messageId);
 
         if (!$messageObj->wasChanged('text')) {
             throw new ChatMessageException('The message has not been changed!');
@@ -101,7 +101,7 @@ class ChatMessageService
         $messageId = (int) $data['messageId'];
 
         $this->checkDialogAccess($dialogId);
-        $messageObj = $this->chatMessageRepository->delete($dialogId, $messageId);
+        $messageObj = $this->repository->delete($dialogId, $messageId);
 
         if (!$messageObj->trashed()) {
             throw new ChatMessageException('The message was not deleted!');
@@ -125,7 +125,7 @@ class ChatMessageService
         $messageId = (int) $data['messageId'];
 
         $this->checkDialogAccess($dialogId);
-        $messageObj = $this->chatMessageRepository->recover($dialogId, $messageId);
+        $messageObj = $this->repository->recover($dialogId, $messageId);
 
         if ($messageObj->trashed()) {
             throw new ChatMessageException('The message was not restored!');

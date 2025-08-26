@@ -19,7 +19,7 @@ function sendMessage() {
     }
 
     $.ajax({
-        url: "/chat/send_message",
+        url: "/chat/message/send",
         type: "POST",
         headers: {
             "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
@@ -50,7 +50,7 @@ function editMessage(messageId) {
     }
 
     $.ajax({
-        url: "/chat/edit_message",
+        url: "/chat/message/edit",
         type: "PUT",
         headers: {
             "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
@@ -165,7 +165,7 @@ $(document).ready(function () {
         stopEditMessage();
 
         $.ajax({
-            url: "/chat/delete_message",
+            url: "/chat/message/delete",
             type: "DELETE",
             headers: {
                 "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
@@ -197,7 +197,7 @@ $(document).ready(function () {
         let messageId = mainBlock.attr("id").split("chat-")[1];
 
         $.ajax({
-            url: "/chat/recover_message",
+            url: "/chat/message/recover",
             type: "PUT",
             headers: {
                 "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
@@ -258,7 +258,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: "/chat/search_all",
+            url: "/chat/search/all",
             type: "GET",
             headers: {
                 "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),

@@ -1,30 +1,32 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Chat\Dialog;
 
+use App\Http\Controllers\Controller;
+use App\Service\Chat\Dialog\DialogService;
+use App\Service\Chat\Messages\MessageQueryService;
 use Illuminate\Http\Request;
-use App\Service\Chat\ChatService;
 
 /**
  * Class ChatController
  *
  * @package App\Http\Controllers
  */
-class ChatController extends Controller
+class DialogController extends Controller
 {
     /**
-     * @var ChatService
+     * @var DialogService
      */
-    protected $chatService;
+    protected $dialogService;
 
     /**
      * ChatController constructor.
      *
-     * @param ChatService $chatService
+     * @param DialogService $dialogService
      */
-    function __construct(ChatService $chatService)
+    function __construct(DialogService $dialogService)
     {
-        $this->chatService = $chatService;
+        $this->dialogService = $dialogService;
     }
 
     /**
@@ -34,33 +36,35 @@ class ChatController extends Controller
      * \Illuminate\Contracts\View\Factory|
      * \Illuminate\Contracts\View\View
      */
-    protected function chat()
+    protected function dialogList()
     {
-        return view('menu.Chat.chat', ['userChats' => $this->chatService->chatList()]);
+        return view('menu.Chat.chat', [
+            'userChats' => $this->dialogService->dialogList()
+        ]);
     }
 
     /**
      * Controller current user dialogs
      *
-     * @param  int     $value   - mix (dialogId or userId)
+     * @param  int     $value   - mixed (dialogId or userId)
      * @param  Request $request
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|
      * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    protected function dialog(Request $request, int $value)
+    protected function getDialogMessages(Request $request, int $value)
     {
         try {
             $dialogId = $request->get('fromProfile') ?
-                app(ChatService::class)->getDialogId($value) :
+                $this->dialogService->getDialogId($value) :
                 $value;
-            $userDialog = $this->chatService->userDialog($dialogId, $value);
+            $userDialog = app(MessageQueryService::class)->getDialogMessages($dialogId, $value);
 
             return view('menu.Chat.chatLS', [
                 'dialogWithId' => $userDialog->partnerId,
                 'dialogObj'    => $userDialog->messages,
                 'dialogId'     => $userDialog->dialogId,
-                'lastDialogs'  => $this->chatService->chatList(5)
+                'lastDialogs'  => $this->dialogService->dialogList(5)
             ]);
         } catch (\Throwable $exception) {
             return redirect()

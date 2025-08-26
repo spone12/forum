@@ -23,7 +23,7 @@
                 <div class='row align-items-center'>
                     <div class="input-group">
 
-                        <input id='chatSearch' name="searchChat" type="text" class="form-control" placeholder="{{ __('app.search') }}" aria-label="search" aria-describedby="search-button">
+                        <input id='chatSearch' name="searchAllChat" type="text" class="form-control" placeholder="{{ __('app.search') }}" aria-label="search" aria-describedby="search-button">
                             <span class="search_chat" isQuery=0>
                                 <span>/</span>
                             </span>
