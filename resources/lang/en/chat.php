@@ -15,6 +15,9 @@ return [
        'recover' => 'Recover',
        'scroll_down' => 'Scroll down',
     ],
+    'search' => [
+        'results' => '{0} No search results|{1} Search result: :count message|[2,*] Search result: :count messages',
+    ],
     'attachment' => [
         'photo' => 'Photo',
         'video' => 'Video',

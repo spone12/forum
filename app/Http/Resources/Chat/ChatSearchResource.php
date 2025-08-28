@@ -14,6 +14,11 @@ class ChatSearchResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return $this->resource->toArray();
+        $data = $this->resource->toArray();
+        $count = count($data);
+        return [
+            'searchResultMessage' => trans_choice('chat.search.results', $count, ['count' => $count]),
+            'items' => $data
+        ];
     }
 }
