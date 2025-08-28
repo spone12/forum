@@ -57,14 +57,14 @@ Route::middleware('auth')->prefix('chat')->group(function () {
     Route::get('/dialog/{dialogId}', [DialogController::class, 'getDialogMessages'])->name('dialog')->where('dialogId', '[0-9]{1,11}');
 
     Route::prefix('message')->group(function () {
-        Route::post('/send/', [MessageController::class, 'send'])->name('sendMessage');
-        Route::put('/edit/', [MessageController::class, 'edit'])->name('editMessage');
-        Route::delete('/delete/', [MessageController::class, 'delete'])->name('deleteMessage');
-        Route::put('/recover/', [MessageController::class, 'recover'])->name('recoverMessage');
+        Route::post('/send', [MessageController::class, 'send'])->name('sendMessage');
+        Route::put('/edit', [MessageController::class, 'edit'])->name('editMessage');
+        Route::delete('/delete', [MessageController::class, 'delete'])->name('deleteMessage');
+        Route::put('/recover', [MessageController::class, 'recover'])->name('recoverMessage');
     });
 
     Route::prefix('search')->group(function () {
-        Route::get('/all/', [ChatSearchController::class, 'searchAll'])->name('searchAllChat')->where('searchText', '[а-яА-Яa-zA-Z0-9 ]+');
+        Route::get('/all', [ChatSearchController::class, 'searchAll'])->name('searchAllChat')->where('searchText', '[а-яА-Яa-zA-Z0-9 ]+');
     });
 });
 

@@ -5,7 +5,7 @@ namespace App\Http\Resources\Chat;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ChatMessageResource extends JsonResource
+class ChatSearchResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

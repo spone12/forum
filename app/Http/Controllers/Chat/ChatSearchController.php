@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Chat;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Chat\SearchMessageRequest;
+use App\Http\Resources\Chat\ChatSearchResource;
+use App\Http\Resources\{ErrorResource, SuccessResource};
 use App\Service\Chat\ChatSearchService;
-use Illuminate\Http\Request;
+use App\DTO\Chat\SearchDTO;
 
 /**
  * Class ChatSearchController
@@ -29,16 +32,25 @@ class ChatSearchController extends Controller
     }
 
     /**
-     * Controller search chat
+     * Controller for searching messages in all dialogs
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param SearchMessageRequest $request
+     * @return ErrorResource|SuccessResource
      */
     #[Route('/chat/search_all/', methods: ['GET'])]
-    protected function searchAll(Request $request)
+    protected function searchAll(SearchMessageRequest $request)
     {
-        $searchText = $request->input('searchText');
-        $data = $this->chatSearchService->searchAll($searchText);
-        return response()->json(['searchResult' => $data]);
+        try {
+            $validated = $request->validated();
+            $dto = new SearchDTO($validated['text']);
+
+            return new SuccessResource(
+                new ChatSearchResource(
+                    $this->chatSearchService->searchAll($dto)
+                )
+            );
+        } catch (\Throwable $exception) {
+            return new ErrorResource();
+        }
     }
 }

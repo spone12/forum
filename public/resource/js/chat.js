@@ -264,19 +264,20 @@ $(document).ready(function () {
                 "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
             },
             data: { searchText: searchText },
-            success: function (data) {
-                $(".mainData").hide();
+            success: function (response) {
+               $(".mainData").hide();
 
-                if (jQuery.isEmptyObject(data.searchResult[0])) {
+               if (response.data.length === 0) {
                     $(".Chat-search__item:eq(0)")
                         .find(".Chat-search_body")
-                        .html("Рузультатов поиска нет");
+                        .html("Результатов поиска нет");
                     $(".Chat-search__item")
                         .not(".Chat-search__item:first")
                         .remove();
                     return;
                 }
 
+               let data = response.data;
                 $(".search_chat").attr("isQuery", 1).text("x");
 
                 var chat = $(".Chat-search__item:eq(0)").clone();
@@ -284,13 +285,14 @@ $(document).ready(function () {
                 $(".Chat-search__item:eq(0)")
                     .find(".Chat-search_body")
                     .html(
-                        "Результат поиска: " + data.searchResult.length + " элемент"
+                        "Результат поиска: " + data.length + " элемент"
                     );
                 $(".Chat-search__item")
                     .not(".Chat-search__item:first")
                     .remove();
 
-                $.each(data.searchResult, function (key, searchItem) {
+                $.each(data, function (key, searchItem) {
+                    console.log(key, searchItem);
                     var elements = chat.clone();
                     elements
                         .find(".Chat-search_body")

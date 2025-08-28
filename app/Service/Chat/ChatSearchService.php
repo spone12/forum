@@ -3,6 +3,7 @@
 namespace App\Service\Chat;
 
 use App\Contracts\Chat\ChatMessageSearchInterface;
+use App\DTO\Chat\SearchDTO;
 
 /**
  * Chat search service class
@@ -24,11 +25,11 @@ class ChatSearchService
     /**
      * Search messages in all dialogs
      *
-     * @param string $searchText
+     * @param string $search
      * @return
      */
-    public function searchAll(string $searchText)
+    public function searchAll(SearchDTO $search)
     {
-        return $this->chatSearchRepository->searchAll($searchText);
+        return $this->chatSearchRepository->searchAll($search->text);
     }
 }
