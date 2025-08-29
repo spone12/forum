@@ -15,24 +15,25 @@ use Illuminate\Support\Facades\DB;
 class DialogCommandRepository implements DialogCommandRepositoryInterface
 {
     /**
-     * Create a dialogue and dialogue participants
+     * Create a dialogue between users
      *
      * @param int        $userId
+     * @param int        $anotherUserId
      * @param DialogType $dialogType
      *
      * @return int
      */
-    public function createDialogWithParticipants(int $userId, DialogType $dialogType): int
+    public function createDialogBetweenUsers(int $userId, int $anotherUserId, DialogType $dialogType): int
     {
-        return DB::transaction(function () use ($userId, $dialogType) {
+        return DB::transaction(function () use ($userId, $anotherUserId, $dialogType) {
             $dialog = DialogModel::create([
-                'created_by' => auth()->id(),
+                'created_by' => $userId,
                 'type' => $dialogType
             ]);
 
             $dialog->participants()->createMany([
-                ['user_id' => auth()->id(), 'role' => ChatRole::OWNER],
-                ['user_id' => $userId, 'role' => ChatRole::MEMBER],
+                ['user_id' => $userId, 'role' => ChatRole::OWNER],
+                ['user_id' => $anotherUserId, 'role' => ChatRole::MEMBER],
             ]);
 
             return $dialog->dialog_id;

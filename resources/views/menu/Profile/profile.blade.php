@@ -106,7 +106,7 @@
                         </div>
                     @else
                         <div class='col-12 t_a'>
-                            <a href='{{ route("dialog", $data_user->id) }}?fromProfile=1'>
+                            <a href='{{ route("openDialog", $data_user->id) }}'>
                                 <img alt='message' data-toggle="tooltip" title='{{ trans("profile.writeMessage") }}' src="{{ asset('img/icons/profile/message.svg') }}" width=30 />
                             </a>
                         </div>

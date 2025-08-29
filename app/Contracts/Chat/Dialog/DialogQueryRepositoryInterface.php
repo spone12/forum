@@ -10,5 +10,5 @@ use App\Enums\Chat\DialogType;
  */
 interface DialogQueryRepositoryInterface
 {
-    public function getUserDialog(int $userId, DialogType $dialogType);
+    public function getDialog(int $userId, int $anotherUserId, DialogType $dialogType);
 }

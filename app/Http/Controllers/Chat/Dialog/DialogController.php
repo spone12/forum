@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Chat\Dialog;
 
 use App\Http\Controllers\Controller;
-use App\Service\Chat\Dialog\DialogService;
+use App\Service\Chat\Dialog\DialogCommandService;
+use App\Service\Chat\Dialog\DialogQueryService;
 use App\Service\Chat\Messages\MessageQueryService;
 use Illuminate\Http\Request;
 
@@ -14,19 +15,21 @@ use Illuminate\Http\Request;
  */
 class DialogController extends Controller
 {
-    /**
-     * @var DialogService
-     */
-    protected $dialogService;
+    /** @var DialogQueryService $dialogQueryService */
+    protected $dialogQueryService;
+
+    /** @var DialogCommandService $dialogCommandService */
+    protected $dialogCommandService;
 
     /**
      * ChatController constructor.
      *
-     * @param DialogService $dialogService
+     * @param DialogQueryService $dialogService
      */
-    function __construct(DialogService $dialogService)
+    function __construct(DialogQueryService $dialogQueryService, DialogCommandService $dialogCommandService)
     {
-        $this->dialogService = $dialogService;
+        $this->dialogQueryService = $dialogQueryService;
+        $this->dialogCommandService = $dialogCommandService;
     }
 
     /**
@@ -39,32 +42,50 @@ class DialogController extends Controller
     protected function dialogList()
     {
         return view('menu.Chat.chat', [
-            'userChats' => $this->dialogService->dialogList()
+            'userChats' => $this->dialogQueryService->dialogList()
         ]);
     }
 
     /**
-     * Controller current user dialogs
+     * Open a dialogue with user
      *
-     * @param  int     $value   - mixed (dialogId or userId)
-     * @param  Request $request
+     * @param int $userId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function open(int $userId)
+    {
+        $currentUserId = auth()->id();
+
+        // Checking the existing dialogue
+        $dialog = $this->dialogQueryService->getPrivateDialog($currentUserId, $userId);
+
+        if (!$dialog) {
+            $dialogId = $this->dialogCommandService
+                ->createDialogBetweenUsers($currentUserId, $userId);
+        } else {
+            $dialogId = $dialog->dialog_id;
+        }
+
+        return redirect()->route('dialog', ['dialogId' => $dialogId]);
+    }
+
+    /**
+     * Controller get dialog messages
+     *
+     * @param  int $dialogId
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|
      * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    protected function getDialogMessages(Request $request, int $value)
+    protected function getDialogMessages(int $dialogId)
     {
         try {
-            $dialogId = $request->get('fromProfile') ?
-                $this->dialogService->getDialogId($value) :
-                $value;
-            $userDialog = app(MessageQueryService::class)->getDialogMessages($dialogId, $value);
+            $dialog = app(MessageQueryService::class)->getDialogMessages($dialogId);
 
             return view('menu.Chat.chatLS', [
-                'dialogWithId' => $userDialog->partnerId,
-                'dialogObj'    => $userDialog->messages,
-                'dialogId'     => $userDialog->dialogId,
-                'lastDialogs'  => $this->dialogService->dialogList(5)
+                'dialogObj'    => $dialog->messages,
+                'dialogId'     => $dialog->dialogId,
+                'lastDialogs'  => $this->dialogQueryService->dialogList(5)
             ]);
         } catch (\Throwable $exception) {
             return redirect()

@@ -35,17 +35,11 @@ class MessageCommandService
      */
     public function send(array $data): array
     {
-        $dialogWithId = (int)$data['dialogWithId'];
         $dialogId = (int)$data['dialogId'];
         $message = trim($data['message']);
 
         $this->checkDialogAccess($dialogId);
-
-        $messageId = $this->repository->send(
-            $message,
-            app(DialogService::class)
-                ->getDialogId($dialogWithId, $dialogId)
-        );
+        $messageId = $this->repository->send($message, $dialogId);
 
         if (!$messageId) {
             throw new ChatMessageException('Message was not sent!');

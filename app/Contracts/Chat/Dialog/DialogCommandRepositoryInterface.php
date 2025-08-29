@@ -10,5 +10,5 @@ use App\Enums\Chat\DialogType;
  */
 interface DialogCommandRepositoryInterface
 {
-    public function createDialogWithParticipants(int $userId, DialogType $dialogType);
+    public function createDialogBetweenUsers(int $userId, int $anotherUserId, DialogType $dialogType);
 }

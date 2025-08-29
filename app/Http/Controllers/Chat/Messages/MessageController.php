@@ -44,8 +44,7 @@ class MessageController extends Controller
         try {
             $data = $request->only([
                 'message',
-                'dialogId',
-                'dialogWithId'
+                'dialogId'
             ]);
 
             return new SuccessResource(

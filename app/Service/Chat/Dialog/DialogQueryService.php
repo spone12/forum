@@ -4,30 +4,25 @@ namespace App\Service\Chat\Dialog;
 
 use AllowDynamicProperties;
 use App\Contracts\Chat\Dialog\{
-    DialogCommandRepositoryInterface,
     DialogQueryRepositoryInterface
 };
 use App\Enums\Cache\CacheKey;
 use App\Enums\Chat\DialogType;
-use App\Models\Chat\DialogModel;
 use Illuminate\Support\Collection;
 
 /**
- * DialogService class
+ * DialogQueryService class
  *
  * @package
  */
 #[AllowDynamicProperties]
-class DialogService
+class DialogQueryService
 {
-    protected DialogCommandRepositoryInterface $dialogCommandRepository;
     protected DialogQueryRepositoryInterface $dialogQueryRepository;
 
     function __construct(
-        DialogCommandRepositoryInterface $dialogCommandRepository,
         DialogQueryRepositoryInterface   $dialogQueryRepository,
     ) {
-        $this->dialogCommandRepository = $dialogCommandRepository;
         $this->dialogQueryRepository = $dialogQueryRepository;
     }
 
@@ -68,32 +63,13 @@ class DialogService
     }
 
     /**
-     * Get dialog Id or create new
+     * Get private dialog
      *
-     * @param int        $userId
-     * @param int        $dialogId
-     * @param DialogType $dialogType
-     *
-     * @return int
+     * @param int $userId
+     * @param int $anotherUserId
+     * @return mixed
      */
-    public function getDialogId(
-        int $userId,
-        int $dialogId = 0,
-        DialogType $dialogType = DialogType::PRIVATE
-    ): int {
-
-        if ($dialogId === 0) {
-            $dialog = $this->dialogQueryRepository->getUserDialog($userId, $dialogType);
-        } else {
-            $dialog = DialogModel::where('dialog_id', $dialogId)->firstOrFail();
-        }
-
-        if (empty($dialog)) {
-            $dialogId = $this->dialogCommandRepository->createDialogWithParticipants($userId, $dialogType);
-        } else {
-            $dialogId = $dialog->dialog_id;
-        }
-
-        return $dialogId;
+    public function getPrivateDialog(int $userId, int $anotherUserId) {
+        return $this->dialogQueryRepository->getDialog($userId, $anotherUserId, DialogType::PRIVATE);
     }
 }

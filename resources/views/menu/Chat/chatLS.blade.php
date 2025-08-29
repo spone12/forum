@@ -6,7 +6,6 @@
     <script src="{{ asset('resource/js/chat.js') }}"></script>
 @endpush
 
-{{ Form::hidden('dialogWithId', $dialogWithId, ['id' => 'dialogWithId']) }}
 {{ Form::hidden('dialogId', $dialogId, ['id' => 'dialogId']) }}
 {{ Form::hidden('nextMessages', $dialogObj->nextPageUrl(), ['id' => 'nextMessages']) }}
 
@@ -20,7 +19,7 @@
                     'justify-content-center',
                     'recentChats',
                     'currentChatSelectionInMenu' => ($chat->dialog_id === $dialogId)
-                ]) href='/chat/dialog/{{$chat->dialog_id}}'>
+                ]) href='{{ route("dialog", $chat->dialog_id) }}'>
                     <div class='chatLs__link col-sm-4'>
                         <img class='chatLs__photo' src="{{ asset($chat->avatar) }}" />
                     </div>
@@ -36,7 +35,7 @@
         </div>
 
         <div class='chatLs col-lg-10'>
-         @if (!empty($dialogObj[0]))
+         @if (!empty($dialogObj))
             @php
                 $dialogObj = $dialogObj->reverse();
             @endphp

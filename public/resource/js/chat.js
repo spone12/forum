@@ -11,7 +11,6 @@ function stopEditMessage() {
 
 function sendMessage() {
     let message = $.trim($(".dialog__message").html());
-    let dialogWithId = $("#dialogWithId").val();
     let dialogId = $("#dialogId").val();
 
     if (jQuery.isEmptyObject(message)) {
@@ -27,7 +26,6 @@ function sendMessage() {
         async: false,
         data: {
             message: message,
-            dialogWithId: dialogWithId,
             dialogId: dialogId,
         },
         success: function (data) {},

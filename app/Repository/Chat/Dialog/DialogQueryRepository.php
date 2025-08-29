@@ -14,21 +14,23 @@ use App\Models\Chat\DialogModel;
 class DialogQueryRepository implements DialogQueryRepositoryInterface
 {
     /**
-     * Get user dialog
+     * Finding a dialogue between participants
      *
      * @param int $userId
-     * @return
+     * @param int $anotherUserId
+     * @param DialogType $dialogType
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
      */
-    public function getUserDialog(int $userId, DialogType $dialogType)
+    public function getDialog(int $userId, int $anotherUserId, DialogType $dialogType)
     {
         return DialogModel::query()
             ->select('dialog_id')
             ->where('type', $dialogType)
-            ->whereHas('participants', function ($q) {
-                $q->where('user_id', auth()->id());
-            })
             ->whereHas('participants', function ($q) use ($userId) {
                 $q->where('user_id', $userId);
+            })
+            ->whereHas('participants', function ($q) use ($anotherUserId) {
+                $q->where('user_id', $anotherUserId);
             })
             ->first();
     }

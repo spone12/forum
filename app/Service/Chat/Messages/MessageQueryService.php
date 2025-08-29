@@ -33,21 +33,16 @@ class MessageQueryService
      * Get chat dialog messages service
      *
      * @param int $dialogId
-     * @param int $partnerId
      *
      * @return PrivateChatDTO
      */
-    public function getDialogMessages(int $dialogId, int $partnerId = 0): PrivateChatDTO
+    public function getDialogMessages(int $dialogId): PrivateChatDTO
     {
         $dialog = DialogModel::findOrFail($dialogId);
         Gate::authorize('access', $dialog);
         $dialogMessages = $this->repository->getDialogMessages($dialogId);
 
         if ($dialogMessages->count()) {
-            // Get id of the user we are talking to
-            $partnerId = $dialog->participants
-                ->firstOrFail(fn($user) => $user->user_id !== auth()->id())
-                ->user_id;
 
             // Array of read messages
             $readMessages = [];
@@ -71,7 +66,6 @@ class MessageQueryService
 
         return new PrivateChatDTO(
             dialogId: $dialogId,
-            partnerId: $partnerId,
             messages: $dialogMessages
         );
     }

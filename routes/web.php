@@ -54,6 +54,7 @@ Route::get('/map', 'MapController@viewMap')->name('map')->middleware('auth');
 Route::middleware('auth')->prefix('chat')->group(function () {
 
     Route::get('/', [DialogController::class, 'dialogList'])->name('chat');
+    Route::get('/open/{userId}', [DialogController::class, 'open'])->name('openDialog')->where('dialogId', '[0-9]{1,11}');
     Route::get('/dialog/{dialogId}', [DialogController::class, 'getDialogMessages'])->name('dialog')->where('dialogId', '[0-9]{1,11}');
 
     Route::prefix('message')->group(function () {
