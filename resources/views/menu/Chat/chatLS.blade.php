@@ -80,7 +80,7 @@
     <div class="row MessageBlock justify-content-center align-items-center">
         <div class='col-8'>
             <div class="row no-gutters dialog">
-                <a href='{{ route("chat") }}' class='MessageBlock__back justify-content-center row col-1 col-sm-2'>
+                <a href='{{ route("dialogList") }}' class='MessageBlock__back justify-content-center row col-1 col-sm-2'>
                     <img alt='back' data-toggle="tooltip" title='{{ trans('chat.back') }}' src="{{ asset('img/icons/back-arrow.svg') }}" width=30 />
                 </a>
                 <div class="col-8 col-sm-8">

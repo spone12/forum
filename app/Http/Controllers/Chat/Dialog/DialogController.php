@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Chat\Dialog;
 
+use App\Enums\ResponseCodeEnum;
 use App\Http\Controllers\Controller;
 use App\Service\Chat\Dialog\DialogCommandService;
 use App\Service\Chat\Dialog\DialogQueryService;
 use App\Service\Chat\Messages\MessageQueryService;
+use App\User;
 use Illuminate\Http\Request;
 
 /**
@@ -33,16 +35,17 @@ class DialogController extends Controller
     }
 
     /**
-     * Controller user chats
+     * Controller: Getting a list of user dialogs
      *
      * @return \Illuminate\Contracts\Foundation\Application|
-     * \Illuminate\Contracts\View\Factory|
-     * \Illuminate\Contracts\View\View
+     * \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|
+     * \Illuminate\Foundation\Application
      */
+    #[Route('/chat/', methods: ['GET'])]
     protected function dialogList()
     {
         return view('menu.Chat.chat', [
-            'userChats' => $this->dialogQueryService->dialogList()
+            'dialogList' => $this->dialogQueryService->dialogList()
         ]);
     }
 
@@ -52,8 +55,12 @@ class DialogController extends Controller
      * @param int $userId
      * @return \Illuminate\Http\RedirectResponse
      */
+    #[Route('/open/{userId}', methods: ['GET'])]
     public function open(int $userId)
     {
+        if (!User::whereId($userId)->exists()) {
+            abort(ResponseCodeEnum::NOT_FOUND);
+        }
         $currentUserId = auth()->id();
 
         // Checking the existing dialogue
@@ -72,11 +79,11 @@ class DialogController extends Controller
     /**
      * Controller get dialog messages
      *
-     * @param  int $dialogId
-     *
+     * @param int $dialogId
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     * \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|never
      */
+    #[Route('/dialog/{dialogId}', methods: ['GET'])]
     protected function getDialogMessages(int $dialogId)
     {
         try {
@@ -88,9 +95,7 @@ class DialogController extends Controller
                 'lastDialogs'  => $this->dialogQueryService->dialogList(5)
             ]);
         } catch (\Throwable $exception) {
-            return redirect()
-                ->route('chat')
-                ->with('errors', collect($exception->getMessage()));
+            return abort(ResponseCodeEnum::NOT_FOUND);
         }
     }
 }

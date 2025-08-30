@@ -33,17 +33,17 @@
             </div>
             <div class='card card-body justify-content-center align-items-center'>
                 <div class='mainData col-lg-12'>
-                    @if (isset($userChats))
-                        @foreach ($userChats as $chat)
+                    @if (isset($dialogList))
+                        @foreach ($dialogList as $dialogue)
                             <div class="mainData__chat">
-                                <a class='mainData__link' href='/chat/dialog/{{ $chat->dialog_id }}'>
+                                <a class='mainData__link' href='/chat/dialog/{{ $dialogue->dialog_id }}'>
                                     <div class='col-sm-12 row'>
                                         <div class='col-lg-2 col-sm-3'>
-                                            <img class='mainData__photo' src="{{ asset($chat->avatar) }}" />
-                                            <div class="col-sm-12 mainData__name">{{ $chat->name }}</div>
+                                            <img class='mainData__photo' src="{{ asset($dialogue->avatar) }}" />
+                                            <div class="col-sm-12 mainData__name">{{ $dialogue->name }}</div>
                                         </div>
-                                        <div class='col-lg-8 col-sm-6 mainData__text'>{!! $chat->text !!}</div>
-                                        <div class='col-lg-2 col-sm-3 mainData__date align-items-center justify-content-end d-flex' data-toggle="tooltip" title='{{ $chat->difference }}'>{{ $chat->created_at }}</div>
+                                        <div class='col-lg-8 col-sm-6 mainData__text'>{!! $dialogue->text !!}</div>
+                                        <div class='col-lg-2 col-sm-3 mainData__date align-items-center justify-content-end d-flex' data-toggle="tooltip" title='{{ $dialogue->difference }}'>{{ $dialogue->created_at }}</div>
                                     </div>
                                 </a>
                             </div>
