@@ -4,9 +4,14 @@ namespace App;
 
 use App\Enums\Cache\CacheKey;
 use App\Enums\Profile\ProfileEnum;
-use App\Models\Chat\DialogModel;
+use App\Models\Chat\{
+    DialogModel,
+    MessagesModel
+};
 use App\Traits\ArrayHelper;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Notation\{NotationModel, NotationCommentsModel, NotationPhotoModel, VoteNotationModel};
@@ -104,14 +109,6 @@ class User extends Authenticatable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function dialogs()
-    {
-        return $this->belongsToMany(DialogModel::class, 'dialog_participants', 'user_id', 'dialog_id');
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function notationComments()
@@ -133,6 +130,36 @@ class User extends Authenticatable
     public function voteNotation()
     {
         return $this->hasMany(VoteNotationModel::class, 'user_id', 'id');
+    }
+
+    /**
+     * Will return only those dialogs that the user created himself
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function dialogs(): HasMany
+    {
+        return $this->hasMany(DialogModel::class, 'created_by', 'id');
+    }
+
+    /**
+     * Returns all dialogs where the user is a participant
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function dialogParticipants(): BelongsToMany
+    {
+        return $this->belongsToMany(DialogModel::class, 'dialog_participants', 'user_id', 'dialog_id');
+    }
+
+    /**
+     * All messages written by the user
+     *
+     * @return HasMany
+     */
+    public function messages(): HasMany
+    {
+        return $this->hasMany(MessagesModel::class, 'user_id', 'id');
     }
 
     /**

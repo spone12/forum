@@ -35,7 +35,7 @@ class DialogQueryService
     public function dialogList(int $limit = 0):Collection
     {
         $userDialogs = auth()->user()
-            ->dialogs()
+            ->dialogParticipants()
             ->with([
                 'participants.user',
                 'lastMessage.user'

@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class DialogParticipants
  *
+ * @property int    $id
+ * @property int    $dialog_id
+ * @property int    $user_id
+ * @property string $role
+ * @property string $joined_at
+ *
  * @package App\Models\Chat
  */
 class DialogParticipants extends Model
@@ -20,7 +26,11 @@ class DialogParticipants extends Model
     protected $primaryKey = 'id';
 
     /** @var string[] */
-    protected $fillable = ['dialog_id', 'user_id', 'role'];
+    protected $fillable = [
+        'dialog_id',
+        'user_id',
+        'role'
+    ];
 
     /** @var bool */
     public $timestamps = false;

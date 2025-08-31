@@ -24,7 +24,7 @@ class ChatChannel
      */
     public function join(User $user, int $dialogId)
     {
-        return $user->dialogs()
+        return $user->dialogParticipants()
             ->where('dialogs.dialog_id', $dialogId)
             ->where('type', DialogType::PRIVATE)
             ->exists();

@@ -55,7 +55,7 @@ class DialogController extends Controller
      * @param int $userId
      * @return \Illuminate\Http\RedirectResponse
      */
-    #[Route('/open/{userId}', methods: ['GET'])]
+    #[Route('/chat/open/{userId}', methods: ['GET'])]
     public function open(int $userId)
     {
         if (!User::whereId($userId)->exists()) {
@@ -83,7 +83,7 @@ class DialogController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|
      * \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|never
      */
-    #[Route('/dialog/{dialogId}', methods: ['GET'])]
+    #[Route('/chat/dialog/{dialogId}', methods: ['GET'])]
     protected function getDialogMessages(int $dialogId)
     {
         try {
@@ -94,7 +94,7 @@ class DialogController extends Controller
                 'dialogId'     => $dialog->dialogId,
                 'lastDialogs'  => $this->dialogQueryService->dialogList(5)
             ]);
-        } catch (\Throwable $exception) {
+        } catch (\Throwable) {
             return abort(ResponseCodeEnum::NOT_FOUND);
         }
     }
