@@ -39,9 +39,9 @@ return [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
 
                 # Local websockets
-                'host' => env('PUSHER_APP_HOST'),
-                'port' => env('PUSHER_APP_PORT'),
-                'scheme' => 'http',
+                'host' => env('PUSHER_APP_HOST', '127.0.0.1'),
+                'port' => env('PUSHER_APP_PORT', 6001),
+                'scheme' => env('PUSHER_SCHEME', 'http'),
                 'useTLS' => false,
                 'encrypted' => false,
 

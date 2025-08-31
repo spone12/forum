@@ -12,9 +12,10 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * Class MessagesModel
  *
  * @property int            $message_id
- * @property int            $dialog
+ * @property int            $dialog_id
+ * @property int            $user_id
  * @property string         $text
- * @property tinyint        $read
+ * @property bool           $read
  * @property timestamp|null $created_at
  * @property timestamp|null $updated_at
  * @property timestamp|null $deleted_at

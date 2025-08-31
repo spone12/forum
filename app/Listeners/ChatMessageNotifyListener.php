@@ -19,20 +19,9 @@ class ChatMessageNotifyListener
      */
     public function handle(ChatMessageEvent $event)
     {
-        // Clear user recive count notifications
+        // Clear the number of notifications for a user
         Cache::forget(CacheKey::CHAT_NOTIFICATIONS_BELL->value . $event->messageObj->user_id);
 
-       /* // TODO Add a check if notification is enabled for a user
-        $recive = User::where('id', $event->messageObj->recive)
-            ->firstOrFail();
-
-        if (empty($recive->email)) {
-            return;
-        }
-
-        $recive->text = $event->messageObj->text;
-        $recive->action = $this->actionDialog . $event->messageObj->dialog;*/
-
-        //Notification::send($recive, new \App\Notifications\ChatMessageNorify());
+        // TODO Add a check if notification is enabled for a user
     }
 }

@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Repository\NotificationsRepository;
 use App\Traits\ArrayHelper;
-use Illuminate\Support\Facades\Auth;
 use App\Enums\TimeEnums;
 use App\Enums\Cache\CacheKey;
 use Illuminate\Support\Facades\Cache;
@@ -50,10 +49,10 @@ class NotificationsService
     public static function userNotifications(int $userId = null, bool $isClearCache = false): void
     {
         if ($userId === null) {
-            if (!Auth::check()) {
+            if (!auth()->check()) {
                 return;
             }
-            $userId = Auth::id();
+            $userId = auth()->id();
         }
 
         if ($isClearCache) {
