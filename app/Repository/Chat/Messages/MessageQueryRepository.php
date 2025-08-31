@@ -3,9 +3,8 @@
 namespace App\Repository\Chat\Messages;
 
 use App\Contracts\Chat\Messages\MessageQueryRepositoryInterface;
-use App\Enums\Profile\ProfileEnum;
+use App\Models\Chat\MessagesModel;
 use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Class MessageQueryRepository
@@ -24,28 +23,17 @@ class MessageQueryRepository implements MessageQueryRepositoryInterface
      */
     public function getDialogMessages(int $dialogId, int $messagesPerPage = 10): Paginator
     {
-        return DB::table('messages AS m')
+        return MessagesModel::query()
             ->select(
-                'm.message_id',
-                'm.text',
-                'm.dialog_id',
-                'm.created_at',
-                'm.updated_at',
-                'm.user_id',
-                'u.name',
-                DB::raw(
-                'CASE WHEN u.avatar IS NULL THEN
-                        "' . ProfileEnum::NO_AVATAR . '"
-                     ELSE
-                        u.avatar
-                     END as avatar'
-                ),
-                'u.id',
-                'm.text'
+                'message_id',
+                'text',
+                'dialog_id',
+                'created_at',
+                'updated_at',
+                'user_id',
+                'text'
             )
-            ->join('users as u', 'm.user_id', '=', 'u.id')
             ->where('dialog_id', $dialogId)
-            ->whereNull('deleted_at')
             ->orderByDesc('created_at')
             ->simplePaginate($messagesPerPage);
     }

@@ -50,12 +50,17 @@ class DialogQueryService
         foreach ($userDialogs as $dialog) {
             $lastMessage = $dialog->lastMessage;
 
-            $dialog->id = $lastMessage->user_id;
-            $dialog->name = $lastMessage->user->name;
-            $dialog->avatar = $lastMessage->user->avatar;
+            $partner = $dialog->participants
+                ->where('user_id', '!=', auth()->id())
+                ->first()?->user;
+
+            $dialog->id = $partner->id;
+            $dialog->name = $partner->name;
+            $dialog->avatar = $partner->avatar;
+            $dialog->isOnline = $partner->isOnline();
+
             $dialog->created_at = $lastMessage->created_at;
             $dialog->isRead = $lastMessage->read;
-            $dialog->isOnline = \Cache::get(CacheKey::USER_IS_ONLINE->value . $lastMessage->user_id);
             $dialog->difference = $lastMessage->created_at->diffForHumans();
             $dialog->text = \Str::limit($lastMessage->text, 50);
         }

@@ -3,9 +3,9 @@
 namespace App\Service\Chat\Messages;
 
 use App\Repository\Chat\Messages\MessageQueryRepository;
+use App\User;
 use Carbon\Carbon;
 use App\Models\Chat\MessagesModel;
-use App\Traits\ArrayHelper;
 use App\Models\Chat\DialogModel;
 use App\Service\NotificationsService;
 use App\DTO\Chat\PrivateChatDTO;
@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\{Gate};
  */
 class MessageQueryService
 {
-    use ArrayHelper;
-
     /** @var MessageQueryRepository $repository */
     protected $repository;
 
@@ -48,10 +46,10 @@ class MessageQueryService
             $readMessages = [];
 
             foreach ($dialogMessages as $message) {
-                $message->difference =
-                    Carbon::createFromFormat('Y-m-d H:i:s', $message->created_at)->diffForHumans();
 
-                $this->formatChatDate($message);
+                $message->user_id = $message->user->id;
+                $message->avatar = $message->user->avatar;
+                $message->name = $message->user->name;
 
                 if ($message->user_id !== auth()->id()) {
                     $readMessages[] = $message->message_id;
@@ -68,20 +66,5 @@ class MessageQueryService
             dialogId: $dialogId,
             messages: $dialogMessages
         );
-    }
-
-    /**
-     * Formatting the text of the message composition
-     *
-     * @param \stdClass $obj
-     *
-     * @return void
-     */
-    private function formatChatDate(\stdClass $obj): void
-    {
-        $messageCreatedAt = Carbon::parse($obj->created_at);
-        $obj->created_at = $messageCreatedAt->isToday()
-            ? $messageCreatedAt->format('H:i')
-            : $messageCreatedAt->format('d.m.Y H:i');
     }
 }

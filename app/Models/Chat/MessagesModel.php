@@ -6,6 +6,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * Class MessagesModel
@@ -82,7 +83,7 @@ class MessagesModel extends Model
      */
     public function getDifferenceAttribute()
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->diffForHumans();
+        return $this->created_at->diffForHumans();
     }
 
     /**
@@ -93,5 +94,19 @@ class MessagesModel extends Model
     public function getCreatedAtHourAttribute()
     {
         return Carbon::parse($this->created_at)->format('H:i');
+    }
+
+    /**
+     * @return Attribute
+     */
+    protected function formattedCreatedAt(): Attribute
+    {
+        return Attribute::get(function () {
+            $createdAt = $this->created_at;
+
+            return $createdAt->isToday()
+                ? $createdAt->format('H:i')
+                : $createdAt->format('d.m.Y H:i');
+        });
     }
 }

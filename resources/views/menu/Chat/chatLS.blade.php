@@ -44,7 +44,7 @@
                 <div class="chatLs__chat" id="chatLs__chat-{{ $chat->message_id }}">
                     <div class='col-sm-12 row'>
                         <div class='col-lg-2 col-2 col-xl-1 col-sm-2 col-md-2'>
-                            <a class='chatLs__link' target='_blank' href='{{ route("profile_id", $chat->id) }}'>
+                            <a class='chatLs__link' target='_blank' href='{{ route("profile_id", $chat->user_id) }}'>
                                 <img class='chatLs__photo' alt="avatar" src="{{ asset($chat->avatar) }}" />
                             </a>
                             <div class="col-sm-12 chatLs__name">{{ $chat->name }}</div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class='col-lg-1 col-sm-2 col-2 col-md-2 chatLs__date align-items-start justify-content-end d-flex'>
-                            <div class='chatLs__message-time col-4' data-toggle="tooltip" title='{{ $chat->difference }}'>{{ $chat->created_at }} </div>
+                            <div class='chatLs__message-time col-4' data-toggle="tooltip" title='{{ $chat->difference }}'>{{ $chat->formatted_created_at }} </div>
                         </div>
                     </div>
                 </div>

@@ -53,7 +53,8 @@ class User extends Authenticatable
         'registration_ip',
         'user_agent',
         'api_token',
-        'token_expires_at'
+        'token_expires_at',
+        'avatar'
     ];
 
     /**
@@ -135,12 +136,13 @@ class User extends Authenticatable
     }
 
     /**
-     * @param  int $userId
+     * Is user online
+     *
      * @return mixed
      */
-    public function isOnline(int $userId)
+    public function isOnline()
     {
-        return Cache::get(CacheKey::USER_IS_ONLINE->value . $userId);
+        return Cache::get(CacheKey::USER_IS_ONLINE->value . $this->id);
     }
 
     /**
@@ -148,9 +150,14 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public function getAvatarAttribute()
+    public function getAvatarAttribute():string
     {
-        return $this->attributes['avatar'] ? asset('storage/' . $this->attributes['avatar']) : asset(ProfileEnum::NO_AVATAR);
+        $avatar = $this->attributes['avatar'] ?? null;
+        if ($avatar) {
+            return asset('storage/' . $avatar);
+        }
+
+        return asset(ProfileEnum::NO_AVATAR);
     }
 
     /**
