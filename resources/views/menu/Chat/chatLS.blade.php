@@ -50,17 +50,24 @@
                             <div class="col-sm-12 chatLs__name">{{ $chat->name }}</div>
                         </div>
                         <div class='col-lg-8 col-4 col-xl-8 col-sm-5 col-6 col-md-7 chatLs__text'>{!! $chat->text !!}</div>
-                        <div class='chatLs__move col-2 col-lg-1 col-sm-2 col-md-1 align-items-start justify-content-end d-flex'>
-                            <div class='chatLs__move-edit'>
-                                <img width=20 data-toggle="tooltip" data-placement="bottom" title='{{ trans('chat.message.edit') }}' alt='{{ trans('chat.message.edit') }}' src="{{ asset('img/icons/edit.png') }}">
+
+                        @if ($chat->user_id === auth()->id())
+                            <div class='chatLs__move col-2 col-lg-1 col-sm-2 col-md-1 align-items-start justify-content-end d-flex'>
+                                <div class='chatLs__move-edit'>
+                                    <img width=20 data-toggle="tooltip" data-placement="bottom" title='{{ trans('chat.message.edit') }}' alt='{{ trans('chat.message.edit') }}' src="{{ asset('img/icons/edit.png') }}">
+                                </div>
+                                <div class="chatLs__move-delete">
+                                    <img data-toggle="tooltip" data-placement="bottom" width=20 title='{{ trans('chat.message.delete') }}' alt='{{ trans('chat.message.delete') }}' src="{{ asset('img/icons/delete.png') }}">
+                                </div>
+                                <div class="chatLs__move-recover hide_message_btn">
+                                    <img data-toggle="tooltip" data-placement="bottom" width=20 title='{{ trans('chat.message.recover') }}' alt='{{ trans('chat.message.recover') }}' src="{{ asset('img/chat/recover.png') }}">
+                                </div>
                             </div>
-                            <div class="chatLs__move-delete">
-                                <img data-toggle="tooltip" data-placement="bottom" width=20 title='{{ trans('chat.message.delete') }}' alt='{{ trans('chat.message.delete') }}' src="{{ asset('img/icons/delete.png') }}">
-                            </div>
-                            <div class="chatLs__move-recover hide_message_btn">
-                                <img data-toggle="tooltip" data-placement="bottom" width=20 title='{{ trans('chat.message.recover') }}' alt='{{ trans('chat.message.recover') }}' src="{{ asset('img/chat/recover.png') }}">
-                            </div>
-                        </div>
+                        @else
+                            <div class='col-2 col-lg-1 col-sm-2 col-md-1'></div>
+                        @endif
+
+
                         <div class='col-lg-1 col-sm-2 col-2 col-md-2 chatLs__date align-items-start justify-content-end d-flex'>
                             <div class='chatLs__message-time col-4' data-toggle="tooltip" title='{{ $chat->difference }}'>{{ $chat->formatted_created_at }} </div>
                         </div>

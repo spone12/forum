@@ -37,7 +37,7 @@ class MessageQueryService
     public function getDialogMessages(int $dialogId): PrivateChatDTO
     {
         $dialog = DialogModel::findOrFail($dialogId);
-        Gate::authorize('access', $dialog);
+        Gate::authorize('dialogAccess', $dialog);
         $dialogMessages = $this->repository->getDialogMessages($dialogId);
 
         if ($dialogMessages->count()) {

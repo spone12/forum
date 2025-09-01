@@ -54,7 +54,7 @@ class MessageController extends Controller
             );
         } catch (ChatMessageException $exception) {
             return new ErrorResource($exception->getMessage());
-        } catch (\Throwable $exception) {
+        } catch (\Throwable) {
             return new ErrorResource();
         }
     }
@@ -82,7 +82,7 @@ class MessageController extends Controller
             );
         } catch (ChatMessageException $exception) {
             return new ErrorResource($exception->getMessage());
-        } catch (\Throwable $exception) {
+        } catch (\Throwable) {
             return new ErrorResource();
         }
     }
@@ -109,7 +109,7 @@ class MessageController extends Controller
             );
         } catch (ChatMessageException $exception) {
             return new ErrorResource($exception->getMessage());
-        } catch (\Throwable $exception) {
+        } catch (\Throwable) {
             return new ErrorResource();
         }
     }
@@ -132,7 +132,7 @@ class MessageController extends Controller
             );
         } catch (ChatMessageException $exception) {
             return new ErrorResource($exception->getMessage());
-        } catch (\Throwable $exception) {
+        } catch (\Throwable) {
             return new ErrorResource();
         }
     }

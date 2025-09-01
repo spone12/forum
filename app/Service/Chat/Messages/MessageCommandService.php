@@ -4,10 +4,8 @@ namespace App\Service\Chat\Messages;
 
 use App\Exceptions\Chat\ChatMessageException;
 use App\Contracts\Chat\Messages\MessageCommandRepositoryInterface;
-use App\Service\Chat\Dialog\DialogService;
 use App\User;
 use App\Models\Chat\{MessagesModel, DialogModel};
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 
 /**
@@ -37,8 +35,8 @@ class MessageCommandService
     {
         $dialogId = (int)$data['dialogId'];
         $message = trim($data['message']);
+        Gate::authorize('dialogAccess', DialogModel::findOrFail($dialogId));
 
-        $this->checkDialogAccess($dialogId);
         $messageId = $this->repository->send($message, $dialogId);
 
         if (!$messageId) {
@@ -66,11 +64,12 @@ class MessageCommandService
      */
     public function edit(array $data):array
     {
-        $dialogId = (int) $data['dialogId'];
         $messageId = (int) $data['messageId'];
+        $dialogId = (int) $data['dialogId'];
         $message = trim($data['message']);
 
-        $this->checkDialogAccess($dialogId);
+        $this->authorizeMessage($messageId);
+
         $messageObj = $this->repository->edit($message, $dialogId, $messageId);
 
         if (!$messageObj->wasChanged('text')) {
@@ -91,10 +90,10 @@ class MessageCommandService
      */
     public function delete(array $data):array
     {
-        $dialogId = (int) $data['dialogId'];
         $messageId = (int) $data['messageId'];
+        $dialogId = (int) $data['dialogId'];
+        $this->authorizeMessage($messageId);
 
-        $this->checkDialogAccess($dialogId);
         $messageObj = $this->repository->delete($dialogId, $messageId);
 
         if (!$messageObj->trashed()) {
@@ -115,10 +114,10 @@ class MessageCommandService
      */
     public function recover(array $data):array
     {
-        $dialogId = (int) $data['dialogId'];
         $messageId = (int) $data['messageId'];
+        $dialogId = (int) $data['dialogId'];
+        $this->authorizeMessage($messageId, true);
 
-        $this->checkDialogAccess($dialogId);
         $messageObj = $this->repository->recover($dialogId, $messageId);
 
         if ($messageObj->trashed()) {
@@ -132,13 +131,14 @@ class MessageCommandService
     }
 
     /**
-     * @param int $dialogId
-     * @return Model
+     * @param int  $messageId
+     * @param bool $isTrashed
+     * @return void
      */
-    private function checkDialogAccess(int $dialogId): Model
+    private function authorizeMessage(int $messageId, bool $isTrashed = false): void
     {
-        $dialogObject = DialogModel::findOrFail($dialogId);
-        Gate::authorize('access', $dialogObject);
-        return $dialogObject;
+        $query = $isTrashed ? MessagesModel::onlyTrashed() : MessagesModel::query();
+        $message = $query->findOrFail($messageId);
+        Gate::authorize('messageAccess', [$message]);
     }
 }
