@@ -21,13 +21,12 @@ class MessageCommandRepository implements MessageCommandRepositoryInterface
      *
      * @return int
      */
-    public function send(string $message, int $dialogId): int
+    public function send(string $message, int $dialogId): MessagesModel
     {
-        return DB::table('messages')->insertGetId([
+        return MessagesModel::create([
             'dialog_id'  => $dialogId,
-            'user_id'    => Auth::user()->id,
-            'text'       => $message,
-            'created_at' => now()
+            'user_id'    => auth()->id(),
+            'text'       => $message
         ]);
     }
 

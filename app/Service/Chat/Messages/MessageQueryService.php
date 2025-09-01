@@ -59,7 +59,8 @@ class MessageQueryService
             // Update read messages
             MessagesModel::whereIn('message_id', $readMessages)
                 ->update(['read' => true]);
-            NotificationsService::userNotifications(auth()->id(), true);
+            app(NotificationsService::class)
+                ->updateUserNotificationsCache(auth()->id(), true);
         }
 
         return new PrivateChatDTO(

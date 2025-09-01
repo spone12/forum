@@ -48,7 +48,7 @@ class HomeController extends Controller
                     return $this->homeService->notations('');
             });
 
-            NotificationsService::userNotifications();
+            app(NotificationsService::class)->updateUserNotificationsCache();
         } catch (\Throwable $e) {
             return abort(ResponseCodeEnum::NOT_FOUND);
         }

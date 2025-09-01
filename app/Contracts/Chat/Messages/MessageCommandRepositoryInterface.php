@@ -10,7 +10,7 @@ use App\Models\Chat\MessagesModel;
  */
 interface MessageCommandRepositoryInterface
 {
-    public function send(string $message, int $dialogId): int;
+    public function send(string $message, int $dialogId): MessagesModel;
 
     public function edit(string $message, int $dialogId, int $messageId): MessagesModel;
 

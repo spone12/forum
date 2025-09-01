@@ -4,6 +4,7 @@ namespace App\Service\Chat\Messages;
 
 use App\Exceptions\Chat\ChatMessageException;
 use App\Contracts\Chat\Messages\MessageCommandRepositoryInterface;
+use App\Service\NotificationsService;
 use App\User;
 use App\Models\Chat\{MessagesModel, DialogModel};
 use Illuminate\Support\Facades\Gate;
@@ -35,24 +36,34 @@ class MessageCommandService
     {
         $dialogId = (int)$data['dialogId'];
         $message = trim($data['message']);
-        Gate::authorize('dialogAccess', DialogModel::findOrFail($dialogId));
 
-        $messageId = $this->repository->send($message, $dialogId);
+        $dialog = DialogModel::findOrFail($dialogId);
+        Gate::authorize('dialogAccess', $dialog);
 
-        if (!$messageId) {
+        $messageObj = $this->repository->send($message, $dialogId);
+
+        if (!$messageObj) {
             throw new ChatMessageException('Message was not sent!');
         }
 
-        // Websocket
-        $message = MessagesModel::where('message_id', $messageId)->firstOrFail();
-        $user = User::select(['id', 'name', 'avatar'])
-            ->whereId(auth()->id())
-        ->firstOrFail();
-        broadcast(new \App\Events\ChatMessageEvent($user, $message));
+        // Websockets
+        broadcast(new \App\Events\ChatMessageEvent($messageObj));
+
+        $participants = $dialog
+            ->participants()
+            ->select('user_id')
+            ->where('user_id', '!=', auth()->id())
+            ->get()
+            ->pluck('user_id');
+
+        foreach ($participants as $participant) {
+            app(NotificationsService::class)
+                ->updateUserNotificationsCache($participant, true);
+        }
 
         return [
-            'id' => $messageId,
-            'created_at' => $message->created_at
+            'id' => $messageObj->message_id,
+            'created_at' => $messageObj->created_at->toDateTimeString()
         ];
     }
 
@@ -78,7 +89,7 @@ class MessageCommandService
 
         return [
             'id' => $messageId,
-            'updated_at' => $messageObj->updated_at
+            'updated_at' => $messageObj->updated_at->toDateTimeString()
         ];
     }
 
@@ -102,7 +113,7 @@ class MessageCommandService
 
         return [
             'id' => $messageId,
-            'deleted_at' => $messageObj->deleted_at
+            'deleted_at' => $messageObj->deleted_at->toDateTimeString()
         ];
     }
 
@@ -126,7 +137,7 @@ class MessageCommandService
 
         return [
             'id' => $messageId,
-            'updated_at' => $messageObj->updated_at
+            'updated_at' => $messageObj->updated_at->toDateTimeString()
         ];
     }
 

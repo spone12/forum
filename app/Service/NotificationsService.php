@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Repository\NotificationsRepository;
-use App\Traits\ArrayHelper;
 use App\Enums\TimeEnums;
 use App\Enums\Cache\CacheKey;
 use Illuminate\Support\Facades\Cache;
@@ -14,8 +13,6 @@ use Illuminate\Support\Facades\Cache;
  */
 class NotificationsService
 {
-    use ArrayHelper;
-
     /** @var NotificationsRepository */
     protected $notificaRepository;
 
@@ -46,7 +43,7 @@ class NotificationsService
      *
      * @return void
      */
-    public static function userNotifications(int $userId = null, bool $isClearCache = false): void
+    public static function updateUserNotificationsCache(int $userId = null, bool $isClearCache = false): void
     {
         if ($userId === null) {
             if (!auth()->check()) {
@@ -61,12 +58,8 @@ class NotificationsService
 
         cache()->remember(
             CacheKey::CHAT_NOTIFICATIONS_BELL->value . $userId,
-            TimeEnums::DAY->value,
-            function () use ($userId) {
-                $userNotifications = NotificationsRepository::getUserNotifications($userId);
-                ArrayHelper::noAvatar($userNotifications);
-                return $userNotifications;
-            }
+            now()->addMinutes(5),
+            fn () => NotificationsRepository::getUserNotifications($userId)
         );
     }
 }

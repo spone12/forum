@@ -27,10 +27,10 @@ class ChatMessageEvent implements ShouldBroadcastNow
      *
      * @return void
      */
-    public function __construct(User $userObj, MessagesModel $messageObj)
+    public function __construct(MessagesModel $messageObj)
     {
         $this->messageObj = $messageObj;
-        $this->userObj = $userObj;
+        $this->userObj = auth()->user()->only(['id', 'name', 'avatar']);
     }
 
     /**
