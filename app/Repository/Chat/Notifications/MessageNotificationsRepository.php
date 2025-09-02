@@ -1,25 +1,26 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Chat\Notifications;
 
-use Illuminate\Support\Facades\DB;
+use App\Contracts\Chat\Notifications\MessageNotificationsRepositoryInterface;
 use App\Enums\Profile\ProfileEnum;
+use Illuminate\Support\Facades\DB;
 
 /**
- * Class NotificationsRepository
+ * Class MessageNotificationsRepository
  *
- * @package App\Repository
+ * @package App\Repository\Chat\Notifications
  */
-class NotificationsRepository
+class MessageNotificationsRepository implements MessageNotificationsRepositoryInterface
 {
 
     /**
-     * Get user notifications by Id
+     * Get user notifications by user ID
      *
      * @param  int $userId
      * @return
      */
-    public static function getUserNotifications(int $userId)
+    public function getUserMessagesNotifications(int $userId)
     {
         return DB::table('messages AS m')
             ->selectRaw('COUNT(*) as count_notifications,

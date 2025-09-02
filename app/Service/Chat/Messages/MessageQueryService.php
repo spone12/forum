@@ -2,13 +2,11 @@
 
 namespace App\Service\Chat\Messages;
 
-use App\Repository\Chat\Messages\MessageQueryRepository;
-use App\User;
-use Carbon\Carbon;
-use App\Models\Chat\MessagesModel;
-use App\Models\Chat\DialogModel;
-use App\Service\NotificationsService;
 use App\DTO\Chat\PrivateChatDTO;
+use App\Models\Chat\DialogModel;
+use App\Models\Chat\MessagesModel;
+use App\Repository\Chat\Messages\MessageQueryRepository;
+use App\Service\Chat\Notifications\MessageNotificationsService;
 use Illuminate\Support\Facades\{Gate};
 
 /**
@@ -59,8 +57,9 @@ class MessageQueryService
             // Update read messages
             MessagesModel::whereIn('message_id', $readMessages)
                 ->update(['read' => true]);
-            app(NotificationsService::class)
-                ->updateUserNotificationsCache(auth()->id(), true);
+
+            app(MessageNotificationsService::class)
+                ->updateUserNotificationsCache(isClearCache: true);
         }
 
         return new PrivateChatDTO(

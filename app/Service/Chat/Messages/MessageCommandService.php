@@ -2,11 +2,10 @@
 
 namespace App\Service\Chat\Messages;
 
-use App\Exceptions\Chat\ChatMessageException;
 use App\Contracts\Chat\Messages\MessageCommandRepositoryInterface;
-use App\Service\NotificationsService;
-use App\User;
-use App\Models\Chat\{MessagesModel, DialogModel};
+use App\Exceptions\Chat\ChatMessageException;
+use App\Models\Chat\{DialogModel, MessagesModel};
+use App\Service\Chat\Notifications\MessageNotificationsService;
 use Illuminate\Support\Facades\Gate;
 
 /**
@@ -56,10 +55,8 @@ class MessageCommandService
             ->get()
             ->pluck('user_id');
 
-        foreach ($participants as $participant) {
-            app(NotificationsService::class)
-                ->updateUserNotificationsCache($participant, true);
-        }
+        app(MessageNotificationsService::class)
+            ->updateUserNotificationsCache($participants, true);
 
         return [
             'id' => $messageObj->message_id,

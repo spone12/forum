@@ -2,10 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Enums\Cache\CacheKey;
 use App\Events\ChatMessageEvent;
-use App\User;
-use Illuminate\Support\Facades\Cache;
+use App\Service\Chat\Notifications\MessageNotificationsService;
 
 class ChatMessageNotifyListener
 {
@@ -20,7 +18,8 @@ class ChatMessageNotifyListener
     public function handle(ChatMessageEvent $event)
     {
         // Clear the number of notifications for a user
-        Cache::forget(CacheKey::CHAT_NOTIFICATIONS_BELL->value . $event->messageObj->user_id);
+        app(MessageNotificationsService::class)
+            ->forgetCache($event->messageObj->user_id);
 
         // TODO Add a check if notification is enabled for a user
     }
