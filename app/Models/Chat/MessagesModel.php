@@ -2,19 +2,20 @@
 
 namespace App\Models\Chat;
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * Class MessagesModel
  *
- * @property int $message_id
- * @property int $dialog
- * @property int $send
- * @property int $recive
- * @property text $text
- * @property tinyint $read
+ * @property int            $message_id
+ * @property int            $dialog_id
+ * @property int            $user_id
+ * @property string         $text
+ * @property bool           $read
  * @property timestamp|null $created_at
  * @property timestamp|null $updated_at
  * @property timestamp|null $deleted_at
@@ -44,9 +45,8 @@ class MessagesModel extends Model
      * @var string[]
      */
     protected $fillable = [
-        'dialog',
-        'send',
-        'recive',
+        'dialog_id',
+        'user_id',
         'text'
     ];
 
@@ -63,11 +63,19 @@ class MessagesModel extends Model
     protected $appends = ['difference', 'created_at_hour'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function dialogObject()
+    public function dialog()
     {
-        return $this->hasOne(DialogModel::class, 'dialog_id', 'dialog');
+        return $this->belongsTo(DialogModel::class, 'dialog_id', 'dialog_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     /**
@@ -77,7 +85,7 @@ class MessagesModel extends Model
      */
     public function getDifferenceAttribute()
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->diffForHumans();
+        return $this->created_at->diffForHumans();
     }
 
     /**
@@ -88,5 +96,19 @@ class MessagesModel extends Model
     public function getCreatedAtHourAttribute()
     {
         return Carbon::parse($this->created_at)->format('H:i');
+    }
+
+    /**
+     * @return Attribute
+     */
+    protected function formattedCreatedAt(): Attribute
+    {
+        return Attribute::get(function () {
+            $createdAt = $this->created_at;
+
+            return $createdAt->isToday()
+                ? $createdAt->format('H:i')
+                : $createdAt->format('d.m.Y H:i');
+        });
     }
 }

@@ -11,15 +11,21 @@ class SuccessResource extends JsonResource
     /** @var int $statusCode */
     private int $statusCode;
 
+    /** @var string $message */
+    private string $message;
+
     /**
-     * @param $resource
-     * @param int $statusCode
+     * @param mixed  $resource
+     * @param string $message
+     * @param int    $statusCode
      */
     public function __construct(
         $resource,
+        string $message = '',
         int $statusCode = ResponseCodeEnum::OK
     ) {
         parent::__construct($resource);
+        $this->message = $message;
         $this->statusCode = $statusCode;
     }
 
@@ -32,7 +38,7 @@ class SuccessResource extends JsonResource
         return [
             'success' => true,
             'data' => $this->resource ?: null,
-            'message' => $this->resource ?: null
+            'message' => $this->message ?: trans('success.success'),
         ];
     }
 

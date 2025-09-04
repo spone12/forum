@@ -6,7 +6,6 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use App\Observers\MessageObserver;
 use App\Models\Chat\MessagesModel;
 use App\Events\ChatMessageEvent;
 use App\Listeners\ChatMessageNotifyListener;

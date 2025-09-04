@@ -3,22 +3,11 @@
 namespace App\Listeners;
 
 use App\Events\ChatMessageEvent;
-use App\User;
-use Illuminate\Support\Facades\Cache;
+use App\Service\Chat\Notifications\MessageNotificationsService;
 
 class ChatMessageNotifyListener
 {
     protected $actionDialog = '/chat/dialog/';
-
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Handle the event.
@@ -28,20 +17,10 @@ class ChatMessageNotifyListener
      */
     public function handle(ChatMessageEvent $event)
     {
-        // Clear user recive count notifications
-        Cache::forget('userNorificationsBell' . $event->messageObj->recive);
+        // Clear the number of notifications for a user
+        app(MessageNotificationsService::class)
+            ->forgetCache($event->messageObj->user_id);
 
-       /* // TODO Add a check if notification is enabled for a user
-        $recive = User::where('id', $event->messageObj->recive)
-            ->firstOrFail();
-
-        if (empty($recive->email)) {
-            return;
-        }
-
-        $recive->text = $event->messageObj->text;
-        $recive->action = $this->actionDialog . $event->messageObj->dialog;*/
-
-        //Notification::send($recive, new \App\Notifications\ChatMessageNorify());
+        // TODO Add a check if notification is enabled for a user
     }
 }

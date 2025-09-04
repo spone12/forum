@@ -2,7 +2,7 @@
 
 namespace App\Broadcasting;
 
-use App\Models\Chat\MessagesModel;
+use App\Enums\Chat\DialogType;
 use App\User;
 
 class ChatChannel
@@ -19,11 +19,14 @@ class ChatChannel
      *
      * @param User $user
      * @param int $dialogId
+     *
      * @return bool
      */
     public function join(User $user, int $dialogId)
     {
-        $messageObj = MessagesModel::select(['send', 'recive'])->where('dialog', $dialogId)->firstOrFail();
-        return auth()->check() && in_array(auth()->id(), [$messageObj->recive, $messageObj->send]);
+        return $user->dialogParticipants()
+            ->where('dialogs.dialog_id', $dialogId)
+            ->where('type', DialogType::PRIVATE)
+            ->exists();
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\{ResponseCodeEnum, TimeEnums};
-use App\Service\{HomeService, NotificationsService};
+use App\Service\{Chat\Notifications\MessageNotificationsService, HomeService};
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -48,8 +48,8 @@ class HomeController extends Controller
                     return $this->homeService->notations('');
             });
 
-            NotificationsService::userNotifications();
-        } catch (\Throwable $e) {
+            app(MessageNotificationsService::class)->updateUserNotificationsCache();
+        } catch (\Throwable) {
             return abort(ResponseCodeEnum::NOT_FOUND);
         }
 

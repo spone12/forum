@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\Cache\CacheKey;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use \Blade;
@@ -33,11 +34,13 @@ class AppServiceProvider extends ServiceProvider
         // Retrieving notification data into view from the cache
         view()->composer('layouts.app', function($view) {
             if (Auth::check()) {
-                $view->with('userNorifications', cache()->get('userNorificationsBell' . Auth::user()->id));
+                $view->with(
+                    'userNotifications',
+                    cache()->get(CacheKey::CHAT_NOTIFICATIONS_BELL->value . Auth::user()->id)
+                );
             } else {
-                $view->with('userNorifications', []);
+                $view->with('userNotifications', []);
             }
-
         });
 
         // Directive @ifGuest', that checks if the user is a guest

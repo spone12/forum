@@ -11,7 +11,6 @@ function stopEditMessage() {
 
 function sendMessage() {
     let message = $.trim($(".dialog__message").html());
-    let dialogWithId = $("#dialogWithId").val();
     let dialogId = $("#dialogId").val();
 
     if (jQuery.isEmptyObject(message)) {
@@ -19,7 +18,7 @@ function sendMessage() {
     }
 
     $.ajax({
-        url: "/chat/send_message",
+        url: "/chat/message/send",
         type: "POST",
         headers: {
             "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
@@ -27,7 +26,6 @@ function sendMessage() {
         async: false,
         data: {
             message: message,
-            dialogWithId: dialogWithId,
             dialogId: dialogId,
         },
         success: function (data) {},
@@ -50,7 +48,7 @@ function editMessage(messageId) {
     }
 
     $.ajax({
-        url: "/chat/edit_message",
+        url: "/chat/message/edit",
         type: "PUT",
         headers: {
             "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
@@ -165,7 +163,7 @@ $(document).ready(function () {
         stopEditMessage();
 
         $.ajax({
-            url: "/chat/delete_message",
+            url: "/chat/message/delete",
             type: "DELETE",
             headers: {
                 "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
@@ -197,7 +195,7 @@ $(document).ready(function () {
         let messageId = mainBlock.attr("id").split("chat-")[1];
 
         $.ajax({
-            url: "/chat/recover_message",
+            url: "/chat/message/recover",
             type: "PUT",
             headers: {
                 "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
@@ -248,9 +246,9 @@ $(document).ready(function () {
     });
 
     $("#chatSearch").on("change", function () {
-        var searchWord = $.trim($(this).val());
+        var searchText = $.trim($(this).val());
 
-        if (jQuery.isEmptyObject(searchWord)) {
+        if (jQuery.isEmptyObject(searchText)) {
             $(".Chat-search__item").not(".Chat-search__item:first").remove();
             $(".Chat-search").hide();
             $(".mainData").show();
@@ -258,19 +256,20 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: "/chat/search",
-            type: "POST",
+            url: "/chat/search/all",
+            type: "GET",
             headers: {
                 "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
             },
-            data: { word: searchWord },
-            success: function (data) {
-                $(".mainData").hide();
+            data: { searchText: searchText },
+            success: function (response) {
+               $(".mainData").hide();
 
-                if (jQuery.isEmptyObject(data.searchResult[0])) {
+               let data = response.data;
+               if (response.items === 0) {
                     $(".Chat-search__item:eq(0)")
                         .find(".Chat-search_body")
-                        .html("Рузультатов поиска нет");
+                        .html(data.searchResultMessage);
                     $(".Chat-search__item")
                         .not(".Chat-search__item:first")
                         .remove();
@@ -283,14 +282,12 @@ $(document).ready(function () {
 
                 $(".Chat-search__item:eq(0)")
                     .find(".Chat-search_body")
-                    .html(
-                        "Результат поиска: " + data.searchResult.length + " элемент"
-                    );
+                    .html(data.searchResultMessage);
                 $(".Chat-search__item")
                     .not(".Chat-search__item:first")
                     .remove();
 
-                $.each(data.searchResult, function (key, searchItem) {
+                $.each(data.items, function (key, searchItem) {
                     var elements = chat.clone();
                     elements
                         .find(".Chat-search_body")

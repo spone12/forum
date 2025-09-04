@@ -14,6 +14,6 @@ class ChatMessageResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return (array) $this->resource;
+        return $this->resource;
     }
 }

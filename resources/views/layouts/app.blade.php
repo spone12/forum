@@ -56,19 +56,19 @@
 
                     <ul class="btn-group additionalAppButtons">
                         @auth
-                        @if (isset($userNorifications))
+                        @if (isset($userNotifications))
                         <ul class="btn-group notificationBell">
                             <li class="nav-item dropdown">
                                 <!--dropdown-toggle class-->
                                 <a class="nav-link c" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <span class='notificationBell__countDialogs'>{{ $userNorifications->count() }}</span>
+                                    <span class='notificationBell__countDialogs'>{{ $userNotifications->count() }}</span>
                                     <img class="bellIcon" width=35 src="{{ url('/img/icons/bell.png') }}" />
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    @if (count($userNorifications) > 0)
-                                    @foreach ($userNorifications as $notification)
-                                        <a class="dropdown-item" href="{{ route('dialog', $notification->dialog) }}" onclick="">
+                                    @if (count($userNotifications) > 0)
+                                    @foreach ($userNotifications as $notification)
+                                        <a class="dropdown-item" href="{{ route('dialog', $notification->dialog_id) }}" onclick="">
                                             <div>
                                                 <span class="notificationBell__countMessages">{{ $notification->count_notifications }}</span>
                                                 <img width=20 src="{{ asset($notification->avatar) }}" />

@@ -2,10 +2,15 @@
 
 namespace App\Providers;
 
-use App\Policies\ChatPolicy;
+use App\Models\Chat\{
+    DialogModel,
+    MessagesModel
+};
+use App\Policies\Chat\{
+    DialogPolicy,
+    MessagesPolicy
+};
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
-use App\Models\Chat\DialogModel as DialogModel;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -15,7 +20,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        DialogModel::class => ChatPolicy::class,
+        DialogModel::class => DialogPolicy::class,
+        MessagesModel::class => MessagesPolicy::class,
     ];
 
     /**

@@ -26,7 +26,6 @@ class ChatMessageRequest extends FormRequest
         return [
             'message' => 'required|string|min:1',
             'dialogId' => 'required|integer',
-            'dialogWithId' => 'required|integer'
         ];
     }
 
