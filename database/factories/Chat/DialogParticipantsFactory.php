@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Chat;
 
+use App\Models\Chat\DialogModel;
 use App\Models\Chat\DialogParticipants;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Enums\Chat\ChatRole;
@@ -22,8 +23,8 @@ class DialogParticipantsFactory extends Factory
     public function definition(): array
     {
         return [
-            'dialog_id' => DialogParticipants::factory(),
-            'user_id' => User::factory()->create()->id,
+            'dialog_id' => DialogModel::factory(),
+            'user_id' => User::factory(),
             'role' => ChatRole::MEMBER->value,
         ];
     }
