@@ -4,6 +4,7 @@ namespace App\Models\Chat;
 
 use App\Enums\Chat\DialogType;
 use App\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -19,6 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class DialogModel extends Model
 {
+    use hasFactory;
+
     /**
      * @var string
      */
