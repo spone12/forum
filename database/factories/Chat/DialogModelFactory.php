@@ -28,6 +28,11 @@ class DialogModelFactory extends Factory
         ];
     }
 
+    /**
+     * The participant of the dialogue the creator must always be
+     *
+     * @return DialogModelFactory|Factory
+     */
     public function configure()
     {
         return $this->afterCreating(function (DialogModel $dialog)
@@ -35,13 +40,35 @@ class DialogModelFactory extends Factory
             DialogParticipants::factory()->owner($dialog->created_by)->create([
                 'dialog_id' => $dialog->dialog_id,
             ]);
-
-            // For a private dialogue, we add another user
-            if ($dialog->type === DialogType::PRIVATE) {
-                DialogParticipants::factory()->create([
-                    'dialog_id' => $dialog->dialog_id,
-                ]);
-            }
         });
+    }
+
+    /**
+     * Private chat
+     *
+     * @return DialogModelFactory|Factory
+     */
+    public function private()
+    {
+        return $this->state(['type' => DialogType::PRIVATE])
+            ->has(
+                DialogParticipants::factory()->count(1),
+                'participants'
+            );
+    }
+
+    /**
+     * Group chat
+     *
+     * @param int $count
+     * @return DialogModelFactory|Factory
+     */
+    public function group(int $count = 2)
+    {
+        return $this->state(['type' => DialogType::GROUP])
+            ->has(
+                DialogParticipants::factory()->count($count),
+                'participants'
+            );
     }
 }

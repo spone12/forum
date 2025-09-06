@@ -70,7 +70,7 @@ php artisan cache:clear
 
 >SASS компиляция: <code>npm run watch (dev)</code>
 
->PHP Unit запуск тестов: <code>vendor\bin\phpunit</code>
+>PHP Unit запуск тестов: <code>php artisan test</code>
 
 >Websockets:
 

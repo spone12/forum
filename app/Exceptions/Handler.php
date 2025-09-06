@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use App\Enums\ResponseCodeEnum;
 use Throwable;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use App\Http\Resources\ErrorResource;
 
 class Handler extends ExceptionHandler
 {
@@ -35,28 +36,33 @@ class Handler extends ExceptionHandler
      *
      * @throws \Exception
      */
-    public function report(Throwable $exception)
+    public function report(Throwable $e)
     {
-        parent::report($exception);
+        parent::report($e);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Exception
+     * @param $request
+     * @param Throwable $e
+     * @return ErrorResource|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
+     * @throws Throwable
      */
-    public function render($request, Throwable $exception)
+    public function render($request, Throwable $e)
     {
-        if ($this->isHttpException($exception)) {
-            if ($exception->getStatusCode() === ResponseCodeEnum::NOT_FOUND) {
-                return response()->view('error_404', [], ResponseCodeEnum::NOT_FOUND);
+        if ($this->isHttpException($e)) {
+            if ($request->expectsJson()) {
+                return new ErrorResource(
+                    statusCode: $e->getStatusCode()
+                );
+            } else {
+                if ($e->getStatusCode() === ResponseCodeEnum::NOT_FOUND) {
+                    return response()->view('error_404', [], ResponseCodeEnum::NOT_FOUND);
+                }
             }
         }
 
-        return parent::render($request, $exception);
+        return parent::render($request, $e);
     }
 }

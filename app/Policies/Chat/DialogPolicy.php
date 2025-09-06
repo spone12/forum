@@ -2,6 +2,7 @@
 
 namespace App\Policies\Chat;
 
+use App\Enums\ResponseCodeEnum;
 use App\User;
 use App\Models\Chat\DialogModel as DialogModel;
 use Illuminate\Auth\Access\Response;
@@ -22,7 +23,7 @@ class DialogPolicy
             ->exists();
 
         if (!$dialogExists) {
-            return Response::deny('You cannot access this action!');
+            return Response::deny('You cannot access this action!', ResponseCodeEnum::FORBIDDEN);
         }
 
         return Response::allow();

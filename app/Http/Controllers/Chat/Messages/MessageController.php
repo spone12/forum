@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Chat\Messages;
 
+use App\Enums\ResponseCodeEnum;
 use App\Exceptions\Chat\ChatMessageException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChatMessageRequest;
@@ -50,12 +51,10 @@ class MessageController extends Controller
             return new SuccessResource(
                 new ChatMessageResource(
                     $this->messageService->send($data)
-                )
+                ), '', ResponseCodeEnum::CREATED
             );
         } catch (ChatMessageException $exception) {
             return new ErrorResource($exception->getMessage());
-        } catch (\Throwable) {
-            return new ErrorResource();
         }
     }
 
@@ -82,8 +81,6 @@ class MessageController extends Controller
             );
         } catch (ChatMessageException $exception) {
             return new ErrorResource($exception->getMessage());
-        } catch (\Throwable) {
-            return new ErrorResource();
         }
     }
 
@@ -109,8 +106,6 @@ class MessageController extends Controller
             );
         } catch (ChatMessageException $exception) {
             return new ErrorResource($exception->getMessage());
-        } catch (\Throwable) {
-            return new ErrorResource();
         }
     }
 
@@ -132,8 +127,6 @@ class MessageController extends Controller
             );
         } catch (ChatMessageException $exception) {
             return new ErrorResource($exception->getMessage());
-        } catch (\Throwable) {
-            return new ErrorResource();
         }
     }
 }
