@@ -3,7 +3,7 @@
 namespace Tests\Feature\Chat\Dialog;
 
 use App\Enums\ResponseCodeEnum;
-use App\Models\Chat\{DialogModel, MessagesModel};
+use App\Models\Chat\{DialogModel, DialogParticipants};
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -15,6 +15,8 @@ class DialogTest extends TestCase
 
     /** @var User $user */
     protected User $user;
+    /** @var User $anotherUser */
+    protected User $anotherUser;
     /** @var DialogModel $dialog */
     protected DialogModel $dialog;
 
@@ -23,10 +25,12 @@ class DialogTest extends TestCase
         parent::setUp();
 
         $this->user = User::factory()->create();
+        $this->anotherUser = User::factory()->create();
         $this->dialog = DialogModel::factory()
             ->private()
             ->for($this->user, 'createdBy')
-            ->withMessagesFrom($this->user)
+            ->addUsersToDialog([$this->anotherUser])
+            ->withMessagesFrom([$this->user])
             ->create();
     }
 
@@ -61,13 +65,14 @@ class DialogTest extends TestCase
 
         // Create another user
         $anotherUser = User::factory()->create();
+        $anotherUser2 = User::factory()->create();
 
         // Create another dialog
         $foreignDialog = DialogModel::factory()
-            ->withMessagesFrom($anotherUser)
-            ->create([
-                'created_by' => $anotherUser->id,
-            ]);
+            ->for($anotherUser, 'createdBy')
+            ->addUsersToDialog([$anotherUser2])
+            ->withMessagesFrom([$anotherUser])
+            ->create();
 
         $response = $this->get(route('dialogList'));
 
@@ -78,5 +83,87 @@ class DialogTest extends TestCase
         $response->assertViewHas('dialogList', function ($dialogList) use ($foreignDialog) {
             return !$dialogList->contains('dialog_id', $foreignDialog->dialog_id);
         });
+    }
+
+    /**
+     * @covers \App\Http\Controllers\Chat\Dialog\DialogController::open
+     * @return void
+     */
+    public function test_open_existing_dialog_returns_it()
+    {
+        $this->actingAs($this->user);
+
+        $response = $this->get(route('openDialog', ['userId' => $this->anotherUser->id]));
+        $response->assertStatus(ResponseCodeEnum::FOUND);
+        $response->assertRedirect(route('dialog', ['dialogId' => $this->dialog->dialog_id]));
+    }
+
+    /**
+     * @covers \App\Http\Controllers\Chat\Dialog\DialogController::open
+     * @return void
+     */
+    public function test_open_new_dialog_creates_and_returns_it()
+    {
+        $this->actingAs($this->user);
+        $anotherUser = User::factory()->create();
+
+        $response = $this->get(route('openDialog', ['userId' => $anotherUser->id]));
+        $response->assertStatus(ResponseCodeEnum::FOUND);
+
+        // Getting the created dialog number
+        $redirectUrl = $response->headers->get('Location');
+        $dialogId = basename(parse_url($redirectUrl, PHP_URL_PATH));
+        $response->assertRedirect(route('dialog', ['dialogId' => $dialogId]));
+    }
+
+    /**
+     * @covers \App\Http\Controllers\Chat\Dialog\DialogController::open
+     * @return void
+     */
+    public function test_open_dialog_with_nonexistent_user_fails()
+    {
+        $this->actingAs($this->user);
+
+        $response = $this->get(
+            route('openDialog', [
+                'userId' => User::max('id') + 1
+            ])
+        );
+        $response->assertStatus(ResponseCodeEnum::NOT_FOUND);
+    }
+
+    /**
+     * @covers \App\Http\Controllers\Chat\Dialog\DialogController::getDialogMessages
+     * @return void
+     */
+    public function test_user_can_get_messages_from_dialog()
+    {
+        $this->actingAs($this->user);
+
+        $response = $this->get(route('dialog', ['dialogId' => $this->dialog->dialog_id]));
+        $response->assertStatus(ResponseCodeEnum::OK);
+
+        $response->assertViewHas('dialogObj');
+        $response->assertViewHas('dialogId', $this->dialog->dialog_id);
+
+        $messages = $response->viewData('dialogObj');
+        $this->assertGreaterThan(0, $messages->count());
+        $this->assertEquals($this->user->id, $messages->first()->user_id);
+    }
+
+    public function test_user_cannot_get_messages_from_foreign_dialog()
+    {
+        $this->actingAs($this->user);
+
+        $anotherUser = User::factory()->create();
+        $anotherDialog = DialogModel::factory()
+            ->private()
+            ->for($this->anotherUser, 'createdBy')
+            ->addUsersToDialog([$anotherUser])
+            ->withMessagesFrom([$this->anotherUser], 2)
+            ->create();
+
+        $response = $this->get(route('dialog', ['dialogId' => $anotherDialog->dialog_id]));
+        $response->assertStatus(ResponseCodeEnum::NOT_FOUND);
     }
 }

@@ -23,7 +23,7 @@ class DialogPolicy
             ->exists();
 
         if (!$dialogExists) {
-            return Response::deny('You cannot access this action!', ResponseCodeEnum::FORBIDDEN);
+            return Response::deny('Dialog not found!', ResponseCodeEnum::NOT_FOUND);
         }
 
         return Response::allow();

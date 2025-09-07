@@ -49,11 +49,7 @@ class DialogModelFactory extends Factory
      */
     public function private()
     {
-        return $this->state(['type' => DialogType::PRIVATE])
-            ->has(
-                DialogParticipants::factory()->count(1),
-                'participants'
-            );
+        return $this->state(['type' => DialogType::PRIVATE]);
     }
 
     /**
@@ -75,20 +71,40 @@ class DialogModelFactory extends Factory
     }
 
     /**
-     * Create messages from a specific user
+     * Create messages from a specific users
      *
-     * @param User $user
+     * @param array $users
      * @param int $count
      * @return DialogModelFactory|Factory
      */
-    public function withMessagesFrom(User $user, int $count = 1)
+    public function withMessagesFrom(array $users, int $count = 1)
     {
-        return $this->afterCreating(function (DialogModel $dialog) use ($user, $count) {
-            MessagesModel::factory()
-                ->count($count)
-                ->for($dialog, 'dialog')
-                ->for($user, 'user')
-                ->create();
+        return $this->afterCreating(function (DialogModel $dialog) use ($users, $count) {
+            foreach ($users as $user) {
+                MessagesModel::factory()
+                    ->count($count)
+                    ->for($dialog, 'dialog')
+                    ->for($user, 'user')
+                    ->create();
+            }
+        });
+    }
+
+    /**
+     * Add users to the dialog
+     *
+     * @param array $users
+     * @return DialogModelFactory|Factory
+     */
+    public function addUsersToDialog(array $users)
+    {
+        return $this->afterCreating(function (DialogModel $dialog) use ($users) {
+            foreach ($users as $user) {
+                DialogParticipants::factory()
+                    ->for($dialog, 'dialog')
+                    ->for($user, 'user')
+                    ->create();
+            }
         });
     }
 }
