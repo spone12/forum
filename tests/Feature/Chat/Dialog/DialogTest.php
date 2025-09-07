@@ -3,7 +3,7 @@
 namespace Tests\Feature\Chat\Dialog;
 
 use App\Enums\ResponseCodeEnum;
-use App\Models\Chat\{DialogModel, DialogParticipants};
+use App\Models\Chat\DialogModel;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -146,11 +146,21 @@ class DialogTest extends TestCase
         $response->assertViewHas('dialogObj');
         $response->assertViewHas('dialogId', $this->dialog->dialog_id);
 
+        // Check if the current conversation is present in recent dialogs
+        $dialogId = $this->dialog->dialog_id;
+        $response->assertViewHas('lastDialogs', function ($lastDialogs) use ($dialogId) {
+            return $lastDialogs->contains('dialog_id', $dialogId);
+        });
+
         $messages = $response->viewData('dialogObj');
         $this->assertGreaterThan(0, $messages->count());
         $this->assertEquals($this->user->id, $messages->first()->user_id);
     }
 
+    /**
+     * @covers \App\Http\Controllers\Chat\Dialog\DialogController::getDialogMessages
+     * @return void
+     */
     public function test_user_cannot_get_messages_from_foreign_dialog()
     {
         $this->actingAs($this->user);
