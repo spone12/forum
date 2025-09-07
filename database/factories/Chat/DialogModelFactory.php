@@ -3,7 +3,7 @@
 namespace Database\Factories\Chat;
 
 use App\Enums\Chat\DialogType;
-use App\Models\Chat\{DialogModel, DialogParticipants};
+use App\Models\Chat\{DialogModel, DialogParticipants, MessagesModel};
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\User;
 
@@ -22,7 +22,6 @@ class DialogModelFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->sentence(3),
             'type' => DialogType::PRIVATE,
             'created_by' => User::factory()
         ];
@@ -44,7 +43,7 @@ class DialogModelFactory extends Factory
     }
 
     /**
-     * Private chat
+     * Set private chat
      *
      * @return DialogModelFactory|Factory
      */
@@ -58,17 +57,38 @@ class DialogModelFactory extends Factory
     }
 
     /**
-     * Group chat
+     * Set group chat
      *
      * @param int $count
      * @return DialogModelFactory|Factory
      */
     public function group(int $count = 2)
     {
-        return $this->state(['type' => DialogType::GROUP])
-            ->has(
-                DialogParticipants::factory()->count($count),
-                'participants'
-            );
+        return $this->state([
+            'type' => DialogType::GROUP,
+            'title' => $this->faker->sentence(3)
+        ])
+        ->has(
+            DialogParticipants::factory()->count($count),
+            'participants'
+        );
+    }
+
+    /**
+     * Create messages from a specific user
+     *
+     * @param User $user
+     * @param int $count
+     * @return DialogModelFactory|Factory
+     */
+    public function withMessagesFrom(User $user, int $count = 1)
+    {
+        return $this->afterCreating(function (DialogModel $dialog) use ($user, $count) {
+            MessagesModel::factory()
+                ->count($count)
+                ->for($dialog, 'dialog')
+                ->for($user, 'user')
+                ->create();
+        });
     }
 }

@@ -33,7 +33,7 @@ class SendMessageTest extends TestCase
 
     /**
      *
-     * @covers \App\Http\Controllers\Chat\MessageController::send
+     * @covers \App\Http\Controllers\Chat\Messages\MessageController::send
      * @return void
      */
     public function test_user_send_message_success()
@@ -75,6 +75,11 @@ class SendMessageTest extends TestCase
         Event::assertDispatched(ChatMessageEvent::class);
     }
 
+    /**
+     *
+     * @covers \App\Http\Controllers\Chat\Messages\MessageController::send
+     * @return void
+     */
     public function test_user_cannot_send_message_to_foreign_dialog()
     {
         Event::fake();
