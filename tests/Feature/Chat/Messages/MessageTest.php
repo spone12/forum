@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Event;
 use App\Events\ChatMessageEvent;
 use Tests\TestCase;
 
-class SendMessageTest extends TestCase
+class MessageTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
