@@ -2,6 +2,7 @@
 
 namespace App\Policies\Chat;
 
+use App\Enums\ResponseCodeEnum;
 use App\Models\Chat\MessagesModel;
 use App\User;
 use Illuminate\Auth\Access\Response;
@@ -20,6 +21,6 @@ class MessagesPolicy
 
         return ($user->id === $message->user_id && $userInDialog)
             ? Response::allow()
-            : Response::deny('You cannot access this action!');
+            : Response::deny('You cannot access this action!', ResponseCodeEnum::FORBIDDEN);
     }
 }
