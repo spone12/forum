@@ -18,10 +18,8 @@ class SearchTest extends TestCase
      * @covers \App\Service\Chat\ChatSearchService::searchAll
      * @return void
      */
-    public function test_chat_search_all_calls_repository()
+    public function testChatSearchAllMessages()
     {
-        $dto = new SearchDTO('hello');
-
         $repositoryMock = Mockery::mock(ChatMessageSearchInterface::class);
         $repositoryMock->shouldReceive('searchAll')
             ->once()
@@ -31,8 +29,9 @@ class SearchTest extends TestCase
             );
 
         $service = new ChatSearchService($repositoryMock);
-
-        $result = $service->searchAll($dto);
+        $result = $service->searchAll(
+            new SearchDTO('hello')
+        );
 
         $this->assertInstanceOf(Collection::class, $result);
         $this->assertEquals(['message'], $result->all());

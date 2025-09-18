@@ -2,10 +2,10 @@
 
 namespace App\Service\Chat\Messages;
 
+use App\Contracts\Chat\Messages\MessageQueryRepositoryInterface;
 use App\DTO\Chat\PrivateChatDTO;
 use App\Models\Chat\DialogModel;
 use App\Models\Chat\MessagesModel;
-use App\Repository\Chat\Messages\MessageQueryRepository;
 use App\Service\Chat\Notifications\MessageNotificationsService;
 use Illuminate\Support\Facades\{Gate};
 
@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\{Gate};
  */
 class MessageQueryService
 {
-    /** @var MessageQueryRepository $repository */
+    /** @var MessageQueryRepositoryInterface $repository */
     protected $repository;
 
     /**
      * ChatService constructor.
-     * @param MessageQueryRepository $repository
+     * @param MessageQueryRepositoryInterface $repository
      */
-    function __construct(MessageQueryRepository $repository) {
+    function __construct(MessageQueryRepositoryInterface $repository) {
         $this->repository = $repository;
     }
 

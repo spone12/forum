@@ -38,7 +38,7 @@ class DialogTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Dialog\DialogController::dialogList
      * @return void
      */
-    public function test_user_can_see_his_dialogs()
+    public function testUserCanSeeHisDialogs()
     {
         $this->actingAs($this->user);
         $this->assertDatabaseHas('dialogs', [
@@ -59,7 +59,7 @@ class DialogTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Dialog\DialogController::dialogList
      * @return void
      */
-    public function test_user_cannot_see_foreign_dialogs()
+    public function testUserCannotSeeForeignDialogs()
     {
         $this->actingAs($this->user);
 
@@ -89,7 +89,7 @@ class DialogTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Dialog\DialogController::open
      * @return void
      */
-    public function test_open_existing_dialog_returns_it()
+    public function testOpenExistingDialogReturnsIt()
     {
         $this->actingAs($this->user);
 
@@ -102,7 +102,7 @@ class DialogTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Dialog\DialogController::open
      * @return void
      */
-    public function test_open_new_dialog_creates_and_returns_it()
+    public function testOpenNewDialogCreatesAndReturnsIt()
     {
         $this->actingAs($this->user);
         $anotherUser = User::factory()->create();
@@ -120,7 +120,7 @@ class DialogTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Dialog\DialogController::open
      * @return void
      */
-    public function test_open_dialog_with_nonexistent_user_fails()
+    public function testOpenDialogWithNonexistentUserFails()
     {
         $this->actingAs($this->user);
 
@@ -136,7 +136,7 @@ class DialogTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Dialog\DialogController::getDialogMessages
      * @return void
      */
-    public function test_user_can_get_messages_from_dialog()
+    public function testUserCanGetMessagesFromDialog()
     {
         $this->actingAs($this->user);
 
@@ -161,7 +161,7 @@ class DialogTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Dialog\DialogController::getDialogMessages
      * @return void
      */
-    public function test_user_cannot_get_messages_from_foreign_dialog()
+    public function testUserCannotGetMessagesFromForeignDialog()
     {
         $this->actingAs($this->user);
 

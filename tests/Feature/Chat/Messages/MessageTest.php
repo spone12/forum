@@ -41,7 +41,7 @@ class MessageTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Messages\MessageController::send
      * @return void
      */
-    public function test_user_send_message_success()
+    public function testUserSendMessageSuccess()
     {
         Event::fake();
 
@@ -85,7 +85,7 @@ class MessageTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Messages\MessageController::send
      * @return void
      */
-    public function test_user_cannot_send_message_to_foreign_dialog()
+    public function testUserCannotSendMessageToForeignDialog()
     {
         Event::fake();
 
@@ -105,7 +105,7 @@ class MessageTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Messages\MessageController::edit
      * @return void
      */
-    public function test_user_can_edit_his_message()
+    public function testUserCanEditHisMessage()
     {
         $this->actingAs($this->user);
 
@@ -141,7 +141,7 @@ class MessageTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Messages\MessageController::edit
      * @return void
      */
-    public function test_user_cannot_edit_foreign_message()
+    public function testUserCannotEditForeignMessage()
     {
         // Create another user
         $anotherUser = User::factory()->create();
@@ -176,7 +176,7 @@ class MessageTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Messages\MessageController::edit
      * @return void
      */
-    public function test_edit_nonexistent_message_returns_not_found()
+    public function testEditNonexistentMessageReturnsNotFound()
     {
         $this->actingAs($this->user);
 
@@ -197,7 +197,7 @@ class MessageTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Messages\MessageController::delete
      * @return void
      */
-    public function test_user_can_delete_his_message()
+    public function testUserCanDeleteHisMessage()
     {
         $this->actingAs($this->user);
         $messageId = $this->dialog->messages
@@ -228,7 +228,7 @@ class MessageTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Messages\MessageController::delete
      * @return void
      */
-    public function test_user_cannot_delete_foreign_message()
+    public function testUserCannotDeleteForeignMessage()
     {
         // Create another user
         $anotherUser = User::factory()->create();
@@ -254,7 +254,7 @@ class MessageTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Messages\MessageController::edit
      * @return void
      */
-    public function test_delete_nonexistent_message_returns_not_found()
+    public function testDeleteNonexistentMessageReturnsNotFound()
     {
         $this->actingAs($this->user);
 
@@ -274,7 +274,7 @@ class MessageTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Messages\MessageController::recover
      * @return void
      */
-    public function test_user_can_recover_his_message()
+    public function testUserCanRecoverHisMessage()
     {
         $this->actingAs($this->user);
         $message = $this->dialog->messages
@@ -315,7 +315,7 @@ class MessageTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Messages\MessageController::recover
      * @return void
      */
-    public function test_user_cannot_recover_foreign_message()
+    public function testUserCannotRecoverForeignMessage()
     {
         // Create another user
         $anotherUser = User::factory()->create();
@@ -347,7 +347,7 @@ class MessageTest extends TestCase
      * @covers \App\Http\Controllers\Chat\Messages\MessageController::recover
      * @return void
      */
-    public function test_recover_nonexistent_message_returns_not_found()
+    public function testRecoverNonexistentMessageReturnsNotFound()
     {
         $this->actingAs($this->user);
 
