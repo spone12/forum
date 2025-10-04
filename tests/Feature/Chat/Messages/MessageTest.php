@@ -1,6 +1,6 @@
 <?php
 
-namespace Chat\Messages;
+namespace Tests\Feature\Chat\Messages;
 
 use App\Enums\ResponseCodeEnum;
 use App\User;

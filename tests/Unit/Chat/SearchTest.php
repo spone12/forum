@@ -1,6 +1,6 @@
 <?php
 
-namespace Chat;
+namespace Tests\Unit\Chat;
 
 use PHPUnit\Framework\TestCase;
 use App\Service\Chat\ChatSearchService;
